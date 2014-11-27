@@ -28,6 +28,17 @@ AWE.UI.Ember = (function(module) {
       var slot = this.get('slot');
       var building = event.view.getPath('building');
       var type = event.view.getPath('building.type');
+
+      if (!building.requirementsMet())
+      {
+        if (event.view && typeof event.view.onInfoClicked !== "undefined")
+        {
+          event.view.onInfoClicked();
+        }
+        
+        return ; // do nothing, ignore click on greyed-out building.
+      }
+
       this.get('controller').constructionOptionClicked(slot, building, type, event.view);
       this.getPath('parentView').destroy();
     }, 

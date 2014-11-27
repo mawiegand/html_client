@@ -248,63 +248,141 @@ AWE.Controller = (function(module) {
     };
 
     that.ingameShopButtonClicked = function() {
-      
-      if (!AWE.GS.ShopManager.getShop()) {
-        AWE.GS.ShopManager.init();
+      try
+      {
+        LoginHandler.openShop();
       }
-      
-      shopDialog = AWE.UI.Ember.ShopDialog.create({
+      catch(err)
+      {
+        if (!AWE.GS.ShopManager.getShop()) {
+          AWE.GS.ShopManager.init();
+        }
         
-        shop: AWE.GS.ShopManager.getShop(),
-        
-        buyCreditsPressed: that.buyCreditsClicked,
+        shopDialog = AWE.UI.Ember.ShopDialog.create({
+          
+          shop: AWE.GS.ShopManager.getShop(),
+          
+          buyCreditsPressed: that.buyCreditsClicked,
 
-        buyResourceOfferPressed: function(offerId) {
-          
-          var creditAmount = this.getPath('shop.creditAmount') || 0;
-          var offer = AWE.GS.ResourceOfferManager.getResourceOffer(offerId);
-          var price = offer.get('price');
-          
-          if (creditAmount < price) {
-            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
-            that.presentNotEnoughCreditsWarning();
-            return ;
-          }
-          
-          AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
-            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-              });
-              that.applicationController.presentModalDialog(info);
-            }
-            else {
+          buyResourceOfferPressed: function(offerId) {
+            
+            var creditAmount = this.getPath('shop.creditAmount') || 0;
+            var offer = AWE.GS.ResourceOfferManager.getResourceOffer(offerId);
+            var price = offer.get('price');
+            
+            if (creditAmount < price) {
+              log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
               that.presentNotEnoughCreditsWarning();
+              return ;
             }
             
-            AWE.GS.ShopManager.fetchCreditAmount(function(){
-              that.setModelChanged();
-            });
-            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-              that.setModelChanged();
-            });
-          }, function() {                                   // error handler
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
-              message: AWE.I18n.lookupTranslation('shop.error.message'),
-            });      
-            that.applicationController.presentModalDialog(info);
-          })
-        },
+            AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
+              if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+                var info = AWE.UI.Ember.InfoDialog.create({
+                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+                });
+                that.applicationController.presentModalDialog(info);
+              }
+              else {
+                that.presentNotEnoughCreditsWarning();
+              }
+              
+              AWE.GS.ShopManager.fetchCreditAmount(function(){
+                that.setModelChanged();
+              });
+              AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+                that.setModelChanged();
+              });
+            }, function() {                                   // error handler
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+                message: AWE.I18n.lookupTranslation('shop.error.message'),
+              });      
+              that.applicationController.presentModalDialog(info);
+            })
+          },
 
-        buyBonusOfferPressed: function(offerId) {
-          
-          var offer = AWE.GS.BonusOfferManager.getBonusOffer(offerId);
-          var price = offer.get('price');
-          var currency = offer.get('currency');
+          buyBonusOfferPressed: function(offerId) {
+            
+            var offer = AWE.GS.BonusOfferManager.getBonusOffer(offerId);
+            var price = offer.get('price');
+            var currency = offer.get('currency');
 
-          if (currency ===  AWE.GS.CURRENCY_CREDITS) {
+            if (currency ===  AWE.GS.CURRENCY_CREDITS) {
+              var creditAmount = this.getPath('shop.creditAmount') || 0;
+              if (creditAmount < price) {
+                log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+                that.presentNotEnoughCreditsWarning();
+                return ;
+              }
+
+              AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
+                if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+  //                var info = AWE.UI.Ember.InfoDialog.create({
+  //                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+  //                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+  //                });
+  //                that.applicationController.presentModalDialog(info);
+                }
+                else {
+                  that.presentNotEnoughCreditsWarning();
+                }
+
+                AWE.GS.BonusOfferManager.updateBonusOffers();
+                AWE.GS.ShopManager.fetchCreditAmount(function(){
+                  that.setModelChanged();
+                });
+                AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+                  that.setModelChanged();
+                });
+              }, function() {                                   // error handler
+                var info = AWE.UI.Ember.InfoDialog.create({
+                  heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+                  message: AWE.I18n.lookupTranslation('shop.error.message'),
+                });
+                that.applicationController.presentModalDialog(info);
+              })
+            }
+            else {
+              var goldenFrogsAmount = AWE.GS.ResourcePoolManager.getResourcePool().presentAmount(AWE.Config.CASH_SYMBOLIC_RESOURCE_ID);
+              if (goldenFrogsAmount < price) {
+                log('GOLDEN FROGS AMOUNT', goldenFrogsAmount, 'PRICE', price);
+                that.presentNotEnoughGoldenFrogsWarning();
+                return ;
+              }
+
+              AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
+                if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+  //                var info = AWE.UI.Ember.InfoDialog.create({
+  //                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+  //                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+  //                });
+  //                that.applicationController.presentModalDialog(info);
+                }
+                else {
+                  that.presentNotEnoughGoldenFrogsWarning();
+                }
+
+                AWE.GS.BonusOfferManager.updateBonusOffers();
+                AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+                  that.setModelChanged();
+                });
+              }, function() {                                   // error handler
+                var info = AWE.UI.Ember.InfoDialog.create({
+                  heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+                  message: AWE.I18n.lookupTranslation('shop.error.message'),
+                });
+                that.applicationController.presentModalDialog(info);
+              });
+            }
+          },
+
+          buySpecialOfferPressed: function(offerId) {
+
+            var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
+            var price = offer.get('price');
+
             var creditAmount = this.getPath('shop.creditAmount') || 0;
             if (creditAmount < price) {
               log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
@@ -312,25 +390,29 @@ AWE.Controller = (function(module) {
               return ;
             }
 
-            AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
+            AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-//                var info = AWE.UI.Ember.InfoDialog.create({
-//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-//                });
-//                that.applicationController.presentModalDialog(info);
+                var info = AWE.UI.Ember.InfoDialog.create({
+                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
+                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
+                });
+
+                AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
+                  AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
+                });
+
+                that.applicationController.presentModalDialog(info);
+                AWE.GS.ShopManager.fetchCreditAmount(function(){
+                  that.setModelChanged();
+                });
+                AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+                  that.setModelChanged();
+                });
+                AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
               }
               else {
                 that.presentNotEnoughCreditsWarning();
               }
-
-              AWE.GS.BonusOfferManager.updateBonusOffers();
-              AWE.GS.ShopManager.fetchCreditAmount(function(){
-                that.setModelChanged();
-              });
-              AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-                that.setModelChanged();
-              });
             }, function() {                                   // error handler
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('shop.error.heading'),
@@ -338,133 +420,57 @@ AWE.Controller = (function(module) {
               });
               that.applicationController.presentModalDialog(info);
             })
-          }
-          else {
-            var goldenFrogsAmount = AWE.GS.ResourcePoolManager.getResourcePool().presentAmount(AWE.Config.CASH_SYMBOLIC_RESOURCE_ID);
-            if (goldenFrogsAmount < price) {
-              log('GOLDEN FROGS AMOUNT', goldenFrogsAmount, 'PRICE', price);
-              that.presentNotEnoughGoldenFrogsWarning();
+          },
+
+          buyPlatinumOfferPressed: function(offerId) {
+            
+            var creditAmount = this.getPath('shop.creditAmount') || 0;
+            var offer = AWE.GS.PlatinumOfferManager.getPlatinumOffer(offerId);
+            var price = offer.get('price');
+            
+            if (creditAmount < price) {
+              log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+              that.presentNotEnoughCreditsWarning();
               return ;
             }
-
-            AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
+            
+            AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-//                var info = AWE.UI.Ember.InfoDialog.create({
-//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-//                });
-//                that.applicationController.presentModalDialog(info);
+  //              var info = AWE.UI.Ember.InfoDialog.create({
+  //                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
+  //                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
+  //              });
+  //              that.applicationController.presentModalDialog(info);
               }
               else {
-                that.presentNotEnoughGoldenFrogsWarning();
+                that.presentNotEnoughCreditsWarning();
               }
-
-              AWE.GS.BonusOfferManager.updateBonusOffers();
-              AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+              
+              AWE.GS.CharacterManager.updateCurrentCharacter();
+              AWE.GS.ShopManager.fetchCreditAmount(function(){
                 that.setModelChanged();
               });
             }, function() {                                   // error handler
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('shop.error.heading'),
                 message: AWE.I18n.lookupTranslation('shop.error.message'),
-              });
+              });      
               that.applicationController.presentModalDialog(info);
-            });
-          }
-        },
+            })
+          },
 
-        buySpecialOfferPressed: function(offerId) {
+          closePressed: function(evt) {
+            shopDialog = null;
+            this.destroy();
+          },
 
-          var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
-          var price = offer.get('price');
-
-          var creditAmount = this.getPath('shop.creditAmount') || 0;
-          if (creditAmount < price) {
-            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
-            that.presentNotEnoughCreditsWarning();
-            return ;
-          }
-
-          AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
-            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
-                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
-              });
-
-              AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
-                AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
-              });
-
-              that.applicationController.presentModalDialog(info);
-              AWE.GS.ShopManager.fetchCreditAmount(function(){
-                that.setModelChanged();
-              });
-              AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-                that.setModelChanged();
-              });
-              AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-            }
-            else {
-              that.presentNotEnoughCreditsWarning();
-            }
-          }, function() {                                   // error handler
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
-              message: AWE.I18n.lookupTranslation('shop.error.message'),
-            });
-            that.applicationController.presentModalDialog(info);
-          })
-        },
-
-        buyPlatinumOfferPressed: function(offerId) {
-          
-          var creditAmount = this.getPath('shop.creditAmount') || 0;
-          var offer = AWE.GS.PlatinumOfferManager.getPlatinumOffer(offerId);
-          var price = offer.get('price');
-          
-          if (creditAmount < price) {
-            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
-            that.presentNotEnoughCreditsWarning();
-            return ;
-          }
-          
-          AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
-            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-//              var info = AWE.UI.Ember.InfoDialog.create({
-//                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
-//                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
-//              });
-//              that.applicationController.presentModalDialog(info);
-            }
-            else {
-              that.presentNotEnoughCreditsWarning();
-            }
-            
-            AWE.GS.CharacterManager.updateCurrentCharacter();
-            AWE.GS.ShopManager.fetchCreditAmount(function(){
-              that.setModelChanged();
-            });
-          }, function() {                                   // error handler
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
-              message: AWE.I18n.lookupTranslation('shop.error.message'),
-            });      
-            that.applicationController.presentModalDialog(info);
-          })
-        },
-
-        closePressed: function(evt) {
-          shopDialog = null;
-          this.destroy();
-        },
-
-        updateCreditsPressed: function() {
-          AWE.GS.ShopManager.fetchCreditAmount();
-        },
-      });
-      
-      that.applicationController.presentModalDialog(shopDialog);
+          updateCreditsPressed: function() {
+            AWE.GS.ShopManager.fetchCreditAmount();
+          },
+        });
+        
+        that.applicationController.presentModalDialog(shopDialog);
+      };
     };
 
     that.buyFbOfferPressed = function(offer) {
