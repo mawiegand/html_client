@@ -450,6 +450,14 @@ AWE.UI.Ember = (function(module) {
       this._super();
     },
 
+    isAndroid: function() {
+      if(typeof(LoginHandler) !== undefined)
+      {
+        return false;
+      }
+      return true;
+    }.property(),
+
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
         this.setPath('parentView.hoveredBuildingSlotView', this);
