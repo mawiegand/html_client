@@ -562,6 +562,7 @@ AWE.UI.Ember = (function(module) {
       for(var i = 1; i <= bubbleCount; ++i) {
         $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
         $(element).find('.small-bubble').css('top', $(element).find('.bubble').css('top'));
+        $(element).find('.small-bubble').css('left', "40px");
       }
 
       // animate small bubbles
