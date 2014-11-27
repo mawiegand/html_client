@@ -53,12 +53,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     logout: function() {
-      window.name = "empty";
-      if (typeof sessionStorage !== "undefined")
-      {
-        sessionStorage.startupArguments = null;
+      try {
+        LoginHandler.logout();
       }
-      window.location.reload()
+      catch (err)
+      {
+        window.name = "empty";
+        if (typeof sessionStorage !== "undefined")
+        {
+          sessionStorage.startupArguments = null;
+        }
+        window.location.reload();
+      }
     },
 
     /** the application's runloop. Does basic stuff needed by the application and then hands over
