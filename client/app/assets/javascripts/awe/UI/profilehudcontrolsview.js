@@ -120,7 +120,7 @@ AWE.UI = (function(module) {
       } 
       
       var rankAndProgress = this.calculateCharacterProgress();
-      _currentCharacterRank = rankAndProgress.rank;
+      _currentCharacterRank = rankAndProgress.rank + 1;
       _currentCharacterProgress = rankAndProgress.progress;
       _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
       

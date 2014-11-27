@@ -74,29 +74,23 @@
 
 
 <script type="text/x-handlebars" data-template-name="quest-view">
-      <p class="citation clearfix">
-      {{#unless questState.finished}}
-        {{local quest.flavour}}
-      {{else}}
-        {{local quest.reward_flavour}}
-      {{/unless}}
-      </p>
       <h3>
-        {{#if questState.finished}}
-          {{#unless quest.tutorial }}
-            {{t tutorial.quest.end.task}} {{local quest.task}}
-          {{/unless}}
+        {{#if finished}}
+          {{t tutorial.quest.end.task}} {{local quest.task}}
         {{else}}
-          {{local quest.task}}
+          {{#if modeStart}}
+            {{t tutorial.quest.start.task}} {{local quest.task}}
+          {{else}}
+            {{t tutorial.quest.info.task}} {{local quest.task}}
+          {{/if}}
         {{/if}}
       </h3>
-      {{#if questState.finished}}
-        {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
+      {{#if finished}}
+        {{#if quest.reward_text}}Tipp: {{local quest.reward_text}} {{/if}}
       {{else}}
         {{#if newArmyQuest}}<div class="description-image-army"></div>{{/if}}}
         {{#if toSettlementQuest}}<div class="description-image-settlement"></div>{{/if}}}
         {{#if attackQuest}}<div class="description-image-attack"></div>{{/if}}}
-        {{local quest.description}}
       {{/if}}
 
       {{#if quest.reward_tests.textbox_test }}
@@ -116,50 +110,6 @@
       {{/if}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="quest-dialog-header">
-  {{#if finished}}
-    {{t tutorial.quest.end.header }}
-  {{else}}
-    {{#if modeStart}}
-      {{t tutorial.quest.start.header }}
-    {{else}}
-      {{#if modeEnd}}
-        {{t tutorial.quest.end.header }}
-      {{else}}
-        {{#if modeExisting}}
-          {{t tutorial.quest.info.header }}
-        {{else}}
-          {{#if parentView.header}} 
-            {{parentView.header}}
-          {{else}}
-            {{t tutorial.quest.info.header }}
-          {{/if}}
-        {{/if}}
-      {{/if}}
-    {{/if}}
-  {{/if}}
-</script>
-
-<script type="text/x-handlebars" data-template-name="tutorial-dialog-header">
-  {{#if finished}}
-    {{t tutorial.task.end.header }}
-  {{else}}
-    {{#if modeStart}}
-      {{t tutorial.task.start.header }}
-    {{else}}
-      {{#if modeEnd}}
-        {{t tutorial.task.end.header }} 
-      {{else}}
-        {{#if modeExisting}}
-          {{t tutorial.task.info.header }} 
-        {{else}}
-          {{t tutorial.task.info.header }}  
-        {{/if}}
-      {{/if}}
-    {{/if}}
-  {{/if}}
-</script>
-
 
 <script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background">
@@ -177,15 +127,10 @@
       <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>
       
       <div class="quest-dialog-text">
-      {{#if quest.tutorial}}
-        {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
-      {{else}}
-        {{view Ember.View templateName="quest-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
-      {{/if}}
+        {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
+     </div>
       
-      {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
       {{#if quest.rewards}}
-   </div>
       
       <div class="quest-dialog-reward">
         {{#if finished}}
