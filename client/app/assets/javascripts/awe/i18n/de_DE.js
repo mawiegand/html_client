@@ -297,7 +297,7 @@ AWE.I18n.de_DE = function(module) {
       capacity:       'Kapazität',
       productionBoni: 'Produktionsbonus',
       tradingCarts:   'Handelskarren',
-      commandPoints:  'Kommandopunkte',
+      commandPoints:  'Kommandop.',
       commandPointShort: 'KP',
       garrisonBonus: "Garnison",
       armyBonus: "Armee",
@@ -960,7 +960,8 @@ AWE.I18n.de_DE = function(module) {
         combatBonus: "Kampfbonus für alle Armeen, die auf der Seite dieser Siedlung kämpfen.",
         combatBonusInfo: "Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Kampfbonus auf den Verteidigungswert aller Truppen, die auf der Seite dieser Festung kämpfen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.",
         combatBonusAbbreviation: "KB",
-        buildingSpeed: "Baugeschwindigkeit",
+        recruitmentspeed: 'Rekrutierungsgeschw.',
+        buildingSpeed: "Baugeschwind.",
         buildingSpeedAbbreviation: "G",
         meleeTrainingSpeed: "Rekrutierunggeschwindigkeit von Nahkämpfern",
         meleeTrainingSpeedAbbreviation: "N",
@@ -972,10 +973,10 @@ AWE.I18n.de_DE = function(module) {
         commandPointsHelp: "Jede Armee benötigt einen Kommandopunkt. Der Kommandopunkt hängt an der Siedlung.",
         buildings: "Gebäude",
         changeName: "Namen ändern",
-        availableBuildingSlots: "Verfügbare Gebäudeplätze",
+        availableBuildingSlots: "Gebäudeplätze",
         speedUpInfo: "Die Bau- bzw. Rekrutierungsgeschwindigkeit kann durch den Ausbau oder Bau von zusätzlichen Einheitengebäuden oder Hütten erhöht werden.",
         taxRate: "Steuersatz",
-        taxRateChangeInfo: "Der Steuersatz, die Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
+        taxRateChangeInfo: "Der Steuersatz, den Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
         taxRateChangeNotPossible: "Die nächste Änderung ist eine Stunde nach der letzten Änderung möglich",
         taxRateHelp: "Der Steuersatz wird vom Besitzer der Festung in der Region festgesetzt. Das Minimum sind 5%, der Standardwert und das Maximum sind 15%. Du findest den Steuersatz ungerecht? Verbünde dich mit den anderen Bewohnern der Region gegen den Unterdrücker. Er hat es bestimmt verdient. Nimm die Festung ein und ziehe die Steuern für dich selbst ein.",
         change: "ändern",
@@ -1203,26 +1204,30 @@ AWE.I18n.de_DE = function(module) {
 
       task: {
         info: {
-          header:       "Tutorial Auftrag (offen)",
+          header:       "",
+          task:         "Auftrag:"
         },
         start: {
-          header:       "Neuer Tutorial Auftrag",
+          header:       "",
+          task:         "Neuer Auftrag:",
         },
         end: {
-          header:       "Tutorial Auftrag (erledigt)",
+          header:       "",
+          task:         "Erledigt:",
         },
       },
       
       quest: {
         info: {
-          header:       "Quest (offen)",
+          header:       "",
+          task:         "Auftrag:"
         },
         start: {
-          header:       "Neue Quest",
-          task:         "Dein Auftrag:",
+          header:       "",
+          task:         "Neuer Auftrag:",
         },
         end: {
-          header:       "Quest (erledigt)",
+          header:       "",
           bonus:        "Du erhältst folgende Boni:",
           resources:    "Ressourcen",
           units:        "Einheiten",
