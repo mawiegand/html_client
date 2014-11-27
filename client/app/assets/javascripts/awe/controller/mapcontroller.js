@@ -2570,7 +2570,7 @@ AWE.Controller = function (module) {
                   location.isOwn() && view != _selectedView && that.markSelectOwnHomeSettlement()) {
                   var marker = AWE.UI.createMarkerView();
                   marker.initWithControllerAndMarkedView(that, view);
-                  that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(24, -36));
+                  that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(10, -36));
                   changedAnimation = true;
                   view.setNeedsUpdate();
                 }
