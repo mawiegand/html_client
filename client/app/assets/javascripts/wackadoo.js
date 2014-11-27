@@ -356,9 +356,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
 
         Sample.setUserId(identifier);
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID) {
-            Sample.track('start', 'session');
-        }
+        Sample.track('started', 'session');
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -801,31 +799,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       var accessToken = null;
 
-      var startupArgs = this.get('startupArguments');
-      var platform = startupArgs['platform'];
-
-      if (platform == Sample.PLATFORM_ANDROID)
-      {
-          var sessionToken = startupArgs['session_token'];
-          var installToken = startupArgs['install_token'];
-          if (sessionToken != "undefined" && sessionToken != null)
-          {
-              Sampl.setSessionToken(sessionToken);
-          }
-          if (installToken != "undefined" && installToken != null)
-          {
-              Sampl.setInstallToken(installToken);
-          }
-          if platform != "undefined" && platform != null)
-          {
-              Sampl.setPlatform(platform);
-          }
-      }
-
       if (!args || !args.accessToken) {
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID) {
-            Sample.track('start_failed', { event_category: 'session'});
-        }
+        Sample.track('start_failed', { event_category: 'session'});
 //      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
@@ -892,10 +867,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         styleSheet.insertRule(".shop-dialog-pane { height: 500px; margin-top: 100px; overflow: scroll; }", styleSheet.rules.length);
       }
 
-      if (Sample.getPlatform() != Sample.PLATFORM_ANDROID) {
-          Sample.sessionStart();
-          Sample.autoPing(30);
-      }
+      Sample.sessionStart();
+      Sample.autoPing(30);
 
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
