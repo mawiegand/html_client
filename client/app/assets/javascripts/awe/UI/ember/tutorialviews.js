@@ -222,7 +222,8 @@ AWE.UI.Ember = (function(module) {
           height: '477px',
           width: '650px',
           top: '0px',
-          left: '-325px'
+          left: '-325px',
+          zoom: AWE.Settings.hudScale
         })
             
         self.$('.quest-dialog-rewards-items li .quest-reward-item-icon').css({
