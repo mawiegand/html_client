@@ -388,7 +388,7 @@ AWE.UI.Ember = (function(module) {
           (costs[0] ? costs[0].amount : 0),
           (costs[1] ? costs[1].amount : 0),
           (costs[2] ? costs[2].amount : 0),
-          this.job.getId());
+          this.get('job').getId());
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         var parent = self;
         if(statusCode == 200) {

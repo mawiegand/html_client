@@ -58,7 +58,7 @@ AWE.UI = (function(module) {
       my.backgroundAndLabelButton = AWE.UI.createButtonView();
       my.backgroundAndLabelButton.initWithControllerTextAndImage(my.controller, "", 
         AWE.UI.ImageCache.getImage("hud/top/background"), AWE.Geometry.createRect(0, 0, 340, 60), 
-        "bold 16px HVDComicSerifPro");
+        "18px hvd_comic_serif_proregular");
       my.backgroundAndLabelButton.setTextPos(140, null);
      // if (that.onFlagClicked) {
         my.backgroundAndLabelButton.onClick = function() {    
