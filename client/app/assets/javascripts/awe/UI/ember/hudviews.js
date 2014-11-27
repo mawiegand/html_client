@@ -67,15 +67,14 @@ module.RightHUDView = Ember.View.extend({
 
 	getUnreadMessageCount: function(){
 		var unreadMessages = this.getPath('character.inbox.unread_messages_count');
-		if(unreadMessages > 0)
-		{
-			return unreadMessages;
-		}
-		return false;		
+		if (unreadMessages === undefined) return false;
+		return unreadMessages > 0 ? unreadMessages : false;
 	}.property('character.inbox.unread_messages_count').cacheable(),
 
 	getNotClosedQuest: function(){
-		return this.getPath('tutorialState.notClosedQuestStateCount');
+		var numberOfQuests = this.getPath('tutorialState.notClosedQuestStateCount');
+		if (numberOfQuests === undefined) return false;
+		return numberOfQuests > 0 ? numberOfQuests : false;
 	}.property('tutorialState.notClosedQuestStateCount').cacheable(),
 
 	mailClicked: function(){

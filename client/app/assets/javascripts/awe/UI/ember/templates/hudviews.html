@@ -25,7 +25,9 @@
       {{/if}}
   	</div>
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
+  	  {{#if getNotClosedQuest}}
   		<div class="count-indicator-background count-indicator-background-position">{{getNotClosedQuest}}</div>
+  	  {{/if}}
   	</div>
   </div>
 </script>
