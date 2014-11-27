@@ -996,25 +996,16 @@ AWE.Controller = (function(module) {
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         
-        /*if (HUDViews.leftHUDControlsView) {
+        if (_domLeft) {
           var mark = that.shouldMarkMapButton();
-          var view = HUDViews.leftHUDControlsView.getSwitchToMapOrSettlementButton();
-
-          if (view && mark && !that.animatedMarker) {
-            var marker = AWE.UI.createMarkerView();
-            marker.initWithControllerAndMarkedView(that, view);
-            that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(70, 0));
-
-            stageNeedsUpdate = true;
+          
+          if (mark && !_domLeft.get('uiMarkerEnabled')) {
+            _domLeft.set('uiMarkerEnabled', true);
           }
-          else if (view && !mark && that.animatedMarker) {
-            that.animatedMarker.cancel();
-            that.animatedMarker.update();
-            that.animatedMarker = null;
-    
-            stageNeedsUpdate = true;
+          else if (!mark && _domLeft.get('uiMarkerEnabled')) {
+            _domLeft.set('uiMarkerEnabled', false);
           }
-        }*/
+        }
         
         // update hierarchies and check which stages need to be redrawn
         stageNeedsUpdate = propUpdates(HUDViews) || stageNeedsUpdate;

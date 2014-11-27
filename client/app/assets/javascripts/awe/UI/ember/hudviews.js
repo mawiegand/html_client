@@ -13,16 +13,20 @@ module.LeftHUDView = Ember.View.extend({
 	
 	controller: null,
 	mode: null,
+	uiMarkerEnabled: false,
 
-	setHUDMode: function(currentMode)
-	{
+	setHUDMode: function(currentMode) {
 		this.set('mode', currentMode);
-	},
+	},	
 
 	isSettlement: function(){
 		var mode = this.get('mode');
 		return mode === AWE.UI.HUDModeSettlement;
 	}.property('mode').cacheable(),
+	
+	isUiMarkerEnabled: function() {
+	  return this.get('uiMarkerEnabled');
+	}.property('uiMarkerEnabled'),
 
 	menuClicked: function(){
 		this.get('controller').menuButtonClicked();
