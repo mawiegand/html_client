@@ -1161,7 +1161,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     tutorial:{
-      questList:"Your current quests",
+      questList:"Current quests",
       name:"Quest Name",
       status:"Status",
       new:"New",
