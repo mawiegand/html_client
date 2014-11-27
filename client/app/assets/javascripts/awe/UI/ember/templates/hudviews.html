@@ -1,5 +1,33 @@
-<script type="text/x-handlebars" data-template-name="hud-view">
-  <div class="settlement-map-button">
-  	Map
+<script type="text/x-handlebars" data-template-name="left-hud-view">
+  <div class="settlement-map-button" id="left-dom-hud">
+  	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
+  	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
+  	{{#if isSettlement}}
+  		<div class="map-mountains-hud-button map-mountains-hud-button-position" style="opacity: 0;"></div>
+  		<div class="army-hud-button army-hud-button-position" {{action "recruitClicked"}}></div>
+	  	<div class="map-hud-button map-hud-button-position" {{action "switchToMap"}}></div>
+  	{{else}}
+	  	<div class="map-mountains-hud-button map-mountains-hud-button-position" {{action "switchMapModeClicked"}}></div>	
+	  	<div class="army-menu-hud-button army-menu-hud-button-position" {{action "gamingPieceSelectorClicked"}}></div>
+	  	<div class="settelement-hud-button settlement-hud-button-position" {{action "switchToSettlement"}}></div>	  	
+  	{{/if}}
+  	{{#if isUiMarkerEnabled}}
+      {{view AWE.UI.Ember.UIMarker direction=3 top=275 left=110}}
+    {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="right-hud-view">
+  <div class="right-hud" id="right-dom-hud">
+  	<div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
+      {{#if getUnreadMessageCount}}
+  		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{/if}}
+  	</div>
+  	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
+  	  {{#if getNotClosedQuest}}
+  		<div class="count-indicator-background count-indicator-background-position">{{getNotClosedQuest}}</div>
+  	  {{/if}}
+  	</div>
   </div>
 </script>

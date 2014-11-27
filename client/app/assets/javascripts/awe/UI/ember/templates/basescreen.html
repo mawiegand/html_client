@@ -3,6 +3,9 @@
 <script type="text/x-handlebars" data-template-name="base-screen">
 <div class="base-screen settlement-screen">
   {{!-- <div class="base-picture-spacer"></div> --}}
+  <div class="settlement-left">
+    <div class="settlement-inner-left">&nbsp;</div>
+  </div>
   <div class="base-picture">
     <div class="base-background-picture" {{action  unselectSlot}}></div>
     {{#if "settlement"}}
@@ -32,6 +35,20 @@
       
     {{/if}}  
   </div>
+  
+  <div class="settlement-right">
+    <div class="settlement-inner-right">&nbsp;</div>
+  </div>
+  
+  <div class="settlement-footer">
+    <div class="settlement-left-footer">
+      <div class="settlement-inner-left-footer">&nbsp;</div>      
+    </div>
+    <div class="settlement-center-footer">&nbsp;</div>
+    <div class="settlement-right-footer">
+      <div class="settlement-inner-right-footer">&nbsp;</div>      
+    </div>
+  </div>
     
   {{#if "settlement"}}
     <div class="topbar-info-box settlement">
@@ -42,6 +59,7 @@
       <div class="topbar-info-text" {{action  infoClicked}}>{{settlement.name}}</div>
       <div class="topbar-info-button" {{action  infoClicked}}>&nbsp;</div>
     </div>    
-  {{/if}}
+  {{/if}}    
+  
 </div>
 </script>

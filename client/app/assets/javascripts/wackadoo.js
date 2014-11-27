@@ -848,7 +848,23 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
-      AWE.Settings.hudScale = 1;
+      var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
+      if (isAndroid) {
+        AWE.Settings.hudScale = 0.6;
+      } else {
+        AWE.Settings.hudScale = 1;
+      }
+      var styleSheets = document.styleSheets;
+      for (n in styleSheets)
+      {
+        var theRules = styleSheets[n].cssRules;
+        for (m in theRules)
+        {
+          if (theRules[m].selectorText === ".modal-dialog-pane-new" || theRules[m].selectorText === ".modal-dialog-pane" || theRules[m].selectorText === ".right-hud" || theRules[m].selectorText === ".settlement-map-button") {
+            theRules[m].style.zoom = AWE.Settings.hudScale;
+          }
+        }       
+      }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 

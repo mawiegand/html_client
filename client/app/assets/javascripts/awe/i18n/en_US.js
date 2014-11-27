@@ -446,6 +446,7 @@ AWE.I18n.en_US = function(module) {
       founded:"Founded",
       leader:"Leader",
       leaderVote: 'Vote',
+      leaderVoted: 'Voted',
       description:"Description",
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
@@ -1176,30 +1177,34 @@ AWE.I18n.en_US = function(module) {
 
       task:{
         info:{
-          header:"Tutorial task (open)",
+          header:"Task:",
+          task:"Task:",
         },
         start:{
-          header:"New tutorial task",
+          header:"New Task:",
+          task:"New Task:",
         },
         end:{
-          header:"Tutorial taks (finished)",
+          header:"Completed:",
+          task:"Completed:",
         },
       },
 
       quest:{
         info:{
           header:"Current Quest",
+          task:"Task:",
         },
         start:{
           header:"New quest started",
-          task:"Your task",
+          task:"New Task:",
         },
         end:{
           header:"Quest successfully accomplished",
           bonus:"You get the following bonuses",
           resources:"Resources",
           units:"Units",
-          task:"Quest successful",
+          task:"Completed:",
         },
 
         redeemError:{

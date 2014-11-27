@@ -168,6 +168,7 @@ AWE.Controller = (function(module) {
         settlementScreen = viewClass.create({
           controller :   this,
           settlement:    settlement,
+          classNames: ["settlement-container"],
         });
       }
       else {
@@ -307,7 +308,10 @@ AWE.Controller = (function(module) {
     }
     
     that.unselectSlot = function() {
-      that.view.setPath('selectedSlot.uiMarker', false);
+      if(that.view.get('selectedSlot'))
+      {
+         that.view.setPath('selectedSlot.uiMarker', false);
+      }
       that.view.set('selectedSlot', null);
       this.updateUIMarker();      
     }
@@ -435,7 +439,7 @@ AWE.Controller = (function(module) {
       if (building.requirementsMet()) {
 
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
-        WACKADOO.closeAllModalDialogs();
+        //WACKADOO.closeAllModalDialogs();
         //this.unselectSlot();
       }
       else {
@@ -1068,7 +1072,7 @@ AWE.Controller = (function(module) {
           selectedSlot.set('uiMarker', false);
         }
       }
-      else {
+      //else {
 
         var placeArrowAboveFreeSpot = that.markFreeConstructionSpot();
         var slotToMark = (!placeArrowAboveFreeSpot && this.markUpgradeableBuilding()) ? that.whichSlotToMarkForUpgrade() : null;
@@ -1095,7 +1099,7 @@ AWE.Controller = (function(module) {
             slot.set('uiMarker', slot == slotToMark);
           }
         }
-      }
+      //}
     };
 
     that.markFirstStandardAssignment = function() {
@@ -1208,7 +1212,8 @@ AWE.Controller = (function(module) {
     };
 
     that.nextBuildingSlotToMark = function() {
-      var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
+      //var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
+        var sequenceOfSlotIds = [-1, 21,19,14,15,25,26,9,31,13,8,10,16,24,30,27,32];
 
       var usedSlots = that.view.getPath('settlement.usedBuildingSlots');
       var n = sequenceOfSlotIds.length;

@@ -1688,7 +1688,7 @@ AWE.Controller = function (module) {
             if (that.markSelectOwnHomeSettlement()) {
               var annotationView = view.annotationView();
               if (annotationView) {
-                addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+                addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
               }
             }
             else {
@@ -3133,6 +3133,12 @@ AWE.Controller = function (module) {
             }
           })(that);
 
+          annotationView.onChangeArmyButtonClick = (function (self) {
+            return function (view) {
+              self.changeArmyButtonClicked(view.army());
+            }
+          })(that);
+
           annotationView.onRetreatButtonClick = (function (self) {
             return function (army) {
               self.armyRetreatButtonClicked(army);
@@ -3366,7 +3372,7 @@ AWE.Controller = function (module) {
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markSelectOwnHomeSettlement()) {
             var annotationView = _selectedView.annotationView();
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
           }
         }
       }

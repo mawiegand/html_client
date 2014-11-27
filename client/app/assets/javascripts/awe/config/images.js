@@ -36,13 +36,6 @@ AWE.Config = (function(module) {
     "map/tiles/desert512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert512.jpg',
     "map/tiles/swamp512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp512.jpg',
 
-    "map/hill/forest":        AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_forest.png',
-    "map/hill/plain":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_plain.png',
-    "map/hill/mountains":     AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_mountains.png',
-    "map/hill/desert":        AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_desert.png',
-    "map/hill/swamp":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_swamp.png',
-    "map/hill/label":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_label.png',
-
     "map/fortress/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresssmall.png',
     "map/fortress/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortressmiddle.png',
     "map/fortress/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresslarge.png',
@@ -75,34 +68,10 @@ AWE.Config = (function(module) {
 
     "map/icon/bubble":        AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
 
-    "map/army":               AWE.Config.RAILS_ASSET_PATH + 'army.png',
-
     "map/army/animation":     AWE.Config.RAILS_ASSET_PATH + 'army/warrior_animation_final_128.png',
     "map/army/animation/amazon": AWE.Config.RAILS_ASSET_PATH + 'army/amazon_animation_montage.png',
     "map/army/animation/chef":   AWE.Config.RAILS_ASSET_PATH + 'army/chef_animation_montage.png',
     "map/army/animation/neanderthal":   AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_animation_montage.png',
-
-    "map/army/stanceAggressive": AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_2_144.png',
-    "map/army/stanceDefensive":  AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_1_144.png',
-    "map/army/stanceNeutral":    AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_1_144.png',
-
-    "map/army/amazon/stanceAggressive": AWE.Config.RAILS_ASSET_PATH + 'army/amazon_pose_2_144.png',
-    "map/army/amazon/stanceDefensive":  AWE.Config.RAILS_ASSET_PATH + 'army/amazon_pose_1_144.png',
-    "map/army/amazon/stanceNeutral":    AWE.Config.RAILS_ASSET_PATH + 'army/amazon_pose_1_144.png',
-
-    "map/army/chef/stanceAggressive": AWE.Config.RAILS_ASSET_PATH + 'army/chef_pose_2_144.png',
-    "map/army/chef/stanceDefensive":  AWE.Config.RAILS_ASSET_PATH + 'army/chef_pose_1_144.png',
-    "map/army/chef/stanceNeutral":    AWE.Config.RAILS_ASSET_PATH + 'army/chef_pose_1_144.png',
-
-    "map/army/npc/stanceSmall":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size1_144.png',
-    "map/army/npc/stanceMedium":    AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size2_144.png',
-    "map/army/npc/stanceLarge":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size3_144.png',
-
-    "map/army/npc/stance":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler.png',
-
-    "map/army/npc/small":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size1.png',
-    "map/army/npc/medium":    AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size2.png',
-    "map/army/npc/large":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size3.png',
 
 
     "map/army/base/own":      AWE.Config.RAILS_ASSET_PATH + 'army/base_own.png',
@@ -205,10 +174,10 @@ AWE.Config = (function(module) {
     "ui/settlement/info/normal":          AWE.Config.RAILS_ASSET_PATH + 'ui/settlement/info_box.png',
     "ui/settlement/info/hovered":         AWE.Config.RAILS_ASSET_PATH + 'ui/settlement/info_box-hovered.png',
 
-    "ui/marker/up":              AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/up_arrow.png',
-    "ui/marker/right":           AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/right_arrow.png',
-    "ui/marker/down":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/down_arrow.png',
-    "ui/marker/left":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/left_arrow.png',
+    "ui/marker/up":              AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/tutorial_arrow_up.png',
+    "ui/marker/right":           AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/tutorial_arrow_right.png',
+    "ui/marker/down":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/tutorial_arrow_down.png',
+    "ui/marker/left":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/tutorial_arrow_left.png',
     
     "screen/reward/background/wood ":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-bg-middle.png',
     "screen/reward/background/light":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-light.png',
@@ -228,24 +197,6 @@ AWE.Config = (function(module) {
     "screen/reward/items/xp":   AWE.Config.RAILS_ASSET_PATH + 'icons/xp-xl.png',
     "screen/reward/items/unit":   AWE.Config.RAILS_ASSET_PATH + 'icons/unit_default-xl.png',
 
-    "hud/main/background":       AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_background.png',
-    "hud/main/body":             AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_body.png',
-    "hud/main/inset":            AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_inset.png',
-    "hud/main/decoration":       AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_teeth.png',
-    "hud/main/shop/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_shop_button.png',
-    "hud/main/shop/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_shop_button-hovered.png',
-    "hud/main/banner/large":     AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_alliance_banner.png',
-    "hud/main/glass/normal":     AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_glass.png',
-    "hud/main/glass/hovered":    AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_glass-hovered.png',
-    "hud/main/name/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_name_button.png',
-    "hud/main/name/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_name_button-hovered.png',
-    "hud/main/messages/normal":  AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_messages_button.png',
-    "hud/main/messages/hovered": AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_messages_button-hovered.png',
-    "hud/main/ranking/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_ranking_button.png',
-    "hud/main/ranking/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_ranking_button-hovered.png',
-    "hud/main/quests/normal":    AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_quests_button.png',
-    "hud/main/quests/hovered":   AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_quests_button-hovered.png',
-
     "hud/callout":               AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_callout.png',
 
     "hud/frog/face":             AWE.Config.RAILS_ASSET_PATH + 'kopfkroete40.png',
@@ -263,22 +214,6 @@ AWE.Config = (function(module) {
     "hud/inspector/button/prev/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_prev_button.png',
     "hud/inspector/button/prev/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_prev_button-hovered.png',
 
-    "hud/inspector/button/reinforce/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_reinforce_button.png',
-    "hud/inspector/button/reinforce/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_reinforce_button-hovered.png',        
-
-    "hud/annotation/panel1":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_1_button.png',
-    "hud/annotation/panel3":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_3_buttons.png',
-    "hud/annotation/panel4":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_4_buttons.png',
-    "hud/annotation/panel5":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_5_buttons.png',    
-    "hud/annotation/button/battleinfo/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo.png',
-    "hud/annotation/button/battleinfo/active":   AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo_active.png',
-    "hud/annotation/button/battleinfo/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo_hover.png',    
-    "hud/annotation/button/info/normal":         AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info.png',
-    "hud/annotation/button/info/active":         AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info_active.png',
-    "hud/annotation/button/info/hover":          AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info_hover.png',    
-    "hud/annotation/button/reinforce/normal":    AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_reinforce.png',
-    "hud/annotation/button/reinforce/active":    AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_reinforce_active.png',
-    "hud/annotation/button/reinforce/hover":     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_reinforce_hover.png',
     
     "hud/annotation/button/attack/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_attack/icon_attack.png',
     "hud/annotation/button/defense/normal":      AWE.Config.RAILS_ASSET_PATH + 'hud/icon_defense/icon_defense.png',

@@ -46,23 +46,41 @@ AWE.UI = (function(module) {
       my.container.y = my.frame.origin.y;
       my.container.width  = my.frame.size.width;
       my.container.height = my.frame.size.height;      
+      my.container.scaleX = AWE.Settings.hudScale;
+      my.container.scaleY = AWE.Settings.hudScale;
     }
     
     that.recalcView = function() {
     
       var character = AWE.GS.game.get('currentCharacter');
       var allianceId = character.get('alliance_id');
+      var root = my.controller.rootElement();
 
       if (!_avatarView || AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {
 
         if (_avatarView) {
           this.removeChild(_avatarView);
         }
+
+        //add div for click 
+        var profileDiv = document.createElement('DIV');
+        profileDiv.style.position = 'fixed';
+        profileDiv.style.top   = 30 + 'px';
+        profileDiv.style.right  = 28 + 'px';
+        profileDiv.style.width = '235px';
+        profileDiv.style.height = '120px';
+        profileDiv.style.cursor = 'pointer';
+        profileDiv.style.zIndex = '50';
+        profileDiv.onclick = function() { 
+          WACKADOO.characterButtonClicked();;
+        };
+        root.append(profileDiv);
+
         _avatarView = AWE.UI.createAvatarView();
         _avatarView.initWithControllerAndAvatar(my.controller, AWE.GS.game.getPath('currentCharacter.avatar')); // TODO: get and pass avatar
         _avatarView.setFrame(AWE.Geometry.createRect(90, 10, 96, 96));
         _avatarView.onClick = function() { 
-          my.controller.avatarImageClicked();
+          //my.controller.avatarImageClicked();
         };
         this.addChild(_avatarView);
 
@@ -76,9 +94,13 @@ AWE.UI = (function(module) {
         _nameLabelButton = AWE.UI.createButtonView();
         _nameLabelButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/profile/namelabel/background"));
         _nameLabelButton.setFrame(AWE.Geometry.createRect(65, 105, 176, 48));
-        _nameLabelButton.setFont("bold 20px HVDComicSerifPro");
+        if (AWE.Settings.hudScale > 0.9) {
+          _nameLabelButton.setFont("bold 20px HVDComicSerifPro");
+        } else {
+          _nameLabelButton.setFont("bold 15px HVDComicSerifPro");
+        }
         _nameLabelButton.onClick = function() {
-          my.controller.avatarLabelClicked();
+          //my.controller.avatarLabelClicked();
         };              
         this.addChild(_nameLabelButton);
       }  
@@ -92,17 +114,32 @@ AWE.UI = (function(module) {
         _levelButton = AWE.UI.createProfileLevelView();
         _levelButton.initWithControllerAndFrame(my.controller, AWE.Geometry.createRect(3, 88, 76, 76));
         _levelButton.onClick = function() {
-          my.controller.avatarLevelClicked();
+          //my.controller.avatarLevelClicked();
         };
         this.addChild(_levelButton);                
       } 
       
       var rankAndProgress = this.calculateCharacterProgress();
-      _currentCharacterRank = rankAndProgress.rank;
+      _currentCharacterRank = rankAndProgress.rank + 1;
       _currentCharacterProgress = rankAndProgress.progress;
       _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
       
       if (!_allianceButton && character && allianceId) {
+
+        //add div for click 
+        var allianceDiv = document.createElement('DIV');
+        allianceDiv.style.position = 'fixed';
+        allianceDiv.style.top   = 170 + 'px';
+        allianceDiv.style.right  = 10 + 'px';
+        allianceDiv.style.width = '96px';
+        allianceDiv.style.height = '96px';
+        allianceDiv.style.cursor = 'pointer';
+        allianceDiv.style.zIndex = '50';
+        allianceDiv.onclick = function() {
+          my.controller.allianceFlagClicked(allianceId);
+        };
+        root.append(allianceDiv); 
+
         _allianceButton = AWE.UI.createButtonIconView();
         _allianceButton.initWithControllerImageAndIcon(my.controller, 
           AWE.UI.ImageCache.getImage("hud/profile/alliance/button"),
@@ -110,7 +147,7 @@ AWE.UI = (function(module) {
         );
         _allianceButton.setFrame(AWE.Geometry.createRect(162, 170, 96, 96));        
         _allianceButton.onClick = function() {
-          my.controller.allianceFlagClicked(allianceId);
+          //my.controller.allianceFlagClicked(allianceId);
         };
         this.addChild(_allianceButton);
       }

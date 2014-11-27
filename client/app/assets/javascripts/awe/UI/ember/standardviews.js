@@ -77,7 +77,7 @@ AWE.UI.Ember = (function(module) {
       var posY = this.get('mouseY') + 20; // parent.$().offset().top + 18;
 
       if (posY > 560) {
-        posY = this.get('mouseY') - 120;
+        posY = this.get('mouseY') - 180;
         //posX += 28;
       }
 
@@ -112,6 +112,7 @@ AWE.UI.Ember = (function(module) {
    */
   module.PopUpDialog = Ember.View.extend({
     layoutName: "popup-dialog",
+    
     closeDialog: function() {
       this.destroy();
     },

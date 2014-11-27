@@ -29,6 +29,7 @@ AWE.UI.Ember = (function(module) {
       var building = event.view.getPath('building');
       var type = event.view.getPath('building.type');
       this.get('controller').constructionOptionClicked(slot, building, type, event.view);
+      this.getPath('parentView').destroy();
     }, 
 
     resourceExchangePressed: function() {
