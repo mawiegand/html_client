@@ -181,7 +181,7 @@ AWE.Config = (function(module) {
     
     "screen/reward/background/wood ":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-bg-middle.png',
     "screen/reward/background/light":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-light.png',
-    "screen/reward/background/leafs":   AWE.Config.RAILS_ASSET_PATH + 'leafs.png',
+    "screen/reward/background/leafs":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-bg.png',
     "screen/reward/textfield/large":   AWE.Config.RAILS_ASSET_PATH + 'dialog-textfield1.png',
     "screen/reward/textfield/small":   AWE.Config.RAILS_ASSET_PATH + 'dialog-textfield2.png',
     "screen/reward/button/dialog/normal":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-button.png',
@@ -401,6 +401,9 @@ AWE.Config = (function(module) {
     "avatar/ranking/male/veilchens/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_warrior_veilchen_links_1.png',
     "avatar/ranking/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_warrior_veilchen_rechts_0.png',
     "avatar/ranking/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_warrior_veilchen_rechts_1.png',
+
+    "advisor/quest-dialog-girl"           :    AWE.Config.RAILS_ASSET_PATH + 'advisor/quest-dialog-girl.png' ,
+
   };
   
   module.MAP_STANCE_IMAGES = [
