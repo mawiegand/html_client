@@ -442,16 +442,8 @@ AWE.Controller = (function(module) {
         //WACKADOO.closeAllModalDialogs();
         //this.unselectSlot();
       }
-      else {
-        var dialog = AWE.UI.Ember.InfoDialog.create({
-          contentTemplateName: 'requirements-missing-info',
-          arguments:           buildingOptionView,
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
-        });          
-        WACKADOO.presentModalDialog(dialog);
-      }
+
+      // if requirements are not met, just do nothing
     }
     
     that.constructionUpgradeClicked = function(slot) {
