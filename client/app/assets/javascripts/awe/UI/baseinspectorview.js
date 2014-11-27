@@ -53,10 +53,11 @@ AWE.UI = (function(module) {
       var allianceId    = location ? location.allianceId()  : null;
       var allianceColor = location ? location.allianceColor()  : null;
       var isOwnLocation = location.isOwn();
+      var settlement    = location.settlement();
 
       this.setAllianceId(allianceId);
       this.setAllianceColor(allianceColor);
-      this.setSkimButtonsEnabled(isOwnLocation);
+      this.setSkimButtonsEnabled(isOwnLocation && settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement));
       
       _super.recalcView();
       

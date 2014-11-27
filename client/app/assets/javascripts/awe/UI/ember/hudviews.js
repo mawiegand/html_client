@@ -13,16 +13,20 @@ module.LeftHUDView = Ember.View.extend({
 	
 	controller: null,
 	mode: null,
+	uiMarkerEnabled: false,
 
-	setHUDMode: function(currentMode)
-	{
+	setHUDMode: function(currentMode) {
 		this.set('mode', currentMode);
-	},
+	},	
 
 	isSettlement: function(){
 		var mode = this.get('mode');
 		return mode === AWE.UI.HUDModeSettlement;
 	}.property('mode').cacheable(),
+	
+	isUiMarkerEnabled: function() {
+	  return this.get('uiMarkerEnabled');
+	}.property('uiMarkerEnabled'),
 
 	menuClicked: function(){
 		this.get('controller').menuButtonClicked();
@@ -63,15 +67,14 @@ module.RightHUDView = Ember.View.extend({
 
 	getUnreadMessageCount: function(){
 		var unreadMessages = this.getPath('character.inbox.unread_messages_count');
-		if(unreadMessages > 0)
-		{
-			return unreadMessages;
-		}
-		return false;		
+		if (unreadMessages === undefined) return false;
+		return unreadMessages > 0 ? unreadMessages : false;
 	}.property('character.inbox.unread_messages_count').cacheable(),
 
 	getNotClosedQuest: function(){
-		return this.getPath('tutorialState.notClosedQuestStateCount');
+		var numberOfQuests = this.getPath('tutorialState.notClosedQuestStateCount');
+		if (numberOfQuests === undefined) return false;
+		return numberOfQuests > 0 ? numberOfQuests : false;
 	}.property('tutorialState.notClosedQuestStateCount').cacheable(),
 
 	mailClicked: function(){
