@@ -439,7 +439,7 @@ AWE.Controller = (function(module) {
       if (building.requirementsMet()) {
 
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
-        WACKADOO.closeAllModalDialogs();
+        //WACKADOO.closeAllModalDialogs();
         //this.unselectSlot();
       }
       else {
