@@ -1212,7 +1212,8 @@ AWE.Controller = (function(module) {
     };
 
     that.nextBuildingSlotToMark = function() {
-      var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
+      //var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
+        var sequenceOfSlotIds = [-1, 21,19,14,15,25,26,9,31,13,8,10,16,24,30,27,32];
 
       var usedSlots = that.view.getPath('settlement.usedBuildingSlots');
       var n = sequenceOfSlotIds.length;
