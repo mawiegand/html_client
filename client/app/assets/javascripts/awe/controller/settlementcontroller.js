@@ -1072,7 +1072,7 @@ AWE.Controller = (function(module) {
           selectedSlot.set('uiMarker', false);
         }
       }
-      else {
+      //else {
 
         var placeArrowAboveFreeSpot = that.markFreeConstructionSpot();
         var slotToMark = (!placeArrowAboveFreeSpot && this.markUpgradeableBuilding()) ? that.whichSlotToMarkForUpgrade() : null;
@@ -1099,7 +1099,7 @@ AWE.Controller = (function(module) {
             slot.set('uiMarker', slot == slotToMark);
           }
         }
-      }
+      //}
     };
 
     that.markFirstStandardAssignment = function() {

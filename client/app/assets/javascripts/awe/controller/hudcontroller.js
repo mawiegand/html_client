@@ -961,7 +961,24 @@ AWE.Controller = (function(module) {
       return true; 
     };
 
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Tutorial Marker
+    //
+    // ///////////////////////////////////////////////////////////////////////
     
+    that.lastMarkerUpdate = new Date(1970);
+
+    that.updateUIMarker = function() {
+      var mark = that.shouldMarkMapButton();
+      if (mark && !_domLeft.get('uiMarkerEnabled')) {
+        _domLeft.set('uiMarkerEnabled', true);
+      }
+      else if (!mark && _domLeft.get('uiMarkerEnabled')) {
+        _domLeft.set('uiMarkerEnabled', false);
+      }
+    };
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -994,18 +1011,7 @@ AWE.Controller = (function(module) {
                         
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || /*!HUDViews.leftHUDControlsView*/!HUDViews.profileControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
-        }
-        
-        if (_domLeft) {
-          var mark = that.shouldMarkMapButton();
-          
-          if (mark && !_domLeft.get('uiMarkerEnabled')) {
-            _domLeft.set('uiMarkerEnabled', true);
-          }
-          else if (!mark && _domLeft.get('uiMarkerEnabled')) {
-            _domLeft.set('uiMarkerEnabled', false);
-          }
-        }
+        }                
         
         // update hierarchies and check which stages need to be redrawn
         stageNeedsUpdate = propUpdates(HUDViews) || stageNeedsUpdate;
@@ -1069,6 +1075,16 @@ AWE.Controller = (function(module) {
     that.runloop = function() {
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
       if(AWE.Map.Manager.isInitialized()) { 
+      
+        if (_domLeft && _loopCounter % 10 == 0) {
+          var lastTutorialUpdate = Date.parseISODate(AWE.GS.TutorialStateManager.getTutorialState().get('updated_at'));
+
+          if (lastTutorialUpdate > that.lastMarkerUpdate) {
+            that.lastMarkerUpdate = lastTutorialUpdate;
+            
+            that.updateUIMarker();
+          }
+        }              
         
         // STEP 2: update Model
         that.updateModel();
