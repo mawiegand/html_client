@@ -9,18 +9,25 @@
   	{{else}}
 	  	<div class="map-mountains-hud-button map-mountains-hud-button-position" {{action "switchMapModeClicked"}}></div>	
 	  	<div class="army-menu-hud-button army-menu-hud-button-position" {{action "gamingPieceSelectorClicked"}}></div>
-	  	<div class="settelement-hud-button settlement-hud-button-position" {{action "switchToSettlement"}}></div>
+	  	<div class="settelement-hud-button settlement-hud-button-position" {{action "switchToSettlement"}}></div>	  	
   	{{/if}}
+  	{{#if isUiMarkerEnabled}}
+      {{view AWE.UI.Ember.UIMarker direction=3 top=275 left=110}}
+    {{/if}}
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="right-hud-view">
   <div class="right-hud" id="right-dom-hud">
   	<div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
-  		<div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{#if getUnreadMessageCount}}
+  		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{/if}}
   	</div>
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
+  	  {{#if getNotClosedQuest}}
   		<div class="count-indicator-background count-indicator-background-position">{{getNotClosedQuest}}</div>
+  	  {{/if}}
   	</div>
   </div>
 </script>
