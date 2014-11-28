@@ -54,9 +54,10 @@ AWE.UI.Ember = (function(module) {
     closeDialogAndCenter: function() {
 
       if(WACKADOO.presentScreenController.typeName === 'MapController')
-      {debugger
+      {
         var mapController = WACKADOO.presentScreenController;
-        mapController.centerLocation(this.getPath('character.base_location'));
+        var locationID = this.getPath('character.base_location_id');
+        mapController.centerLocation(AWE.Map.Manager.getLocation(locationID));
       }
 
       var self = this;
