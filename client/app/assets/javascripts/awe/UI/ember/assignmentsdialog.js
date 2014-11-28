@@ -171,7 +171,8 @@ AWE.UI.Ember = (function(module) {
       }
     },
 
-    startTimerOnBecommingActive: function() {
+    startTimerOnBecommingActive: function() { 
+      AWE.GS.CharacterManager.updateCurrentCharacter();
       var active = this.get('isActive');
       if (active && this.get('timer')) {
         this.startTimer();
