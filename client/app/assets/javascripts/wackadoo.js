@@ -845,8 +845,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             || theRules[m].selectorText === ".modal-dialog-pane" 
             || theRules[m].selectorText === ".right-hud" 
             || theRules[m].selectorText === ".settlement-map-button" 
-            || theRules[m].selectorText === ".shop-dialog-pane" 
-            || theRules[m].selectorText === ".topbar-info-box") {
+            || theRules[m].selectorText === ".shop-dialog-pane") {
             theRules[m].style.zoom = AWE.Settings.hudScale;
           }
         }       
