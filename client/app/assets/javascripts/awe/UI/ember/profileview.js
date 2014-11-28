@@ -1246,6 +1246,7 @@ module.UserNameTextfield = Ember.TextField.extend({
         heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
         message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
       });
+      WACKADOO.closeAllModalDialogs(); // HACK, REMOVE! bring new dialog to front!
       WACKADOO.presentModalDialog(dialog);
     },
     

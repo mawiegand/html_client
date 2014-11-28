@@ -12,8 +12,8 @@ AWE.UI.Ember = function(module) {
 
     //test open dialog
     openDialog: function(){
-        var dialog = AWE.UI.Ember.AssignmentsDialog.create({controller: this.get('controller')});
-        WACKADOO.presentModalDialog(dialog);
+//        var dialog = AWE.UI.Ember.AssignmentsDialog.create({controller: this.get('controller')});
+//        WACKADOO.presentModalDialog(dialog);
      },
 
     assignmentTypes: function() {

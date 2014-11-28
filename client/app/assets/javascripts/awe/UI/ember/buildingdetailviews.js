@@ -120,7 +120,8 @@ AWE.UI.Ember = (function(module) {
     
     assignmentClicked: function(event) {
       var dialog = AWE.UI.Ember.AssignmentsDialog.create({
-        controller: this.get('controller')
+        controller: this.get('controller'),
+        building: this.get('building'),
       });
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionAssignmentClicked(this.get('slot'));

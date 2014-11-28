@@ -62,7 +62,13 @@
     <div class="row row3">
       <div class="tab-bar-new">
         <div class="cell cell-50">
-          <div class="tab-button-view tab-button-view-new button-left">{{t settlement.info.move}}</div>
+          {{#if settlement.isBase }}
+            <div class="tab-button-view tab-button-view-new button-left" {{action "movePressed"}}>{{t settlement.info.move}}</div>
+          {{else}}
+            {{#if settlement.isFortress }}
+              <div class="tab-button-view tab-button-view-new button-left">{{t settlement.info.movingPassword}} {{regionMovingPassword}}</div>
+            {{/if}}
+          {{/if}}
         </div>
         <div class="cell cell-50">
           <div class="tab-button-view tab-button-view-new button-right" {{action "changeTaxPressed"}}>{{t settlement.info.tax}} {{formatNumber settlement.taxPercentage}}%</div>
