@@ -51,7 +51,34 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateAlliance();
     }.observes('character.alliance_id'),  
 
+    closeDialogAndCenter: function() {
+
+      if(WACKADOO.presentScreenController.typeName === 'MapController')
+      {debugger
+        var mapController = WACKADOO.presentScreenController;
+        mapController.centerLocation(this.getPath('character.base_location'));
+      }
+
+      var self = this;
+          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.getPath('character.avatar_string'));
+
+          AWE.Action.Manager.queueAction(action, function(statusCode) {
+            if(statusCode == 200) {
+              AWE.GS.CharacterManager.updateCurrentCharacter();
+              self.destroy();
+            }
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+            }
+          });
+    },
+
     closeDialog: function() {
+
       var self = this;
           var action = AWE.Action.Fundamental.createChangeAvatarAction(self.getPath('character.avatar_string'));
 
