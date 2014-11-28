@@ -83,12 +83,19 @@ AWE.UI = (function(module) {
 
       this.setAllianceId(allianceId);
       this.setAllianceColor(allianceColor);
-      this.setSkimButtonsEnabled(isOwnRegion);
+      
+      var location = null;
+      AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+        if (region.location(0)) {
+          location = region.location(0);
+        }
+      });      
+      this.setSkimButtonsEnabled(isOwnRegion && location && location !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(location));
       
       _super.recalcView();
       
       var name = region.name();
-      that.setText(name);                        
+      that.setText(name);
     }
         
     that.region = function() {
