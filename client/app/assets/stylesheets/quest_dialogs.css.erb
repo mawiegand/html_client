@@ -1,18 +1,4 @@
-.quest-list-view {
-  position: absolute;
-  margin-left: -431px;
-  top: 35px;
-  width: 825px;
-  /* min-height: 100px; */
-  height: 650px;
-  background-image: url('/client/assets/quest-selection-bg.png');
-  padding: 16px 20px 16px 20px;
-  z-index: 256;
-  background-size: 100% 100%;
-  background-color: initial;
-  box-shadow: none;
-  border-radius: 0px;
-}
+
 
 
 /* === Chris CSS === */
@@ -124,7 +110,7 @@
   padding: 16px 20px 16px 20px;
   z-index: 256;
   background-size: 100% 100%;
-  background-color: initial;
+  background-color: transparent;
   box-shadow: none;
   border-radius: 0px;
 }
@@ -398,7 +384,6 @@
   top: 15px;
   left: 2px;
   position: relative;
-  }
 }
 
 .quest-reward-item-image, .quest-reward-item-amount, .quest-reward-item-image.finished{
@@ -435,7 +420,6 @@ div.dom-quest-container div.tutorial-dialog {
   height: 0px;
   width: 0px;
   top: 238px;
-  zoom:0.5;
   margin: 0 auto;
   left:-50%;
 
@@ -634,7 +618,7 @@ div.dom-quest-container div.tutorial-dialog {
   color: #dcdcbf;
   font-size: 42px;
   position: relative;
-  top: 50px;
+  top: -50px;
   text-align: center;
   z-index: 200;
   overflow: hidden;
@@ -881,14 +865,12 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   top: -8%;
 }
 
-.quest-list-button:hover;{
+.quest-list-button:hover {
   background-image: url('/client/assets/quest-list-x-button-hover.png');
 }
 
 .quest-list-button:active{
   background-image: url('/client/assets/quest-list-x-button-active.png');
-}
-  }
 }
 
 @media (min-width : 1023px) {
@@ -991,13 +973,13 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .level-up-girl{
   background-image: url('<%= asset_path("levelup/level-up-girl.png") %>');
   background-size: 100% 100%;
-  width: 29.7%;
+  width: 238px;
   position: absolute;
   z-index: 258;
   opacity: 0;
   top: 42%;
   left: -33%;
-  height: 129%;
+  height: 700px;
 }
 
 .level-up-dialog-bg-text{

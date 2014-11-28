@@ -329,7 +329,7 @@ h3 {
 }
 
 .right {
-  text-aling: right;
+  text-align: right;
 }
 
 .clickable {
@@ -1057,9 +1057,9 @@ canvas{
   font-size:28px;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
-  //position: absolute;
-  //top: 80px;
-  //left:210px;
+  /*position: absolute;
+    top: 80px;
+    left:210px; */
 }
 
 .modal-dialog-pane-new .alliance-diplomacy-dialog-pane {
@@ -3689,14 +3689,14 @@ span.bonus {
 }
 
 .building-convert-button-background {
-  top: 80px;
-  left: 80px;
+  top: 5px;
+  left: 140px;
   background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-convert-button-icon {
-  top: 80px;
-  left: 80px;
+  top: 5px;
+  left: 140px;
   background-image: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>");
 }
 
@@ -4646,7 +4646,6 @@ table .datetime {
   background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
 }
 
-//*
 /** base: small slots *
 .small-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_small.png") %>');
@@ -4722,7 +4721,6 @@ table .datetime {
   position: relative !important;
   z-index: 2;
   border-radius: 0 !important;
-  top: initial !important;
   border: none !important;
 }
 
@@ -6136,7 +6134,7 @@ a.trading-carts-speedup-button:hover {
 button.fb-button {
   background-color: rgba(255,255,255,0.0);
   border: none;
-  background-image: url('<%= asset_path 'icons/fb-button.png' %>');
+  background-image: url('<%= asset_path "icons/fb-button.png" %>');
   background-repeat: no-repeat;
   background-position: 0px 0px;
   width: 217px;
@@ -6725,9 +6723,6 @@ div.dom-quest-container div.tutorial-dialog {
   background-color:#fff;
 }
 
-hurry-button:hover {
-}
-
 .hurry-button a {
   padding: 2px 6px;
   color: #333;
@@ -6743,8 +6738,6 @@ hurry-button:hover {
   background-color: #BBF;
 }
 
-.simple-button:hover {
-}
 .z-layer-5 {
   z-index: 512;
 }
@@ -6916,21 +6909,6 @@ hurry-button:hover {
    Print styles.
    Inlined to avoid required HTTP connection: h5bp.com/r
    ========================================================================== */
-
-@media print {
-  * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
-  a, a:visited { text-decoration: underline; }
-  a[href]:after { content: " (" attr(href) ")"; }
-  abbr[title]:after { content: " (" attr(title) ")"; }
-  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
-  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
-  thead { display: table-header-group; } /* h5bp.com/t */
-  tr, img { page-break-inside: avoid; }
-  img { max-width: 100% !important; }
-  @page { margin: 0.5cm; }
-  p, h2, h3 { orphans: 3; widows: 3; }
-  h2, h3 { page-break-after: avoid; }
-}
 
 .quest-dialog-advisor{
   width: 100%;
@@ -7119,7 +7097,7 @@ hurry-button:hover {
   color: #dcdcbf;
   font-size: 42px;
   position: relative;
-  top: 50px;
+  top: -50px;
   text-align: center;
   z-index: 200;
   overflow: hidden;
@@ -7238,6 +7216,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   -ms-animation:spin 6s linear infinite;
   animation:spin 6s linear infinite;
 }
+
 
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
