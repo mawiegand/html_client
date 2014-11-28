@@ -366,6 +366,21 @@ AWE.UI.Ember = (function(module) {
       
       return false;
     },
+    
+    movePressed: function() {
+      var moveDialog = AWE.UI.Ember.MovingView.create({
+        character: AWE.GS.CharacterManager.getCharacter(this.getPath('settlement.owner_id'))
+      });
+      WACKADOO.presentModalDialog(moveDialog);
+    },
+    
+    regionMovingPassword: function() {
+      var region = this.getPath('settlement.region');
+      if (region) {
+        return region.movingPassword();
+      }
+      return "";
+    }.property('settlement.region'),
 
     showErrorTax: function(message) {
       errorDialog = AWE.UI.Ember.InfoDialog.create({

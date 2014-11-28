@@ -214,7 +214,8 @@ AWE.UI.Ember = (function(module) {
             width: '977px',
             height: '493px',
             left: '-487px',
-            top: '-9px'
+            top: '-9px',
+            zoom: AWE.Settings.hudScale
           });
         }
         
@@ -223,7 +224,7 @@ AWE.UI.Ember = (function(module) {
           width: '650px',
           top: '0px',
           left: '-325px',
-          //zoom: AWE.Settings.hudScale
+          zoom: AWE.Settings.hudScale
         })
             
         self.$('.quest-dialog-rewards-items li .quest-reward-item-icon').css({

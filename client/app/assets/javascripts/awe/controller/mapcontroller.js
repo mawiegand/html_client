@@ -130,14 +130,17 @@ AWE.Controller = function (module) {
       };   // we generate our own clicks
 
 
+
       // layer for the object inspector
       root.append('<canvas id="inspector-canvas" class="topbar-info-box"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _canvas[3].width = 340;
-      _canvas[3].height = 60;
+      _canvas[3].height = 60;  
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function () {
       };   // we generate our own clicks
+
+      
 
       // layer for the controls buttons
       /*
@@ -510,6 +513,8 @@ AWE.Controller = function (module) {
           //_canvas[4].height = _windowSize.height;
         }
         that.setNeedsDisplay();
+        $('.topbar-info-box').css('top', 90*AWE.Settings.hudScale);
+        $('.topbar-info-box').css('margin-left', -170*AWE.Settings.hudScale);
       }
       _needsLayout = false;
     };
