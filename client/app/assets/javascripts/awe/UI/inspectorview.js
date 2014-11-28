@@ -49,14 +49,14 @@ AWE.UI = (function(module) {
     that.onCenterButtonClick    = null;
 
     
+
+    
     /** overwritten view methods */
     
     that.initWithControllerAndAllianceId = function(controller, allianceId, frame) {
       _super.initWithController(controller, frame);      
       my.allianceId = allianceId;
       
-      my.container.scaleX = AWE.Settings.hudScale;
-      my.container.scaleY = AWE.Settings.hudScale;
       my.backgroundAndLabelButton = AWE.UI.createButtonView();
       my.backgroundAndLabelButton.initWithControllerTextAndImage(my.controller, "", 
         AWE.UI.ImageCache.getImage("hud/top/background"), AWE.Geometry.createRect(0, 0, 340, 60), 
@@ -106,6 +106,9 @@ AWE.UI = (function(module) {
     }
     
     that.recalcView = function() {
+
+      my.container.scaleX = AWE.Settings.hudScale;
+      my.container.scaleY = AWE.Settings.hudScale;
       
       if (!my.centerButtonView) {
         my.centerButtonView = AWE.UI.createButtonView();
