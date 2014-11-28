@@ -144,7 +144,8 @@ AWE.UI.Ember = (function(module) {
             width: '977px',
             height: '493px',
             left: '-487px',
-            top: '-9px'
+            top: '-9px',
+            zoom: AWE.Settings.hudScale
           },{
             duration: 800,
             easing: 'easeOutElastic'
@@ -155,7 +156,8 @@ AWE.UI.Ember = (function(module) {
           height: '477px',
           width: '650px',
           top: '0px',
-          left: '-325px'
+          left: '-325px',
+          zoom: AWE.Settings.hudScale
         }, {
           duration: 800,
           easing: 'easeOutElastic',

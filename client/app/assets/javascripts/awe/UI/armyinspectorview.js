@@ -57,7 +57,8 @@ AWE.UI = (function(module) {
 
       this.setAllianceId(allianceId);
       this.setAllianceColor(allianceColor);
-      this.setSkimButtonsEnabled(isOwnArmy);
+            
+      this.setSkimButtonsEnabled(isOwnArmy && army && army !== AWE.GS.ArmyManager.getPreviousArmyOfCharacter(army));
       
       _super.recalcView();            
       

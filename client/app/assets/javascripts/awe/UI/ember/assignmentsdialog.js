@@ -188,16 +188,17 @@ AWE.UI.Ember = (function(module) {
       this.stopTimer();
     },
 
-    isActive: function(){
-      var types = this.get("currentAssignmentTypes");
+    isActive: function() {
       var isActive = false;
-      for (var i = 0; i < types.length; i++) {
-        var assignmentType = types[i];
-        if (assignmentType['symbolic_id'] === this.get("assignmentType")) {
-          isActive = true;
+      var types = this.get("currentAssignmentTypes");
+      if (types) {      
+        for (var i = 0; i < types.length; i++) {
+          var assignmentType = types[i];
+          if (assignmentType['symbolic_id'] === this.get("assignmentType")) {
+            isActive = true;
+          }
         }
       }
-
       return isActive;
     }.property("currentAssignmentTypes", "assignmentType"),
 

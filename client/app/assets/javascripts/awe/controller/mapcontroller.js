@@ -513,8 +513,6 @@ AWE.Controller = function (module) {
           //_canvas[4].height = _windowSize.height;
         }
         that.setNeedsDisplay();
-        $('.topbar-info-box').css('top', 90*AWE.Settings.hudScale);
-        $('.topbar-info-box').css('margin-left', -170*AWE.Settings.hudScale);
       }
       _needsLayout = false;
     };

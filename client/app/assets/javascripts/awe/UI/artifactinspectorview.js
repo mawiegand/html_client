@@ -40,6 +40,8 @@ AWE.UI = (function(module) {
       _super.initWithControllerAndAllianceId(controller, artifact ? artifact.get('alliance_id') : null, frame);
       
       my.inspectedObject = artifact;
+      
+      this.setSkimButtonsEnabled(false);
 
       that.recalcView();
     };
