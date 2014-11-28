@@ -833,7 +833,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (isAndroid) {
         AWE.Settings.hudScale = 0.6;
       } else {
-        AWE.Settings.hudScale = 1;
+        AWE.Settings.hudScale = 0.5;
       }
       var styleSheets = document.styleSheets;
       for (n in styleSheets)
@@ -845,8 +845,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             || theRules[m].selectorText === ".modal-dialog-pane" 
             || theRules[m].selectorText === ".right-hud" 
             || theRules[m].selectorText === ".settlement-map-button" 
-            || theRules[m].selectorText === ".shop-dialog-pane" 
-            || theRules[m].selectorText === ".topbar-info-box") {
+            || theRules[m].selectorText === ".shop-dialog-pane") {
             theRules[m].style.zoom = AWE.Settings.hudScale;
           }
         }       

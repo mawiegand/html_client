@@ -214,7 +214,8 @@ AWE.UI.Ember = (function(module) {
             width: '977px',
             height: '493px',
             left: '-487px',
-            top: '-9px'
+            top: '-9px',
+            zoom: AWE.Settings.hudScale
           });
         }
         
