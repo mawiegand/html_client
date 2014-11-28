@@ -76,15 +76,16 @@ AWE.UI.Ember = (function(module) {
     classNames: ['assignment-item'],
     timeRemaining: null,
 
-    init: function() {
+    currentCharacterBinding: 'AWE.GS.game.currentCharacter',
+    /*init: function() {
       this._super();
       this.calcTimeRemaining();
-    },
+    },*/
 
-    destroy: function() {
+    /*destroy: function() {
       clearTimeout(this._timer);
       this._super();
-    },
+    },*/
 
     openDialog: function(){
       if(this.get('isActive'))
@@ -129,6 +130,15 @@ AWE.UI.Ember = (function(module) {
     calcTimeRemaining: function() {
       var endedAt = this.getPath('assignment.ended_at');
       if (!endedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(endedAt);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+     /* var endedAt = this.getPath('assignment.ended_at');
+      if (!endedAt) {
         clearTimeout(this._timer);
         return ;
       }
@@ -138,8 +148,44 @@ AWE.UI.Ember = (function(module) {
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);
       self = this;
-      this._timer = setTimeout(function(){ self.calcTimeRemaining(); }, 1000)
-    }.observes('assignment.ended_at'),
+      this._timer = setTimeout(function(){ self.calcTimeRemaining(); }, 1000)*/
+    },//.observes('assignment.ended_at'),
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+
+    startTimerOnBecommingActive: function() {
+      var active = this.get('isActive');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+    }.observes('isActive'),
+
+
+    didInsertElement: function() {
+      this.startTimer();
+    },
+
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
 
     isActive: function(){
       var types = this.get("currentAssignmentTypes");
@@ -154,15 +200,31 @@ AWE.UI.Ember = (function(module) {
       return isActive;
     }.property("currentAssignmentTypes", "assignmentType"),
 
+    isActiveProgress: function() {
+      return this.get('assignment') && this.getPath('assignment.ended_at') != null;
+    }.property('assignment.ended_at').cacheable(),
+
     currentAssignmentTypes: function() {
-      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
-      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
-    }.property(),
+      if (this.get('building')) {
+        return this.get('building').currentAssignmentTypes();
+      }
+      else {
+        return null;
+      }
+      /*var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);*/
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
     currentSpecialAssignmentTypes: function() {
-      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
-      return AWE.GS.RulesManager.getRules().getSpecialAssignmentTypesOfLevel(level);
-    }.property(),
+      if (this.get('building')) {
+        return this.get('building').currentSpecialAssignmentTypes();
+      }
+      else {
+        return null;
+      }
+      /*var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentTypesOfLevel(level);*/
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
   });
 
@@ -175,9 +237,12 @@ AWE.UI.Ember = (function(module) {
       this.set('tabViews', [
         { key:   "tab1",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.quests'), 
-          view:  AWE.UI.Ember.AssignmentsTab,
+          view:  AWE.UI.Ember.AssignmentsTab.extend({
+            controllerBinding: "parentView.parentView.controller",
+            buildingBinding: "parentView.parentView.building",
+            currentCharacterBinding: 'AWE.GS.game.currentCharacter',
+          }),
           buttonClass: "left-menu-button",
-          controllerBinding: "parentView.controller",
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.special_quests'), 
