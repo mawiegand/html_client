@@ -60,20 +60,28 @@
       </div>
     </div>
     <div class="row row3">
-      <div class="tab-bar-new">
+      
         <div class="cell cell-50">
           {{#if settlement.isBase }}
-            <div class="tab-button-view tab-button-view-new button-left" {{action "movePressed"}}>{{t settlement.info.move}}</div>
+            <div class="tab-bar-new">
+              <div class="button-left" {{action "movePressed"}}>{{t settlement.info.move}}</div>
+            </div>
           {{else}}
             {{#if settlement.isFortress }}
-              <div class="tab-button-view tab-button-view-new button-left">{{t settlement.info.movingPassword}} {{regionMovingPassword}}</div>
+              <div class="row1_1">
+                <div class="cell"><span class="title">{{t settlement.info.movingPassword}}<br/></span><span class="value">{{regionMovingPassword}}</span></div>
+              </div>
+            {{else}}
+              <div class="row1_1">&nbsp;</div>
             {{/if}}
           {{/if}}
         </div>
         <div class="cell cell-50">
-          <div class="tab-button-view tab-button-view-new button-right" {{action "changeTaxPressed"}}>{{t settlement.info.tax}} {{formatNumber settlement.taxPercentage}}%</div>
+          <div class="tab-bar-new">
+            <div class="button-right" {{action "changeTaxPressed"}}>{{t settlement.info.tax}} {{formatNumber settlement.taxPercentage}}%</div>
+          </div>
         </div>
-      </div>
+      
     </div>
     <div class="row row4">
       <table>
