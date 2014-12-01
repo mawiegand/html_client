@@ -238,12 +238,12 @@ module.ProfileNewRangView  = Ember.View.extend  ({
       if(rank < 1)
         return 1;
       else
-        return rank;
+        return rank + 1;
     }.property('character.exp').cacheable(),
 
     nextMundaneRank: function(){
       var ranks = this.get('nextMundaneRanks');
-      return ranks[ranks.length - 1];
+      return ranks[ranks.length - 1].rule.id + 1;
 
     }.property('character.exp').cacheable(),
 
