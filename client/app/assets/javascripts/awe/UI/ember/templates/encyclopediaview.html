@@ -125,19 +125,19 @@
     </a>
     <h1 class="popup-header-center" >{{local unit.name}}</h1>
   </div>
-
-  <div class="unit-image-wrapper">
-    <div {{bindAttr class="unit.db_field :unit-image-new"}}></div>
-  </div>
-  <div class="unit-description">
-    Att: {{unit.attack}}<br/>
-    HP: {{unit.hitpoints}}<br/>
-    Def: {{unit.armor}}<br/>
-    Crit: {{unit.critical_hit_damage}} <br/>
-  </div>
-
-  <div class="modal-dialog-text">
-    {{local unit.description}}
+  <div class="modal-dialog-body encyclopedia-unit-new-pane scrolling">
+      <div class="unit-image-wrapper">
+        <div {{bindAttr class="unit.db_field :unit-image-new"}}></div>
+      </div>
+      <div class="unit-description">
+        Att: {{unit.attack}}<br/>
+        HP: {{unit.hitpoints}}<br/>
+        Def: {{unit.armor}}<br/>
+        Crit: {{unit.critical_hit_damage}} <br/>
+      </div>
+      <div class="modal-dialog-text">
+        {{local unit.description}}
+      </div>
   </div>
 </script>
 
