@@ -24,13 +24,13 @@
    
 <script type="text/x-handlebars" data-template-name="army-new-change-content-view">   
 		<div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right">
-			<div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>
+		  <div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>
             {{#if isCreateArmy }}
                 {{t army.create.header}}
             {{else}}
                 {{t army.change.header}}
             {{/if}}
-		      </div>
+		  </div>
     	</div>
     	<div class="army-icon sword-icon">
     	</div>
