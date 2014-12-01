@@ -681,8 +681,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (args.recipient !== undefined && args.recipient !== null)
       {
           //New message dialog
-          var dialog = AWE.UI.Ember.MessageWriteDialog.create({});
+          var dialog = AWE.UI.Ember.MessageWriteDialog.create({
+            controller: this.get('hudController'),
+            recipient: args.recipient.name ,
+
+          });
           WACKADOO.presentModalDialog(dialog);
+          this.get('hudController').messageView = dialog;
       }
       else
       {

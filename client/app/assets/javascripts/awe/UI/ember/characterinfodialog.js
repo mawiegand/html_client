@@ -288,10 +288,10 @@ AWE.UI.Ember = (function(module) {
     {
     	return false;
     }
-    WACKADOO.activateMessagesController({ recipient: character });
     WACKADOO.closeAllModalDialogs();
+    WACKADOO.activateMessagesController({ recipient: character });
+    
     return false;// prevent default behavior
-
     },
     
     // settlementPressed: function() {
