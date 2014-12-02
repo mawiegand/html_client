@@ -188,7 +188,7 @@ module.ProfileNewInfoView  = Ember.View.extend ({
         var replacer = new RegExp("=>","g");
         var stringJson = stringDesc.replace(replacer, ":");
         var jsonObj = JSON.parse(stringJson);
-debugger
+
         list.push(Ember.Object.create({
               desc: jsonObj,/*{
                 de_DE: "test deutsch",//history.localized_description,
