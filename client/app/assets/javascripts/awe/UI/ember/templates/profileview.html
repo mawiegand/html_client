@@ -43,16 +43,23 @@
             </div>
           </div>
         </div>
+  <p><b>{{t profile.history}}:</b><br />
   {{#if loadingHistory }}
 
   {{else}}
+   <ul>
     {{#if historyEvents}}
-      {{#each historyEvents}}
-        {{local this.localized_description}}<br />
+      {{#each historyEventsList}}
+      <li>
+        {{local desc}}<br />
+      </li>
       {{/each}}
     {{else}}
+    <li>
       {{t profile.emptyHistory}}<br />
+      </li>
     {{/if}}
+     </ul>
   {{/if}}
         <div class="row row3">
           <div class="cell">
@@ -368,10 +375,10 @@
   {{else}}
     {{#if historyEvents}}
       {{#each historyEvents}}
-      {{local this.localized_description}}<br />
+       {{local this.localized_description}}<br />
       {{/each}}
     {{else}}
-      {{t profile.emptyHistory}}}<br />
+      {{t profile.emptyHistory}}<br />
     {{/if}}
   {{/if}}
   </p>

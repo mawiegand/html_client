@@ -169,12 +169,35 @@ module.ProfileNewInfoView  = Ember.View.extend ({
         self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
       });
     },
-    test: function(){debugger
+    test: function(){
       //"{"de_DE"=>"ertewrzt", "en_US"=>"wetzewzwe"}"
      return /*this.get('historyEvents')[0].get('localized_description');*/{
       de_DE : "ertewrzt",
       en_US : "wetzewzwe"
       }
+    }.property().cacheable(),
+
+
+    historyEventsList: function(){
+      var list = [];
+      var historyTypes = this.get('historyEvents');
+
+      AWE.Ext.applyFunction(historyTypes, function(history) {//historyTypes.forEach(function(history) {
+        
+        var stringDesc = history.localized_description;
+        var replacer = new RegExp("=>","g");
+        var stringJson = stringDesc.replace(replacer, ":");
+        var jsonObj = JSON.parse(stringJson);
+debugger
+        list.push(Ember.Object.create({
+              desc: jsonObj,/*{
+                de_DE: "test deutsch",//history.localized_description,
+                en_US: "test englisch",
+              }*/
+              
+            }));
+      });
+      return list;
     }.property().cacheable(),
 
    });
@@ -963,11 +986,12 @@ module.UserNameTextfield = Ember.TextField.extend({
         return ;
       }
       this.set('loadingHistory', true);
-      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {debugger
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
         self.set('loadingHistory', false);
         self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
       });
     },
+
   });
   
   module.SettingsView = Ember.View.extend({    
