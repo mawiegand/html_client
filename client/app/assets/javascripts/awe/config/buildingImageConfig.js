@@ -749,7 +749,7 @@ AWE.Config = (function(module) {
 
     getImageLevelForBuilding: function(building, level) {
       console.log(building, level);
-      var def = "building_gatherer";
+      var def = "building_barracks";
       if (typeof this[building] === "undefined")
       {
         building = def;
