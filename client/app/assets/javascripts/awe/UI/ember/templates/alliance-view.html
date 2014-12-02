@@ -32,11 +32,7 @@
                 <div class="alliance-accept">
                     <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
                     <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
-                        <div {{bindAttr class=":alliance-toggle :alliance-toggle-off isToggleOn"}}>
-                            OFF
-                        </div>
-                        <div {{bindAttr class=":alliance-toggle :alliance-toggle-on isToggleOn"}}>
-                            ON
+                        <div {{bindAttr class=":alliance-toggle isToggleOn"}}>
                         </div>
                     </div>
                 </div>
