@@ -149,6 +149,34 @@ module.ProfileNewInfoView  = Ember.View.extend ({
       this.processNewDescription(this.getPath('character.description'));
     },
 
+    historyEvents: null,
+    
+    loadingHistory: false,
+    
+    characterObserver: function() {   
+      this.setAndUpdateHistory();
+    }.observes('character.id'),
+    
+    setAndUpdateHistory: function() {
+      var characterId = this.getPath('character.id');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      this.set('loadingHistory', true);
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('loadingHistory', false);
+        self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
+      });
+    },
+    test: function(){debugger
+      //"{"de_DE"=>"ertewrzt", "en_US"=>"wetzewzwe"}"
+     return /*this.get('historyEvents')[0].get('localized_description');*/{
+      de_DE : "ertewrzt",
+      en_US : "wetzewzwe"
+      }
+    }.property().cacheable(),
+
    });
    
 module.ProfileNewRangView  = Ember.View.extend  ({

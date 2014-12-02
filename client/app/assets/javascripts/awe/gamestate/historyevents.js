@@ -101,7 +101,7 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             lastCharacterUpdates[characterId] = timestamp;
           }
-          if (callback) {
+          if (callback) {debugger
             if (status === AWE.Net.NOT_MODIFIED) {
               result = that.getEntities();
             }

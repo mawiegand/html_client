@@ -43,6 +43,17 @@
             </div>
           </div>
         </div>
+  {{#if loadingHistory }}
+
+  {{else}}
+    {{#if historyEvents}}
+      {{#each historyEvents}}
+        {{local this.localized_description}}<br />
+      {{/each}}
+    {{else}}
+      {{t profile.emptyHistory}}<br />
+    {{/if}}
+  {{/if}}
         <div class="row row3">
           <div class="cell">
             <p class="description">
