@@ -1,16 +1,20 @@
 <!-- NEW DIALOGS START-->
 
         
-        <script type="text/x-handlebars" data-template-name="character-new-profile-view">
-           <h1 class="modal-dialog-heading">{{character.name}}</h1>
-            <div class="modal-dialog-body profile-info-self-dialog-pane scrolling">
-              <div class="profile-tab-view">
-                {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" }}
-              </div>
-            </div>
-
-        <!-- DIALOG END -->
+<script type="text/x-handlebars" data-template-name="character-new-profile-view">
+  <div class="popup-dialog-header">
+    <a href="#" {{action "closeDialogAndCenter"}}>
+      <div class="modal-dialog-center"></div>
+    </a>
+  </div>
+  <h1 class="modal-dialog-heading">{{character.name}}</h1>
+    <div class="modal-dialog-body profile-info-self-dialog-pane scrolling">
+        <div class="profile-tab-view">
+            {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" }}
+        </div>
+    </div>
 </script>
+<!-- DIALOG END -->
 
 <script type="text/x-handlebars" data-template-name="profile-info-tab1-view">   
 
@@ -80,7 +84,7 @@
             <div class="current-rank-value">{{local character.mundaneTitle.name }}</div>
           </div>
           <div class="cell cell-50 next-rank">
-            <div class="next-rank-title">{{t profile.rank.nextRank}}: {{nextMundaneRank.rule.id}}</div>
+            <div class="next-rank-title">{{t profile.rank.nextRank}}: {{nextMundaneRank}}</div>
             <div class="next-rank-value">{{local character.nextMundaneTitle.name }}</div>
           </div>
         </div>

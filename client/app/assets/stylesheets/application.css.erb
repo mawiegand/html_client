@@ -986,7 +986,6 @@ canvas{
   text-align: center;
   line-height: 52px;
   font-size: 20px;
-  margin-left: 10px;
 }
 
 .tab-bar-new .left-menu-button-subtab {
@@ -1051,7 +1050,6 @@ canvas{
   position: relative;
   height: 479px;
   width: 625px;
-  /*overflow: hidden;*/
 }
 
 .modal-dialog-pane-new h2, .modal-dialog-buttons{
@@ -1126,8 +1124,6 @@ canvas{
 }
 
 .modal-dialog-pane-new .modal-dialog-text {
-  margin-left: 20px;
-  position: relative;
   font-size: 20px;
   padding-bottom: 10px;
 }
@@ -1256,8 +1252,15 @@ canvas{
   font-size: 25px;
   box-sizing: border-box;
   padding: 0 20px;
-  height: 181px;
-  overflow-y: scroll;
+  height: auto;
+  /*height: 181px;*/
+  /*overflow-y: scroll;*/
+}
+
+.modal-dialog-body.encyclopedia-unit-new-pane{
+  top: 54px;
+  height: 420px;
+  width: 100%;
 }
 
 .character-info-dialog .modal-dialog-text{
@@ -1300,11 +1303,21 @@ canvas{
   z-index:300;
 }
 
+.modal-dialog-center{
+  background-image: url("<%= asset_path 'hud/topbar/topbar_center.png' %>");
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: 14px;
+  right: 44px;
+  z-index:300;
+}
+
 .unit-description{
   width: 50%;
   right: 0px;
   position: absolute;
-  top: 100px;
+  top: 50px;
   padding-left: 50px;
   box-sizing: border-box;
 }
@@ -1319,7 +1332,7 @@ canvas{
   width: 50%;
   box-sizing: border-box;
   position: absolute;
-  top: 90px;
+  top: 45px;
   left: 0px;
   padding-left: 83px;
 }

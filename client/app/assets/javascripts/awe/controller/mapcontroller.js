@@ -1069,19 +1069,22 @@ AWE.Controller = function (module) {
             that.applicationController.presentModalDialog(errorDialog);
           }
           else {
-            var unitQuantities = this.unitQuantities();
-            var armyName = this.get('armyName');
-            if (!AWE.Util.hashEmpty(unitQuantities)) {
-              //debugger
-              createArmyCreateAction(location, unitQuantities, armyName, (function (self) {
-                return function () {
-                  self.destroy();
-                }
-              })(this));
-              this.set('loading', true);
-            }
-            else {
-              this.destroy();
+            if(!this.get('loading'))
+            {
+              var unitQuantities = this.unitQuantities();
+              var armyName = this.get('armyName');
+              if (!AWE.Util.hashEmpty(unitQuantities)) {
+                //debugger
+                createArmyCreateAction(location, unitQuantities, armyName, (function (self) {
+                  return function () {
+                    self.destroy();
+                  }
+                })(this));
+                this.set('loading', true);
+              }
+              else {
+                this.destroy();
+              }
             }
           }
         },
