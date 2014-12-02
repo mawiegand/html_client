@@ -963,7 +963,7 @@ module.UserNameTextfield = Ember.TextField.extend({
         return ;
       }
       this.set('loadingHistory', true);
-      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {debugger
         self.set('loadingHistory', false);
         self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
       });
