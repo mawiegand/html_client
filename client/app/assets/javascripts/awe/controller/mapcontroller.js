@@ -1835,11 +1835,16 @@ AWE.Controller = function (module) {
       }
 
       if (inspectorViews.inspector) {
-        _stages[3].addChild(inspectorViews.inspector.displayObject());
+        //_stages[3].addChild(inspectorViews.inspector.displayObject());
         if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
-          addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
+          //addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
+          var annotationView = view.annotationView();
+          if(annotationView)
+          {
+              addMarkerToView(annotationView, AWE.Geometry.createPoint(175, -23));
+          }
         }
-        _inspectorChanged = true;
+        //_inspectorChanged = true;
       }
     };
 
@@ -3367,10 +3372,12 @@ AWE.Controller = function (module) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markCreateArmy()) {
-            var inspector = inspectorViews.inspector;
+            /*var inspector = inspectorViews.inspector;
             if (inspector && inspector.typeName('BaseInspectorView') && inspector.location().isOwn()) {
-              addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);
-            }
+              addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);*/
+              var annotationView = _selectedView.annotationView();
+              addMarkerToView(annotationView, AWE.Geometry.createPoint(175, -23));
+            //}
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {
             var annotationView = _selectedView.annotationView();
