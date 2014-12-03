@@ -111,7 +111,7 @@ class CanvasController < ApplicationController
 #     end
 #
 #
-#     render action: "show"
+    render action: "show"
   end
   
   protected
