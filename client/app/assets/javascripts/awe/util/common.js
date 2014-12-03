@@ -8,7 +8,7 @@ var AWE = window.AWE || {};
 
 AWE.Log = (function(module) {
   
-  module.DEBUG_DISABLED = true;
+  module.DEBUG_DISABLED = false;
   
   module.Debug = function() {
     if (module.DEBUG_DISABLED) { 
