@@ -3366,6 +3366,10 @@ AWE.Controller = function (module) {
                 targetView.initWithControllerAndTargetedView(that, locationView);
                 _stages[2].addChild(targetView.displayObject());
                 locationView.setTargetView(targetView);
+                //START GREEN ANIMATION
+                that.addBouncingAnnotationLabel(locationView, targetView, 10000000, AWE.Geometry.createPoint(15, -36),  2);
+                targetView.setNeedsUpdate();
+                //END
               }
               setTargetPosition(targetView, locationView.center());
               newTargetViews[location.id()] = targetView;
