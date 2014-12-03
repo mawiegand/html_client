@@ -1,6 +1,13 @@
 <script type="text/x-handlebars" data-template-name="army-new-create-dialog">
   <h1>{{t army.create.header}}</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
+   {{#if trainingButtonUIMarker}}
+        {{view AWE.UI.Ember.UIMarker direction=0 top=250 left=305}}
+    {{/if}} 
+
+    {{#if createButtonUIMarker}}
+        {{view AWE.UI.Ember.UIMarker direction=0 top=77 left=492}}
+    {{/if}} 
 
         {{#if remainingArmies }}
             {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
@@ -61,7 +68,7 @@
     	</div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
+<script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">  
      {{#each armyType in activeArmyTypen}}
          <div class="army-type-cell" >
                 {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}

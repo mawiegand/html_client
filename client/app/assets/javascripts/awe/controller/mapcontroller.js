@@ -1841,7 +1841,7 @@ AWE.Controller = function (module) {
           var annotationView = view.annotationView();
           if(annotationView)
           {
-              addMarkerToView(annotationView, AWE.Geometry.createPoint(175, -23));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
           }
         }
         //_inspectorChanged = true;
@@ -1928,6 +1928,40 @@ AWE.Controller = function (module) {
             var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
             view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x + offset.x,
               annotatedView.frame().origin.y + offset.y - height));
+          };
+        }(),
+
+        onAnimationEnd:function (viewToRemove) {
+          return function () {
+            _stages[stage].removeChild(viewToRemove.displayObject());
+            log('removed animated label on animation end');
+          };
+        }(annotation),
+      });
+
+      that.addAnimation(animation);
+      return animation;
+    }
+
+    that.addBouncingAnnotationLabelRight = function (annotatedView, annotation, duration, offset, stage) {
+      duration = duration || 10000;
+      offset = offset || AWE.Geometry.createPoint(0, -50);
+      stage = stage || 2;
+
+      var bounceHeight = 50;
+      var bounceDuration = 1000.0;
+
+      _stages[stage].addChild(annotation.displayObject());
+
+      var animation = AWE.UI.createTimedAnimation({
+        view:annotation,
+        duration:duration,
+
+        updateView:function () {
+          return function (view, elapsed) {
+            var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x + offset.x - height,
+              annotatedView.frame().origin.y + offset.y));
           };
         }(),
 
@@ -2321,6 +2355,18 @@ AWE.Controller = function (module) {
         that.animatedMarker = null;
       }
       that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, position, stage);
+      view.setNeedsUpdate();
+    }
+
+    var addMarkerToViewRight = function(view, position, stage) {
+      var stage = stage || 2;
+      var marker = AWE.UI.createMarkerView();
+      marker.initWithControllerAndMarkedViewRight(that, view);
+      if (that.animatedMarker) {
+        that.animatedMarker.cancel();
+        that.animatedMarker = null;
+      }
+      that.animatedMarker = that.addBouncingAnnotationLabelRight(view, marker, 10000000, position, stage);
       view.setNeedsUpdate();
     }
 
@@ -3376,7 +3422,7 @@ AWE.Controller = function (module) {
             if (inspector && inspector.typeName('BaseInspectorView') && inspector.location().isOwn()) {
               addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);*/
               var annotationView = _selectedView.annotationView();
-              addMarkerToView(annotationView, AWE.Geometry.createPoint(175, -23));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
             //}
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {

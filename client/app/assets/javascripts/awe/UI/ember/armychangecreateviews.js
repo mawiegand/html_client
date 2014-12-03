@@ -223,6 +223,41 @@ AWE.UI.Ember = (function(module) {
     changePressed: function() {
       log('ERROR Action not connected: changeWasPressed.');
     },
+
+    trainingButtonUIMarker: function() {
+      var unitTypes = this.get('unitTypes');
+      var currentUnits = 0;
+      unitTypes.forEach(function(unitType) 
+      {
+        if(unitType.get('unitCategory') == 0)//infantry
+          currentUnits += parseInt(unitType.get('otherUnits'));
+      });
+
+      if(currentUnits == 0)
+      {
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        return tutorialState.isUIMarkerActive(AWE.GS.MARK_CREATE_ARMY_DIALOG_FLOW) ;
+      }
+      return false;
+    }.property('unitTypes.@each.otherUnits','AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
+    createButtonUIMarker: function() {
+      var unitTypes = this.get('unitTypes');
+      var currentUnits = 0;
+      unitTypes.forEach(function(unitType) 
+      {
+        if(unitType.get('unitCategory') == 0)//infantry
+          currentUnits += parseInt(unitType.get('otherUnits'));
+      });
+
+      if(currentUnits > 0)
+      {
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        return tutorialState.isUIMarkerActive(AWE.GS.MARK_CREATE_ARMY_DIALOG_FLOW) ;
+      }
+      return false;
+    }.property('unitTypes.@each.otherUnits','AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
   });
   
   module.ArmyNameTextfield = Ember.TextField.extend({
