@@ -1065,7 +1065,6 @@ AWE.Controller = (function(module) {
         }
       }
       //else {
-
         var placeArrowAboveFreeSpot = that.markFreeConstructionSpot();
         var slotToMark = (!placeArrowAboveFreeSpot && this.markUpgradeableBuilding()) ? that.whichSlotToMarkForUpgrade() : null;
 
@@ -1089,6 +1088,7 @@ AWE.Controller = (function(module) {
           var slot = slots[i];
           if (slot.get('slot_num') != 0) {
             slot.set('uiMarker', slot == slotToMark);
+            //if(slot == slotToMark){debugger;}
           }
         }
       //}
