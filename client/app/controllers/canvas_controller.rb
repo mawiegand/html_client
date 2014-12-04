@@ -6,9 +6,9 @@ class CanvasController < ApplicationController
 
     @title = "Wack-A-Doo"
     
-    @app_id = "127037377498922"
+    @app_id = CLIENT_CONFIG['fb_app_id']
     @canvas_page = "http://apps.facebook.com/wack-a-doo"
-    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&scope=email,publish_actions&redirect_uri=#{ URI::escape(@canvas_page) }"
+    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&scope=#{CLIENT_CONFIG['fb_scopes']}&redirect_uri=#{ URI::escape(@canvas_page) }"
 
     @signed_request = params[:signed_request] || ""
     
@@ -21,7 +21,7 @@ class CanvasController < ApplicationController
 #     logger.debug "Code: #{ code.inspect }"
 #   end
     
-    logger.debug "-----> Facebook Data: #{data.inspect}."
+    logger.debug "Facebook Data: #{data.inspect}."
     
     @facebook_user  = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
     @facebook_token = data.nil? || data["oauth_token"].blank? ? nil :  data["oauth_token"]    
