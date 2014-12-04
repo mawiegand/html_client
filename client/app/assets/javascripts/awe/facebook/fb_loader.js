@@ -7,7 +7,7 @@ AWE.Facebook = (function(module) {
   var initCallbacks = [];
   
   module.initialized  = false;
-  module.defaultScope = {scope: 'email,publish_actions'};
+  module.defaultScope = {scope: 'email,publish_actions,age_range,gender,username,,name,first_name,birthday,locale'};
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
   module.isRunningInCanvas  = false;             // running inside of facebook
