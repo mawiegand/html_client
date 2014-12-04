@@ -42,6 +42,7 @@ AWE.Controller = (function(module) {
     var _animationDuration = 800;
     
     that.animatedMarker = null;
+    var markerAdded = false;
 
     
     
@@ -951,9 +952,8 @@ AWE.Controller = (function(module) {
       if (!HUDViews.profileControlsView) {
         HUDViews.profileControlsView = AWE.UI.createProfileHUDControlsView();
         HUDViews.profileControlsView.initWithController(that);
-        _stageProfile.addChild(HUDViews.profileControlsView.displayObject());        
+        _stageProfile.addChild(HUDViews.profileControlsView.displayObject()); 
       }
-            
       // Left HUD View
       /*if (!HUDViews.leftHUDControlsView) {
         HUDViews.leftHUDControlsView = AWE.UI.createLeftHUDControlsView();
@@ -988,6 +988,11 @@ AWE.Controller = (function(module) {
       else if (!mark && _domLeft.get('uiMarkerEnabled')) {
         _domLeft.set('uiMarkerEnabled', false);
       }
+    };
+
+    that.markProfile = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
     };
     
     
@@ -1040,6 +1045,63 @@ AWE.Controller = (function(module) {
         that.setNeedsLayout(); 
       }
     };
+
+    var addMarkerToView = function(view, position, stage) {
+      var stage = stage || 2;
+      var marker = AWE.UI.createMarkerView();
+      marker.initWithControllerAndMarkedViewLeft(that, view);
+      //added marker to profile hier
+      _stageProfile.addChild(marker.displayObject());
+      
+      if (that.animatedMarker) {
+        that.animatedMarker.cancel();
+        that.animatedMarker = null;
+      }
+      that.animatedMarker = that.addBouncingAnnotationLabelLeft(view, marker, 10000000, position, stage);
+      view.setNeedsUpdate();
+    }
+
+    var removeMarker = function() {
+      if (that.animatedMarker) {
+        that.animatedMarker.cancel();
+        that.animatedMarker.update();
+        that.animatedMarker = null;
+      }
+    }
+
+    that.addBouncingAnnotationLabelLeft = function (annotatedView, annotation, duration, offset, stage) {
+      duration = duration || 10000;
+      offset = offset || AWE.Geometry.createPoint(0, -50);
+      stage = stage || 2;
+
+      var bounceHeight = 50;
+      var bounceDuration = 1000.0;
+
+      //_stages[stage].addChild(annotation.displayObject());
+
+      var animation = AWE.UI.createTimedAnimation({
+        view:annotation,
+        duration:duration,
+
+        updateView:function () {
+          return function (view, elapsed) {
+            var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x + offset.x - height,
+              annotatedView.frame().origin.y + offset.y));
+          };
+        }(),
+
+        onAnimationEnd:function (viewToRemove) {
+          return function () {
+            //_stages[stage].removeChild(viewToRemove.displayObject());
+            log('removed animated label on animation end');
+          };
+        }(annotation),
+      });
+
+      that.addAnimation(animation);
+      return animation;
+    }
     
     that.addBouncingAnnotationLabel = function (annotatedView, annotation, duration, offset, stage) {
       duration = duration || 10000;
@@ -1140,6 +1202,18 @@ AWE.Controller = (function(module) {
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             //_stageLeft.update();
             //_stageRight.update();
+            //Tutorial marker for Profile canvas here
+            if(HUDViews.profileControlsView && that.markProfile() && !markerAdded)
+            {
+               addMarkerToView(HUDViews.profileControlsView, AWE.Geometry.createPoint(50, 30));
+               markerAdded = true;
+            }
+            else if(!that.markProfile() && markerAdded)
+            {
+              removeMarker();
+              markerAdded = false;
+            }
+            //stage updates
             _stageProfile.update();
             _resourceStage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {            

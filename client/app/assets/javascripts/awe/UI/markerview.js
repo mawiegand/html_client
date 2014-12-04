@@ -55,6 +55,20 @@ AWE.UI = (function(module) {
         my.frame.size.height = 48;
       }
     };
+
+    that.initWithControllerAndMarkedViewLeft = function(controller, targetedView, frame) {
+      _super.initWithController(controller, frame);
+      _targetedView = targetedView;
+      _arrowImageView = AWE.UI.createImageView();
+      _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("ui/marker/right"));
+      _arrowImageView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
+      this.addChild(_arrowImageView);
+
+      if (!frame) {
+        my.frame.size.width = 48;
+        my.frame.size.height = 48;
+      }
+    };
     
     that.updateView = function() {
       _super.updateView();

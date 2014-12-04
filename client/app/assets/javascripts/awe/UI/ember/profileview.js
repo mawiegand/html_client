@@ -228,6 +228,12 @@ module.ProfileNewInfoView  = Ember.View.extend ({
       return list;
     }.property().cacheable(),
 
+    //tutorial
+    customizeButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
    });
    
 module.ProfileNewRangView  = Ember.View.extend  ({
@@ -479,6 +485,11 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
         });        
       }
     },
+
+     customizeButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
    });
 

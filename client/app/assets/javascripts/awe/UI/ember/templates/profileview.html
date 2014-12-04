@@ -17,7 +17,9 @@
 <!-- DIALOG END -->
 
 <script type="text/x-handlebars" data-template-name="profile-info-tab1-view">   
-
+        {{#if customizeButtonUIMarker}}
+          {{view AWE.UI.Ember.UIMarker direction=0 top=40 left=486}}
+        {{/if}}
         <div class="row row2">
           <div class="cell cell-30 avatar">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}</div>
           <div class="cell cell-70 character-details">
@@ -109,6 +111,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
+{{#if customizeButtonUIMarker}}
+  {{view AWE.UI.Ember.UIMarker direction=1 top=60 left=220}}
+{{/if}}
 <div class="row row2 rowcustomize">
     <div class="cell cell-30 avatar">
         {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="customavatar" width="150" height="154"}}
