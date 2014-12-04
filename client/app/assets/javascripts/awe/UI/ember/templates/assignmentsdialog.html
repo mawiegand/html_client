@@ -41,7 +41,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="assignment-item">
-
+{{#if isUIMarker}}
+  {{view AWE.UI.Ember.UIMarker direction=2 top=105 left=37}}
+{{/if}}
 <div {{bindAttr class=":item isActive"}}{{action "openDialog"}}>
   <div {{bindAttr class=":info :info-big-background isActive"}}>i</div>
   <div class="assigment-item-wrapper">
@@ -70,6 +72,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="assignments-dialog-view-new">
+  {{#if isUIMarker}}
+      {{view AWE.UI.Ember.UIMarker direction=2 top=230 left=400}}
+  {{/if}}
   <div style="padding-left: 20px;position: relative;top: 14px">{{local assignmentType.name}}</div>
   <div class="description-cell description-text">{{local assignmentType.description}}</div>
   <div class="info-cell">

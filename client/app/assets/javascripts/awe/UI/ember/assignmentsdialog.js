@@ -36,6 +36,11 @@ AWE.UI.Ember = (function(module) {
       else
         return false;
     }.property().cacheable(),
+
+    isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
     
@@ -77,15 +82,10 @@ AWE.UI.Ember = (function(module) {
     timeRemaining: null,
 
     currentCharacterBinding: 'AWE.GS.game.currentCharacter',
-    /*init: function() {
-      this._super();
-      this.calcTimeRemaining();
-    },*/
-
-    /*destroy: function() {
-      clearTimeout(this._timer);
-      this._super();
-    },*/
+    isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
     openDialog: function(){
       if(this.get('isActive'))

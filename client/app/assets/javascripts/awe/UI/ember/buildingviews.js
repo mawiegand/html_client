@@ -169,6 +169,11 @@ AWE.UI.Ember = (function(module) {
       this._super(spec);            
     },  
 
+    isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.count_quests_completed == 15;//isUIMarkerActive(AWE.GS.MARK_HURRY_BUTTON) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
     job: function(){
       var sortedJobs = this.getPath('slot.building.sortedJobs');
       if(sortedJobs && sortedJobs.length > 0)

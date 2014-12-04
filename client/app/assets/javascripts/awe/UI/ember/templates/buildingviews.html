@@ -53,6 +53,9 @@
       {{else}}
         {{#if isConstructionSpeedupPossible }}
           {{#if first}}
+                {{#if isUIMarker}}
+                {{view AWE.UI.Ember.UIMarker direction=2 top="-90" left=43}}
+            {{/if}}
             <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
             <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
           {{/if}}

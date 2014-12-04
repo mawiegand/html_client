@@ -250,6 +250,9 @@
     {{/if}}
   {{/unless}}
   {{#if building.unlockedAssignments}} <!-- CORRECT ??? -->
+    {{#if assignmentUIMarker}}
+        {{view AWE.UI.Ember.UIMarker direction=2 top="-20" left=55}}
+    {{/if}}
     <div class="building-annotation-background building-assignment-button-background" {{action "assignmentClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-assignment-button-icon" {{action "assignmentClicked"}}>&nbsp;</div>
   {{/if}}
