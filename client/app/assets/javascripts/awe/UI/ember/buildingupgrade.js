@@ -88,6 +88,11 @@ AWE.UI.Ember = (function(module) {
       this.set("stepsFurther", currentStepsFurther - 1);
     },
 
+    isTutorialUpgradeButton: function(){
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        return tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) ;
+      }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
   });
 
   module.BuildingDetailsView = Ember.View.extend({

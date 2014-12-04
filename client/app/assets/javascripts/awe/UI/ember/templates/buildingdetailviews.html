@@ -75,6 +75,9 @@
 
 <script type="text/x-handlebars" data-template-name="building-option-details-new-view">
    <div class="building-selection-cell">
+   {{#if uiMarker}}
+      {{view AWE.UI.Ember.UIMarker direction=2 top="-5" left=40}}
+   {{/if}}
       <div class="info-big-background building-info-button" {{action "onInfoClicked"}}>i</div>
       <div {{action "optionClicked" target="parentView"}} {{bindAttr class="isConstructionPossible :building-background"}}>
         <div {{bindAttr class="building.buildingType.symbolic_id :building-image :building-position :building-selection-image"}}>  
@@ -211,7 +214,7 @@
         <div class="building-annotation-background building-upgrade-button-background" {{action "upgradeClicked"}}>&nbsp;</div>
         <div class="building-annotation-icon building-upgrade-button-icon" {{action "upgradeClicked"}}>&nbsp;</div>
         {{#if upgradeUIMarker}}
-          {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
+          {{view AWE.UI.Ember.UIMarker direction=2 top="-20" left=8}}
         {{/if}}
       {{else}}
         <div class="building-annotation-background building-upgrade-button-background" style="opacity: 0.5;">&nbsp;</div>

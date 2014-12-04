@@ -178,6 +178,11 @@ AWE.UI.Ember = (function(module) {
     constructionCancelClicked: function(event) {
       this.get('controller').constructionCancelClicked(this.get('slot'));
     },      
+
+    upgradeUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return this.getPath('building.slot.uiHUDMarker') && tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) && tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
+    }.property('building.slot.uiHUDMarker'),
     
   });  
 
@@ -276,6 +281,16 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
       var requirements = this.get("building").requirementsMet();
       return requirements
     }.property("building"),
+
+    uiMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if (tutorialState.isUIMarkerActive(AWE.GS.MARK_BUILDING_OPTION)) {
+        return tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
+      }
+      else {
+        return false;
+      }
+    }.property('building').cacheable(),
     
   });
 

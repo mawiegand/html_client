@@ -1057,14 +1057,15 @@ AWE.Controller = (function(module) {
           }
         }
 
+        
         if (that.markUpgradeButton()) {
-          selectedSlot.set('uiMarker', true);
+          selectedSlot.set('uiHUDMarker', true);
         }
         else {
-          selectedSlot.set('uiMarker', false);
+          selectedSlot.set('uiHUDMarker', false);
         }
       }
-      //else {
+     // else {//added uncommited else for upgrade tutorial state
         var placeArrowAboveFreeSpot = that.markFreeConstructionSpot();
         var slotToMark = (!placeArrowAboveFreeSpot && this.markUpgradeableBuilding()) ? that.whichSlotToMarkForUpgrade() : null;
 
@@ -1087,8 +1088,7 @@ AWE.Controller = (function(module) {
         for (var i = 0; i < slots.length; i++) {
           var slot = slots[i];
           if (slot.get('slot_num') != 0) {
-            slot.set('uiMarker', slot == slotToMark);
-            //if(slot == slotToMark){debugger;}
+            slot.set('uiMarker', (slot == slotToMark)&&(selectedSlot != slotToMark));
           }
         }
       //}

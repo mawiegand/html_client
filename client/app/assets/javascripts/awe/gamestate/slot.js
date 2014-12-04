@@ -796,6 +796,7 @@ AWE.GS = (function(module) {
 		hashableJobs:   null,
 
     uiMarker: false,
+    uiHUDMarker: false,
     
     bindings: null,
     
