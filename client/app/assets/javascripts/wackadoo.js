@@ -322,9 +322,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
         var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node_id');
-        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
+        var startInSettlement = true ; /*hasBase && AWE.Config.USE_TUTORIAL && (
           tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
-            tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
+            tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);*/
         var identifier        = AWE.GS.CharacterManager.getCurrentCharacter().get('identifier');
 
         var hud = AWE.Controller.createHUDController();
