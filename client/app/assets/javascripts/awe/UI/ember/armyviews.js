@@ -364,6 +364,12 @@ module.InfantryInfoView  = Ember.View.extend ({
   trainingQueues: null,
   controller: null,
   queue: null,
+
+  isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
   setQueue: function(){
     var self = this;
     var trainingQueuesCurrent = self.get('trainingQueues');
@@ -725,6 +731,11 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     });
   module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
     templateName: 'army-recruitment-info-view',
+
+    isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
     getUnitCategoryName: function()
     {

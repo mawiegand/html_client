@@ -1052,12 +1052,12 @@ AWE.Controller = (function(module) {
       marker.initWithControllerAndMarkedViewLeft(that, view);
       //added marker to profile hier
       _stageProfile.addChild(marker.displayObject());
-      
+
       if (that.animatedMarker) {
         that.animatedMarker.cancel();
         that.animatedMarker = null;
       }
-      that.animatedMarker = that.addBouncingAnnotationLabelLeft(view, marker, 10000000, position, stage);
+      that.animatedMarker = that.addBouncingAnnotationLabelLeft(view, marker, 10000000, position, stage, _stageProfile);
       view.setNeedsUpdate();
     }
 
@@ -1069,7 +1069,7 @@ AWE.Controller = (function(module) {
       }
     }
 
-    that.addBouncingAnnotationLabelLeft = function (annotatedView, annotation, duration, offset, stage) {
+    that.addBouncingAnnotationLabelLeft = function (annotatedView, annotation, duration, offset, stage, currentStage) {
       duration = duration || 10000;
       offset = offset || AWE.Geometry.createPoint(0, -50);
       stage = stage || 2;
@@ -1093,7 +1093,7 @@ AWE.Controller = (function(module) {
 
         onAnimationEnd:function (viewToRemove) {
           return function () {
-            //_stages[stage].removeChild(viewToRemove.displayObject());
+            currentStage.removeChild(viewToRemove.displayObject());
             log('removed animated label on animation end');
           };
         }(annotation),

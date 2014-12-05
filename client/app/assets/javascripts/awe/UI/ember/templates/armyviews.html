@@ -344,6 +344,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
+    {{#if isUIMarker}}
+        {{view AWE.UI.Ember.UIMarker direction=3 top=270 left=160}}
+    {{/if}}
     {{#each queue.hashableJobs.collection }}
         {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
     {{/each}}
@@ -384,6 +387,9 @@
 
 <script type="text/x-handlebars" data-template-name="army-recruitment-info-view">
   <h1>{{local unitType.name}}</h1>
+  {{#if isUIMarker}}
+    {{view AWE.UI.Ember.UIMarker direction=1 top=318 left=350}}
+  {{/if}}
   <div class="unit-image-wrapper">
     <div {{bindAttr class="unitType.db_field :unit-image-new"}}>
       <div class="count-text-big-background">

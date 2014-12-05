@@ -324,6 +324,10 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     changingName:     false,
     changingGender:   false,
 
+    dirArrow: 1,
+    topArrow: 60,
+    leftArrow: 220,
+
     //isGenderM: true,
     changeGenderPressed: function() {
         if(this.get('firstTwoGenderChange'))
@@ -655,6 +659,25 @@ module.UserNameTextfield = Ember.TextField.extend({
     changedInput: null,
     updateChangedInput: function()
     {
+
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE))
+      {
+        if(this.getPath('parentView.character.name') != this.get('value'))
+        {
+          this.setPath('parentView.dirArrow', 0);
+          this.setPath('parentView.topArrow', 182);
+          this.setPath('parentView.leftArrow', 390); 
+        }
+        else
+        {
+          this.setPath('parentView.dirArrow', 1);
+          this.setPath('parentView.topArrow', 60);
+          this.setPath('parentView.leftArrow', 220);
+        }
+      }
+      //return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
+
       this.set('changedInput', this.get('value'));
     }.observes('value'),
   });

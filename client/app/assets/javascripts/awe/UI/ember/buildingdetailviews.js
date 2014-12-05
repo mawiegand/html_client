@@ -183,6 +183,11 @@ AWE.UI.Ember = (function(module) {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return this.getPath('building.slot.uiHUDMarker') && tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) && tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
     }.property('building.slot.uiHUDMarker'),
+
+    militaryUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return this.getPath('building.slot.uiHUDMarker') && tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON);
+    }.property('building.slot.uiHUDMarker'),
     
     assignmentUIMarker: function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();

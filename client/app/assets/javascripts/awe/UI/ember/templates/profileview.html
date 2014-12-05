@@ -112,7 +112,8 @@
 
 <script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
 {{#if customizeButtonUIMarker}}
-  {{view AWE.UI.Ember.UIMarker direction=1 top=60 left=220}}
+      {{view AWE.UI.Ember.UIMarker directionBinding="dirArrow" topBinding="topArrow" leftBinding="leftArrow"}}
+  <!--{{view AWE.UI.Ember.UIMarker direction=1 top=60 left=220}}-->
 {{/if}}
 <div class="row row2 rowcustomize">
     <div class="cell cell-30 avatar">

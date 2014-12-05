@@ -269,6 +269,9 @@
     <div class="building-annotation-icon building-artifact-button-icon" {{action "artifactClicked"}}>&nbsp;</div>
   {{/if}}
   {{#if isMilitary}} <!-- CORRECT ??? -->
+    {{#if militaryUIMarker}}
+      {{view AWE.UI.Ember.UIMarker direction=2 top="-20" left=55}}
+    {{/if}}
     <div class="building-annotation-background building-army-button-background" {{action "militaryClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-army-button-icon" {{action "militaryClicked"}}>&nbsp;</div>
   {{/if}}

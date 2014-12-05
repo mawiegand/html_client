@@ -1058,7 +1058,7 @@ AWE.Controller = (function(module) {
         }
 
         
-        if (that.markUpgradeButton() || that.markBuildingToStartAssignment()) {
+        if (that.markUpgradeButton() || that.markBuildingToStartAssignment() || that.markUnitsButton()) {
           selectedSlot.set('uiHUDMarker', true);
         }
         else {
