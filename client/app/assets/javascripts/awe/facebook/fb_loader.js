@@ -7,7 +7,7 @@ AWE.Facebook = (function(module) {
   var initCallbacks = [];
   
   module.initialized  = false;
-  module.defaultScope = {scope: 'email,publish_actions'};
+  module.defaultScope = {scope: AWE.Config.FB_SCOPES};
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
   module.isRunningInCanvas  = false;             // running inside of facebook
@@ -45,7 +45,7 @@ AWE.Facebook = (function(module) {
       
       // init the FB JS SDK
       FB.init({
-        appId      : '127037377498922',          // App ID from the app dashboard
+        appId      : AWE.Config.FB_APP_ID,          // App ID from the app dashboard
         channelUrl : '//'+AWE.Config.SERVER_ROOT+'client/channel.html', // Channel file for x-domain comms
         status     : true,                       // Check Facebook Login status
         xfbml      : false                       // Don't look for social plugins on the page

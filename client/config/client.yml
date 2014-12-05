@@ -12,7 +12,9 @@ defaults: &defaults
   jabber_pwd: "none"
   
   identity_provider_base_url: 'https://wack-a-doo.de/identity_provider'
-  
+
+  fb_app_id: "127037377498922"
+  fb_scopes: "email,publish_actions"
   
 development:
   <<: *defaults
