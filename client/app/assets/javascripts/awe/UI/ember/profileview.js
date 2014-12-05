@@ -440,6 +440,10 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     changeNamePressed: function() {
       this.set('message', null);
       this.processNewName(this.getPath('changedInput'));
+      var dialog = AWE.UI.Ember.CharacterProgressDialog.create({
+            character: this.get("character"),
+          });
+          WACKADOO.presentModalDialog(dialog);
     },
     
 
@@ -447,12 +451,27 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
       
       if (!newName || newName.length < 3) {
         this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooShort'));
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: this.get("message"),
+              });
+        WACKADOO.presentModalDialog(errorDialog);
       }
       else if (!newName || newName.length > 12) {
         this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooLong'));
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: this.get("message"),
+              });
+        WACKADOO.presentModalDialog(errorDialog);
       }
       else if (newName === this.getPath('character.name')) {
         this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameNoChange'));
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: this.get("message"),
+              });
+        WACKADOO.presentModalDialog(errorDialog);
       }      
       else {  // now, really send the name
         var self = this;
@@ -465,7 +484,8 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
-            }
+            } 
+            return;  
           }
           else if (status === AWE.Net.CONFLICT) {
             self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTaken'))
@@ -476,7 +496,12 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
           else {
             self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeNameError'));
           }
-        });        
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: self.get("message"),
+              });
+          WACKADOO.presentModalDialog(errorDialog);
+        });     
       }
     },
 
