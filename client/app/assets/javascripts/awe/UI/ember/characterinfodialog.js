@@ -122,6 +122,36 @@ AWE.UI.Ember = (function(module) {
       });
     },
 
+    historyEventsList: function(){
+      var list = [];
+      var historyTypes = this.get('historyEvents');
+      AWE.Ext.applyFunction(historyTypes, function(history) {//historyTypes.forEach(function(history) {
+        
+        var stringDesc = history.localized_description;
+        var replacer = new RegExp("=>","g");
+        if(stringDesc)
+        {
+          //history.localized_description that come from server can be string or object          
+          if (typeof stringDesc == 'string' || stringDesc instanceof String)
+          {
+            var stringJson = stringDesc.replace(replacer, ":");
+            var jsonObj = JSON.parse(stringJson);
+          }
+          else
+          {
+             var jsonObj = stringDesc;
+          }
+          
+
+          list.push(Ember.Object.create({
+                desc: jsonObj,
+                
+              }));
+        }
+      });
+      return list;
+    }.property().cacheable(),
+
     setAndUpdateAlliance: function() {
       var allianceId = this.getPath('character.alliance_id');
       var self = this;

@@ -209,21 +209,29 @@ module.ProfileNewInfoView  = Ember.View.extend ({
     historyEventsList: function(){
       var list = [];
       var historyTypes = this.get('historyEvents');
-
       AWE.Ext.applyFunction(historyTypes, function(history) {//historyTypes.forEach(function(history) {
         
         var stringDesc = history.localized_description;
         var replacer = new RegExp("=>","g");
-        var stringJson = stringDesc.replace(replacer, ":");
-        var jsonObj = JSON.parse(stringJson);
+        if(stringDesc)
+        {
 
-        list.push(Ember.Object.create({
-              desc: jsonObj,/*{
-                de_DE: "test deutsch",//history.localized_description,
-                en_US: "test englisch",
-              }*/
-              
-            }));
+          if (typeof stringDesc == 'string' || stringDesc instanceof String)
+          {
+            var stringJson = stringDesc.replace(replacer, ":");
+            var jsonObj = JSON.parse(stringJson);
+          }
+          else
+          {
+             var jsonObj = stringDesc;
+          }
+          
+
+          list.push(Ember.Object.create({
+                desc: jsonObj,
+                
+              }));
+        }
       });
       return list;
     }.property().cacheable(),
