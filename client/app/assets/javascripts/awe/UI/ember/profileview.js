@@ -457,11 +457,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     
     changeNamePressed: function() {
       this.set('message', null);
-      this.processNewName(this.getPath('changedInput'));
-      var dialog = AWE.UI.Ember.CharacterProgressDialog.create({
-            character: this.get("character"),
-          });
-          WACKADOO.presentModalDialog(dialog);
+      this.processNewName(this.getPath('changedInput'));      
     },
     
 
