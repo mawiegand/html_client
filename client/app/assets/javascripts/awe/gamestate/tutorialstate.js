@@ -186,7 +186,9 @@ AWE.GS = (function(module) {
 //      log('----> test ', (activeQuestState != null && activeQuestState.get('displayed_at') == null), (activeQuestState.checkNoFurtherUserInteractionRequired() && !activeQuestState.containsUIMarker(module.MARK_HURRY_BUTTON)));
 
       return activeQuestState == null ||
-        activeQuestState.get('displayed_at') == null ||
+        /*CHANGED: radik@5dlab.com*/
+        /*Sometimes tutorial have problem, while you get null by "displayed_at"*/
+        /*activeQuestState.get('displayed_at') == null ||*/
         (activeQuestState.checkNoFurtherUserInteractionRequired() && !activeQuestState.containsUIMarker(module.MARK_HURRY_BUTTON)) ? null : activeQuestState.get('quest').uimarker;
     },
 
