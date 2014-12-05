@@ -181,7 +181,7 @@ AWE.UI.Ember = (function(module) {
       var list = [];
       var garrisonDetails = this.getPath('garrisonArmy.details');
       var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      //debugger
+      
       if (garrisonDetails) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0)) {
@@ -280,6 +280,7 @@ AWE.UI.Ember = (function(module) {
     infatry_strength: function(){
       var infatry_strength_total = 0;
       var unitTypes = this.get('unitTypes');
+
       unitTypes.forEach(function(unitType) 
       {
         if(unitType.get('unitCategory') == 0)//infantry
@@ -388,8 +389,8 @@ module.ArmyRangeView  = Ember.TextField.extend({
     }.property('rangeCurrentValue').cacheable(),
 
     setNewValues: function(){
-      var value = this.getPath("unitType.allUnits") - this.get("value");
-      var other = this.get("value");
+      var value = this.getPath("unitType.allUnits") - parseInt(this.get("value"));
+      var other = parseInt(this.get("value"));
       this.setPath('unitType.garrisonUnits', value);
       this.setPath('unitType.otherUnits', other);
     }.observes("value"),
@@ -464,7 +465,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
       });
       
       	return list;
-   		}.property('garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
+   		}.property('unitTypes.@each.unitCategory').cacheable(),
    });
    
    module.ArmyChangeArtilleryView  = module.ArmyChangeInfantryView.extend ({
