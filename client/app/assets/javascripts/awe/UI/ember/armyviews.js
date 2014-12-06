@@ -372,7 +372,7 @@ module.InfantryInfoView  = Ember.View.extend ({
 
   setQueue: function(){
     var self = this;
-    var trainingQueuesCurrent = self.get('trainingQueues');
+    var trainingQueuesCurrent = self.get('trainingQueues') || [];
     trainingQueuesCurrent.forEach(function(queueCurrent) {
         var queueType = queueCurrent.get('queueType');
         
@@ -456,7 +456,7 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
 
     openDialog: function()
       {
-        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types') || [];
         var unitTypeLocalObject = this.get("unitType");
         var self = this;
         unitTypes.forEach(function(rulesUnitType) 
@@ -554,7 +554,7 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     getCostsForResource: function(res)
     {
       var resId = parseInt(res);
-      var resourceCosts = this.get('costs');
+      var resourceCosts = this.get('costs') || [];
       var self = this;
       var resourceCost = 0;
 
@@ -571,7 +571,7 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     getTotalCostsForResource: function(res)
     {
       var resId = parseInt(res);
-      var resourceCosts = this.get('totalCosts');
+      var resourceCosts = this.get('totalCosts') || [];
       var self = this;
       var resourceCost = 0;
 
@@ -937,7 +937,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
 
     garrisonSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += unitType.get('garrisonUnits');
       });
       return sum;
@@ -945,7 +945,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     
     otherSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += unitType.get('otherUnits');
       });
       return sum;
@@ -972,14 +972,14 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     },
     
     allToGarrison: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', unitType.get('allUnits'));
         unitType.set('otherUnits', 0);
       });
     },
     
     allToOther: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', 0);
         unitType.set('otherUnits', unitType.get('allUnits'));
       });
@@ -1050,7 +1050,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
 
     unitQuantities: function() {
       var unitQuantities = {};
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) {
         var quantity = unitType.get('otherUnits');
         if (quantity > 0) {
@@ -1108,7 +1108,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     unitDifferences: function() {
       var unitDifferences = {};
       var unitTypes = this.get('unitTypes');
-      var otherDetails = this.getPath('otherArmy.details');
+      var otherDetails = this.getPath('otherArmy.details') || [];
       unitTypes.forEach(function(unitType) {
         var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
         if (difference != 0) {
