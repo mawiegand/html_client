@@ -124,7 +124,7 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy', 'otherArmy'/*'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
+    }.property('garrisonArmy', 'otherArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
     
     unitDifferences: function() {
       var unitDifferences = {};
@@ -201,12 +201,12 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy'/*'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
+    }.property('garrisonArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
 
     //other units for new army
     unitQuantities: function() {
       var unitQuantities = {};
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) {
         var quantity = unitType.get('otherUnits');
         if (quantity > 0) {
@@ -225,7 +225,7 @@ AWE.UI.Ember = (function(module) {
     },
 
     trainingButtonUIMarker: function() {
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
       unitTypes.forEach(function(unitType) 
       {
@@ -242,7 +242,7 @@ AWE.UI.Ember = (function(module) {
     }.property('unitTypes.@each.otherUnits','AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
     createButtonUIMarker: function() {
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
       unitTypes.forEach(function(unitType) 
       {
@@ -279,7 +279,7 @@ AWE.UI.Ember = (function(module) {
 
     infatry_strength: function(){
       var infatry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
 
       unitTypes.forEach(function(unitType) 
       {
@@ -291,7 +291,7 @@ AWE.UI.Ember = (function(module) {
 
     cavalry_strength: function(){
       var cavalry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
         if(unitType.get('unitCategory') == 1)//cavalery
@@ -302,7 +302,7 @@ AWE.UI.Ember = (function(module) {
 
     archer_strength: function(){
       var archer_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
         if(unitType.get('unitCategory') == 2)//artillery
@@ -314,7 +314,7 @@ AWE.UI.Ember = (function(module) {
 
     total_army_strength: function(){
       var infatry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
          infatry_strength_total += unitType.get('unitAttack')*unitType.get('otherUnits');
@@ -325,7 +325,7 @@ AWE.UI.Ember = (function(module) {
     totalArmyUnits: function()
     {
       var total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
          total += parseInt(unitType.get('otherUnits'));
@@ -443,7 +443,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
    	{
 
    		var list = [];
-   		var unitTypes = this.get('unitTypes');
+   		var unitTypes = this.get('unitTypes') || [];
    		var self = this;
    		unitTypes.forEach(function(unitType) {
        
@@ -465,7 +465,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
       });
       
       	return list;
-   		}.property('unitTypes.@each.unitCategory').cacheable(),
+   		}.property('unitTypes.@each.unitCategory', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
    });
    
    module.ArmyChangeArtilleryView  = module.ArmyChangeInfantryView.extend ({
@@ -486,7 +486,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
       unitType: null,
       openDialog: function()
       {
-        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types') || [];
         var unitTypeLocalObject = this.get("unitType");
         var id = this.getPath("unitType.unitID");
 
