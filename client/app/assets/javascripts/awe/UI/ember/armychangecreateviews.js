@@ -39,7 +39,7 @@ AWE.UI.Ember = (function(module) {
 
     garrisonSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += parseInt(unitType.get('garrisonUnits'));
       });
       return sum;
@@ -47,7 +47,7 @@ AWE.UI.Ember = (function(module) {
     
     otherSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += parseInt(unitType.get('otherUnits'));
       });
       return sum;
@@ -74,14 +74,14 @@ AWE.UI.Ember = (function(module) {
     },
     
     allToGarrison: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', unitType.get('allUnits'));
         unitType.set('otherUnits', 0);
       });
     },
     
     allToOther: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', 0);
         unitType.set('otherUnits', unitType.get('allUnits'));
       });
@@ -128,7 +128,7 @@ AWE.UI.Ember = (function(module) {
     
     unitDifferences: function() {
       var unitDifferences = {};
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var otherDetails = this.getPath('otherArmy.details');
       unitTypes.forEach(function(unitType) {
         var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
