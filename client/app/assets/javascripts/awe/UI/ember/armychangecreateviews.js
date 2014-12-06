@@ -201,7 +201,7 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
+    }.property('garrisonArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
 
     //other units for new army
     unitQuantities: function() {
