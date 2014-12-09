@@ -269,6 +269,113 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
   });
 
+  module.InfantryInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab2-view',
+
+  garrisonArmy: null,
+  unitCategory: "unitcategory_infantry",//category is 0, but queueID 2
+  settlement: null,
+  trainingQueues: null,
+  controller: null,
+  queue: null,
+
+  isUIMarker: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
+  setQueue: function(){
+    var self = this;
+    var rules = AWE.GS.RulesManager.getRules();
+    if (rules)
+    {
+      var unityCategoryId = rules.getUnitCategoryNumId(this.get('unitCategory'));
+      var queueNumId = rules.getQueueTypeIdWithUnitCategory(unityCategoryId); 
+    }
+
+    var trainingQueuesCurrent = self.get('trainingQueues') || [];
+
+    trainingQueuesCurrent.forEach(function(queueCurrent) {
+        var queueType = queueCurrent.get('queueType');
+       
+        if(queueType.id === queueNumId)
+        {
+          self.set('queue', queueCurrent);
+        }
+      });
+  }.observes('trainingQueues','trainingQueues.@each'),
+
+  trainableUnitTypes: function() {
+      var queueType = this.getPath('queue.queueType');
+      var rules     = AWE.GS.RulesManager.getRules();
+      if (!queueType || !queueType.produces) {
+        return null;
+      }
+      var options = AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
+      var self = this;
+      var result = options.filter(function(unitType) {
+        return !self.impossibleToTrainDueToMaxRequirement(unitType);
+      });
+       
+      return result && result.length > 0 ? result : null;
+  }.property('queue.queueType').cacheable(),
+    
+    
+  impossibleToTrainDueToMaxRequirement: function(unitType) {
+      var settlement = this.getPath('queue.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var reqGroups = unitType.requirementGroups || [];
+      var maxFail = true;
+      log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
+      reqGroups.forEach(function(group) {
+        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, false); // DO NOT CONSIDER JOBS IN QUEUE
+      });
+      return maxFail;
+    },    
+
+  createJobPressed: function(evt) {
+      this.get('controller').trainingCreateClicked(this.get('queue'),  this.get('number'));
+    },
+
+  resourceExchangePressed: function() { 
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create(); 
+      WACKADOO.presentModalDialog(dialog); 
+      return false; 
+    },
+
+  trainingButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) ;
+    }.property('queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
+});
+
+module.ArtileryInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab3-view',
+
+  unitCategory: "unitcategory_artillery",
+});
+
+module.CavaleryInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab4-view',
+
+  unitCategory: "unitcategory_cavalry",
+});
+
+module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab5-view',
+
+  unitCategory: "unitcategory_special",
+});
+
+module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
+  templateName: 'army-info-tab1-view',
+
+  isAllUnits: true,
+  garrisonArmy: null,
+  unitTypes: null,
+});
+
   module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
 
     character: null,
@@ -347,107 +454,6 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
  });
 
-module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
-  templateName: 'army-info-tab1-view',
-
-  isAllUnits: true,
-  garrisonArmy: null,
-  unitTypes: null,
-});
-
-module.InfantryInfoView  = Ember.View.extend ({
-  templateName: 'army-info-tab2-view',
-
-  garrisonArmy: null,
-  unitCategory: 2,//category is 0, but queueID 2
-  settlement: null,
-  trainingQueues: null,
-  controller: null,
-  queue: null,
-
-  isUIMarker: function(){
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
-    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
-
-  setQueue: function(){
-    var self = this;
-    var trainingQueuesCurrent = self.get('trainingQueues') || [];
-    trainingQueuesCurrent.forEach(function(queueCurrent) {
-        var queueType = queueCurrent.get('queueType');
-        
-        if(queueType.id == self.get('unitCategory'))
-        {
-          self.set('queue', queueCurrent);
-        }
-      });
-  }.observes('garrisonArmy'),
-
-  allUnitTypesForCategory: function()
-  {
-    var self = this;
-    var units = [];
-    var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-
-    AWE.Ext.applyFunction(unitTypes, function(unitType) {
-        if(unitType.category == self.get('unitCategory') && unitType.id != 13)
-        {
-          //units[unitType.id] = unitType;
-          units.push(Ember.Object.create({
-              name: unitType.name,
-              symbolic_id: unitType.db_field, 
-              unitID: unitType.id,
-            }));
-        }
-      });
-    return units;
-  }.property().cacheable(), 
-
-  trainableUnitTypes: function() {
-      var queueType = this.getPath('queue.queueType');
-      var rules     = AWE.GS.RulesManager.getRules();
-      if (!queueType || !queueType.produces) {
-        return null;
-      }
-      var options = AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
-      var self = this;
-      var result = options.filter(function(unitType) {
-        return !self.impossibleToTrainDueToMaxRequirement(unitType);
-      });
-       
-      return result && result.length > 0 ? result : null;
-  }.property('queue.queueType').cacheable(),
-    
-    
-  impossibleToTrainDueToMaxRequirement: function(unitType) {
-      var settlement = this.getPath('queue.settlement');
-      var character = settlement ? settlement.owner() : null;
-      var reqGroups = unitType.requirementGroups || [];
-      var maxFail = true;
-      log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
-      reqGroups.forEach(function(group) {
-        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, false); // DO NOT CONSIDER JOBS IN QUEUE
-      });
-      return maxFail;
-    },    
-
-  createJobPressed: function(evt) {
-      this.get('controller').trainingCreateClicked(this.get('queue'),  this.get('number'));
-    },
-
-  resourceExchangePressed: function() { 
-      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create(); 
-      WACKADOO.presentModalDialog(dialog); 
-      return false; 
-    },
-
-  trainingButtonUIMarker: function() {
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) ;
-    }.property('queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
-
-});
-
 module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
     unitType: null,
@@ -512,41 +518,77 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     }.property('unitType').cacheable(),
     
     getStoneCosts: function()
-    {    
-      var stoneCost = this.getCostsForResource(0);
+    { 
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
+      }   
+      
+      var stoneCost = this.getCostsForResource(stoneId);
       return stoneCost;
     }.property('costs').cacheable(),
 
     getWoodCosts: function()
     {
-      var woodCost = this.getCostsForResource(1);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
+      } 
+
+      var woodCost = this.getCostsForResource(woodId);
       return woodCost;
 
     }.property('costs').cacheable(),
 
     getFurCosts: function()
     {
-      var furCost = this.getCostsForResource(2);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
+      } 
+
+      var furCost = this.getCostsForResource(furId);
       return furCost;
 
     }.property('costs').cacheable(),
 
     getTotalStoneCosts: function()
     { 
-      var stoneCost = this.getTotalCostsForResource(0);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
+      } 
+
+      var stoneCost = this.getTotalCostsForResource(stoneId);
       return stoneCost;
     }.property('totalCosts').cacheable(),
 
     getTotalWoodCosts: function()
     {
-      var woodCost = this.getTotalCostsForResource(1);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
+      } 
+
+      var woodCost = this.getTotalCostsForResource(woodId);
       return woodCost;
 
     }.property('totalCosts').cacheable(),
 
     getTotalFurCosts: function()
     {
-      var furCost = this.getTotalCostsForResource(2);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
+      } 
+
+      var furCost = this.getTotalCostsForResource(furId);
       return furCost;
 
     }.property('totalCosts').cacheable(),
@@ -593,55 +635,77 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     {
         var unitID = this.getPath('unitType.id');
         var lvl = 0;
+        var rules = AWE.GS.RulesManager.getRules();
+        if (rules)
+        {
+          var warrior = rules.getUnitTypeWithSymbolicId("unit_warrior").id;
+          var clubbers = rules.getUnitTypeWithSymbolicId("unit_clubbers").id;
+          var clubbers2 = rules.getUnitTypeWithSymbolicId("unit_clubbers_2").id;
+          var clubbers3 = rules.getUnitTypeWithSymbolicId("unit_clubbers_3").id;
+          var treeHuggers = rules.getUnitTypeWithSymbolicId("unit_tree_huggers").id;
+
+          var thrower = rules.getUnitTypeWithSymbolicId("unit_thrower").id;
+          var thrower2 = rules.getUnitTypeWithSymbolicId("unit_thrower_2").id;
+          var thrower3 = rules.getUnitTypeWithSymbolicId("unit_thrower_3").id;
+          var thrower4 = rules.getUnitTypeWithSymbolicId("unit_thrower_4").id;
+
+          var lightCavalry = rules.getUnitTypeWithSymbolicId("unit_light_cavalry").id;
+          var lightCavalry2 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_2").id;
+          var lightCavalry3 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_3").id;
+          var lightCavalry4 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_4").id;
+
+          var littleChief = rules.getUnitTypeWithSymbolicId("unit_little_chief").id;
+          var greatChief = rules.getUnitTypeWithSymbolicId("unit_great_chief").id;
+        }
         switch(unitID)
         {
           //infantry
-          case 0:
+          case warrior:
             lvl = 1;
             break;
-          case 1:
+          case clubbers:
             lvl = 2;
             break;
-          case 2:
+          case clubbers2:
             lvl = 3;
             break;
-          case 3:
+          case clubbers3:
             lvl = 4;
             break;
-          case 4:
+          case treeHuggers:
             lvl = 5;
             break;
             //archer
-          case 5:
+          case thrower:
             lvl = 1;
             break;
-          case 6:
+          case thrower2:
             lvl = 2;
             break;
-          case 7:
+          case thrower3:
             lvl = 3;
             break;
-          case 8:
+          case thrower4:
             lvl = 4;
             break;
             //cavalery
-          case 9:
+          case lightCavalry:
             lvl = 1;
             break;
-          case 10:
+          case lightCavalry2:
             lvl = 2;
             break;
-          case 11:
+          case lightCavalry3:
             lvl = 3;
             break;
-          case 12:
+          case lightCavalry4:
             lvl = 4;
             break;
             //special
-          case 14:
+          case littleChief:
             lvl = 1;
             break;
-          case 15:
+          case greatChief:
             lvl = 2;
             break;
         }
@@ -685,24 +749,6 @@ module.ArmyUnitResourceInfoView  = module.ArmyUnitResourceView.extend ({
     templateName: 'army-resource-info',
 });
 
-module.ArtileryInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab3-view',
-
-  unitCategory: 3,//category is 1, but queueID 3
-});
-
-module.CavaleryInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab4-view',
-
-  unitCategory: 4,//category is 2, but queueID 4
-});
-
-module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab5-view',
-
-  unitCategory: 6,//category is 4, but queueID 6
-});
-
 module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   templateName: 'army-info-button',
   unitType: null,
@@ -739,15 +785,25 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
 
     getUnitCategoryName: function()
     {
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+        var cavaleryCategoryId = rules.getUnitCategoryNumId("unitcategory_cavalry");
+        var artilleryCategoryId = rules.getUnitCategoryNumId("unitcategory_artillery");
+        var specialCategoryId = rules.getUnitCategoryNumId("unitcategory_special");
+      }
+
       var localUnitType = this.get('unitType');
       var unitTypeCategoryName = '';
-      if(localUnitType.category == 0)
+      if(localUnitType.category == infantryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.infantry');//"Infantry";
-      else if(localUnitType.category == 1)
+      else if(localUnitType.category == cavaleryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.cavalery');//"Cavalery";
-      else if(localUnitType.category == 2)
+      else if(localUnitType.category == artilleryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.artillery');//"Artillery";
-      else if(localUnitType.category == 4)
+      else if(localUnitType.category == specialCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.specialUnits');//"Special Units";
 
       return unitTypeCategoryName;

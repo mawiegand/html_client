@@ -181,10 +181,11 @@ AWE.UI.Ember = (function(module) {
       var list = [];
       var garrisonDetails = this.getPath('garrisonArmy.details');
       var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      
+
       if (garrisonDetails) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0)) {
+            
             list.push(Ember.Object.create({
               name: unitType.name,
               symbolic_id: unitType.db_field, 
@@ -227,9 +228,16 @@ AWE.UI.Ember = (function(module) {
     trainingButtonUIMarker: function() {
       var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+      }
+
       unitTypes.forEach(function(unitType) 
       {
-        if(unitType.get('unitCategory') == 0)//infantry
+        if(unitType.get('unitCategory') === infantryCategoryId)//infantry
           currentUnits += parseInt(unitType.get('otherUnits'));
       });
 
@@ -244,9 +252,16 @@ AWE.UI.Ember = (function(module) {
     createButtonUIMarker: function() {
       var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+      }
+
       unitTypes.forEach(function(unitType) 
       {
-        if(unitType.get('unitCategory') == 0)//infantry
+        if(unitType.get('unitCategory') === infantryCategoryId)//infantry
           currentUnits += parseInt(unitType.get('otherUnits'));
       });
 
@@ -281,9 +296,15 @@ AWE.UI.Ember = (function(module) {
       var infatry_strength_total = 0;
       var unitTypes = this.get('unitTypes') || [];
 
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+      }
+
       unitTypes.forEach(function(unitType) 
       {
-        if(unitType.get('unitCategory') == 0)//infantry
+        if(unitType.get('unitCategory') === infantryCategoryId)//infantry
           infatry_strength_total += parseInt(unitType.get('unitAttack'))*parseInt(unitType.get('otherUnits'));
       });
         return infatry_strength_total;
@@ -292,9 +313,16 @@ AWE.UI.Ember = (function(module) {
     cavalry_strength: function(){
       var cavalry_strength_total = 0;
       var unitTypes = this.get('unitTypes') || [];
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var cavaleryCategoryId = rules.getUnitCategoryNumId("unitcategory_cavalry");
+      }
+
       unitTypes.forEach(function(unitType) 
       {
-        if(unitType.get('unitCategory') == 1)//cavalery
+        if(unitType.get('unitCategory') === cavaleryCategoryId)//cavalery
           cavalry_strength_total += parseInt(unitType.get('unitAttack'))*parseInt(unitType.get('otherUnits'));
       });
         return cavalry_strength_total;
@@ -303,9 +331,16 @@ AWE.UI.Ember = (function(module) {
     archer_strength: function(){
       var archer_strength_total = 0;
       var unitTypes = this.get('unitTypes') || [];
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var artilleryCategoryId = rules.getUnitCategoryNumId("unitcategory_artillery");
+      }
+
       unitTypes.forEach(function(unitType) 
       {
-        if(unitType.get('unitCategory') == 2)//artillery
+        if(unitType.get('unitCategory') === artilleryCategoryId)//artillery
           archer_strength_total += parseInt(unitType.get('unitAttack'))*parseInt(unitType.get('otherUnits'));
       });
         return archer_strength_total;
@@ -435,7 +470,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
     unitTypesBinding: "parentView.parentView.unitTypes",
 
      //infantry
-    unityTypeID: 0,
+    unityTypeSymbolicID: "unitcategory_infantry",
     //return all units if needed
     isAllUnits: false,
 
@@ -445,18 +480,26 @@ module.ArmyRangeView  = Ember.TextField.extend({
    		var list = [];
    		var unitTypes = this.get('unitTypes') || [];
    		var self = this;
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var specialCategoryId = rules.getUnitCategoryNumId("unitcategory_special");
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+      }
+
    		unitTypes.forEach(function(unitType) {
        
    			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
    			{
    			//infantry and special unit
-   				if(unitType.unitCategory == self.get("unityTypeID") || self.get('isAllUnits'))
+   				if(unitType.unitCategory === rules.getUnitCategoryNumId(self.get("unityTypeSymbolicID")) || self.get('isAllUnits'))
           {
    					  list.push(unitType);
           }
           else
           {
-            if((unitType.unitCategory == 4) && (self.get("unityTypeID") == 0))
+            if((unitType.unitCategory == specialCategoryId) && (rules.getUnitCategoryNumId(self.get("unityTypeSymbolicID")) === infantryCategoryId))
             {
               list.push(unitType);
             }
@@ -465,19 +508,20 @@ module.ArmyRangeView  = Ember.TextField.extend({
       });
       
       	return list;
-   		}.property('unitTypes.@each.unitCategory', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
+        //removed, while activeArmyTypen should updated after unitTypes computed
+   		}.property('unitTypes.@each'/*, 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
    });
    
    module.ArmyChangeArtilleryView  = module.ArmyChangeInfantryView.extend ({
    
    		templateName: 'army-new-change-tab2-view',
-   		unityTypeID: 2,
+   		unityTypeSymbolicID: "unitcategory_artillery",
    });
    
    module.ArmyChangeCavalryView  = module.ArmyChangeInfantryView.extend ({
    
    		templateName: 'army-new-change-tab3-view',
-   		unityTypeID: 1,
+   		unityTypeSymbolicID: "unitcategory_cavalry",
    });
 
   //view to take click from unit icon
@@ -492,7 +536,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
 
         unitTypes.forEach(function(rulesUnitType) 
         {
-          if(rulesUnitType.id == id)//cavalery
+          if(rulesUnitType.id == id)
             {
               var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: rulesUnitType});
               WACKADOO.presentModalDialog(dialog);
