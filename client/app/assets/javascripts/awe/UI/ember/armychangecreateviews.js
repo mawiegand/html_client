@@ -39,7 +39,7 @@ AWE.UI.Ember = (function(module) {
 
     garrisonSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += parseInt(unitType.get('garrisonUnits'));
       });
       return sum;
@@ -47,7 +47,7 @@ AWE.UI.Ember = (function(module) {
     
     otherSum: function(){
       var sum = 0;
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         sum += parseInt(unitType.get('otherUnits'));
       });
       return sum;
@@ -74,14 +74,14 @@ AWE.UI.Ember = (function(module) {
     },
     
     allToGarrison: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', unitType.get('allUnits'));
         unitType.set('otherUnits', 0);
       });
     },
     
     allToOther: function() {
-      this.get('unitTypes').forEach(function(unitType){
+      (this.get('unitTypes') || []).forEach(function(unitType){
         unitType.set('garrisonUnits', 0);
         unitType.set('otherUnits', unitType.get('allUnits'));
       });
@@ -124,11 +124,11 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy', 'otherArmy'/*'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
+    }.property('garrisonArmy', 'otherArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
     
     unitDifferences: function() {
       var unitDifferences = {};
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var otherDetails = this.getPath('otherArmy.details');
       unitTypes.forEach(function(unitType) {
         var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
@@ -201,12 +201,12 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy'/*'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange'*/).cacheable(),
+    }.property('garrisonArmy', 'garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
 
     //other units for new army
     unitQuantities: function() {
       var unitQuantities = {};
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) {
         var quantity = unitType.get('otherUnits');
         if (quantity > 0) {
@@ -225,7 +225,7 @@ AWE.UI.Ember = (function(module) {
     },
 
     trainingButtonUIMarker: function() {
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
 
       var rules = AWE.GS.RulesManager.getRules();
@@ -251,7 +251,7 @@ AWE.UI.Ember = (function(module) {
     }.property('unitTypes.@each.otherUnits','AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
     createButtonUIMarker: function() {
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var currentUnits = 0;
 
       var rules = AWE.GS.RulesManager.getRules();
@@ -298,7 +298,7 @@ AWE.UI.Ember = (function(module) {
 
     infatry_strength: function(){
       var infatry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var rules = AWE.GS.RulesManager.getRules();
       if (rules)
       {
@@ -317,7 +317,7 @@ AWE.UI.Ember = (function(module) {
 
     cavalry_strength: function(){
       var cavalry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var rules = AWE.GS.RulesManager.getRules();
       if (rules)
       {
@@ -336,7 +336,7 @@ AWE.UI.Ember = (function(module) {
 
     archer_strength: function(){
       var archer_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       var rules = AWE.GS.RulesManager.getRules();
       if (rules)
       {
@@ -356,7 +356,7 @@ AWE.UI.Ember = (function(module) {
 
     total_army_strength: function(){
       var infatry_strength_total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
          infatry_strength_total += unitType.get('unitAttack')*unitType.get('otherUnits');
@@ -367,7 +367,7 @@ AWE.UI.Ember = (function(module) {
     totalArmyUnits: function()
     {
       var total = 0;
-      var unitTypes = this.get('unitTypes');
+      var unitTypes = this.get('unitTypes') || [];
       unitTypes.forEach(function(unitType) 
       {
          total += parseInt(unitType.get('otherUnits'));
@@ -485,7 +485,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
    	{
 
    		var list = [];
-   		var unitTypes = this.get('unitTypes');
+   		var unitTypes = this.get('unitTypes') || [];
    		var self = this;
       var rules = AWE.GS.RulesManager.getRules();
       if (rules)
@@ -536,7 +536,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
       unitType: null,
       openDialog: function()
       {
-        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types') || [];
         var unitTypeLocalObject = this.get("unitType");
         var id = this.getPath("unitType.unitID");
 
