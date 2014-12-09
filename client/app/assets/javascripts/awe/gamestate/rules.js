@@ -79,6 +79,19 @@ AWE.GS = (function(module) {
       }
       return settlementType;    
     },
+
+    getUnitCategoryNumId: function(symbolic_category_id){
+      var unitCategories = AWE.GS.RulesManager.getRules().get('unit_categories') || [];
+      var num = -1;
+      unitCategories.forEach(function(unitCategory){
+        if(unitCategory.symbolic_id === symbolic_category_id)
+          {
+            num = unitCategory.id;
+          }
+      });
+      return num;
+    },
+
     
     getUnitType: function(id) {
       var unitType = this.get('unit_types')[id];
