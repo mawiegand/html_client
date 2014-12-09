@@ -832,7 +832,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           {
               Sampl.setInstallToken(installToken);
           }
-          if platform != "undefined" && platform != null)
+          if (platform != "undefined" && platform != null)
           {
               Sampl.setPlatform(platform);
           }
