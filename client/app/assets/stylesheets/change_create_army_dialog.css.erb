@@ -18,13 +18,15 @@
 .slider-view {
   position: absolute;
   width: 250px;
-  height: 74px;
+  height: 40px;
+  margin-left: 220px;
+  margin-top: 20px;
 }
 .slider-plus {
   width: 36px;
   height: 40px;
   background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_positive.png' %>");
-  float: left;
+  float: right;
 }
 
 .slider-range-container
@@ -33,10 +35,10 @@
   float: none;
   width: auto;
   height: 45px;
-  background: #F00;
+  margin: 0 36px;
 }
 
-.army-type-range
+.slider-range
 {
   width: 100%;
 }
@@ -45,7 +47,7 @@
   width: 36px;
   height: 40px;
   background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_negative.png' %>");
-  float: right;
+  float: left;
 }
 
 
