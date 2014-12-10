@@ -248,8 +248,14 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
     startTab: 0,
   
-    setSettlment: function(){
+    /*setSettlment: function(){
       this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
+    }.observes('garrisonArmy'),*/
+
+    garrisonArmyObserver: function() {
+      if (this.get('garrisonArmy')) {
+        AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
+      }
     }.observes('garrisonArmy'),
 
     trainingQueues: function() {
@@ -269,85 +275,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
   });
 
-  module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
-
-    character: null,
-    alliance:  null,
-    allianceMember: null,
-    unitTypes: null,
-    garrisonArmy: null,
-    settlement: null,
-    trainingQueues: null,
-    startTab: 0,
-
-    init: function() {
-
-     this.set('tabViews', [
-       { key:   "tab1",
-         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
-         view:  module.GarrisonInfoView.extend({
-         unitTypesBinding: "parentView.parentView.unitTypes",
-         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          }),
-         isTitelTab: true,
-         buttonClass: "header-menu-button-military"
-       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
-       { key:   "tab2",
-         title: AWE.I18n.lookupTranslation('encyclopedia.infantry'), 
-         view:  module.InfantryInfoView.extend({ 
-          controllerBinding: "parentView.parentView.controller",
-          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          settlementBinding: "parentView.parentView.settlement",
-          trainingQueuesBinding: "parentView.parentView.trainingQueues",
-          }),
-         isTitelTab: false,
-         buttonClass: "middle-menu-button-military"
-       },
-       { key:   "tab3",
-         title: AWE.I18n.lookupTranslation('encyclopedia.artillery'), 
-         view:  module.ArtileryInfoView.extend({ 
-          controllerBinding: "parentView.parentView.controller",
-          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          settlementBinding: "parentView.parentView.settlement",
-          trainingQueuesBinding: "parentView.parentView.trainingQueues",
-          }),
-         isTitelTab: false,
-         buttonClass: "middle-menu-button-military"
-       },
-       { key:   "tab4",
-         title: AWE.I18n.lookupTranslation('encyclopedia.cavalery'), 
-         view:  module.CavaleryInfoView.extend({ 
-          controllerBinding: "parentView.parentView.controller",
-          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          settlementBinding: "parentView.parentView.settlement",
-          trainingQueuesBinding: "parentView.parentView.trainingQueues",
-          }),
-         isTitelTab: false,
-         buttonClass: "middle-menu-button-military"
-       },
-       { key:   "tab5",
-         title: AWE.I18n.lookupTranslation('encyclopedia.specialUnits'), 
-         view:  module.SpecialUnitInfoView.extend({ 
-          controllerBinding: "parentView.parentView.controller",
-          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          settlementBinding: "parentView.parentView.settlement",
-          trainingQueuesBinding: "parentView.parentView.trainingQueues",
-          }),
-         isTitelTab: false,
-         buttonClass: "middle-menu-button-military"
-       }
-     ]);
-
-     this._super();
-   },
-
-   changeTab: function() {
-    this.selectTabByNumber(this.get("startTab"));
-   }.observes("startTab"),
-
- });
-
-module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
+  module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
   templateName: 'army-info-tab1-view',
 
   isAllUnits: true,
@@ -448,6 +376,103 @@ module.InfantryInfoView  = Ember.View.extend ({
 
 });
 
+module.ArtileryInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab3-view',
+
+  unitCategory: 3,//category is 1, but queueID 3
+});
+
+module.CavaleryInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab4-view',
+
+  unitCategory: 4,//category is 2, but queueID 4
+});
+
+module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
+  templateName: 'army-info-tab5-view',
+
+  unitCategory: 6,//category is 4, but queueID 6
+});
+
+
+  module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
+
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+    unitTypes: null,
+    garrisonArmy: null,
+    settlement: null,
+    trainingQueues: null,
+    startTab: 0,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
+         view:  module.GarrisonInfoView.extend({
+         unitTypesBinding: "parentView.parentView.unitTypes",
+         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          }),
+         isTitelTab: true,
+         buttonClass: "header-menu-button-military"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: AWE.I18n.lookupTranslation('encyclopedia.infantry'), 
+         view:  module.InfantryInfoView.extend({ 
+          controllerBinding: "parentView.parentView.controller",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab3",
+         title: AWE.I18n.lookupTranslation('encyclopedia.artillery'), 
+         view:  module.ArtileryInfoView.extend({ 
+          controllerBinding: "parentView.parentView.controller",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab4",
+         title: AWE.I18n.lookupTranslation('encyclopedia.cavalery'), 
+         view:  module.CavaleryInfoView.extend({ 
+          controllerBinding: "parentView.parentView.controller",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab5",
+         title: AWE.I18n.lookupTranslation('encyclopedia.specialUnits'), 
+         view:  module.SpecialUnitInfoView.extend({ 
+          controllerBinding: "parentView.parentView.controller",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       }
+     ]);
+
+     this._super();
+   },
+
+   changeTab: function() {
+    this.selectTabByNumber(this.get("startTab"));
+   }.observes("startTab"),
+
+ });
+
 module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
     unitType: null,
@@ -513,40 +538,70 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     
     getStoneCosts: function()
     {    
-      var stoneCost = this.getCostsForResource(0);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
+      }      
+      var stoneCost = this.getCostsForResource(stoneId);
       return stoneCost;
     }.property('costs').cacheable(),
 
     getWoodCosts: function()
     {
-      var woodCost = this.getCostsForResource(1);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
+      } 
+      var woodCost = this.getCostsForResource(woodId);
       return woodCost;
 
     }.property('costs').cacheable(),
 
     getFurCosts: function()
     {
-      var furCost = this.getCostsForResource(2);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
+      } 
+      var furCost = this.getCostsForResource(furId);
       return furCost;
 
     }.property('costs').cacheable(),
 
     getTotalStoneCosts: function()
     { 
-      var stoneCost = this.getTotalCostsForResource(0);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
+      } 
+      var stoneCost = this.getTotalCostsForResource(stoneId);
       return stoneCost;
     }.property('totalCosts').cacheable(),
 
     getTotalWoodCosts: function()
     {
-      var woodCost = this.getTotalCostsForResource(1);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
+      } 
+      var woodCost = this.getTotalCostsForResource(woodId);
       return woodCost;
 
     }.property('totalCosts').cacheable(),
 
     getTotalFurCosts: function()
     {
-      var furCost = this.getTotalCostsForResource(2);
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
+      } 
+      var furCost = this.getTotalCostsForResource(furId);
       return furCost;
 
     }.property('totalCosts').cacheable(),
@@ -593,55 +648,78 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     {
         var unitID = this.getPath('unitType.id');
         var lvl = 0;
+        var rules = AWE.GS.RulesManager.getRules();
+        if (rules)
+        {
+          var warrior = rules.getUnitTypeWithSymbolicId("unit_warrior").id;
+          var clubbers = rules.getUnitTypeWithSymbolicId("unit_clubbers").id;
+          var clubbers2 = rules.getUnitTypeWithSymbolicId("unit_clubbers_2").id;
+          var clubbers3 = rules.getUnitTypeWithSymbolicId("unit_clubbers_3").id;
+          var treeHuggers = rules.getUnitTypeWithSymbolicId("unit_tree_huggers").id;
+
+          var thrower = rules.getUnitTypeWithSymbolicId("unit_thrower").id;
+          var thrower2 = rules.getUnitTypeWithSymbolicId("unit_thrower_2").id;
+          var thrower3 = rules.getUnitTypeWithSymbolicId("unit_thrower_3").id;
+          var thrower4 = rules.getUnitTypeWithSymbolicId("unit_thrower_4").id;
+
+          var lightCavalry = rules.getUnitTypeWithSymbolicId("unit_light_cavalry").id;
+          var lightCavalry2 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_2").id;
+          var lightCavalry3 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_3").id;
+          var lightCavalry4 = rules.getUnitTypeWithSymbolicId("unit_light_cavalry_4").id;
+
+          var littleChief = rules.getUnitTypeWithSymbolicId("unit_little_chief").id;
+          var greatChief = rules.getUnitTypeWithSymbolicId("unit_great_chief").id;
+        }
+
         switch(unitID)
         {
           //infantry
-          case 0:
+          case warrior:
             lvl = 1;
             break;
-          case 1:
+          case clubbers:
             lvl = 2;
             break;
-          case 2:
+          case clubbers2:
             lvl = 3;
             break;
-          case 3:
+          case clubbers3:
             lvl = 4;
             break;
-          case 4:
+          case treeHuggers:
             lvl = 5;
             break;
             //archer
-          case 5:
+          case thrower:
             lvl = 1;
             break;
-          case 6:
+          case thrower2:
             lvl = 2;
             break;
-          case 7:
+          case thrower3:
             lvl = 3;
             break;
-          case 8:
+          case thrower4:
             lvl = 4;
             break;
             //cavalery
-          case 9:
+          case lightCavalry:
             lvl = 1;
             break;
-          case 10:
+          case lightCavalry2:
             lvl = 2;
             break;
-          case 11:
+          case lightCavalry3:
             lvl = 3;
             break;
-          case 12:
+          case lightCavalry4:
             lvl = 4;
             break;
             //special
-          case 14:
+          case littleChief:
             lvl = 1;
             break;
-          case 15:
+          case greatChief:
             lvl = 2;
             break;
         }
@@ -685,24 +763,6 @@ module.ArmyUnitResourceInfoView  = module.ArmyUnitResourceView.extend ({
     templateName: 'army-resource-info',
 });
 
-module.ArtileryInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab3-view',
-
-  unitCategory: 3,//category is 1, but queueID 3
-});
-
-module.CavaleryInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab4-view',
-
-  unitCategory: 4,//category is 2, but queueID 4
-});
-
-module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
-  templateName: 'army-info-tab5-view',
-
-  unitCategory: 6,//category is 4, but queueID 6
-});
-
 module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   templateName: 'army-info-button',
   unitType: null,
@@ -739,15 +799,26 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
 
     getUnitCategoryName: function()
     {
+
+      var rules = AWE.GS.RulesManager.getRules();
+      if (rules)
+      {
+        var infantryCategoryId = rules.getUnitCategoryNumId("unitcategory_infantry");
+        var cavaleryCategoryId = rules.getUnitCategoryNumId("unitcategory_cavalry");
+        var artilleryCategoryId = rules.getUnitCategoryNumId("unitcategory_artillery");
+        var specialCategoryId = rules.getUnitCategoryNumId("unitcategory_special");
+      }
+
+
       var localUnitType = this.get('unitType');
       var unitTypeCategoryName = '';
-      if(localUnitType.category == 0)
+      if(localUnitType.category == infantryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.infantry');//"Infantry";
-      else if(localUnitType.category == 1)
+      else if(localUnitType.category == cavaleryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.cavalery');//"Cavalery";
-      else if(localUnitType.category == 2)
+      else if(localUnitType.category == artilleryCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.artillery');//"Artillery";
-      else if(localUnitType.category == 4)
+      else if(localUnitType.category == specialCategoryId)
         unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.specialUnits');//"Special Units";
 
       return unitTypeCategoryName;

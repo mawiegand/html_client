@@ -176,11 +176,12 @@ AWE.UI.Ember = (function(module) {
         }
       });
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
-        garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
+        //garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
         controller: WACKADOO.presentScreenController,
-        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement'),
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
         startTab: startTab
       });
+      dialog.set('garrisonArmy', AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison')),
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionMilitaryClicked(this.get('slot'));
     },
