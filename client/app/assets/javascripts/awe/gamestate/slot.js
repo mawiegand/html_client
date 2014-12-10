@@ -179,9 +179,9 @@ AWE.GS = (function(module) {
     isMilitaryBuilding: function() {
       var self = this;
       var isMilitary = false;
-      var military = AWE.Config.MILITARY_BUILDINGS;
-      military.forEach(function(type) {
-        if(self.getPath('buildingType.symbolic_id') === type[0])
+      var queues = self.get("unlockedQueues");
+      queues.forEach(function(type) {
+        if(type.category === "queue_category_training")
         {
           isMilitary = true;
         }

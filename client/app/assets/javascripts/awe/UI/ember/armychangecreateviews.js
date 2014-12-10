@@ -370,6 +370,11 @@ AWE.UI.Ember = (function(module) {
    },
  });
  
+module.ArmySliderView = Ember.View.extend({
+  templateName: "army-slider",
+  unitType: null,
+  
+});
 
 module.ArmyRangeView  = Ember.TextField.extend({
 
@@ -379,6 +384,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
     min: 0,
     type: "range",
     valueBinding: "unitType.otherUnits",
+
     max: function(){
       return this.getPath("unitType.allUnits");
     }.property("unitType.allUnits").cacheable(),

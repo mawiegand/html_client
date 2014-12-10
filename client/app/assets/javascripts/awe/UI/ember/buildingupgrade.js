@@ -22,6 +22,10 @@ AWE.UI.Ember = (function(module) {
 
     selectedBuildingClass: function() {
       var className = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+      if(this.get("conversionView"))
+      {
+        className += "_2";
+      }
       return className;
     }.property("building.buildingId"),
 

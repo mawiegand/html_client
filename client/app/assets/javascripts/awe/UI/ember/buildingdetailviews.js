@@ -152,13 +152,27 @@ AWE.UI.Ember = (function(module) {
     },
     
     militaryClicked: function(event) {
-      var building = this.getPath("slot.building.buildingType.symbolic_id");
-      var military = AWE.Config.MILITARY_BUILDINGS;
+      var building = this.getPath("slot.building");
       var startTab = 0;
-      military.forEach(function(type) {
-        if(building === type[0])
+      building.get("unlockedQueues").forEach(function(queue){
+        if(queue.category === 'queue_category_training')
         {
-          startTab = type[1];
+          if(queue.symbolic_id === "queue_infantry")
+          {
+            startTab = 1;
+          }
+          if(queue.symbolic_id === "queue_artillery")
+          {
+            startTab = 2;
+          }
+          if(queue.symbolic_id === "queue_cavalry")
+          {
+            startTab = 3;
+          }
+          if(queue.symbolic_id === "queue_special")
+          {
+            startTab = 4;
+          }
         }
       });
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({

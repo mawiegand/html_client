@@ -107,3 +107,7 @@
     <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} {{action "openDialog"}}>
     </div>
 </script>
+
+<script type="text/x-handlebars" data-template-name="army-slider"> 
+    {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="unitType"}}
+</script>
