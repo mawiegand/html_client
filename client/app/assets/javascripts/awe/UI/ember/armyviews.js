@@ -248,8 +248,14 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
     startTab: 0,
   
-    setSettlment: function(){
+    /*setSettlment: function(){
       this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
+    }.observes('garrisonArmy'),*/
+
+    garrisonArmyObserver: function() {
+      if (this.get('garrisonArmy')) {
+        AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
+      }
     }.observes('garrisonArmy'),
 
     trainingQueues: function() {
