@@ -287,7 +287,7 @@ module.InfantryInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab2-view',
 
   garrisonArmy: null,
-  unitCategory: 2,//category is 0, but queueID 2
+  unitCategory: "unitcategory_infantry",//category is 0, but queueID 2
   settlement: null,
   trainingQueues: null,
   controller: null,
@@ -299,19 +299,29 @@ module.InfantryInfoView  = Ember.View.extend ({
     }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
   setQueue: function(){
-    var self = this;
-    var trainingQueuesCurrent = self.get('trainingQueues') || [];
-    trainingQueuesCurrent.forEach(function(queueCurrent) {
-        var queueType = queueCurrent.get('queueType');
-        
-        if(queueType.id == self.get('unitCategory'))
-        {
-          self.set('queue', queueCurrent);
-        }
-      });
-  }.observes('garrisonArmy'),
+   var self = this;
+   if(self.get('controller'))
+   {
+     self.get('controller').updateAllTrainingQueuesAndJobs();
+   }
+   var rules = AWE.GS.RulesManager.getRules();
+   if (rules)
+   {
+     var unityCategoryId = rules.getUnitCategoryNumId(this.get('unitCategory'));
+     var queueNumId = rules.getQueueTypeIdWithUnitCategory(unityCategoryId); 
+   }
+   var trainingQueuesCurrent = self.get('trainingQueues') || [];
+   trainingQueuesCurrent.forEach(function(queueCurrent) {
+       var queueType = queueCurrent.get('queueType');
 
-  allUnitTypesForCategory: function()
+       if(queueType.id === queueNumId)
+       {
+         self.set('queue', queueCurrent);
+       }
+     });
+   }.observes('trainingQueues','trainingQueues.@each'),
+
+ /* allUnitTypesForCategory: function()
   {
     var self = this;
     var units = [];
@@ -329,7 +339,7 @@ module.InfantryInfoView  = Ember.View.extend ({
         }
       });
     return units;
-  }.property().cacheable(), 
+  }.property().cacheable(), */
 
   trainableUnitTypes: function() {
       var queueType = this.getPath('queue.queueType');
@@ -379,19 +389,19 @@ module.InfantryInfoView  = Ember.View.extend ({
 module.ArtileryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab3-view',
 
-  unitCategory: 3,//category is 1, but queueID 3
+  unitCategory: "unitcategory_artillery",
 });
 
 module.CavaleryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab4-view',
 
-  unitCategory: 4,//category is 2, but queueID 4
+  unitCategory: "unitcategory_cavalry",
 });
 
 module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab5-view',
 
-  unitCategory: 6,//category is 4, but queueID 6
+  unitCategory: "unitcategory_special",
 });
 
 
