@@ -411,39 +411,6 @@ AWE.UI.Ember = (function(module) {
      this._super();
    },
  });
- 
-module.SliderView = Ember.View.extend({
-  templateName: "slider-view",
-  classNames: ["slider-view"],
-  max: 1,
-  min: 0,
-  value: null,
-
-  onPlusClicked: function(){
-    if(this.get("value") < this.get("max"))
-    {
-      this.set("value", (parseInt(this.get("value")) + 1))
-    }
-  },
-
-  onMinusClicked: function(){
-    if(this.get("value") > 0)
-    {
-      this.set("value", (this.get("value") - 1))
-    }
-  },
-
-});
-
-module.RangeView = Ember.TextField.extend({
-  classNames: ["slider-range"],
-  min: 0,
-  max: 1,
-  value: null,
-
-  attributeBindings: ["min", "max"],
-  type: "range",
-});
 
 module.ArmyRangeView  = Ember.TextField.extend({
 

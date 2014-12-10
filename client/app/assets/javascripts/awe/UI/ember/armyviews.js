@@ -832,15 +832,8 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
       },
     });
 
-  module.JobsRangeView  = Ember.TextField.extend({
+  module.JobsRangeView  = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
-    attributeBindings: ["min", "max"],
-    min: 1,
-    type: "range",
-    max: function(){
-      return 1000;
-    }.property().cacheable(),
-    valueBinding: "number",
   });
 //Recruitment job dialog end
 
