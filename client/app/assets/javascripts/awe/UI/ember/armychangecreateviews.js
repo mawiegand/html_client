@@ -152,10 +152,13 @@ AWE.UI.Ember = (function(module) {
     init: function() {
       var self = this;
       this._super();
-      this.set('loadingSettlement', true);
-      AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
-        self.set('loadingSettlement', false);
-      });
+      if(this.get('locationId') !== null)
+      {
+        this.set('loadingSettlement', true);
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
+          self.set('loadingSettlement', false);
+        });
+      }
     },
     
     loadingSettlement: false,
