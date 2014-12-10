@@ -287,7 +287,7 @@ module.InfantryInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab2-view',
 
   garrisonArmy: null,
-  unitCategory: "unitcategory_infantry",//category is 0, but queueID 2
+  unitCategory: 2,//category is 0, but queueID 2
   settlement: null,
   trainingQueues: null,
   controller: null,
@@ -300,25 +300,18 @@ module.InfantryInfoView  = Ember.View.extend ({
 
   setQueue: function(){
     var self = this;
-    var rules = AWE.GS.RulesManager.getRules();
-    if (rules)
-    {
-      var unityCategoryId = rules.getUnitCategoryNumId(this.get('unitCategory'));
-      var queueNumId = rules.getQueueTypeIdWithUnitCategory(unityCategoryId); 
-    }
-
     var trainingQueuesCurrent = self.get('trainingQueues') || [];
     trainingQueuesCurrent.forEach(function(queueCurrent) {
         var queueType = queueCurrent.get('queueType');
         
-        if(queueType.id === queueNumId)
+        if(queueType.id == self.get('unitCategory'))
         {
           self.set('queue', queueCurrent);
         }
       });
-    }.observes('trainingQueues','trainingQueues.@each'),
+  }.observes('garrisonArmy'),
 
- /* allUnitTypesForCategory: function()
+  allUnitTypesForCategory: function()
   {
     var self = this;
     var units = [];
@@ -336,7 +329,7 @@ module.InfantryInfoView  = Ember.View.extend ({
         }
       });
     return units;
-  }.property().cacheable(), */
+  }.property().cacheable(), 
 
   trainableUnitTypes: function() {
       var queueType = this.getPath('queue.queueType');
@@ -386,19 +379,19 @@ module.InfantryInfoView  = Ember.View.extend ({
 module.ArtileryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab3-view',
 
-  unitCategory: "unitcategory_artillery",
+  unitCategory: 3,//category is 1, but queueID 3
 });
 
 module.CavaleryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab4-view',
 
-  unitCategory: "unitcategory_cavalry",
+  unitCategory: 4,//category is 2, but queueID 4
 });
 
 module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab5-view',
 
-  unitCategory: "unitcategory_special",
+  unitCategory: 6,//category is 4, but queueID 6
 });
 
 
@@ -841,6 +834,9 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
 
   module.JobsRangeView  = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
+    max: 1000,
+    min: 1,
+    valueBinding: "number",
   });
 //Recruitment job dialog end
 

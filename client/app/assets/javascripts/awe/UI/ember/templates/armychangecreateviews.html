@@ -74,7 +74,7 @@
                 {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
          	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
          	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-            {{view AWE.UI.Ember.SliderView valueBinding="armyType.otherUnits" minBinding="0" maxBinding="armyType.allUnits"}}
+            {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
          </div>
      {{/each}}
 
@@ -86,7 +86,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-     	 {{view AWE.UI.Ember.SliderView valueBinding="armyType.otherUnits" minBinding="0" maxBinding="armyType.allUnits"}}
+     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
      </div>
      {{/each}}
 </script>
@@ -97,7 +97,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-     	 {{view AWE.UI.Ember.SliderView valueBinding="armyType.otherUnits" minBinding="0" maxBinding="armyType.allUnits"}}
+     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
      </div>
      {{/each}}
 </script>

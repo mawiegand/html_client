@@ -415,7 +415,7 @@ AWE.UI.Ember = (function(module) {
    },
  });
 
-module.ArmyRangeView  = Ember.TextField.extend({
+module.ArmyRangeView  = AWE.UI.Ember.SliderView.extend({
 
     classNames: ["army-type-range"],
     unitType: null,

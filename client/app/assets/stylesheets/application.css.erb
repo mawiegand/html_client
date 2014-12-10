@@ -1332,9 +1332,13 @@ canvas{
   width: 50%;
   box-sizing: border-box;
   position: absolute;
-  top: 45px;
+  top: 80px;
   left: 0px;
   padding-left: 83px;
+}
+
+.encyclopedia-unit-new-pane .unit-image-wrapper{
+  top:45px;
 }
 
 ::-webkit-scrollbar { 
@@ -1346,6 +1350,37 @@ canvas{
 }
 
 /* == SPECIFIC SCREEN CSS END == */
+.slider-view {
+
+}
+.slider-plus {
+  width: 36px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_positive.png' %>");
+  float: right;
+}
+
+.slider-range-container
+{
+  display: block;
+  float: none;
+  width: auto;
+  height: 45px;
+  margin: 0 36px;
+}
+
+.slider-range
+{
+  width: 100%;
+}
+
+.slider-minus {
+  width: 36px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_negative.png' %>");
+  float: left;
+}
+
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
   float: right;
 }
