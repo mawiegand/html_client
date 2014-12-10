@@ -74,7 +74,7 @@
                 {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
          	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
          	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-            {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+            {{view AWE.UI.Ember.ArmySliderView unitTypeBinding="armyType"}}
          </div>
      {{/each}}
 
@@ -86,7 +86,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+     	 {{view AWE.UI.Ember.ArmySliderView unitTypeBinding="armyType"}}
      </div>
      {{/each}}
 </script>
@@ -97,7 +97,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
-     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+     	 {{view AWE.UI.Ember.ArmySliderView unitTypeBinding="armyType"}}
      </div>
      {{/each}}
 </script>
@@ -108,6 +108,10 @@
     </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-slider"> 
-    {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="unitType"}}
+<script type="text/x-handlebars" data-template-name="army-slider">
+    <div class="slider-plus"></div>
+    <div class="slider-minus"></div>
+    <div class="slider-range-container">
+        {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="unitType"}}
+    </div>
 </script>

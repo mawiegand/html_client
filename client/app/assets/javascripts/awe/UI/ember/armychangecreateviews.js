@@ -372,8 +372,9 @@ AWE.UI.Ember = (function(module) {
  
 module.ArmySliderView = Ember.View.extend({
   templateName: "army-slider",
+  classNames: ["slider-view"],
   unitType: null,
-  
+
 });
 
 module.ArmyRangeView  = Ember.TextField.extend({

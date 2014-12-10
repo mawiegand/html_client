@@ -15,13 +15,39 @@
   color: rgb(113,93,49);
 }
 
-.army-type-range
-{
+.slider-view {
   position: absolute;
-  left: 220px;
   width: 250px;
   height: 74px;
 }
+.slider-plus {
+  width: 36px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_positive.png' %>");
+  float: left;
+}
+
+.slider-range-container
+{
+  display: block;
+  float: none;
+  width: auto;
+  height: 45px;
+  background: #F00;
+}
+
+.army-type-range
+{
+  width: 100%;
+}
+
+.slider-minus {
+  width: 36px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_negative.png' %>");
+  float: right;
+}
+
 
 /*== Infantry==*/
 .cell-icon.unit_warrior

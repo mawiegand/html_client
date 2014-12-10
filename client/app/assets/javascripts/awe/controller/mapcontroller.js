@@ -1835,16 +1835,16 @@ AWE.Controller = function (module) {
       }
 
       if (inspectorViews.inspector) {
-        //_stages[3].addChild(inspectorViews.inspector.displayObject());
+        _stages[3].addChild(inspectorViews.inspector.displayObject());
         if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
-          //addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
+          addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
           var annotationView = view.annotationView();
           if(annotationView)
           {
               addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
           }
         }
-        //_inspectorChanged = true;
+        _inspectorChanged = true;
       }
     };
 
