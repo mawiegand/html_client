@@ -156,7 +156,11 @@ AWE.UI.Ember = (function(module) {
         return []; // destructions are free!
       } 
       else {       // upgrade and creation jobs
-        return this.getPath('job.slot.building').calcCosts(this.getPath('job.level_after')); // level after should be right...
+        var buildingToCalculateCostsFor = this.getPath('job.slot.building');
+        if (buildingToCalculateCostsFor) {
+          return buildingToCalculateCostsFor.calcCosts(this.getPath('job.level_after')); // level after should be right...
+        }
+        return null;
       }
     },
 
