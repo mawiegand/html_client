@@ -31,3 +31,11 @@
   	</div>
   </div>
 </script>
+
+<script type="text/x-handlebars" data-template-name="top-right-hud-view">
+  <div class="right-hud" id="top-right-dom-hud">
+    {{#if isAllianceMember}}
+      <div class="alliance-hud-button" {{action "mailClicked"}}></div>
+    {{/if}}
+  </div>
+</script>

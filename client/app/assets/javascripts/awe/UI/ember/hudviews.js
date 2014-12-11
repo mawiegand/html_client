@@ -87,6 +87,26 @@ module.RightHUDView = Ember.View.extend({
 	
 });
 
+module.TopRightHUDView = Ember.View.extend({
+	templateName: 'top-right-hud-view',
+	
+	controller: null,
+	character: null,
+	tutorialState: null,
+
+	isAllianceMember: function(){
+		if(this.getPath("character"))
+		{
+			return true;
+		}
+		return false;
+	}.property('character').cacheable(),
+
+	allianceClicked: function(){
+		this.get("controller").allianceFlagClicked();
+	}
+	
+});
 return module;
 
 }(AWE.UI.Ember || {}));
