@@ -276,6 +276,12 @@ AWE.UI.Ember = (function(module) {
       return position === 0;
     }.property('positionInQueue'),    
     
+    waitingForResources: function() {
+      var active = this.get('active');
+      var first  = this.get('first');
+      return !active && first;
+    }.property('active', 'first'),
+    
     finished: function() {
       var t = this.get('timeRemaining');
       return t !== undefined && t !== null && t <= 0;
