@@ -121,42 +121,7 @@ AWE.UI = (function(module) {
       var rankAndProgress = this.calculateCharacterProgress();
       _currentCharacterRank = rankAndProgress.rank + 1;
       _currentCharacterProgress = rankAndProgress.progress;
-      _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
-      
-      if (!_allianceButton && character && allianceId) {
-
-        //add div for click 
-        var allianceDiv = document.createElement('DIV');
-        allianceDiv.style.position = 'fixed';
-        allianceDiv.style.top   = 170 + 'px';
-        allianceDiv.style.right  = 10 + 'px';
-        allianceDiv.style.width = '96px';
-        allianceDiv.style.height = '96px';
-        //allianceDiv.style.backgroundImage = 'url("' + AWE.UI.ImageCache.getImage("hud/profile/alliance/button").src + '")',
-        allianceDiv.style.zoom = AWE.Settings.hudScale;
-        allianceDiv.style.cursor = 'pointer';
-        allianceDiv.style.zIndex = '50';
-        allianceDiv.onclick = function() {
-          my.controller.allianceFlagClicked(allianceId);
-        };
-        //root.append(allianceDiv); 
-
-        _allianceButton = AWE.UI.createButtonIconView();
-        _allianceButton.initWithControllerImageAndIcon(my.controller, 
-          AWE.UI.ImageCache.getImage("hud/profile/alliance/button"),
-          AWE.UI.ImageCache.getImage("hud/profile/alliance/icon")
-        );
-        _allianceButton.setFrame(AWE.Geometry.createRect(162, 170, 96, 96));        
-        _allianceButton.onClick = function() {
-          //my.controller.allianceFlagClicked(allianceId);
-        };
-        this.addChild(_allianceButton);
-      }
-      
-      if (_allianceButton && character && (allianceId === undefined || allianceId === null || allianceId === 0)) {
-        this.removeChild(_allianceButton);
-        _allianceButton = null;
-      }
+      _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);
       
     };      
     

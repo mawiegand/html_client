@@ -467,23 +467,35 @@ canvas{
   z-index: 10;
 }
 /* == NEW DOM RIGHT HUD START== */
+.top-right-hud {
+  width: 350px;
+  position: fixed;
+  top: 0px;
+  z-index: 50;
+  pointer-events: none;
+  right: -350px;
+}
+
+.top-right-hud div{
+  pointer-events: all;
+}
+
 .alliance-hud-button {
   width: 96px;
   height: 96px;
-  position: fixed;
+  position: relative;
   top: 170px;
-  right: 10px;
-  background: url("<%= asset_path 'hud/profile/alliance_button/alliance_button.png' %>");
+  margin-right: 7px;
+  float: right;
+  background: url("<%= asset_path 'hud/alliance_button/alliance_button.png' %>");
   cursor: pointer;
   z-index: 50;
 }
 .alliance-hud-icon {
   width: 96px;
   height: 96px;
-  position: fixed;
-  top: 170px;
-  right: 10px;
-  background: url("<%= asset_path 'hud/profile/alliance_flag/alliance_flag.png' %>");
+  position: relative;
+  background: url("<%= asset_path 'hud/alliance_flag/alliance_flag.png' %>");
   cursor: pointer;
   z-index: 50;
 }
@@ -681,7 +693,7 @@ canvas{
   right: -268px;
   top: 0px;
   width: 268px;
-  height: 266px;
+  height: 166px;
   z-index: 10;
 }
 

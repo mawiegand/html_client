@@ -65,18 +65,6 @@ module.RightHUDView = Ember.View.extend({
 	character: null,
 	tutorialState: null,
 
-	isAllianceMember: function(){
-		if(this.getPath("character.alliance_id"))
-		{
-			return true;
-		}
-		return false;
-	}.property('character').cacheable(),
-
-	allianceClicked: function(){
-		this.get("controller").allianceFlagClicked();
-	},
-
 	getUnreadMessageCount: function(){
 		var unreadMessages = this.getPath('character.inbox.unread_messages_count');
 		if (unreadMessages === undefined) return false;
@@ -99,6 +87,26 @@ module.RightHUDView = Ember.View.extend({
 	
 });
 
+module.TopRightHUDView = Ember.View.extend({
+	templateName: 'top-right-hud-view',
+	
+	controller: null,
+	character: null,
+	tutorialState: null,
+
+	isAllianceMember: function(){
+		if(this.getPath("character.alliance_id"))
+		{
+			return true;
+		}
+		return false;
+	}.property('character').cacheable(),
+
+	allianceClicked: function(){
+		this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
+	},
+	
+});
 return module;
 
 }(AWE.UI.Ember || {}));
