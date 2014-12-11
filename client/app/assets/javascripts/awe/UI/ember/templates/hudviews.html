@@ -19,6 +19,11 @@
 
 <script type="text/x-handlebars" data-template-name="right-hud-view">
   <div class="right-hud" id="right-dom-hud">
+    {{#if isAllianceMember}}
+      <div class="alliance-hud-button" {{action "mailClicked"}}>
+        <div class="alliance-hud-icon"></div>
+      </div>
+    {{/if}}
   	<div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
       {{#if getUnreadMessageCount}}
   		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
@@ -35,7 +40,9 @@
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">
   <div class="right-hud" id="top-right-dom-hud">
     {{#if isAllianceMember}}
-      <div class="alliance-hud-button" {{action "mailClicked"}}></div>
+      <div class="alliance-hud-button" {{action "mailClicked"}}>
+        <div class="alliance-hud-icon"></div>
+      </div>
     {{/if}}
   </div>
 </script>

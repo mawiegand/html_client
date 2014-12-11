@@ -132,14 +132,14 @@ AWE.UI = (function(module) {
         allianceDiv.style.right  = 10 + 'px';
         allianceDiv.style.width = '96px';
         allianceDiv.style.height = '96px';
-        allianceDiv.style.backgroundImage = 'url("' + AWE.UI.ImageCache.getImage("hud/profile/alliance/button").src + '")',
+        //allianceDiv.style.backgroundImage = 'url("' + AWE.UI.ImageCache.getImage("hud/profile/alliance/button").src + '")',
         allianceDiv.style.zoom = AWE.Settings.hudScale;
         allianceDiv.style.cursor = 'pointer';
         allianceDiv.style.zIndex = '50';
         allianceDiv.onclick = function() {
           my.controller.allianceFlagClicked(allianceId);
         };
-        root.append(allianceDiv); 
+        //root.append(allianceDiv); 
 
         _allianceButton = AWE.UI.createButtonIconView();
         _allianceButton.initWithControllerImageAndIcon(my.controller, 
