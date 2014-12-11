@@ -115,11 +115,15 @@ AWE.UI = (function(module) {
 
     that.redrawProgressBar = function()
     {
-      if (my.progressAmountPercent > 0)
-      {
-        _progressShape.graphics
-          .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, 0, _barHeight)
-          .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);
+      if (_progressShape) {
+        _progressShape.graphics.clear();
+        
+        if (my.progressAmountPercent > 0)
+        {
+          _progressShape.graphics
+            .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, 0, _barHeight)
+            .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);
+        }
       }
     }     
     

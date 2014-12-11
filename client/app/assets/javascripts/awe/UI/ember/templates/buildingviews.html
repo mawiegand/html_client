@@ -45,16 +45,18 @@
 <script type="text/x-handlebars" data-template-name="construction-progress">
   <div class="construction-progress-wrapper">
     {{#if isSlotSelected }}
-      {{#if isFrogTradePossible}}
-        {{#if first}}
-          <div class="construction-progress-frogtrade background" {{action "resourceExchangePressed"}}>&nbsp;</div>
-          <div class="construction-progress-frogtrade icon" {{action "resourceExchangePressed"}}>&nbsp;</div>  
-        {{/if}}                
+      {{#if waitingForResources}}
+        {{#if isFrogTradePossible}}
+          {{#if first}}
+            <div class="construction-progress-frogtrade background" {{action "resourceExchangePressed"}}>&nbsp;</div>
+            <div class="construction-progress-frogtrade icon" {{action "resourceExchangePressed"}}>&nbsp;</div>  
+          {{/if}}                
+        {{/if}}
       {{else}}
         {{#if isConstructionSpeedupPossible }}
           {{#if first}}
-                {{#if isUIMarker}}
-                {{view AWE.UI.Ember.UIMarker direction=2 top="-90" left=43}}
+            {{#if isUIMarker}}
+              {{view AWE.UI.Ember.UIMarker direction=2 top="-90" left=43}}
             {{/if}}
             <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
             <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>

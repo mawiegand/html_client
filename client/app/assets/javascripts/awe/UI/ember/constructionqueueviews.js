@@ -84,7 +84,7 @@ AWE.UI.Ember = (function(module) {
       }
 
       if (this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && !this.get('disableFrogTrade')) {
-        var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
+        var costs        = this.slotCosts() || []; /*this.getPath('job.slot.building.costs');*/
         var sum_required = 0;
         var self = this;
         
@@ -156,7 +156,11 @@ AWE.UI.Ember = (function(module) {
         return []; // destructions are free!
       } 
       else {       // upgrade and creation jobs
-        return this.getPath('job.slot.building').calcCosts(this.getPath('job.level_after')); // level after should be right...
+        var buildingToCalculateCostsFor = this.getPath('job.slot.building');
+        if (buildingToCalculateCostsFor) {
+          return buildingToCalculateCostsFor.calcCosts(this.getPath('job.level_after')); // level after should be right...
+        }
+        return null;
       }
     },
 
@@ -166,7 +170,7 @@ AWE.UI.Ember = (function(module) {
 
     /* return remaining required resources and it's symbolic id */
     diffResources: function() {
-      var costs = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
+      var costs = this.slotCosts() || []; /*this.getPath('job.slot.building.costs');*/
       var diff  = [];
 
       if(this.get('active')) return [];

@@ -454,100 +454,106 @@ AWE.Controller = (function(module) {
     }  
     
     that.constructionCancelClicked = function(job) {
-      var queue = job.get('queue');
-      queue.sendCancelJobAction(job.getId(), function(status) {
-        if (status === AWE.Net.OK) {    // 200 OK
-          log(status, "Construction job deleted.");
-          that.updateConstructionQueueSlotAndJobs(queue.getId());          
-       //   that.updateResourcePool();
-        }
-        else {
-          log(status, "The server did not accept the job removal command.");
-          // TODO Fehlermeldung 
-        } 
-      });
+      if (job) {
+        var queue = job.get('queue');
+        queue.sendCancelJobAction(job.getId(), function(status) {
+          if (status === AWE.Net.OK) {    // 200 OK
+            log(status, "Construction job deleted.");
+            that.updateConstructionQueueSlotAndJobs(queue.getId());          
+         //   that.updateResourcePool();
+          }
+          else {
+            log(status, "The server did not accept the job removal command.");
+            // TODO Fehlermeldung 
+          } 
+        });
+      }
     }
     
     that.constructionFinishClicked = function(job) {
-      var queue = job.get('queue');
-      queue.sendFinishJobAction(job.getId(), function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Construction job finished.");
-          that.updateConstructionQueueSlotAndJobs(queue.getId());
-          that.updateAllTrainingQueues();
-        }
-        else if (status === AWE.Net.FORBIDDEN) {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-cash-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
-        }
-        else {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
-          log(status, "The server did not accept the job finish command.");
-          // TODO Fehlermeldung 
-        } 
-      });
+      if (job) {
+        var queue = job.get('queue');
+        queue.sendFinishJobAction(job.getId(), function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Construction job finished.");
+            that.updateConstructionQueueSlotAndJobs(queue.getId());
+            that.updateAllTrainingQueues();
+          }
+          else if (status === AWE.Net.FORBIDDEN) {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'not-enough-cash-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'server-command-failed-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+            log(status, "The server did not accept the job finish command.");
+            // TODO Fehlermeldung 
+          } 
+        });
+      }
     }
     
     that.constructionDestroyClicked = function(slot) {
+      if (slot) {
+        var buildingId = slot.get('building_id');
+        log('constructionDestroyClicked', slot, buildingId, slot.get('jobsInQueue') );
       
-      var buildingId = slot.get('building_id');
-      log('constructionDestroyClicked', slot, buildingId, slot.get('jobsInQueue') );
+        // testen ob queue keine jobs enthält
       
-      // testen ob queue keine jobs enthält
-      
-      if (buildingId && slot.get('jobsInQueue')) {
-        if(slot.get('jobsInQueue').length == 0) {
-          createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY, slot.get('level'), 0);      
+        if (buildingId && slot.get('jobsInQueue')) {
+          if(slot.get('jobsInQueue').length == 0) {
+            createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY, slot.get('level'), 0);      
+          }
+          else {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'construction-queue-not-empty-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+          }
         }
         else {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'construction-queue-not-empty-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
+          log(status, "No buildingId, no valid slot or no list of jobs.");
         }
-      }
-      else {
-        log(status, "No buildingId, no valid slot or no list of jobs.");
       }
     }
     
     that.constructionConvertClicked = function(slot) {
+      if (slot) {
+        var buildingId = slot.get('building_id');
+        var convertedLevel = slot.getPath('building.convertedLevel');
+        log('constructionConvertClicked', slot, buildingId, convertedLevel, slot.get('jobsInQueue') );
       
-      var buildingId = slot.get('building_id');
-      var convertedLevel = slot.getPath('building.convertedLevel');
-      log('constructionConvertClicked', slot, buildingId, convertedLevel, slot.get('jobsInQueue') );
-      
-      // testen ob queue keine jobs enthält
-      if (buildingId && slot.get('jobsInQueue')) {
-        if(slot.get('jobsInQueue').length == 0) {
-          createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT, slot.get('level'), convertedLevel);      
+        // testen ob queue keine jobs enthält
+        if (buildingId && slot.get('jobsInQueue')) {
+          if(slot.get('jobsInQueue').length == 0) {
+            createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT, slot.get('level'), convertedLevel);      
+          }
+          else {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'construction-queue-not-empty-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+          }
         }
         else {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'construction-queue-not-empty-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
+          log(status, "No buildingId, no valid slot or no list of jobs.");
         }
-      }
-      else {
-        log(status, "No buildingId, no valid slot or no list of jobs.");
       }
     }
     
@@ -580,48 +586,52 @@ AWE.Controller = (function(module) {
     }  
     
     that.trainingCancelClicked = function(job) {
-      var queue = job.get('queue');
-      queue.sendCancelJobAction(job.getId(), function(status) {
-        if (status === AWE.Net.OK) {    // 200 OK
-          log(status, "Training job deleted.");
-          that.updateTrainingQueueAndJobs(queue.getId());
-          that.updateResourcePool();
-        }
-        else {
-          log(status, "The server did not accept the job removal command.");
-          // TODO Fehlermeldung 
-        }
-      });
+      if (job) {
+        var queue = job.get('queue');
+        queue.sendCancelJobAction(job.getId(), function(status) {
+          if (status === AWE.Net.OK) {    // 200 OK
+            log(status, "Training job deleted.");
+            that.updateTrainingQueueAndJobs(queue.getId());
+            that.updateResourcePool();
+          }
+          else {
+            log(status, "The server did not accept the job removal command.");
+            // TODO Fehlermeldung 
+          }
+        });
+      }
     }  
     
     that.trainingSpeedupClicked = function(job) {
-      var queue = job.get('queue');
-      queue.sendSpeedupJobAction(job.getId(), function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Training time halved.");
-          that.updateTrainingQueueAndJobs(queue.getId());    
-        }
-        else if (status === AWE.Net.FORBIDDEN) {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-cash-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
-        }
-        else {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
-          });          
-          WACKADOO.presentModalDialog(dialog);
-          log(status, "The server did not accept the training job speedup command.");
-          // TODO Fehlermeldung 
-        } 
-      });
+      if (job) {
+        var queue = job.get('queue');
+        queue.sendSpeedupJobAction(job.getId(), function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Training time halved.");
+            that.updateTrainingQueueAndJobs(queue.getId());    
+          }
+          else if (status === AWE.Net.FORBIDDEN) {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'not-enough-cash-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'server-command-failed-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
+            log(status, "The server did not accept the training job speedup command.");
+            // TODO Fehlermeldung 
+          } 
+        });
+      }
     }    
     
     that.sendTradingCarts = function(settlementId, recipientName, resources, callback) {
