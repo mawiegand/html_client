@@ -197,6 +197,11 @@ AWE.GS = (function(module) {
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //
     
+    hashableSettlements: function() {
+      var id = this.get('id');
+      return id ?   AWE.GS.SettlementAccess.getHashableCollectionForOwner_id(id) : null;
+    }.property('id').cacheable(),
+        
     hashableInboxes: function() {
       var id = this.get('id');
       return id ? AWE.GS.InboxAccess.getHashableCollectionForOwner_id(id) : null;
@@ -235,6 +240,17 @@ AWE.GS = (function(module) {
       }
       return null;
     }.property('hashableArchives.changedAt').cacheable(),
+    
+    numSettlements: function() {
+      var hash = this.get('hashableSettlements');
+      if (hash && hash.get('collection')) {
+        return hash.get('collection').length;
+      }
+      else 
+      {
+        return null;
+      }
+    }.property('hashableSettlements.changedAt').cacheable(),
     
     fetchInbox: function(callback) {
       AWE.GS.InboxManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);

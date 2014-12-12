@@ -44,6 +44,18 @@ AWE.UI.Ember = (function(module) {
     
     hoveredBuildingSlotView: null,
 
+    owner: function() {
+      var cid = this.getPath('settlement.owner_id');
+      if (cid)
+      {
+        return AWE.GS.CharacterManager.getCharacter(cid);
+      }
+      else 
+      {
+        return null;
+      }
+    }.property('settlement.owner_id').cacheable(),
+
     hashableSlots: function () {
       var settlementId = this.getPath('settlement.id');
       return settlementId ? AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(settlementId) : null;
@@ -60,7 +72,7 @@ AWE.UI.Ember = (function(module) {
     shouldDisplaySettlementSwitch: function() {
       var settlement = this.get('settlement');
       return settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
-    }.property('settlement.owner_id'),
+    }.property('settlement.owner_id', 'owner.numSettlements'),
     
     infoClicked: function() {
       var dialog = AWE.UI.Ember.SettlementInfoBoxDialog.create({
