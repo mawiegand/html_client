@@ -1530,6 +1530,10 @@ AWE.GS = (function(module) {
         willDestroyElement: function() {
           // log('---> willDestroyElement', questState.getPath('quest.tutorial_end_quest'), AWE.GS.TutorialStateManager.getTutorialState().get('tutorial_completed'));
           if (questState.getPath('quest.tutorial_end_quest') && !AWE.GS.TutorialStateManager.getTutorialState().get('tutorial_completed')) {
+            try {
+              AndroidDelegate.tutorialCompleted();
+            } catch (err) {
+            }
             var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
             WACKADOO.presentModalDialog(dialog);
           }

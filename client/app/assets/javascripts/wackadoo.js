@@ -54,7 +54,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     logout: function() {
       try {
-        LoginHandler.logout();
+        AndroidDelegate.logout();
       }
       catch (err)
       {

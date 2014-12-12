@@ -484,6 +484,10 @@ AWE.Application = (function(module) {
         var startedAt = this.get('runloopStartedAt');
         if (startedAt && startedAt.getTime() + 5000 < new Date().getTime() &&
             character && !this.get('isModal') && character.advancedInMundaneRank()) {
+          try {
+            AndroidDelegate.mundaneRankIncreased(character.mundane_rank_numeric);
+          } catch(err) {
+          }
           var action = AWE.Action.Fundamental.createChangeCharacterNotifiedRankAction(true,false); // notifed user of mundane rank
           var dialog = AWE.UI.Ember.CharacterProgressDialog.create({
             character: character,
