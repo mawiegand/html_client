@@ -485,7 +485,7 @@ AWE.Application = (function(module) {
         if (startedAt && startedAt.getTime() + 5000 < new Date().getTime() &&
             character && !this.get('isModal') && character.advancedInMundaneRank()) {
           try {
-            AndroidDelegate.mundaneRankIncreased(character.mundane_rank_numeric);
+            AndroidDelegate.mundaneRankIncreased();
           } catch(err) {
           }
           var action = AWE.Action.Fundamental.createChangeCharacterNotifiedRankAction(true,false); // notifed user of mundane rank
