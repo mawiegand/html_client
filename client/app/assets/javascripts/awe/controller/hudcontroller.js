@@ -261,7 +261,7 @@ AWE.Controller = (function(module) {
     that.ingameShopButtonClicked = function() {
       try
       {
-        LoginHandler.openShop();
+        AndroidDelegate.openShop();
       }
       catch(err)
       {
