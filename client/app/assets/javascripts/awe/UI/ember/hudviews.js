@@ -100,7 +100,7 @@ module.TopRightHUDView = Ember.View.extend({
 			return true;
 		}
 		return false;
-	}.property('character').cacheable(),
+	}.property('character.alliance_id').cacheable(),
 
 	allianceClicked: function(){
 		this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
