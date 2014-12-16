@@ -188,7 +188,7 @@
     {{/if}}
   {{/unless}}
   {{#if buildingDefenseBonus}}
-    <div>{{t building.defenseBonus}}: {{buildingDefenseBonus}}%</div>
+    <div>{{t building.defenseBonus}}: {{formatNumber buildingDefenseBonus}}%</div>
   {{/if}}
 {{else}}
   {{#if buildingPopulation}}
@@ -255,7 +255,7 @@
       <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
     {{/if}}
     {{#if buildingDefenseBonus}}
-      <div>{{t building.defenseBonus}}: {{buildingDefenseBonus}}%</div>
+      <div>{{t building.defenseBonus}}: {{formatNumber buildingDefenseBonus}}%</div>
     {{/if}}
   </div>
 {{/if}}
