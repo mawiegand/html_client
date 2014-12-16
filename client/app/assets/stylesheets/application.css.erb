@@ -3872,6 +3872,7 @@ span.bonus {
   top: -30px;
   left: 40px;
   pointer-events:auto;
+  z-index: 50;
 }
 
 .construction-progress-coins {
@@ -3884,6 +3885,7 @@ span.bonus {
 
 .construction-progress-coins.background {
   background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_toads/resourcebar_toads_item.png' %>");
+  cursor: pointer;
 }
 
 .construction-progress-coins.label {
@@ -3909,6 +3911,7 @@ span.bonus {
 .construction-progress-cancel.background {
   background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
   background-size: 48px;
+  cursor: pointer;
 }
 
 .construction-progress-cancel.icon {
