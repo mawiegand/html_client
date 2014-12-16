@@ -119,6 +119,24 @@
   background: url("<%= asset_path 'dialogs/items/normal/item_fur_small.png' %>") no-repeat center center;
 }
 
+.item.resource_stone.small.capacity {
+  width: 32px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_storage_stone.png' %>") no-repeat center center;
+}
+
+.item.resource_wood.small.capacity {
+  width: 32px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_storage_wood.png' %>") no-repeat center center;
+}
+
+.item.resource_fur.small.capacity {
+  width: 32px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_storage_fur.png' %>") no-repeat center center;
+}
+
 .item.resource_cash.small {
   width: 24px;
   height: 24px;
@@ -156,10 +174,26 @@
 }
 
 .item.population-icon {
-  width: 24px;
+  width: 32px;
   height: 32px;
   display: inline-block;
-  background: url("<%= asset_path 'dialogs/specials/people_identifier.png' %>") no-repeat center center;
+  background: url("<%= asset_path 'dialogs/items/normal/item_population.png' %>") no-repeat center center;
+  background-size: 32px;
+}
+
+.item.speedup-building-icon {
+  width: 40px;
+  height: 32px;
+  display: inline-block;
+  background: url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>") no-repeat center center;
+  background-size: 32px;
+}
+
+.item.carts-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background: url("<%= asset_path 'dialogs/items/normal/item_trading_carts.png' %>") no-repeat center center;
   background-size: 32px;
 }
 
@@ -227,15 +261,21 @@
 }
 
 .queue_infantry {
-  background: url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>") no-repeat center center;
+  background: url("<%= asset_path 'dialogs/items/normal/item_speedup_infantry.png' %>") no-repeat center center;
+  width: 40px;
+  height: 32px;
 }
 
 .queue_artillery {
-  background: url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+  background: url("<%= asset_path 'dialogs/items/normal/item_speedup_artillery.png' %>") no-repeat center center;
+  width: 40px;
+  height: 32px;
 }
 
 .queue_cavalry {
-  background: url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
+  background: url("<%= asset_path 'dialogs/items/normal/item_speedup_cavalry.png' %>") no-repeat center center;
+  width: 40px;
+  height: 32px;
 }
 
 .button-title {

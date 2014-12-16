@@ -146,12 +146,16 @@
     </table>
   {{/if}}
   {{#if buildingCapacity}}
-    <div>{{t building.capacity}}:</div>
     <table class="resources-table">
       {{#each buildingCapacity}}
         {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
       {{/each}}
     </table>
+  {{/if}}
+  {{#if buildingTradeCarts}}
+      <div class="populationDetail">
+          <div class="item carts-icon"></div> {{buildingTradeCarts}}
+      </div>
   {{/if}}
   {{#if buildingProductionBoni}}
     <table class="resources-table">
@@ -168,7 +172,9 @@
       </table>
   {{/if}}
   {{#if buildingConstructionSpeedupQueue}}
-    <div>{{t building.buildingTime}}: {{buildingConstructionSpeedupQueue.speedup}}%</div>
+    <div class="populationDetail">
+        <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
+    </div>
   {{/if}}
   {{#if building.commandPoints}}
    
@@ -207,7 +213,6 @@
       </table>
     {{/if}}
     {{#if buildingCapacity}}
-      <div>{{t building.capacity}}:</div>
       <table class="resources-table">
         {{#each buildingCapacity}}
           {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
@@ -222,11 +227,13 @@
       </table>
     {{/if}}
     {{#if buildingConstructionSpeedupQueue}}
-      <div>{{t building.buildingTime}}: {{buildingConstructionSpeedupQueue.speedup}}%</div>
+      <div class="populationDetail">
+        <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
+      </div>
     {{/if}}
     {{#if buildingTradeCarts}}
-      <div>
-        {{t building.tradingCarts}}: {{buildingTradeCarts}}
+      <div class="populationDetail">
+          <div class="item carts-icon"></div> {{buildingTradeCarts}}
       </div>
     {{/if}}
   </div>
@@ -287,7 +294,7 @@
 
 <script type="text/x-handlebars" data-template-name="capacity-resource">
   {{#if resourceName}}
-    <td {{bindAttr class="resourceName :item :small"}}></td>
+    <td {{bindAttr class="resourceName :capacity :item :small"}}></td>
     <td class="capacity">{{formatNumber capacitySize maxPlaces="0"}}</td>
   {{/if}}
 </script>
