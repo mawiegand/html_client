@@ -308,9 +308,12 @@ module.ProfileNewRangView  = Ember.View.extend  ({
 
     nextMundaneRank: function(){
       var ranks = this.get('nextMundaneRanks');
-      return ranks[ranks.length - 1].rule.id + 1;
-
+      return ranks[ranks.length - 1];
     }.property('character.exp').cacheable(),
+
+    nextDisplayRank: function(){
+      return (this.get("nextMundaneRank").rule.id + 1);
+    }.property('nextMundaneRank'),
 
     barWidth: function(){
       this.get('nextMundaneRanks');

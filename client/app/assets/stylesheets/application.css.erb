@@ -423,6 +423,10 @@ canvas{
   z-index: 2;
 }
 
+#inspector-canvas {
+  cursor: pointer;
+}
+
 .topbar-info-box {
   position: fixed;
   top: 90px;
@@ -1179,6 +1183,7 @@ canvas{
   text-align: center;
   font-family: 'Freckle Face', 'cursive';
   line-height: 48px;
+  cursor: pointer;
 }
 
 .modal-dialog-blue-button-big{
@@ -3929,6 +3934,7 @@ span.bonus {
   top: -30px;
   left: 40px;
   pointer-events:auto;
+  z-index: 50;
 }
 
 .construction-progress-coins {
@@ -3941,6 +3947,7 @@ span.bonus {
 
 .construction-progress-coins.background {
   background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_toads/resourcebar_toads_item.png' %>");
+  cursor: pointer;
 }
 
 .construction-progress-coins.label {
@@ -3966,6 +3973,7 @@ span.bonus {
 .construction-progress-cancel.background {
   background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
   background-size: 48px;
+  cursor: pointer;
 }
 
 .construction-progress-cancel.icon {
@@ -4261,6 +4269,7 @@ li.shout .sender {
   width: 32px;
   height: 32px;
   top: 14px;
+  cursor: pointer;
 }
 
 .settlement-switch.previous {
@@ -4893,6 +4902,9 @@ table .datetime {
   width: 16px;
   padding: 4px 0px;
   z-index: 1;
+  position: absolute;
+  left:   47px;
+  bottom: 23px;
 }
 
 
