@@ -24,6 +24,10 @@
         <div class="cell cell-50 titles population-title">{{t settlement.condition}}:</div>
         <div class="cell cell-50 values population-value">{{formatPercentage settlement.condition}}</div>
       </div>
+      <div class="row">
+        <div class="cell cell-50 titles population-title">{{t settlement.info.tax}}:</div>
+        <div class="cell cell-50 values population-value">{{formatNumber settlement.taxPercentage}}%</div>
+      </div>
       {{#if settlement.typeIsConquerable}}
         <div class="row">
           <div class="cell cell-50 titles takeover-title">{{t settlement.military.takeOverTitle}}:</div>
@@ -36,6 +40,7 @@
           <div class="cell cell-50 values takeover-value">{{#if settlement.canBeDestroyed}}{{t settlement.military.yes}}{{else}}{{t settlement.military.no}}{{/if}}</div>
         </div>
       {{/if}}
+      
     </div>
   </div>
 </script>
