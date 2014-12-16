@@ -107,11 +107,3 @@
     <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} {{action "openDialog"}}>
     </div>
 </script>
-
-<script type="text/x-handlebars" data-template-name="slider-view">
-    <div class="slider-minus" {{action "onMinusClicked"}}></div>
-    <div class="slider-plus" {{action "onPlusClicked"}}></div>
-    <div class="slider-range-container">
-        {{view AWE.UI.Ember.RangeView valueBinding="value" maxBinding="max"}}
-    </div>
-</script>
