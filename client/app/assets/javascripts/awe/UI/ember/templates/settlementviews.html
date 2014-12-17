@@ -52,11 +52,10 @@
       </div>
     </div>
     <div class="row row2">
-      <div class="cell">
-        <span class="title">{{t settlement.info.recruitmentspeed}}:</span>
-        <span class="army-icon infantry"></span> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%
-        <span class="army-icon cavalry"></span> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%
-        <span class="army-icon artillery"></span> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%
+      <div class="cell recruitment-speed-info">
+        <div class="army-icon queue_infantry"></div> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%
+        <div class="army-icon queue_artillery"></div> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%
+        <div class="army-icon queue_cavalry"></div> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%
       </div>
     </div>
     <div class="row row3">
