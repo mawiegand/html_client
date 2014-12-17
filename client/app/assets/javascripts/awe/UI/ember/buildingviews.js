@@ -200,20 +200,24 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('slot.building.sortedJobs.@each').cacheable(),
 
+    jobCollection: function() {
+
+    }.property(),
+
     positionInQueue: function() {
       var settlement = this.get('settlement');
-      var jobCollection = settlement.queues();
+      var jobCollection = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(settlement.id);
       var i = 0;
       if (jobCollection && jobCollection[0]) {
         var jobs = jobCollection[0].getPath('hashableJobs.collection');
-        for (; i < jobs.length; i++) {
+        for (i = 0; i < jobs.length; i++) {
           if (jobs[i] && jobs[i].getPath('slot.slot_num') === this.getPath('slot.slot_num')) {            
             break;
           }
         }
       }
       return i;
-    }.property('settlement.hashableQueues.changedAt'),    
+    }.property('settlement.hashableQueues.collection.@each.jobs_count'),
     
     positionInQueueText: function() {      
       return "In Queue: " + this.get('positionInQueue');
