@@ -49,23 +49,22 @@
             </div>
           </div>
         </div>
-  <p><b>{{t profile.history}}:</b><br />
-  {{#if loadingHistory }}
 
-  {{else}}
-   <ul>
     {{#if historyEvents}}
-      {{#each historyEventsList}}
-      <li>
-        {{local desc}}<br />
-      </li>
-      {{/each}}
+  <p><b>{{t profile.history}}:</b><br />
+    {{#if loadingHistory }}
+
     {{else}}
-    <li>
-      {{t profile.emptyHistory}}<br />
-      </li>
+     <ul>
+      
+        {{#each historyEventsList}}
+        <li>
+          {{local desc}}<br />
+        </li>
+        {{/each}}
+       </ul>
     {{/if}}
-     </ul>
+
   {{/if}}
         <div class="row row3">
           <div class="cell">

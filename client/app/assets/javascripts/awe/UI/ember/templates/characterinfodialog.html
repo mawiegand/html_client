@@ -69,22 +69,20 @@
   </a>
 
     <div class="modal-dialog-text">
+    {{#if historyEvents}}
           <p><b>{{t profile.history}}:</b><br />
           {{#if loadingHistory }}
           {{else}}
            <ul>
-            {{#if historyEvents}}
+            
               {{#each historyEventsList}}
               <li>
                 {{local desc}}<br />
               </li>
               {{/each}}
-            {{else}}
-            <li>
-              {{t profile.emptyHistory}}<br />
-              </li>
-            {{/if}}
+            
             </ul>
+          {{/if}}
           {{/if}}
       {{#if character.description}}
         {{{ showDescription }}}
