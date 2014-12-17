@@ -31,9 +31,11 @@ AWE.UI = (function(module) {
     }
     
     that.onMouseOver = function() { 
+      document.body.style.cursor = "pointer";
       that.setHovered(true);  
     }
     that.onMouseOut =  function() {
+      document.body.style.cursor = "default";
       that.setHovered(false); 
     }
 

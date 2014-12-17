@@ -1637,6 +1637,7 @@ AWE.Controller = function (module) {
     };
 
     that.viewMouseOver = function (view) { // log('view mouse over: ' + view.typeName())
+      document.body.style.cursor = "pointer";
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArtifactView'
         || view.typeName() === 'ArmyView'
@@ -1654,6 +1655,7 @@ AWE.Controller = function (module) {
     };
 
     that.viewMouseOut = function (view) {
+      document.body.style.cursor = "default";
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArmyView'
         || view.typeName() === 'ArtifactView'
@@ -1724,6 +1726,7 @@ AWE.Controller = function (module) {
     var _hoverView = function (view) {
       if (view !== _hoveredView) {
         _hoveredView = view;
+        
         _hoveredView.setHovered(true);
         _actionViewChanged = true;
       }
@@ -1731,6 +1734,7 @@ AWE.Controller = function (module) {
 
     var _unhoverView = function (view) {
       if (view.hovered()) {
+
         _hoveredView.setHovered(false);
         _hoveredView = null;
         _actionViewChanged = true;
