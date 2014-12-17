@@ -1497,6 +1497,9 @@ AWE.I18n.en_US = function(module) {
         heading: "Building Convert",
         convert: "Convert",
         level: "Level",
+      },
+      armyInfo:{
+        next: "Next",
       }
     },
   };

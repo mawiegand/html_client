@@ -214,7 +214,17 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
         return false;
       
       WACKADOO.showAllianceDialog(alliance.id);
-    }
+    },
+
+    canRegenAp: function() {
+      var currentAp = this.getPath("army.ap_present");
+      var maxAp = this.getPath("army.ap_max");
+      if(currentAp < maxAp)
+      {
+        return true;
+      }
+      return false;
+    }.property("army.ap_present", "army.ap_max"),
 });
 
 //need custom tabs for military info

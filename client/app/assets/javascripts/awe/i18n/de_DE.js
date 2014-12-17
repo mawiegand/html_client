@@ -1521,6 +1521,9 @@ AWE.I18n.de_DE = function(module) {
         heading: "Gebäude umwandeln",
         upgrade: "Umwandeln",
         level: "Stufe",
+      },
+      armyInfo:{
+        next: "Nächster",
       }
     },
   }
