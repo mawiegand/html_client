@@ -1385,6 +1385,11 @@ canvas{
   z-index:300;
 }
 
+.modal-dialog-settings:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .modal-dialog-back{
   background-image: url("<%= asset_path 'ui/arrowBack.png' %>");
   width: 48px;
@@ -2864,6 +2869,11 @@ loaddialog-positioner {
   cursor: pointer;
 }
 
+.settlement-info-box-dialog-pane .button-left:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .settlement-info-box-dialog-pane .button-right {
   background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
 }
@@ -2871,6 +2881,11 @@ loaddialog-positioner {
 .settlement-info-box-dialog-pane .button-right:hover {
   background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
   cursor: pointer;
+}
+
+.settlement-info-box-dialog-pane .button-right:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .settlement-info-box-dialog-pane {
