@@ -26,6 +26,11 @@
   cursor: pointer;
 }
 
+.cell-icon:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 /*== Infantry==*/
 .cell-icon.unit_warrior
 {
@@ -205,6 +210,10 @@
  background: url('<%= asset_path("dialogs/tabs/tab_middle_active.png") %>') no-repeat;  
 }
 
+.modal-dialog-green-button-small-right:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
 .army-icon {
   width: 36px;
   height: 36px;
@@ -467,6 +476,11 @@
 .green-large-button:hover
 {
   background:url("<%= asset_path 'dialogs/buttons/button_green_large_pressed.png' %>") no-repeat center center;
+}
+
+.green-large-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .name-change-button-gold.assignment-gold

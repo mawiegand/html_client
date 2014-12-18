@@ -19,6 +19,7 @@
   float: left;
   width: 50px;
   top: 10px;
+  pointer-events:none;
 }
 
 .icon-toad{
@@ -32,6 +33,7 @@
   display: inline-block;
   float: left;
   top: 10px;
+  pointer-events:none;
 }
 
 .name-change-button-gold-titel.speed-up-button-titel{
@@ -40,6 +42,7 @@
   float: left;
   width: auto;
   line-height: 60px;
+  pointer-events:none;
 }
 
 .gold-button-queue{
@@ -53,6 +56,11 @@
   cursor: pointer;
 }
 
+.gold-button-queue:active{
+  opacity: 0.7;
+  filter:alpha(opacity=70);
+}
+
 .cancel-button-queue{
   position: relative;
   display: inline-block;
@@ -64,6 +72,11 @@
   cursor: pointer;
 }
 
+.cancel-button-queue:active {
+  opacity: 0.7;
+  filter:alpha(opacity=70);
+}
+
 .cancel-button-icon{
  background:url("<%= asset_path 'dialogs/window/close_button.png' %>") no-repeat center center; 
  width: 32px;
@@ -71,6 +84,7 @@
  position: relative;
  left: 36px;
  top: 8px;
+ pointer-events:none;
 }
 
 .cell-icon-unit-queue{
@@ -172,6 +186,12 @@
   top: 210px;
   left: 434px;
 }
+
+.military-costs-green-background:active {
+  opacity: 0.7;
+  filter:alpha(opacity=70);
+}
+
 
 .count-text-big
 {
