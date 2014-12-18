@@ -4007,6 +4007,11 @@ span.bonus {
   height: 48px;
 }
 
+.construction-progress-coins:active{
+  opacity: 0.4;
+  filter: alpha(opacity=70);
+}
+
 .construction-progress-coins.background {
   background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_toads/resourcebar_toads_item.png' %>");
   cursor: pointer;
@@ -4022,6 +4027,8 @@ span.bonus {
                   1px -1px 1px rgb(112,94,62),
                  -1px  1px 1px rgb(112,94,62),
                  -1px -1px 1px rgb(112,94,62);
+
+  pointer-events:none;
 }
 
 .construction-progress-cancel {
@@ -4030,6 +4037,11 @@ span.bonus {
   left: -15px;
   width: 48px;
   height: 48px;
+}
+
+.construction-progress-cancel:active{
+  opacity: 0.4;
+  filter: alpha(opacity=70);
 }
 
 .construction-progress-cancel.background {
@@ -4041,6 +4053,7 @@ span.bonus {
 .construction-progress-cancel.icon {
   background: url("<%= asset_path 'hud/icon_cancel/icon_cancel.png' %>") 13px 13px no-repeat;
   background-size: 22px;
+  pointer-events:none;
 }
 
 .construction-progress-frogtrade {
