@@ -1105,6 +1105,11 @@ canvas{
   cursor: pointer;
 }
 
+.tab-bar-new .left-menu-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .tab-bar-new .middle-menu-button {
   background:url("<%= asset_path 'dialogs/tabs/tab_middle_inactive.png' %>") no-repeat center center;
 }
@@ -1114,6 +1119,11 @@ canvas{
   cursor: pointer;
 }
 
+.tab-bar-new .right-menu-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .tab-bar-new .right-menu-button {
   background:url("<%= asset_path 'dialogs/tabs/tab_right_inactive.png' %>") no-repeat center center;
 }
@@ -1121,6 +1131,11 @@ canvas{
 .tab-bar-new .right-menu-button:hover, .tab-bar-new .right-menu-button.current {
   background:url("<%= asset_path 'dialogs/tabs/tab_right_active.png' %>") no-repeat center center;
   cursor: pointer;
+}
+
+.tab-bar-new .left-menu-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .popup-header-center{
@@ -1264,6 +1279,11 @@ canvas{
   opacity: 0.5;
 }
 
+.modal-dialog-blue-button-big:active {
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+}
+
 .modal-dialog-blue-button-small{
   background-image: url("<%= asset_path 'ui/blueButtonSmall.png' %>");
   width: 136px;
@@ -1275,6 +1295,11 @@ canvas{
   text-align: center;
   font-family: 'Freckle Face', 'cursive';
   line-height: 48px;
+}
+
+.modal-dialog-blue-button-small:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .modal-dialog-blue-button-small-right{
@@ -1379,6 +1404,11 @@ canvas{
   background-image: url("<%= asset_path 'ui/closeButtonHovered.png' %>");
 }
 
+.modal-dialog-close:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 
 .modal-dialog-settings {
   background-image: url("<%= asset_path 'dialogs/window/cogwheel.png' %>");
@@ -1405,6 +1435,11 @@ canvas{
   z-index:300;
 }
 
+.modal-dialog-back:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .modal-dialog-center{
   background-image: url("<%= asset_path 'hud/topbar/topbar_center.png' %>");
   width: 28px;
@@ -1413,6 +1448,11 @@ canvas{
   top: 14px;
   right: 44px;
   z-index:300;
+}
+
+.modal-dialog-center:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .unit-description{
@@ -4249,6 +4289,10 @@ span.bonus {
   background-image: url("<%= asset_path 'hud/topbar/topbar_info.png' %>");
   width: 28px;
   height: 28px;
+}
+.topbar-info-button {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .settlement-switch {
