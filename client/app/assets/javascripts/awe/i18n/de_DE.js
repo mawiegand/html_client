@@ -1037,6 +1037,7 @@ AWE.I18n.de_DE = function(module) {
         info: "Ein Aufstieg im weltlichen Rang gibt mehr Siedlungspunkte.",
         experienceInfo: "Deine Erfahrung steigt, indem Du baust und kämpfst.",
         settlementPoints: "Siedlungspunkte",
+        freeSettlementPoints: "Freie Siedlungspunkte",
         notUsed: "Noch nicht verwendet",
         total: "Insgesamt",
 

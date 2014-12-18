@@ -1011,6 +1011,7 @@ AWE.I18n.en_US = function(module) {
         info:"Advancing your mundane rank will give you more settlement points.",
         experienceInfo:"You can acquire more experience by building and fighting.",
         settlementPoints:"Settlement points",
+        freeSettlementPoints: "Free Settlement Points",
         notUsed:"Unused",
         total:"Total",
 
