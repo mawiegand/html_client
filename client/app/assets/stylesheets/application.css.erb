@@ -925,6 +925,11 @@ canvas{
   font-size: 25px;
 }
 
+.tab-button-view:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .text-input-dialog-body{
   width: 389px;
   margin: 149px auto;
@@ -1448,6 +1453,11 @@ canvas{
   float: right;
 }
 
+.slider-plus:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .slider-range-container
 {
   display: block;
@@ -1470,6 +1480,11 @@ canvas{
   float: left;
 }
 
+.slider-minus:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 input[type="range"] {
   -webkit-appearance: none !important;
   height:24px;
@@ -1490,6 +1505,11 @@ input[type='range']::-webkit-slider-thumb {
   background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_handler.png' %>");
 }
 
+input[type='range']::-webkit-slider-thumb:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 input[type='range']::-moz-range-track {
   -moz-appearance: none;
   background: url("<%= asset_path 'dialogs/slider/slider_small/slider_small_bar.png' %>");
@@ -1507,6 +1527,11 @@ input[type='range']::-moz-range-thumb {
   border-radius: 0px;
 }
 
+input[type='range']::-moz-range-thumb:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 input[type="range"]::-ms-track {
   background: url("<%= asset_path 'dialogs/slider/slider_small/slider_small_bar.png' %>");
   height: 12px;
@@ -1522,6 +1547,11 @@ input[type="range"]::-ms-thumb {
   background:url("<%= asset_path 'dialogs/slider/slider_small/slider_small_handler.png' %>");
   border: none;
   border-radius: 0px;
+}
+
+input[type="range"]::-ms-thumb:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 input[type=range]::-ms-fill-lower {
@@ -3850,6 +3880,7 @@ span.bonus {
   height: 48px;
   background-size: 48px;
   pointer-events:all;
+  cursor: pointer;
 }
 
 .building-annotation-background:hover{
@@ -3868,7 +3899,7 @@ span.bonus {
   height: 48px;
   background-size: 48px;
   pointer-events:none;
-  cursor: pointer;
+  
 }
 
 .building-info-button-background {
@@ -4122,144 +4153,6 @@ span.bonus {
   text-align: center;
   vertical-align: middle;  
 }
-
-/* ===== non-semantic helper classes ========================================
-   Alliance Screen
-   ========================================================================== */
-
-
-/*.alliance-screen {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  background-color: #000;
-  width: 100%;
-  min-height: 100%;
-}
-
-.alliance-pane {   
-  margin-left: 50px;
-  margin-top: 150px;
-  margin-bottom: 300px;
-  width:800px;
-  min-height: 400px;
-  background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
-  border-radius: 12px;
-  z-index: 2;
-}
-
-.alliance-pane .alliance-banner {
-  float: left;
-  width: 200px;
-  height: 200px;
-  margin-top: -35px;
-}
-
-.alliance-screen-background {
-  z-index: 0;
-  margin-top: -120px;
-  height: 960px;
-  margin-bottom: -860px;
-  width: 100%;
-}
-
-.base-background-picture.alliance-screen-picture {
-  position: static;
-  width: 100%;
-}
-
-.character-profile-view .alliance-banner,
-.settlement-info-dialog-pane .alliance-banner {
-  float: right;
-  width: 120px;
-  height: 120px;
-  margin-top: -30px;
-}
-
-.character-head {
-  float:left;
-}
-
-input[type="text"],
-.alliance-pane input[type="text"] {
-  font-size: 24px;
-  height: 36px;
-  border-radius: 5px;
-  margin-bottom: 6px;
-  margin-right: 30px;
-}
-
-input[type="text"].resource-amount {
-  font-size: 16px;
-  height: 24px;
-  width: 80px;
-  margin: 4px 8px 4px 4px;
-}
-
-input[type="text"].small-text-field {
-  font-size: 16px;
-  height: 24px;
-  width: 160px;
-  margin-right: 10px;
-}
-
-.alliance-description textarea, .character-description textarea {
-  width: 600px;
-}
-
-.alliance-description p, .character-description p {
-  word-wrap:break-word;
-}
-
-
-.alliance-management input[type="text"] {
-  width: 220px;
-}
-
-.shout-box input[type="text"] {
-  width: 500px;
-}
-
-.shout-box ul {
-  padding: 0px;
-}
-
-li.shout {
-  list-style-type:none;
-  background-color: #DFD;
-  border-radius: 8px;
-  padding: 8px 16px;
-  margin-bottom: 4px;
-  width: 70%;
-  font-style: italic;
-  font-size: 14px;
-  color: #999;
-}
-
-li.shout.leader {
-  background-color: #FDD;
-}
-
-li.shout.own {
-  margin-left: 26%;
-  background-color: #DDD;
-}
-
-li.shout.own.leader {
-  background-color: #FDD;
-}
-
-li.shout .text {
-  font-style: normal;
-  font-size: 18px;
-  color: #333;
-}
-
-li.shout .sender {
-  font-weight: bold;
-}*/
 
 
 
@@ -7100,8 +6993,6 @@ div.dom-quest-container div.tutorial-dialog {
   background-size:  100%;
   background-image: url('<%= asset_path("icons/bubble.png") %>');
 }
-
-
 
 
 
