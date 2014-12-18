@@ -495,6 +495,11 @@ canvas{
   cursor: pointer;
   z-index: 50;
 }
+.alliance-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .alliance-hud-icon {
   width: 96px;
   height: 96px;
@@ -532,6 +537,10 @@ canvas{
   background:url("<%= asset_path 'hud/message_button/message_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
 }
+.message-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
 
 .quest-list-hud-button{
   width: 52px;
@@ -546,6 +555,10 @@ canvas{
 .quest-list-hud-button:hover{
   background:url("<%= asset_path 'hud/quest_list_button/quest_list_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
+}
+.quest-list-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .count-indicator-background{
@@ -599,6 +612,11 @@ canvas{
   cursor: pointer;
 }
 
+.settelement-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .map-hud-button{
   width: 100px;
   height: 94px;
@@ -612,6 +630,11 @@ canvas{
 .map-hud-button:hover{
   background:url("<%= asset_path 'hud/map_button/map_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
+}
+
+.map-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .menu-hud-button{
@@ -629,6 +652,11 @@ canvas{
   cursor: pointer;
 }
 
+.menu-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .ranking-hud-button{
   width: 52px;
   height: 52px;
@@ -642,6 +670,11 @@ canvas{
 .ranking-hud-button:hover{
   background:url("<%= asset_path 'hud/ranking_button/ranking_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
+}
+
+.ranking-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .map-mountains-hud-button{
@@ -659,6 +692,11 @@ canvas{
   cursor: pointer;
 }
 
+.map-mountains-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .army-menu-hud-button-position{
   position: relative;
   top: 62px;
@@ -672,6 +710,11 @@ canvas{
 .army-menu-hud-button:hover{
   background:url("<%= asset_path 'hud/army_menu_button/army_menu_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
+}
+
+.army-menu-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .army-hud-button{
@@ -689,6 +732,11 @@ canvas{
 .army-hud-button:hover{
   background:url("<%= asset_path 'hud/army_button/army_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
+}
+
+.army-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 /* == NEW DOM LEFT HUD END== */
 
@@ -3801,7 +3849,16 @@ span.bonus {
   width: 48px;
   height: 48px;
   background-size: 48px;
-  pointer-events:auto;
+  pointer-events:all;
+}
+
+.building-annotation-background:hover{
+  
+}
+
+.building-annotation-background:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .building-annotation-icon {
@@ -3810,7 +3867,7 @@ span.bonus {
   width: 48px;
   height: 48px;
   background-size: 48px;
-  pointer-events:auto;
+  pointer-events:none;
   cursor: pointer;
 }
 
