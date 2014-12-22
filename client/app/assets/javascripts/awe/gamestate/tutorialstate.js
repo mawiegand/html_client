@@ -610,7 +610,7 @@ AWE.GS = (function(module) {
         AWE.Ext.applyFunctionToElements(queues, function(queue) {
           if (queue) {
             // log('---> queue', queue);
-            var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
+            var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.get('id')) || [];
             // log('---> jobs', jobs);
           
             AWE.Ext.applyFunctionToElements(jobs, function(job) {
