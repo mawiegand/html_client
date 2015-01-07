@@ -1841,7 +1841,6 @@ AWE.Controller = function (module) {
       if (inspectorViews.inspector) {
         _stages[3].addChild(inspectorViews.inspector.displayObject());
         if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
-          addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
           var annotationView = view.annotationView();
           if(annotationView)
           {
