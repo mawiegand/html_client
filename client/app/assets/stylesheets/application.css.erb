@@ -637,18 +637,29 @@ canvas{
   filter: alpha(opacity=70);
 }
 
+.menu-hud-button-icon{
+  width: 40px;
+  height: 40px;
+  background:url("<%= asset_path 'hud/menu_button/menu_button_icon.png' %>") no-repeat center center;
+  background-size: 40px;
+  position: absolute;
+  top: 5px;
+  left: 8px;
+}
+
 .menu-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/menu_button/menu_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/hud_stone_button.png' %>") no-repeat center center;
 }
+
 .menu-hud-button-position{
   position: relative;
   top: 10px;
   left: 12px;
 }
 .menu-hud-button:hover{
-  background:url("<%= asset_path 'hud/menu_button/menu_button_hovered.png' %>") no-repeat center center;
+  /*background:url("<%= asset_path 'hud/menu_button/menu_button_hovered.png' %>") no-repeat center center;*/
   cursor: pointer;
 }
 
