@@ -52,17 +52,17 @@ AWE.UI = (function(module) {
       _backgroundImageView.initWithControllerAndImage(controller, image);
       _backgroundImageView.setContentMode(module.ViewContentModeFit);
       _backgroundImageView.onMouseDown = function() { 
-        if(_backgroundImageView.displayObject())
+        if(_backgroundImageView && _backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 0.75;
-        if(_iconImageView.displayObject())
+        if(_iconImageView && _iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 0.75;
       };
       _backgroundImageView.onMouseUp = function(){
-        if(_backgroundImageView.displayObject())
+        if(_backgroundImageView && _backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 1.0;
-        if(_iconImageView.displayObject())
+        if(_iconImageView && _iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 1.0;
-      }
+      };
       _backgroundImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
@@ -82,17 +82,17 @@ AWE.UI = (function(module) {
       _iconImageView.setContentMode(module.ViewContentModeFit);
       _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
       _iconImageView.onMouseDown = function() { 
-        if(_backgroundImageView.displayObject())
+        if(_backgroundImageView && _backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 0.75;
-        if(_iconImageView.displayObject())
+        if(_iconImageView && _iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 0.75;
       };
       _iconImageView.onMouseUp = function(){
-        if(_backgroundImageView.displayObject())
+        if(_backgroundImageView && _backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 1.0;
-        if(_iconImageView.displayObject())
+        if(_iconImageView && _iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 1.0;
-      }
+      };
       _iconImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
