@@ -57,11 +57,13 @@ AWE.UI = (function(module) {
         if(_iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 0.75;
       };
-      _backgroundImageView.onClick = function() { 
+      _backgroundImageView.onMouseUp = function(){
         if(_backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 1.0;
         if(_iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 1.0;
+      }
+      _backgroundImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
         }
@@ -85,11 +87,13 @@ AWE.UI = (function(module) {
         if(_iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 0.75;
       };
-      _iconImageView.onClick = function() { 
+      _iconImageView.onMouseUp = function(){
         if(_backgroundImageView.displayObject())
           _backgroundImageView.displayObject().alpha = 1.0;
         if(_iconImageView.displayObject())
           _iconImageView.displayObject().alpha = 1.0;
+      }
+      _iconImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
         }

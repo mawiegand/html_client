@@ -57,6 +57,8 @@ AWE.Application = (function(module) {
     var _uiEnabled = false;
     var _hideHud = true;
 
+    var mouseCommonTarget = null;
+
     return /** @lends AWE.Application.MultiStageApplication# */ {
 
       hudController: null,
@@ -363,6 +365,41 @@ AWE.Application = (function(module) {
         if (presentScreenController && presentScreenController.onMouseUp) {
           presentScreenController.onMouseUp(evt);
         }
+
+         //added mouseup event for canvas buttons, as example was onclick used
+        log('entered mouseup handler');
+        var presentScreenController = this.get('presentScreenController');
+
+        if (presentScreenController && presentScreenController.isScrolling()) {
+          return ; // just ignore it here!
+        }
+
+        if ($(evt.target).parents('div#jappix_mini').length) {
+          log('catched by jappix');
+          return;
+        }
+
+        //default mouseup, if target not under mouse pointer
+        if(mouseCommonTarget){
+          if (mouseCommonTarget && mouseCommonTarget.view && mouseCommonTarget.view.onMouseDown) { // TODO: in our view layer: propagate clicks upwards along responder chain.
+            log('mouseup on mouseCommonTarget'+ mouseCommonTarget.view+' '+ mouseCommonTarget.view.typeName());
+            if (mouseCommonTarget.view.enabled()) {
+              log("mouseup forwarded to mouseCommonTarget.view.onMouseUp(..)");
+              mouseCommonTarget.view.onMouseUp(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+              mouseCommonTarget = null;
+            }
+            else {
+              console.log('mouseup on disabled view.');
+             }
+          }
+          else if (mouseCommonTarget && mouseCommonTarget.onMouseUp) {
+            log("mouseup forwarded to target.onMouseUp(..)");
+            mouseCommonTarget.onMouseUp(evt);
+            mouseCommonTarget = null;
+          }
+        }
+
+        var allStages = this.get('allStages');
       },
 
       /** finds the easelJS DisplayObject that the mouse is over and generates
@@ -524,7 +561,7 @@ AWE.Application = (function(module) {
         }
 
         //added mousedown event for canvas buttons, as example was onclick used
-        log('entered click handler');
+        log('entered mousedown handler');
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
@@ -551,6 +588,7 @@ AWE.Application = (function(module) {
           if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
             var stage = allStages[layer].stage;
             target = stage.getObjectUnderPoint(evt.pageX-stage.canvas.offsetLeft, evt.pageY-stage.canvas.offsetTop); // TODO: don't use absolute evt.pageX here, right?!
+            mouseCommonTarget = target;
           }
         }
 
