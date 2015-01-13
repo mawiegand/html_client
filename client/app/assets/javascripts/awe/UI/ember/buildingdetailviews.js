@@ -83,7 +83,7 @@ AWE.UI.Ember = (function(module) {
 
     isMilitary: function() {
       return this.get('building').isMilitaryBuilding();
-    }.property('building').cacheable(),
+    }.property('building.level').cacheable(),
     
     infoClicked: function(event) {
       var slot = this.get('slot');
