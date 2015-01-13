@@ -1,8 +1,6 @@
 <script type="text/x-handlebars" data-template-name="left-hud-view">
   <div class="settlement-map-button" id="left-dom-hud">
-  	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}>
-      <div class="menu-hud-button-icon"></div>
-    </div>
+  	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
   		<div class="map-mountains-hud-button map-mountains-hud-button-position" style="opacity: 0;"></div>
