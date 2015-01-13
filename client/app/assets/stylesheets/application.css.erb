@@ -732,6 +732,7 @@ canvas{
   width: 52px;
   height: 52px;
   background:url("<%= asset_path 'hud/army_button/army_button.png' %>") no-repeat center center;
+  background-position: 0 0;
 }
 
 .army-hud-button-position{
@@ -741,7 +742,7 @@ canvas{
 }
 
 .army-hud-button:hover{
-  background:url("<%= asset_path 'hud/army_button/army_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 
