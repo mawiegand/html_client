@@ -526,7 +526,8 @@ canvas{
 .message-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/message_button/message_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/message_button/message_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .message-hud-button-position{
   bottom: 160px;
@@ -534,7 +535,7 @@ canvas{
   position: relative;
 }
 .message-hud-button:hover{
-  background:url("<%= asset_path 'hud/message_button/message_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 .message-hud-button:active{
@@ -545,7 +546,8 @@ canvas{
 .quest-list-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/quest_list_button/quest_list_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/quest_list_button/quest_list_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .quest-list-hud-button-position{
   bottom: 148px;
@@ -553,7 +555,7 @@ canvas{
   position: relative;
 }
 .quest-list-hud-button:hover{
-  background:url("<%= asset_path 'hud/quest_list_button/quest_list_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 .quest-list-hud-button:active{
@@ -600,7 +602,8 @@ canvas{
 .settelement-hud-button{
   width: 100px;
   height: 94px;
-  background:url("<%= asset_path 'hud/settlement_button/settlement_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/settlement_button/settlement_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .settlement-hud-button-position{
   top: 72px;
@@ -608,7 +611,7 @@ canvas{
   position: relative;
 }
 .settelement-hud-button:hover{
-  background:url("<%= asset_path 'hud/settlement_button/settlement_button_hovered.png' %>") no-repeat center center;
+  background-position: -100px 0;
   cursor: pointer;
 }
 
@@ -620,7 +623,8 @@ canvas{
 .map-hud-button{
   width: 100px;
   height: 94px;
-  background:url("<%= asset_path 'hud/map_button/map_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/map_button/map_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .map-hud-button-position{
   top: 72px;
@@ -628,7 +632,7 @@ canvas{
   position: relative;
 }
 .map-hud-button:hover{
-  background:url("<%= asset_path 'hud/map_button/map_button_hovered.png' %>") no-repeat center center;
+  background-position: -100px 0;
   cursor: pointer;
 }
 
@@ -637,20 +641,11 @@ canvas{
   filter: alpha(opacity=70);
 }
 
-.menu-hud-button-icon{
-  width: 40px;
-  height: 40px;
-  background:url("<%= asset_path 'hud/menu_button/menu_button_icon.png' %>") no-repeat center center;
-  background-size: 40px;
-  position: absolute;
-  top: 5px;
-  left: 8px;
-}
-
 .menu-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/hud_stone_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/menu_button/menu_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 
 .menu-hud-button-position{
@@ -658,8 +653,8 @@ canvas{
   top: 10px;
   left: 12px;
 }
-.menu-hud-button-icon:hover{
-  background:url("<%= asset_path 'hud/menu_button/menu_button_icon_hover.png' %>") no-repeat center center;
+.menu-hud-button:hover{
+  background-position: -52px 0;
   cursor: pointer;
 }
 
@@ -671,7 +666,8 @@ canvas{
 .ranking-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/ranking_button/ranking_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/ranking_button/ranking_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .ranking-hud-button-position{
   position: relative;
@@ -679,7 +675,7 @@ canvas{
   left: 12px;
 }
 .ranking-hud-button:hover{
-  background:url("<%= asset_path 'hud/ranking_button/ranking_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 
@@ -691,7 +687,8 @@ canvas{
 .map-mountains-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/map_mountains_button/map_mountains_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/map_mountains_button/map_mountains_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .map-mountains-hud-button-position{
   position: relative;
@@ -699,7 +696,7 @@ canvas{
   left: 12px;
 }
 .map-mountains-hud-button:hover{
-  background:url("<%= asset_path 'hud/map_mountains_button/map_mountains_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 
@@ -716,10 +713,11 @@ canvas{
 .army-menu-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/army_menu_button/army_menu_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/army_menu_button/army_menu_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 .army-menu-hud-button:hover{
-  background:url("<%= asset_path 'hud/army_menu_button/army_menu_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 
@@ -731,7 +729,8 @@ canvas{
 .army-hud-button{
   width: 52px;
   height: 52px;
-  background:url("<%= asset_path 'hud/army_button/army_button.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'hud/army_button/army_button.png' %>") no-repeat;
+  background-position: 0 0;
 }
 
 .army-hud-button-position{
@@ -741,7 +740,7 @@ canvas{
 }
 
 .army-hud-button:hover{
-  background:url("<%= asset_path 'hud/army_button/army_button_hovered.png' %>") no-repeat center center;
+  background-position: -52px 0;
   cursor: pointer;
 }
 
@@ -2066,6 +2065,7 @@ h1.slot-tooltip {
 }
 
 .image-button {
+  margin-left: 500px;
   width: 197px;
   height: 40px;
   cursor: pointer;
@@ -2136,6 +2136,195 @@ h1.slot-tooltip {
   width: 800px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.startup-dialog {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+
+  cursor: default;
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -431px;
+  margin-top: -325px;
+  width: 764px;
+  height: 576px;
+  background: url('/client/assets/quest-selection-bg.png') no-repeat center;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.startup-dialog .content {
+  margin: 50px 80px;
+  width: 610px;
+  height: 450px;
+  text-align: center;
+  position: absolute;
+}
+
+.startup-dialog .content,
+.startup-dialog .content h1,
+.startup-dialog .content h2 {
+  font-family: 'hvd_comic_serif_proregular';
+  color: #725d3a;
+}
+
+.startup-dialog .content h1 {
+  margin-top: 0;
+  margin-bottom: 34px;
+  font-size: 2em;
+}
+
+.startup-dialog .content h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.startup-dialog .content p {
+  width: 90%;
+  margin: 0;
+  line-height: 1em;
+  color: #8d887f;
+}
+
+.startup-dialog .content .advice {
+  text-align: left;
+}
+
+.startup-dialog .content table {
+  width: 100%;
+  height: 82%;
+}
+
+.startup-dialog .content tr {
+  height: 50%;
+}
+
+.startup-dialog .content td {
+  height: 100%;
+  overflow: hidden;
+}
+
+.startup-dialog .content td.first,
+.startup-dialog .content td.third {
+  width: 60%;
+}
+
+.startup-dialog .content td.second,
+.startup-dialog .content td.fourth {
+  width: 40%;
+}
+
+.startup-dialog .content td .info-image {
+  width: 272px;
+  height: 152px;
+  margin-top: -10px;
+  margin-left: -20px;
+  margin-bottom: -25px;
+}
+
+.startup-dialog .content td.first .info-image {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-first.png') center no-repeat;
+}
+
+.startup-dialog .content td.second .info-image {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-second.png') center no-repeat;
+}
+
+.startup-dialog .content td.third .info-image {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-third.png') center no-repeat;
+}
+
+.startup-dialog .content td.fourth .info-image {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-fourth.png') center no-repeat;
+}
+
+.startup-dialog .arrow.first {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-arrow-first.png') center no-repeat;
+  width: 80px;
+  height: 68px;
+  position: absolute;
+  margin-top: 198px;
+  margin-left: 350px;
+}
+
+.startup-dialog .arrow.second {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-arrow-second.png') center no-repeat;
+  width: 92px;
+  height: 44px;
+  position: absolute;
+  margin-top: 288px;
+  margin-left: 334px;
+}
+
+.startup-dialog .arrow.third {
+  background: url('/client/assets/welcome-dialog/welcome-dialog-arrow-third.png') center no-repeat;
+  width: 84px;
+  height: 56px;
+  position: absolute;
+  margin-top: 378px;
+  margin-left: 350px;
+}
+
+
+.startup-dialog-button{
+  position: absolute;
+  margin-top: 480px;
+  margin-left: 630px;
+  width: 172px;
+  height: 129px;
+  border: none;
+  box-shadow: none;
+  z-index: 25;
+  background-image: url('<%= asset_path("quest-dialog-button.png") %>');
+  background-size: 100%;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+
+  cursor: pointer;
+}
+
+.startup-dialog-button:hover{
+    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+    
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.startup-dialog-button:active{
+  
+  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  
+  transition: background 0s;
 }
 
 .welcome-dialog {
@@ -4038,7 +4227,7 @@ span.bonus {
   top: 80px;
   left: 80px;
   background: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>") no-repeat center center;
-  background-size: 15px;
+  background-size: 24px;
 }
 
 .building-diplomacy-button-background {
@@ -4290,6 +4479,17 @@ span.bonus {
   font-size: 18px;
   color: #fff;
   cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.topbar-info-text:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .topbar-info-button {
@@ -4313,6 +4513,11 @@ span.bonus {
   height: 32px;
   top: 14px;
   cursor: pointer;
+}
+
+.settlement-switch:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
 .settlement-switch.previous {
@@ -7198,6 +7403,8 @@ div.dom-quest-container div.tutorial-dialog {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
+
+  cursor: pointer;
 }
 
 .quest-dialog-button:hover{

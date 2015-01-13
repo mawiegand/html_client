@@ -582,13 +582,26 @@ AWE.I18n.en_US = function(module) {
       },
     },
 
-    welcome:{
-      heading:'Welcome to Wack-a-Doo!',
-      headingWithName: 'Welcome to Wack-a-Doo,',
-      headingPlan:'The Plan',
-      image:AWE.Config.RAILS_ASSET_PATH + 'whatdoido_en_US.jpeg',
-      headingSituation:'The Situation',
-      formattedText:'<p>Being a <b>demigod</b> to a tiny tribe of stoneage caveman you\'ve just convinced your followers to leave their cave behind and to live in something modern called "a village". Unfortunately, the only thing their glorious chieftain let them build was a pompous hut for himself. Now, you should <b>build housing for some Hunter-Gatherers</b> ASAP.</p><p><b>Have fun!</p>',
+    welcome: {
+      heading: 'Welcome to Wack-a-Doo!',
+      info: {
+        first: {
+          heading: "1. Settle down",
+          text: "Take command of a stoneage tribe and build up a huge settlement."
+        },
+        second: {
+          heading: "2. Explore and Expand",
+          text: "Train units and explore the surrounding area."
+        },
+        third: {
+          heading: "3. Be Social",
+          text: "Cooperate with your friends and form mighty alliances."
+        },
+        fourth: {
+          heading: "4. Become Legend",
+          text: "Rule the world, secure and epic win."
+        }
+      }
     },
 
     shop:{
