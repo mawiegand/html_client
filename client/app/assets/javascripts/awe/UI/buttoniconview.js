@@ -14,7 +14,9 @@ AWE.UI = (function(module) {
     
     var backgroundImagesForStates = {}; 
     var iconImagesForStates = {}; 
-        
+    
+    var isButtonDown = false;
+
     my = my || {};
     
     my.typeName = "ButtonIconView";
@@ -52,16 +54,14 @@ AWE.UI = (function(module) {
       _backgroundImageView.initWithControllerAndImage(controller, image);
       _backgroundImageView.setContentMode(module.ViewContentModeFit);
       _backgroundImageView.onMouseDown = function() { 
-        if(_backgroundImageView && _backgroundImageView.displayObject())
-          _backgroundImageView.displayObject().alpha = 0.75;
-        if(_iconImageView && _iconImageView.displayObject())
-          _iconImageView.displayObject().alpha = 0.75;
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView ();
       };
       _backgroundImageView.onMouseUp = function(){
-        if(_backgroundImageView && _backgroundImageView.displayObject())
-          _backgroundImageView.displayObject().alpha = 1.0;
-        if(_iconImageView && _iconImageView.displayObject())
-          _iconImageView.displayObject().alpha = 1.0;
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
       };
       _backgroundImageView.onClick = function() { 
         if (that.enabled()) {
@@ -82,16 +82,14 @@ AWE.UI = (function(module) {
       _iconImageView.setContentMode(module.ViewContentModeFit);
       _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
       _iconImageView.onMouseDown = function() { 
-        if(_backgroundImageView && _backgroundImageView.displayObject())
-          _backgroundImageView.displayObject().alpha = 0.75;
-        if(_iconImageView && _iconImageView.displayObject())
-          _iconImageView.displayObject().alpha = 0.75;
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView();
       };
       _iconImageView.onMouseUp = function(){
-        if(_backgroundImageView && _backgroundImageView.displayObject())
-          _backgroundImageView.displayObject().alpha = 1.0;
-        if(_iconImageView && _iconImageView.displayObject())
-          _iconImageView.displayObject().alpha = 1.0;
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
       };
       _iconImageView.onClick = function() { 
         if (that.enabled()) {
@@ -119,6 +117,13 @@ AWE.UI = (function(module) {
       if (this.enabled()) {  // make sure, the button has the correct alpha value, if enabled
         _backgroundImageView.setAlpha(this.alpha());
         _iconImageView.setAlpha(this.alpha());
+        if(isButtonDown){
+          _backgroundImageView.setAlpha(0.7 * this.alpha());
+          _iconImageView.setAlpha(0.7 * this.alpha());
+        }else{
+          _backgroundImageView.setAlpha(this.alpha());
+          _iconImageView.setAlpha(this.alpha());
+        }
       }
       
       if (!this.enabled()) {

@@ -73,6 +73,22 @@ AWE.UI = (function(module) {
         profileDiv.onclick = function() { 
           WACKADOO.characterButtonClicked();;
         };
+        profileDiv.onmousedown = function() { 
+          if(_nameLabelButton){
+            _nameLabelButton.mouseDownFromDOM();
+          }
+          if(_levelButton){
+            _levelButton.mouseDownFromDOM();
+          }
+        };
+        document.body.onmouseup = function() {
+          if(_nameLabelButton){
+            _nameLabelButton.mouseUpFromDOM();
+          }
+          if(_levelButton){
+            _levelButton.mouseUpFromDOM();
+          }
+        };
         root.append(profileDiv);
 
         _avatarView = AWE.UI.createAvatarView();
@@ -96,7 +112,7 @@ AWE.UI = (function(module) {
         _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         _nameLabelButton.onClick = function() {
           //my.controller.avatarLabelClicked();
-        };              
+        };                
         this.addChild(_nameLabelButton);
       }  
       

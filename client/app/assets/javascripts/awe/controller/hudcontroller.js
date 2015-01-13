@@ -1195,7 +1195,7 @@ AWE.Controller = (function(module) {
         });
                 
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged() || animating) {
+        if (_needsDisplay || _loopCounter % 10 == 0 || that.modelChanged() || animating) {//was 60, changed to 10 for better button view update on profile HUD by mouse down
           
           if (true) {
             var runningAnimations = [];
