@@ -592,12 +592,25 @@ AWE.I18n.de_DE = function(module) {
     },
 
     welcome: {
-      heading: 'Willkomen bei Wack-a-Doo!',
-      headingWithName: 'Willkomen bei Wack-a-Doo,',
-      headingPlan: 'Der Plan',
-      image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
-      headingSituation: 'Die Situation',
-      formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
+      heading: 'Willkommen bei Wack-a-Doo!',
+      info: {
+        first: {
+          heading: "1. Baue dich auf",
+          text: "Übernimm einen Stamm und baue eine große Siedlung auf.",
+        },
+        second: {
+          heading: "2. Breite dich aus",
+          text: "Bilde Einheiten aus und erkunde deine Umgebung.",
+        },
+        third: {
+          heading: "3. Verbünde dich",
+          text: "Verbünde dich mit Freunden und gründe eine mächtige Allianz.",
+        },
+        fourth: {
+          heading: "4. Werde unsterblich",
+          text: "Erobere die Welt und gewinne das Spiel.",
+        }
+      },
     },
 
     facebook: {
