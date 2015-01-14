@@ -900,7 +900,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
       
       Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("wad-rt82-fhjk-18");
+      Sample.setAppToken("fsRrapvL");
       
       if (AWE.Facebook.isRunningInCanvas)
       {
