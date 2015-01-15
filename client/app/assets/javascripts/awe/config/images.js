@@ -222,12 +222,15 @@ AWE.Config = (function(module) {
     "hud/annotation/button/defense/normal":      AWE.Config.RAILS_ASSET_PATH + 'hud/icon_defense/icon_defense.png',
     "hud/annotation/button/enter/normal":        AWE.Config.RAILS_ASSET_PATH + 'hud/icon_enter/icon_enter.png',
     "hud/annotation/button/move/normal":         AWE.Config.RAILS_ASSET_PATH + 'hud/icon_move/icon_move.png',
-    "hud/annotation/button/settle/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_flag/icon_flag.png',
+    "hud/annotation/button/settle/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_flag/icon_settle.png',
+
+    "hud/annotation/button/cancel/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_cancel/icon_cancel.png',
     
     "hud/annotation/button/background/blue":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_info/colored/button_info_colored.png',
     "hud/annotation/button/background/red":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_move/colored/button_move_colored.png',
     "hud/annotation/button/background/green":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_upgrade/colored/button_upgrade_colored.png',
     "hud/annotation/button/background/purple":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_trade/colored/button_trade_colored.png',
+    "hud/annotation/button/background/yellow":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_action/colored/button_action_colored.png',
 
     "hud/bubble/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble.png',
     "hud/bubble/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',

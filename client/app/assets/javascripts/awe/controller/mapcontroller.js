@@ -1679,7 +1679,7 @@ AWE.Controller = function (module) {
       if (view.typeName() === 'ArmyView') {
         if (that.markMoveOwnArmy()) {
           var annotationView = view.annotationView();
-          addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+          addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
         }
         else if (that.markAttackButton()) {
           var annotationView = view.annotationView();
@@ -1696,7 +1696,7 @@ AWE.Controller = function (module) {
             if (that.markSelectOwnHomeSettlement()) {
               var annotationView = view.annotationView();
               if (annotationView) {
-                addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
+                addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 0));
               }
             }
             else {
@@ -3418,7 +3418,7 @@ AWE.Controller = function (module) {
         if (_selectedView && !that.animatedMarker) {
           if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy()) {
             var annotationView = _selectedView.annotationView();
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
           else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
             var annotationView = view.annotationView();
@@ -3438,7 +3438,7 @@ AWE.Controller = function (module) {
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markSelectOwnHomeSettlement()) {
             var annotationView = _selectedView.annotationView();
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 0));
           }
         }
       }
