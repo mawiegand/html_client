@@ -122,7 +122,7 @@ AWE.UI = (function(module) {
         _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
           AWE.UI.ImageCache.getImage("hud/icon/info"),
-          AWE.Geometry.createRect(110, 86, 64, 64)
+          AWE.Geometry.createRect(-10, -18, 64, 64)
         );
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
