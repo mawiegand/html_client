@@ -1844,7 +1844,7 @@ AWE.Controller = function (module) {
           var annotationView = view.annotationView();
           if(annotationView)
           {
-              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(250, 60));
           }
         }
         _inspectorChanged = true;
@@ -3429,7 +3429,7 @@ AWE.Controller = function (module) {
             if (inspector && inspector.typeName('BaseInspectorView') && inspector.location().isOwn()) {
               addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);*/
               var annotationView = _selectedView.annotationView();
-              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(250, 60));
             //}
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {
