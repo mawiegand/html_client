@@ -13,7 +13,7 @@
             {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
             {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" classNames="create-army-dialog-name" }}
         {{else}}
-            {{ t army.create.error }}
+            <p class="error">{{ t army.create.error }}</p>
         {{/if}}
 
    </div>
