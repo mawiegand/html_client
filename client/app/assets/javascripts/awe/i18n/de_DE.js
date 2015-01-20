@@ -893,7 +893,7 @@ AWE.I18n.de_DE = function(module) {
         confirmationHeader: "Hier eine Lagerstätte gründen?",
         confirmationFlavour: "Eine Siedlung in Ehren kann niemand verwehren. Harrharrharr.",
         confirmationText: "Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Anführer aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur Verfügung.",
-        confirmation: "jetzt und hier gründen",
+        confirmation: "Gründen",
         errorHeader: "Lagerstätte kann nicht gegründet werden.",
         errorFlavour: "Grmpf.",
         errorText: "Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen gegründet werden, in der sich noch keine andere Lagerstätte von Dir oder Dein Hauptdorf befindet.",

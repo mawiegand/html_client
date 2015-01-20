@@ -949,10 +949,15 @@ AWE.Controller = function (module) {
         armyAnnotationView.setActionMode('foundSettlement');
         _actionViewChanged = true;
 
-        var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
+        var dialog = AWE.UI.Ember.InfoDialog.create({
           army:armyAnnotationView.army(),
 
-          foundPressed:function (evt) {
+          heading: AWE.I18n.lookupTranslation('settlement.found.confirmationHeader'),
+          message: AWE.I18n.lookupTranslation('settlement.found.confirmationText'),
+
+          okText: AWE.I18n.lookupTranslation('settlement.found.confirmation'),
+
+          okPressed:function (evt) {
             var army = this.get('army');
             var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
 
