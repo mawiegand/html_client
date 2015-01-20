@@ -348,8 +348,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
         else
         {
             var that = this;
-              var confirmationDialog = AWE.UI.Ember.Dialog.create({
-              templateName: 'info-dialog',
+              var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
 
               classNames: ['confirmation-dialog'],
 

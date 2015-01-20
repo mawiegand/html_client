@@ -120,10 +120,9 @@ AWE.Controller = (function(module) {
         else {
           log(status, "ERROR: The server did not accept the message.");
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
         }

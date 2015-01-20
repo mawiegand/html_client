@@ -43,8 +43,7 @@ AWE.UI.Ember = (function(module) {
     }.property('character.description'),
 
     sendUserContentReport: function() {
-      var confirmationDialog = AWE.UI.Ember.Dialog.create({
-        templateName: 'info-dialog',
+      var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
 
         classNames: ['confirmation-dialog'],
       
@@ -236,29 +235,24 @@ AWE.UI.Ember = (function(module) {
         else if(status === AWE.Net.CONFLICT)
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'already-liked-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else if (status === AWE.Net.NOT_FOUND) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-like-amount-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughLikeAmount '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else // handle unexpected error
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
@@ -282,29 +276,24 @@ AWE.UI.Ember = (function(module) {
         else if(status === AWE.Net.CONFLICT)
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'already-liked-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else if (status === AWE.Net.NOT_FOUND) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-dislike-amount-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughDislikeAmount '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else // handle unexpected error
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }

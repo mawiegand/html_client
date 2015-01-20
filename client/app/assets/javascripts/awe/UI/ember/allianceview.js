@@ -144,9 +144,7 @@ AWE.UI.Ember = (function(module) {
 
     sendAllianceApplication: function() {
       this.set('applicationMessage', null);
-      var confirmationDialog = AWE.UI.Ember.Dialog.create({
-        templateName: 'info-dialog',
-
+      var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
         classNames: ['confirmation-dialog'],
         
         controller: this,
@@ -269,15 +267,11 @@ AWE.UI.Ember = (function(module) {
           alliance         === undefined || alliance         === null ||
           currentCharacter === undefined || currentCharacter === null) {
 
-        var dialog = AWE.UI.Ember.Dialog.create({
-          contentTemplateName: 'info-dialog',
-          
+        var dialog = AWE.UI.Ember.InfoDialog.create({          
           heading:             AWE.I18n.lookupTranslation('error.genericClientHeading'),
           message:             AWE.I18n.lookupTranslation('error.genericClientMessage'),
           
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
+          okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
         });          
         WACKADOO.presentModalDialog(dialog);
 
@@ -287,22 +281,17 @@ AWE.UI.Ember = (function(module) {
                currentCharacter.get('id')          !== alliance.get('leader_id') ||
                character.get('id')                 === alliance.get('leader_id')) {
 
-        var dialog = AWE.UI.Ember.Dialog.create({
-          contentTemplateName: 'info-dialog',
-          
+        var dialog = AWE.UI.Ember.InfoDialog.create({          
           heading:             AWE.I18n.lookupTranslation('alliance.error.kickHeading'),
           message:             AWE.I18n.lookupTranslation('alliance.error.kickMessage'),
           
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
+          okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
         });          
         WACKADOO.presentModalDialog(dialog);
 
       }
       else {
-        var confirmationDialog = AWE.UI.Ember.Dialog.create({
-          templateName: 'info-dialog',
+        var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
 
           classNames: ['confirmation-dialog'],
         
@@ -323,10 +312,9 @@ AWE.UI.Ember = (function(module) {
               else {
                 log(status, "The server did not accept the kick member command.");
                 var dialog = AWE.UI.Ember.InfoDialog.create({
-                  contentTemplateName: 'server-command-failed-info',
-                  cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-                  okPressed:           null,
-                  cancelPressed:       function() { this.destroy(); },
+                  heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+                  message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+                  okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
                 });          
                 WACKADOO.presentModalDialog(dialog);
               } 
