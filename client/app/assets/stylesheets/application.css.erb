@@ -1627,9 +1627,9 @@ input[type=range]::-ms-fill-upper {
 }
 
 
-/*.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
+.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
   float: right;
-}*/
+}
 
 .modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
   font-size: 20px;
@@ -2017,17 +2017,13 @@ input[type=range]::-ms-fill-upper {
 }
 
 .icon-button {
-  width: 240px;
-  height: 84px;
-  padding-top: 42px;
-  color: white;
-  text-shadow: 0px 0px 8px black;
+  padding: 4px 8px 4px 48px;
 }
 
-/*.icon-button:hover, .button:hover {
+.icon-button:hover, .button:hover {
   border: 2px solid #777;
   margin: -2px;
-}*/
+}
 
 h1.slot-tooltip {
   color: #fff;
@@ -2044,26 +2040,30 @@ h1.slot-tooltip {
 }
 
 
-/*.ok-button:hover {
+.icon-button.ok-button:hover {
   border-color: #9D9;
 }
 
-.ok-button {
-  color: #9D9;
-}*/
-
 .icon-button.ok-button {
-  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_blue.png") %>') no-repeat left center;  
-}
-
-.icon-button.ok-cancel-button {
-  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_green.png") %>') no-repeat left center;  
+  color: #9D9;
 }
 
 .icon-button.cancel-button {
-  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_red.png") %>') no-repeat left center;
+  color: #F77;
 }
 
+.icon-button.cancel-button:hover {
+  border-color: #F77;
+}
+
+ 
+.icon-button.ok-button {
+  background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;
+}
+
+.icon-button.cancel-button {
+  background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
+}
 
 .icon-button.shuffle-button {
   background: url('<%= asset_path("icons/dice.png") %>') no-repeat left center;  
@@ -2163,6 +2163,30 @@ h1.slot-tooltip {
   width: 100%;
   text-align: center;
 }
+
+.info-button.ok-button {
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_blue.png") %>') no-repeat left center;  
+}
+
+.info-button.ok-cancel-button {
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_green.png") %>') no-repeat left center;  
+}
+
+.info-button.cancel-button {
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_red.png") %>') no-repeat left center;
+}
+
+.info-button {
+  display: inline-block;
+  cursor: pointer;
+  width: 240px;
+  height: 84px;
+  padding-top: 42px;
+  color: white;
+  text-shadow: 0px 0px 8px black;
+}
+
+
 
 .announcement-dialog {
   font-size: 16px;

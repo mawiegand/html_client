@@ -126,14 +126,14 @@
         <div class="controlls">
           {{#if okPressed }}
             {{#if cancelPressed}}
-              <div class="icon-button ok-cancel-button" {{action "okPressed"}}>{{okText}}</div>
+              <div class="info-button ok-cancel-button" {{action "okPressed"}}>{{okText}}</div>
             {{else}}
-              <div class="icon-button ok-button" {{action "okPressed"}}>{{okText}}</div>
+              <div class="info-button ok-button" {{action "okPressed"}}>{{okText}}</div>
             {{/if}}
 
           {{/if}}
           {{#if cancelPressed }}
-            <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{cancelText}}</div>
+            <div class="info-button cancel-button" {{action "cancelPressed"}}>{{cancelText}}</div>
           {{/if}}
         </div>
       </div>
