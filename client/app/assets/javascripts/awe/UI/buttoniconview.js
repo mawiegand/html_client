@@ -67,6 +67,10 @@ AWE.UI = (function(module) {
         if (that.enabled()) {
           that.onClick() 
         }
+        else
+        {
+          that.onDisabledClick();
+        }
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _backgroundImageView.onDoubleClick = function() { 
         if (that.enabled()) {
@@ -94,6 +98,10 @@ AWE.UI = (function(module) {
       _iconImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
+        }
+        else
+        {
+          that.onDisabledClick();
         }
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _iconImageView.onDoubleClick = function() { 
@@ -206,6 +214,10 @@ AWE.UI = (function(module) {
       if (that.enabled()) {
         my.controller.buttonClicked(that);
       }
+    };
+
+    that.onDisabledClick = function() {
+
     };
     
         

@@ -117,12 +117,14 @@
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 info-dialog">
       <h1>{{ heading }}</h1>
-      <div class="content-text">
-        {{#if contentTemplateName}}
-          {{view Ember.View templateNameBinding="contentTemplateName" argumentsBinding="arguments"}}
-        {{else}}
-        <p>{{ message }}</p>
-        {{/if}}
+      <div class="content">
+        <div class="content-text">
+          {{#if contentTemplateName}}
+            {{view Ember.View templateNameBinding="contentTemplateName" argumentsBinding="arguments"}}
+          {{else}}
+            <p>{{ message }}</p>
+          {{/if}}
+        </div>
         <div class="controlls">
           {{#if okPressed }}
             {{#if cancelPressed}}
