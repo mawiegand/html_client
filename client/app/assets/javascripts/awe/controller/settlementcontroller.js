@@ -344,11 +344,10 @@ AWE.Controller = (function(module) {
       
       if (space <= 0 && jobType === AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE) {
         var dialog = AWE.UI.Ember.InfoDialog.create({
-          contentTemplateName: 'no-building-slots-free-info',
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
-        });          
+          message:             AWE.I18n.lookupTranslation('building.error.notEnoughBuildingSlots'),
+          
+          okText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+        });
         WACKADOO.presentModalDialog(dialog);
       }
       else if (queue && queue.get('max_length') > queue.get('jobs_count')) {
@@ -391,10 +390,9 @@ AWE.Controller = (function(module) {
           else {
             log(status, "ERROR: The server did not accept the construction command.");
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'server-command-failed-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+              message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
             switch (jobType) {
@@ -421,10 +419,10 @@ AWE.Controller = (function(module) {
       else {
         var dialog = AWE.UI.Ember.InfoDialog.create({
           contentTemplateName: 'construction-queue-full-info',
+
           arguments:           queue,
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
+          okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           function() { this.destroy(); },
         });          
         WACKADOO.presentModalDialog(dialog);
         log("WARNING: Could not find appropiate queue for building category, or no empty slot left.");
@@ -481,19 +479,16 @@ AWE.Controller = (function(module) {
           }
           else if (status === AWE.Net.FORBIDDEN) {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'not-enough-cash-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              message:             AWE.I18n.lookupTranslation('building.error.notEnoughCash'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
           }
           else {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'server-command-failed-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+              message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
             log(status, "The server did not accept the job finish command.");
@@ -516,10 +511,8 @@ AWE.Controller = (function(module) {
           }
           else {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'construction-queue-not-empty-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              message:             AWE.I18n.lookupTranslation('settlement.buildings.constructionQueueNotEmpty.msg'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
           }
@@ -543,10 +536,8 @@ AWE.Controller = (function(module) {
           }
           else {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'construction-queue-not-empty-info',
+              message:             AWE.I18n.lookupTranslation('settlement.buildings.constructionQueueNotEmpty.msg'),
               cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
             });          
             WACKADOO.presentModalDialog(dialog);
           }
@@ -578,8 +569,6 @@ AWE.Controller = (function(module) {
           contentTemplateName: 'training-queue-full-info',
           arguments:           queue,
           cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
         });          
         WACKADOO.presentModalDialog(dialog);
       }
@@ -612,19 +601,16 @@ AWE.Controller = (function(module) {
           }
           else if (status === AWE.Net.FORBIDDEN) {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'not-enough-cash-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              message:             AWE.I18n.lookupTranslation('building.error.notEnoughCash'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
           }
           else {
             var dialog = AWE.UI.Ember.InfoDialog.create({
-              contentTemplateName: 'server-command-failed-info',
-              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-              okPressed:           null,
-              cancelPressed:       function() { this.destroy(); },
+              heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+              message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
             });          
             WACKADOO.presentModalDialog(dialog);
             log(status, "The server did not accept the training job speedup command.");
@@ -653,10 +639,9 @@ AWE.Controller = (function(module) {
         }
         else {  // show error dialog
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts send command.");
@@ -680,10 +665,9 @@ AWE.Controller = (function(module) {
         }  
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts cancel command.");
@@ -706,10 +690,9 @@ AWE.Controller = (function(module) {
         }  
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts speedup command.");
@@ -734,10 +717,9 @@ AWE.Controller = (function(module) {
         }
         else {  // show error dialog
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'artifact-not-enough-resources',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('settlement.artifact.notEnoughResources.header'),
+            message:             AWE.I18n.lookupTranslation('settlement.artifact.notEnoughResources.content'),
+            okText:              AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the artifact initiation command.");
@@ -762,10 +744,8 @@ AWE.Controller = (function(module) {
         }
         else if (status === AWE.Net.FORBIDDEN) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-cash-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('building.error.notEnoughCash'),
+            okText:              AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           if (callback) {
@@ -774,10 +754,9 @@ AWE.Controller = (function(module) {
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the artifact initiation speedup command.");
@@ -848,10 +827,9 @@ AWE.Controller = (function(module) {
         }
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'assignment-conflict-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('settlement.assignment.error.conflict.header'),
+            message:             AWE.I18n.lookupTranslation('settlement.assignment.error.conflict.content'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -861,10 +839,9 @@ AWE.Controller = (function(module) {
         }
         else if (status === AWE.Net.FORBIDDEN) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'assignment-not-enough-prerequisites',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.header'),
+            message:             AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.text'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -874,10 +851,9 @@ AWE.Controller = (function(module) {
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -900,10 +876,9 @@ AWE.Controller = (function(module) {
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -972,10 +947,9 @@ AWE.Controller = (function(module) {
         }
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'assignment-conflict-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('settlement.assignment.error.conflict.header'),
+            message:             AWE.I18n.lookupTranslation('settlement.assignment.error.conflict.content'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -985,10 +959,9 @@ AWE.Controller = (function(module) {
         }
         else if (status === AWE.Net.FORBIDDEN) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'assignment-not-enough-prerequisites',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.header'),
+            message:             AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.text'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -998,10 +971,9 @@ AWE.Controller = (function(module) {
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");
@@ -1024,10 +996,9 @@ AWE.Controller = (function(module) {
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the assignment start command.");

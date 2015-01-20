@@ -1627,9 +1627,9 @@ input[type=range]::-ms-fill-upper {
 }
 
 
-.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
+/*.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
   float: right;
-}
+}*/
 
 .modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
   font-size: 20px;
@@ -2017,13 +2017,16 @@ input[type=range]::-ms-fill-upper {
 }
 
 .icon-button {
-  padding: 4px 8px 4px 48px;
+  width: 240px;
+  height: 84px;
+  padding-top: 42px;
+  color: white;
 }
 
-.icon-button:hover, .button:hover {
+/*.icon-button:hover, .button:hover {
   border: 2px solid #777;
   margin: -2px;
-}
+}*/
 
 h1.slot-tooltip {
   color: #fff;
@@ -2040,17 +2043,26 @@ h1.slot-tooltip {
 }
 
 
-.ok-button:hover {
+/*.ok-button:hover {
   border-color: #9D9;
 }
 
 .ok-button {
   color: #9D9;
-}
+}*/
 
 .icon-button.ok-button {
-  background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;  
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_blue.png") %>') no-repeat left center;  
 }
+
+.icon-button.ok-cancel-button {
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_green.png") %>') no-repeat left center;  
+}
+
+.icon-button.cancel-button {
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_button_red.png") %>') no-repeat left center;
+}
+
 
 .icon-button.shuffle-button {
   background: url('<%= asset_path("icons/dice.png") %>') no-repeat left center;  
@@ -2058,10 +2070,6 @@ h1.slot-tooltip {
 
 .icon-button.close-button {
   background: url('<%= asset_path("icons/cross_small.png") %>') no-repeat left center;
-}
-
-.icon-button.cancel-button {
-  background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
 }
 
 .icon-button.cash-button-large {
@@ -2122,14 +2130,45 @@ h1.slot-tooltip {
 }
 
 /** standard info dialog */
-.info-dialog { 
-  font-size: 18px;
+.info-dialog {
+  font-family: 'hvd_comic_serif_proregular';
+  text-align: center;
   position: absolute; 
-  margin-left: -350px;
-  margin-top: -100px;
-  width: 700px; 
-  min-height: 200px;
-  background-color: #FFF;  
+  margin-left: -338px;
+  margin-top: -250px;
+  width: 676px; 
+  height: 500px;
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_background.png") %>') no-repeat center;
+  box-shadow: none;
+}
+
+.info-dialog h1 {
+  font-family: 'hvd_comic_serif_proregular';
+  margin-top: 60px;
+  color: white;
+}
+
+.info-dialog .content-text {
+  font-size: 1.7em;
+  position: absolute;
+  margin-left: 40px;
+  top: 160px;
+  width: 596px; 
+  height: 336px;
+  background: url('<%= asset_path("dialogs/info-dialog/info-dialog_textfield.png") %>') no-repeat center;
+}
+
+.info-dialog .content-text p {
+  width: 80%;
+  margin: 30px auto;
+  color: #565656;
+}
+
+.info-dialog .content-text .controlls {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .announcement-dialog {

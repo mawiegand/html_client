@@ -216,9 +216,12 @@ AWE.Controller = (function(module) {
     
     that.presentNotEnoughCreditsWarning = function() {
       var info = AWE.UI.Ember.InfoDialog.create({
-        contentTemplateName: 'not-enough-credits-info',
-        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+        heading:             AWE.I18n.lookupTranslation('shop.notenoughcredits.title'),
+        message:             AWE.I18n.lookupTranslation('shop.notenoughcredits.message'),
+
         okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
+        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+
         okPressed:           function() {
           if (AWE.Facebook.isRunningInCanvas) {
             var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
@@ -237,13 +240,8 @@ AWE.Controller = (function(module) {
 
     that.presentNotEnoughGoldenFrogsWarning = function() {
       var info = AWE.UI.Ember.InfoDialog.create({
-        contentTemplateName: 'not-enough-goldenfrogs-info',
-//        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
-        okText:              AWE.I18n.lookupTranslation('general.ok'),
-        okPressed:           function() {
-          this.destroy();
-        },
-//        cancelPressed:       function() { this.destroy(); },
+        heading:             AWE.I18n.lookupTranslation('shop.notenoughgoldenfrogs.title'),
+        message:             AWE.I18n.lookupTranslation('shop.notenoughgoldenfrogs.message'),
       });
       that.applicationController.presentModalDialog(info);
     }
@@ -736,10 +734,9 @@ AWE.Controller = (function(module) {
         else {
           log(status, "ERROR: The server did not accept the message.");
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
         }
