@@ -183,7 +183,7 @@ AWE.UI.Ember = (function(module) {
     contentTemplateName: null,
 
     heading:      'Info',
-    message:      '#ERROR',
+    message:      '',
 
     okText:       'OK',
     cancelText:   'Cancel',
