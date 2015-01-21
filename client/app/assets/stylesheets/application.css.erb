@@ -892,6 +892,7 @@ canvas{
   z-index:256; 
   overflow: hidden;
   left:0;
+  cursor: default;
 }
 
 .modal-dialog-pane { 
@@ -909,6 +910,7 @@ canvas{
   -moz-box-shadow:    3px 3px 2px 2px #333;
   -webkit-box-shadow: 3px 3px 2px 2px #333;
   box-shadow:         3px 3px 2px 2px #333;
+  cursor: default;
 }
 
 .modal-dialog-pane-new {
@@ -2141,7 +2143,7 @@ h1.slot-tooltip {
   text-shadow: 0px 0px 8px black;
 }
 
-.info-dialog .content-text {
+.info-dialog .content {
   font-size: 1.7em;
   position: absolute;
   margin-left: 40px;
@@ -2151,13 +2153,21 @@ h1.slot-tooltip {
   background: url('<%= asset_path("dialogs/info-dialog/info-dialog_textfield.png") %>') no-repeat center;
 }
 
-.info-dialog .content-text p {
+.info-dialog .content-text {
+  height: 203px;
   width: 80%;
-  margin: 30px auto;
-  color: #565656;
+  margin: 10px auto;
+  overflow-y: scroll;
+  padding-top: 20px;
+  text-align: left;
 }
 
-.info-dialog .content-text .controlls {
+.info-dialog .content-text p {
+  color: #565656;
+  margin: 0px auto;
+}
+
+.info-dialog .content .controlls {
   position: absolute;
   bottom: 0;
   width: 100%;

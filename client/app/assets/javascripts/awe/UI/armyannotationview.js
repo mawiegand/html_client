@@ -111,7 +111,16 @@ AWE.UI = (function(module) {
         AWE.UI.ImageCache.getImage("hud/annotation/button/settle/normal"),
         AWE.Geometry.createRect(-10, 12, 64, 64)//(25, 118, 64, 64)
       );
-      _foundButtonView.onClick = function() { if (_foundButtonView.enabled()) { that.onFoundButtonClick(that); } }
+      _foundButtonView.onClick = function() { that.onFoundButtonClick(that); }
+      _foundButtonView.onDisabledClick = function()
+        { 
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'found-settlement-error',
+            heading: AWE.I18n.lookupTranslation('settlement.found.errorHeader'),
+            okPressed: function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
       this.addChild(_foundButtonView);    
       
 //      _retreatButtonView = AWE.UI.createButtonView();
