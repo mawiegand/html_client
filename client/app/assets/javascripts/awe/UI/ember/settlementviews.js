@@ -201,30 +201,28 @@ AWE.UI.Ember = (function(module) {
         okText: AWE.I18n.lookupTranslation('general.change'),
         cancelText: AWE.I18n.lookupTranslation('general.cancel'),
         okPressed: function() {
-          var controller = this.get('controller');
-          if (controller) {
-            controller.processNewName(this.getPath('arguments.input'));
-          }
-          this.destroy();}, //Standart this.destroy
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            message: AWE.I18n.lookupTranslation('settlement.customization.nameChangeAdvice'),
+
+            controller: this.get('controller'),
+            input: this.getPath('arguments.input'),
+
+            okPressed: function() {
+              var controller = this.get('controller');
+              if (controller) {
+                controller.processNewName(this.get('input'));
+              } 
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
+            }
+          });
+          WACKADOO.presentModalDialog(dialog);
+          this.destroy();
+        }, //Standart this.destroy
         cancelPressed: function() { this.destroy(); } //Standart: null
       });
-      /*var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
-        input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
-        controller: this,
-
-        okPressed: function() {
-          var controller = this.get('controller');
-          if (controller) {
-            controller.processNewName(this.getPath('input'));
-          }
-          this.destroy();
-        },
-
-        cancelPressed: function() { this.destroy(); },
-      });*/
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
 
@@ -295,6 +293,7 @@ AWE.UI.Ember = (function(module) {
           if (status === AWE.Net.OK) {
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
+              return;
             }
           }
           else if (status === AWE.Net.CONFLICT) {
@@ -306,6 +305,12 @@ AWE.UI.Ember = (function(module) {
           else {
             self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
           }
+
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            message: self.get('message')
+          });
+
+          WACKADOO.presentModalDialog(dialog);
         });        
       }
     },

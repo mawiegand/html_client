@@ -755,6 +755,7 @@ AWE.Controller = function (module) {
       }
 
       var dialog = AWE.UI.Ember./*ArmyInfoDialog*/ArmyInfoNewDialog.create({
+        
         army:army,
 
         changeStanceCallback:function () {
