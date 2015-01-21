@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
     var _iconImageView = null;
     
     var backgroundImagesForStates = {}; 
-    var iconImagesForStates = {}; 
+    var iconImagesForStates = {};
     
     var isButtonDown = false;
 
@@ -34,7 +34,7 @@ AWE.UI = (function(module) {
     
     that.onMouseOver = function() { 
       document.body.style.cursor = "pointer";
-      that.setHovered(true);  
+      that.setHovered(true);
     }
     that.onMouseOut =  function() {
       document.body.style.cursor = "default";
@@ -42,13 +42,17 @@ AWE.UI = (function(module) {
     }
 
     
-    that.initWithControllerImageAndIcon = function(controller, image, icon, frame) {
+    that.initWithControllerImageAndIcon = function(controller, image, icon, frame, iconHover) {
       _super.initWithController(controller, frame);
       
       my.container = new Container();
       
       backgroundImagesForStates[module.CONTROL_STATE_NORMAL] = image;
       iconImagesForStates[module.CONTROL_STATE_NORMAL] = icon;
+      if(iconHover)
+      {
+        iconImagesForStates[module.CONTROL_STATE_HOVERED] = iconHover;
+      }
 
       _backgroundImageView = AWE.UI.createImageView();
       _backgroundImageView.initWithControllerAndImage(controller, image);
@@ -84,7 +88,9 @@ AWE.UI = (function(module) {
       _iconImageView = AWE.UI.createImageView();
       _iconImageView.initWithControllerAndImage(controller, icon);
       _iconImageView.setContentMode(module.ViewContentModeFit);
+      
       _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
+
       _iconImageView.onMouseDown = function() { 
         that.setNeedsUpdate();
         isButtonDown = true;

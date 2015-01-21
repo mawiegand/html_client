@@ -83,7 +83,8 @@ AWE.UI = (function(module) {
         enterButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
           AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"),
-          AWE.Geometry.createRect(-10, 52, 64, 64)
+          AWE.Geometry.createRect(-10, 52, 64, 64),
+          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/hover")
         );
         enterButton.onClick = function() { that.onEnterButtonClick(); }
         this.addChild(enterButton);
@@ -101,7 +102,8 @@ AWE.UI = (function(module) {
         attackButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
           AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
-          AWE.Geometry.createRect(30, 110, 64, 64)
+          AWE.Geometry.createRect(30, 110, 64, 64),
+          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover")
         );
         attackButton.onClick = function() {
           if (attackButton.enabled()) {
@@ -141,7 +143,8 @@ AWE.UI = (function(module) {
         _newArmyButtonView.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/yellow"), 
           AWE.UI.ImageCache.getImage("hud/icon/army"),
-          AWE.Geometry.createRect(140, 52, 64, 64)
+          AWE.Geometry.createRect(140, 52, 64, 64),
+          AWE.UI.ImageCache.getImage("hud/icon/army/hover")
         );
         _newArmyButtonView.onClick = function() {
           if (that.onNewArmyButtonClick) {
@@ -163,7 +166,8 @@ AWE.UI = (function(module) {
         _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
           AWE.UI.ImageCache.getImage("hud/icon/info"),
-          AWE.Geometry.createRect(-10, -18, 64, 64)
+          AWE.Geometry.createRect(-10, -18, 64, 64),
+          AWE.UI.ImageCache.getImage("hud/icon/info/hover")
         );
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.region.location(0) && my.region.location(0).garrisonArmy()) {

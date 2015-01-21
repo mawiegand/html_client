@@ -509,9 +509,13 @@ canvas{
   width: 96px;
   height: 96px;
   position: relative;
-  background: url("<%= asset_path 'hud/alliance_flag/alliance_flag.png' %>");
+  background: url("<%= asset_path 'hud/alliance_flag/alliance_flag.png' %>") no-repeat left;
   cursor: pointer;
   z-index: 50;
+}
+
+.alliance-hud-icon:hover {
+  background-position: -96px 0;
 }
 
 .right-hud {
@@ -4228,9 +4232,13 @@ span.bonus {
   z-index: 11;
   width: 48px;
   height: 48px;
-  background-size: 48px;
-  pointer-events:none;
-  
+  cursor: pointer;
+  background-size: 96px 48px;
+  background-repeat: no-repeat;
+}
+
+.building-annotation-icon:hover {
+  background-position: -48px 0;
 }
 
 .building-info-button-background {
@@ -4240,16 +4248,9 @@ span.bonus {
 }
 
 .building-info-button-icon {
-  top: 58px;
-  left: -4px;
-  color: white;
-  font-size: 42px;
-  line-height: 52px;
-  text-align: center;
-  vertical-align: middle;
-  background-image: url("<%= asset_path 'hud/icon_info/icon_info.png' %>");
-  background-size: 32px;
-  background-position: 3px;
+  top: 60px;
+  left: -10px;
+  background-image: url("<%= asset_path 'hud/icon_info/icon_info_sheet.png' %>");
 }
 
 .building-upgrade-button-background {
@@ -4297,8 +4298,7 @@ span.bonus {
 .building-assignment-button-icon {
   top: 80px;
   left: 80px;
-  background: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>") no-repeat center center;
-  background-size: 24px;
+  background-image: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>");
 }
 
 .building-diplomacy-button-background {
@@ -4334,8 +4334,7 @@ span.bonus {
 .building-artifact-button-icon {
   top: 80px;
   left: 80px;
-  background: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>") no-repeat center center;
-  background-size: 32px;
+  background-image: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>");
 }
 
 .building-army-button-background {
@@ -4347,7 +4346,7 @@ span.bonus {
 .building-army-button-icon {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/icon_army/icon_army.png' %>");
+  background-image: url("<%= asset_path 'hud/icon_army/icon_army_sheet.png' %>");
 }
 
 
