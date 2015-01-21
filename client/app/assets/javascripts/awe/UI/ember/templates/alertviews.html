@@ -10,6 +10,12 @@
   {{/with}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="text-input-info">
+  {{#with arguments}}
+  {{view Ember.TextField class="text-field-info-dialog" maxlength=inputMaxLength placeholder="Name" type="text" valueBinding="input"}} 
+  {{/with}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="found-settlement-error">        
   <p>{{t settlement.found.errorText}}</p>
   <p>{{t settlement.found.requirements.text}}:</p>
