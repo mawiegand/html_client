@@ -189,22 +189,39 @@ AWE.UI.Ember = (function(module) {
 
     settingsDialog: function() {
       this.set('message', null);
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
+      var arguments = {
         input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
+        inputMaxLength: 16        
+      };
+      var changeDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
+        contentTemplateName: 'text-input-info',
+        arguments: arguments,
         controller: this,
-
+        okText: AWE.I18n.lookupTranslation('general.change'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
         okPressed: function() {
-          var controller = this.get('controller');
-          if (controller) {
-            controller.processNewName(this.getPath('input'));
-          }
-          this.destroy();
-        },
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            message: AWE.I18n.lookupTranslation('settlement.customization.nameChangeAdvice'),
 
-        cancelPressed: function() { this.destroy(); },
+            controller: this.get('controller'),
+            input: this.getPath('arguments.input'),
+
+            okPressed: function() {
+              var controller = this.get('controller');
+              if (controller) {
+                controller.processNewName(this.get('input'));
+              } 
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
+            }
+          });
+          WACKADOO.presentModalDialog(dialog);
+          this.destroy();
+        }, //Standart this.destroy
+        cancelPressed: function() { this.destroy(); } //Standart: null
       });
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
@@ -236,7 +253,7 @@ AWE.UI.Ember = (function(module) {
         classNames: ['change-army-name-dialog'],
         heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
         input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
+        inputMaxLength: 1,
         controller: this,
         
         okPressed: function() {
@@ -276,6 +293,7 @@ AWE.UI.Ember = (function(module) {
           if (status === AWE.Net.OK) {
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
+              return;
             }
           }
           else if (status === AWE.Net.CONFLICT) {
@@ -287,6 +305,12 @@ AWE.UI.Ember = (function(module) {
           else {
             self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
           }
+
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            message: self.get('message')
+          });
+
+          WACKADOO.presentModalDialog(dialog);
         });        
       }
     },

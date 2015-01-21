@@ -183,7 +183,34 @@ module.ArmyInfoView = Ember.View.extend({
 
 //army info dialog
 module.ArmyInfoNewDialog = module.PopUpDialog.extend({
-  templateName: 'army-new-info-dialog'
+  templateName: 'army-new-info-dialog',
+
+  army: null,
+
+  settingsDialog: function() {
+    var arguments = {
+      input: this.getPath('army.name'),
+      inputMaxLength: 16       
+    };
+    var changeDialog = AWE.UI.Ember.InfoDialog.create({
+      heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
+      contentTemplateName: 'text-input-info',
+      arguments: arguments,
+      controller: this,
+      okText: AWE.I18n.lookupTranslation('general.change'),
+      cancelText: AWE.I18n.lookupTranslation('general.cancel'),
+      okPressed: function() {
+        var action = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
+        AWE.Action.Manager.queueAction(action, function() { });  
+        this.destroy();
+      }, //Standart this.destroy
+      cancelPressed: function() { this.destroy()} //Standart: null
+    });
+    WACKADOO.presentModalDialog(changeDialog);
+    event.preventDefault();
+
+    return false;
+  },
 });
 
 module.ArmyInfoNewView = module.ArmyInfoView.extend({
