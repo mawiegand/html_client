@@ -639,6 +639,55 @@ AWE.UI.Ember = (function(module) {
     }.property('alliance.diplomacySourceRelations'),
 
   });
+  
+  module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
+    width: 120,
+    height: 150,
+    
+    alliance: null,
+    shape: null,
+    controller: null,
+    
+    init: function() {
+      this._super();
+    },
+    
+    bannerUpdate: function() {   // BUG: presently, if the alliance is set after the creation of the banner view, it sometimes doesn't display the alliance banner: example: on game server open the settlement dialog for another alliance, that you haven't looked-at before (client has not loaded that alliance)
+      log('BANNER UPDATE');
+      var allianceId = this.getPath('alliance.id');
+      var allianceColor = this.getPath('alliance.color');
+      var shape  = this.get('shape');
+      var width  = this.get('width')  || 200;
+      var height = this.get('height') || 200;
+      
+      if (width * 5 / 4 < height) {
+        height = width * 5 / 4; 
+      }
+      else {
+        width = height * 4 / 5;
+      }
+      if (shape) {
+        this.removeChild(shape);
+      }
+      if (!allianceId) {
+        this.set('shape', null);
+        return ;
+      }
+      log('SHAPE', width, height, allianceId);
+      shape = AWE.UI.createAllianceFlagView();
+      shape.initWithController(this.get('controller'));
+      shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
+      shape.setAllianceId(allianceId);
+      shape.setAllianceColor(allianceColor);
+      shape.setTagVisible(true);
+      shape.setDirection('down');
+      this.addChild(shape);
+      this.set('shape', shape);
+      shape.updateView();      
+      this.update();
+    }.observes('alliance.id'),
+    
+  });
   return module;
 
 }(AWE.UI.Ember || {}));
