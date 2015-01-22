@@ -25,7 +25,7 @@ module.LeftHUDView = Ember.View.extend({
 	}.property('mode').cacheable(),
 
 	unlockedAssignments: function(){
-		var tavern = WACKADOO.get('presentScreenController').getSlotsforBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_tavern').id).get('building');
+		var tavern = WACKADOO.get('presentScreenController').getSlotsForBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_tavern').id).get('building');
 		if(tavern)
 		{
 			return true;
@@ -34,7 +34,7 @@ module.LeftHUDView = Ember.View.extend({
 	}.property('WACKADOO.presentScreenController.slots.@each.building'),
 
 	unlockedTrade: function() {
-		var storage = WACKADOO.get('presentScreenController').getSlotsforBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_storage').id);
+		var storage = WACKADOO.get('presentScreenController').getSlotsForBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_storage').id);
 		if(storage.length > 0)
 		{
 			return true;

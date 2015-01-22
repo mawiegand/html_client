@@ -1211,7 +1211,7 @@ AWE.Controller = (function(module) {
       return null;
     };
 
-    that.getSlotsforBuilding = function(id) {
+    that.getSlotsForBuilding = function(id) {
       var slots = that.view.get('slots');
       var returnSlots = [];
       
