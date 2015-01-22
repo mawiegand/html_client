@@ -23,6 +23,24 @@ module.LeftHUDView = Ember.View.extend({
 		var mode = this.get('mode');
 		return mode === AWE.UI.HUDModeSettlement;
 	}.property('mode').cacheable(),
+
+	unlockedAssignments: function(){
+		var tavern = WACKADOO.get('presentScreenController').getSlotsforBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_tavern').id).get('building');
+		if(tavern)
+		{
+			return true;
+		}
+		return false;
+	}.property('WACKADOO.presentScreenController.slots.@each.building'),
+
+	unlockedTrade: function() {
+		var storage = WACKADOO.get('presentScreenController').getSlotsforBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_storage').id);
+		if(storage.length > 0)
+		{
+			return true;
+		}
+		return false;
+	}.property('WACKADOO.presentScreenController.slots.@each.building'),
 	
 	isUiMarkerEnabled: function() {
 	  return this.get('uiMarkerEnabled');
