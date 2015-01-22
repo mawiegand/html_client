@@ -1,6 +1,4 @@
-
 /* === Sketched Advisors === */
-
 .advisor.warrior.sketched{
   background: url('<%= asset_path("advisors/quest-advisor-scetched-warrior.png") %>');
   background-size: 100% 100%;
@@ -15,6 +13,7 @@
   background: url('<%= asset_path("advisors/quest-advisor-scetched-girl.png") %>');
   background-size: 100% 100%;
 }
+
 
 
 /* === Old Advisors ===*/
@@ -74,96 +73,88 @@
 
 
 
+
 /* === Quest List === */
-
-.quest-list-content .advisor.sketched {
-  width: 120px;
-  height: 120px;
-  position: absolute;
-  margin-top: -30px;
-  float: right;
-}
-
-.quest-list-content .advisor.warrior.sketched {
-  top: 6%;
-  right: 0%;
-}
-
-.quest-list-content .advisor.chef.sketched {
-  top: 5%;
-  right: 35%;
-}
-
-.quest-list-content .advisor.girl.sketched {
-  top: 6%;
-  right: 18%;
-}
-
-.quest-answer-field {
-  display: inline;
-}
-
 .quest-list-view {
-  position: absolute;
-  margin-left: -431px;
-  margin-top: 90px;
+  background-image: url('<%= asset_path("quest-selection-bg.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
 
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
   width: 764px;
   height: 576px;
 
-  background-image: url('/client/assets/quest-selection-bg.png');
-  background-size: 100% 100%;
-  background-color: transparent;
+  z-index:256;
 
-  padding: 16px 20px 16px 20px;
-  z-index: 256;
   box-shadow: none;
   border-radius: 0px;
 }
 
+
+.quest-list-header{
+  position: relative;
+  width: 80%;
+  height: 20%;
+  top: 6%;
+  left: 8%;
+
+  padding: 20px 10px 4px 10px;
+  font-weight: bold;
+}
+
+.quest-list-header h1{
+  font-family: 'Freckle Face', cursive;
+  color: #643a13;
+}
+
+.quest-list-header .advisor.sketched {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  float: right;
+}
+
+.quest-list-header .advisor.warrior.sketched {
+  top: 10%;
+  right: 0%;
+}
+
+.quest-list-header .advisor.chef.sketched {
+  top: 5%;
+  right: 35%;
+}
+
+.quest-list-header .advisor.girl.sketched {
+  top: 6%;
+  right: 18%;
+}
+
+
 .quest-list-content{
   position: relative;
   width: 80%;
-  height: 80%;
-  top: 6%;
+  height: 310px;
   left: 8%;
-}
-
-.quest-list-header{
-  display: none;
+  top: 30px;
+  overflow-y: scroll;
 }
 
 .quest-list-items{
-  height: 71%;
-  overflow: hidden;
-  top: 23%;
   position: absolute;
-  width: 105%;
-}
-
-.quest-list-items > div{
-  height: 100%;
   width: 100%;
-  overflow-y: auto;
-}
-
-.quest-list-items > div::-webkit-scrollbar {
-  width: 10px;
-}
-
-.quest-list-items > div::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  border-radius: 10px;
-}
-
-.quest-list-items > div::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
 .quest-list-item {
-  margin: 1.7% 0;
+  margin: 10px 0;
   cursor: pointer;
+  height: 48px;
+  width: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .quest-list-item:active {
@@ -171,69 +162,29 @@
   filter: alpha(opacity=70);
 }
 
-.quest-list-body {
-  margin-bottom: 40px;
-}
-
-.quest-list-scrollable {
-  margin-bottom: 10px;
-  overflow: auto;
-  height: 410px;
-}
-
 .quest-list-item.girl {
    background-image: url('/client/assets/quest-list-bg-name-girl.png');
-   background-size: 100% 100%;
-   line-height: 1;
-   height:13%;
-   width: 95%;
 }
+
 .quest-list-item.chef {
   background-image: url('/client/assets/quest-list-bg-name-chef.png');
-  background-size: 100% 100%;
-  line-height: 1;
-  height:13%;
-  width: 95%;
 }
+
 .quest-list-item.warrior {
   background-image: url('/client/assets/quest-list-bg-name-warrior.png');
-  background-size: 100% 100%;
-  height:13%;
-  line-height: 1;
-  width: 95%;
-}
-
-.quest-list-header {
-  padding: 20px 10px 4px 10px;
-  font-weight: bold;
-}
-
-.quest-item-nr {
-  position: absolute;
-  bottom: 20px;
-  left: 24px;
-  font-size: 14px;
-  font-weight: lighter;
-  color: #BBB;
 }
 
 .quest-list-item-name {
   width: 74%;
+  position: relative;
+  margin-left: 4%;
   display: inline-block;
+
   font-family: 'Freckle Face', cursive;
   color: #fdf6d4;
   text-shadow: none;
-  position: relative;
-  top: 5px;
   font-size: 25px;
-  margin: 0 0 0 4%;
-  padding: 0;
-}
-
-.quest-list-item-status {
-  text-align: center;
-  width: 80px;
-  display: inline-block;
+  line-height: 2em;
 }
 
 .quest-list-item-reward {
@@ -242,25 +193,89 @@
   display: inline-block;
 }
 
-.quest-list-item-show {
-  text-align: center;
-  width: 80px;
+.quest-list-item-status-finished{
+  width: 27px;
+  height: 26px;
+  position: relative;
+  top: 5px;
+  right: -84px;
   display: inline-block;
+
+  background-image: url('/client/assets/quest-finished-icon.png');
+  background-size: 100% 100%;
 }
 
-/*==========*/
+.quest-list-view .okButton{
+  position: absolute;
 
+  width: 172px;
+  height: 129px;
+
+  background-image: url('<%= asset_path("quest-dialog-button.png") %>');
+  background-size: 100%;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+
+  bottom: -30px;
+  right: -30px;
+}
+
+.quest-list-view .okButton:hover{
+    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+}
+
+.quest-list-view .okButton:active{
+
+  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
+
+  transition: background 0s;
+}
+
+@media (max-width : 960px){
+  .quest-list-view{
+    height: 346px;
+    width: 436px;
+    right: -238px;
+  }
+
+  .quest-list-content h1 {
+    font-size: 19px;
+  }
+
+  .quest-list-item-name {
+    top: 2px;
+    font-size: 18px;
+  }
+}
+
+
+
+/*=== Tutorial End Dialog ===*/
 .tutorial-end-dialog {
   background-image: url('<%= asset_path("quest-selection-bg.png") %>');
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
+
   position: absolute; 
   margin-left: -400px;
   margin-top: 80px;
   width: 764px;
   height: 576px;
+
   z-index:256;
+
+  box-shadow: none;
+  border-radius: 0px;
 }
 
 .tutorial-end-dialog .content {
@@ -329,6 +344,13 @@
 
 
 
+
+/*=== Quest Dialog ===*/
+
+.quest-answer-field {
+  display: inline;
+}
+
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
   position: absolute;
   margin-left: -366px;
@@ -338,7 +360,6 @@
   padding: 4px 4px 4px 4px;
   z-index:256;
 }
-
 
 .quest-dialog .inner-border {
   border: 8px solid #BBB;
@@ -907,99 +928,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 }
 
-.sketched{
-  background-size: 100% 100%;
-}
-
-
-.quest-list-content h1{
-  font-family: 'Freckle Face', cursive;
-  color: #643a13;
-}
-
-.quest-list-button{
-  background-image: url('/client/assets/quest-list-x-button.png');
-  background-size: 100% 100%;
-  color: #fff;
-  text-shadow: none;
-  display: inline-block;
-  position: absolute;
-  top: -8%;
-  cursor: pointer;
-}
-
-.quest-list-button:hover {
-  background-image: url('/client/assets/quest-list-x-button-hover.png');
-}
-
-.quest-list-button:active{
-  background-image: url('/client/assets/quest-list-x-button-active.png');
-}
-
-@media (min-width : 1023px) {
-  .dialog-reward-bg-leafs{
-    width: 0px;
-    height: 0px;
-    left: 0px;
-    top: 241px;
-    background-image: url('<%= asset_path("quest-dialog-bg.png") %>');
-    background-size: 100% 100%;
-    position: absolute;
-    z-index: 259;
-  }
-
-}
-
-.sketched{
-  background-size: 100% 100%;
-}
-
-
-.quest-list-content h1{
-  font-family: 'Freckle Face', cursive;
-  color: #643a13;
-}
-
-.quest-list-button{
-  background-image: url('/client/assets/quest-list-x-button.png');
-  background-size: 100% 100%;
-  color: #fff;
-  text-shadow: none;
-  display: inline-block;
-  position: absolute;
-  width: 8%;
-  height: 10%;
-  right: -11%;
-  top: -4%;
-  transition: background-image 0.2s;
-}
-
-.quest-list-button:hover{
-  background-image: url('/client/assets/quest-list-x-button-hover.png');
-  transition: background-image 0.2s;
-}
-
-.quest-list-button:active{
-  background-image: url('/client/assets/quest-list-x-button-active.png');
-}
-
-.quest-list-item-status-finished{
-  width: 27px;
-  height: 26px;
-  display: inline-block;
-  font-family: 'Freckle Face', cursive;
-  color: #fdf6d4;
-  text-shadow: none;
-  position: relative;
-  top: 6px;
-  right: -74px;
-  font-size: 25px;
-  padding: 0;
-  background-image: url('/client/assets/quest-finished-icon.png');
-  background-size: 100% 100%;
-  display: inline-block;
-}
-
 .quest-dialog-info-button{
   background-image: url('/client/assets/reward-dialog-info-button.png');
   width: 32px;
@@ -1014,23 +942,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .quest-dialog-info-button:active{
   background-image: url('/client/assets/reward-dialog-info-button-active2.png');
-}
-
-@media (max-width : 960px){
-  .quest-list-view{
-    height: 346px;
-    width: 436px;
-    right: -238px;
-  }
-
-  .quest-list-content h1 {
-    font-size: 19px;
-  }
-
-  .quest-list-item-name {
-    top: 2px;
-    font-size: 18px;
-  }
 }
 
 .level-up-dialog {
@@ -1113,10 +1024,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   .level-up-dialog-bg-text{
     top: 18%;
     font-family: 'Asap', 'sans-serif';
-  }
-  
-  .center-helper {
-    /*left: 44%;*/
   }
   
   .level-up-spinning-background.modal-dialog-spinning-background{

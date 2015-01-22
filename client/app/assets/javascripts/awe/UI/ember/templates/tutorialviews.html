@@ -2,31 +2,21 @@
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane quest-list-view">
-       
-       <div class="quest-list-content">
-
-          <div class="advisor warrior sketched"></div>
-          <div class="advisor girl sketched"></div>
-          <div class="advisor chef sketched"></div>
-
-          <h1>{{t tutorial.questList}}</h1>
-
-
-          <div class="quest-list-header">
-             <div class="quest-list-item-show"></div>
-          </div>
-
-         <div class="quest-list-items">
-          <div {{bindAttr class="questListBodyClass" }}>
-             {{#each questStates}}
-             {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
-             {{/each}}
-          </div>
-      
-       </div>
-      <div class="quest-list-button" {{action "okPressed"}}></div>
+      <div class="quest-list-header">
+        <h1>{{t tutorial.questList}}</h1>
+        <div class="advisor warrior sketched"></div>
+        <div class="advisor girl sketched"></div>
+        <div class="advisor chef sketched"></div>
+      </div>
+      <div class="quest-list-content">
+        <div class="quest-list-items">
+          {{#each questStates}}
+          {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+          {{/each}}
+        </div>
       </div>
 
+      <div class="okButton" {{action "okPressed"}}></div>
     </div>
   </div>
 </script>
@@ -42,7 +32,6 @@
         {{else}}
         <div class="quest-list-item-status-open"> </div>
         {{/if}}
-
         <div class="quest-list-item-reward">
             {{#if questState.finished}}
               {{#if questState.redeeming}}
@@ -255,7 +244,7 @@
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           {{/if}}
-        </div>
+      </div>
     </div>
   </div>
 </script>
