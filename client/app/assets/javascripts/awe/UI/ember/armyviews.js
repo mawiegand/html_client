@@ -546,7 +546,14 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
       } 
       var stoneCost = this.getTotalCostsForResource(stoneId);
-      return stoneCost;
+      if(stoneCost.toString().match(/[0-9]+/))
+      {
+        return stoneCost;
+      }
+      else
+      {
+        return "0";
+      }
     }.property('totalCosts').cacheable(),
 
     getTotalWoodCosts: function()
@@ -557,7 +564,14 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
       } 
       var woodCost = this.getTotalCostsForResource(woodId);
-      return woodCost;
+      if(woodCost.toString().match(/[0-9]+/))
+      {
+        return woodCost;
+      }
+      else
+      {
+        return "0";
+      }
 
     }.property('totalCosts').cacheable(),
 
@@ -569,7 +583,15 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
       } 
       var furCost = this.getTotalCostsForResource(furId);
-      return furCost;
+      
+      if(furCost.toString().match(/[0-9]+/))
+      {
+        return furCost;
+      }
+      else
+      {
+        return "0";
+      }
 
     }.property('totalCosts').cacheable(),
 
@@ -759,6 +781,8 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
   module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
     templateName: 'army-recruitment-info-view',
 
+    numberValueRegex: /[^0-9]+/,
+
     isUIMarker: function(){
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
@@ -792,14 +816,35 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     }.property().cacheable(),
 
     setupJobPressed: function()
+    {
+      if(this.get('number').match(this.get('numberValueRegex')))
       {
-        
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: AWE.I18n.lookupTranslation('settlement.training.error.notOnlyNumbers')
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else if(parseInt(this.get('number')) > 1000)
+      {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: AWE.I18n.lookupTranslation('settlement.training.error.tooLargeNumber')
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else
+      {
         this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('unitType.id'), this.get('number'));
         this.get('parentView').destroy();
-      },
-    });
+      }
+    },
+  });
 
-  module.JobsRangeView  = AWE.UI.Ember.SliderView.extend({
+  module.ArmyRecruitmentCounterView = Ember.TextField.extend({
+    valueBinding: "number",
+
+  });
+
+  module.JobsRangeView = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
     max: 1000,
     min: 1,

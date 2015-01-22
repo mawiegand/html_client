@@ -837,6 +837,10 @@ AWE.I18n.de_DE = function(module) {
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
         hurry: "Halbieren",
+        error: {
+          notOnlyNumbers: "Es sind nur Zahlen erlaubt!",
+          tooLargeNumber: "Das sind zu viele. Maximum sind 1000 Einheiten."
+        },
       },
 
       military: {

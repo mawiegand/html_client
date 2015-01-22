@@ -521,6 +521,7 @@ AWE.I18n.en_US = function(module) {
 
       error:{
         blankPassword:"You can't set a blank password.",
+        specialChars: "Only numbers and letters are allowed."
         failedToSetPassword:"The alliance password couldn't be set right now.",
         kickHeading:"Not Possible!",
         kickMessage:"You don't have permission to kick this member.",
@@ -809,6 +810,10 @@ AWE.I18n.en_US = function(module) {
           end:" assignments in the queue. Please wait until something else is finished.",
         },
         hurry:"halve",
+        error: {
+          notOnlyNumbers: "Only numbers allowed!",
+          tooLargeNumber: "That's too much! Maximum is 1000 units."
+        },
       },
 
       military:{
