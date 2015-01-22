@@ -67,15 +67,7 @@ AWE.UI.Ember = function(module) {
     startInitiationPressed: function() {
 
       var self = this;
-      // resourcen testen
-
-//      var dialog = AWE.UI.Ember.InfoDialog.create({
-//        contentTemplateName: 'server-command-failed-info',
-//        cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.notEnoughResources'),
-//        okPressed:           null,
-//        cancelPressed:       function() { this.destroy(); },
-//      });
-//      WACKADOO.presentModalDialog(dialog);
+      // TODO: resourcen testen
 
 
       this.set('sending', true);

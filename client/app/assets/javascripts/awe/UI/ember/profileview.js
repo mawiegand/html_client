@@ -1488,7 +1488,7 @@ module.UserNameTextfield = Ember.TextField.extend({
       self.displayRegion(newRegionName, function(newRegion) {
         var password = '';
         if (!newRegion.isOwnedByNpc() && self.getPath('character.alliance_id') !== newRegion.allianceId()) {
-          var passwordDialog = AWE.UI.Ember.TextInputDialogNew.create({
+          var passwordDialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingPasswordCaption'),
             controller: self,
             okPressed: function() {

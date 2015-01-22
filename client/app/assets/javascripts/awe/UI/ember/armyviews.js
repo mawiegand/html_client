@@ -9,86 +9,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
-    classNames: ['army-info-dialog'],
-    contentTemplateName: 'army-info-dialog',
-    
-    army: null,  
-      
-    arguments: {    // this must be improved; at least, we need bindings here. better: get rid of the arguments object
-//      army: null,
-      isSaving: false,
-    },
-    
-/*    init: function(args) {
-      this._super(args);
-      this.setPath('arguments.army', this.get('army'));
-    },
-    
-   armyObserver: function() {
-      this.setPath('arguments.army', this.get('army'));
-    }.observes('army'), */
-    
-    changeStanceCallback: null,
-    changeNameCallback: null,
-        
-    changeNamePressed: function(event) {
-          
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('army.form.changeNameHeading'),
-        input: this.getPath('army.name'),
-        army: this.getPath('army'),
-        
-        okPressed: function() {
-          var callback = this.getPath('parentView.changeNameCallback');
-          var action   = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-          AWE.Action.Manager.queueAction(action, function() {
-            if (callback) {
-              callback();
-            }
-          });  
-          this.destroy();            
-        },
-        cancelPressed: function() { this.destroy(); }
-      });
-      WACKADOO.presentModalDialog(changeDialog);
-    },
-
-    changeStancePressed: function(event) {
-      var self = this;
-      var callback = this.get('changeStanceCallback');
-      var army = this.getPath('army');
-
-      // isSaving = true
-      this.setPath('arguments.isSaving', true);
-       
-      var newStance = this.getPath('army.stance') === 0 ? 1 : 0;
-      var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
-      AWE.Action.Manager.queueAction(action, function() {
-        AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
-          self.setPath('arguments.isSaving', false);
-          if (callback) {
-            callback();
-          }
-        });
-      });  
-    },
-    
-    locationPressed: function(event) {
-      var self = this;
-//      log('---> army.homeSettlement', this.getPath('army.homeSettlement'));
-//      log('---> army.homeSettlement.location', this.getPath('army.homeSettlement.location'));
-      var location = this.getPath('army.homeSettlement.location');
-      
-      if (location != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerLocation(location);
-      }
-    },
-  });
-
 module.ArmyInfoView = Ember.View.extend({
     templateName: "army-info-view",
     
@@ -1432,10 +1352,10 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
       if (!army) {
         return ;
       }   
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
         army: army,
       }); 
-      dialog.showModal();    
+      WACKADOO.presentModalDialog(dialog);   
       return false; // prevent default behavior
     },  
 

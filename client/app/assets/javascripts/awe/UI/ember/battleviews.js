@@ -113,10 +113,10 @@ AWE.UI.Ember = (function(module) {
       if (!army) {
         return ;
       }
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
         army: army,
       });
-      dialog.showModal();      
+      WACKADOO.presentModalDialog(dialog);     
       return false; // prevent default behaviour
     },
   });
