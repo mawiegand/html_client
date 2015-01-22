@@ -1,13 +1,31 @@
 
+/* === Sketched Advisors === */
+
+.advisor.warrior.sketched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-warrior.png") %>');
+  background-size: 100% 100%;
+}
+
+.advisor.chef.sketched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-chef.png") %>');
+  background-size: 100% 100%;
+}
+
+.advisor.girl.sketched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-girl.png") %>');
+  background-size: 100% 100%;
+}
 
 
-/* === Chris CSS === */
+/* === Old Advisors ===*/
 .advisor.girl {
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
 .advisor.girl.tiny {
   background: url('<%= asset_path("advisors/head_girl_colored_tiny.png") %>');
 }
+
+
 
 .advisor.warrior {
   background: url('<%= asset_path("advisors/head_warrior_colored_small.png") %>');
@@ -20,15 +38,7 @@
   background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
 }
 
-.advisor.warrior.scetched{
-  background: url('<%= asset_path("advisors/quest-advisor-scetched-warrior.png") %>');
-  background-size: 100% 100%;
-  width: 20%;
-  height: 26%;
-  top: 6%;
-  position: absolute;
-  right: 0%;
-}
+
 
 .advisor.chef, .advisor.chef-quest-start {
   background: url('<%= asset_path("advisors/quest-dialog-chef.png") %>');
@@ -37,19 +47,7 @@
   background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
 }
 
-.advisor.chef.scetched{
-  background: url('<%= asset_path("advisors/quest-advisor-scetched-chef.png") %>');
-  background-size: 100% 100%;
-  width: 20%;
-  height: 26%;
-  top: 5%;
-  right: 35%;
-  position: absolute;
-}
 
-.advisor.neanderthal {
-  background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
-}
 
 .advisor.girl-quest-start {
   background: url('<%= asset_path("advisors/quest-dialog-girl.png") %>');
@@ -59,15 +57,13 @@
   background: url('<%= asset_path("advisors/head_girl_colored_small_quest_end.png") %>');
 }
 
-.advisor.girl.scetched{
-  background: url('<%= asset_path("advisors/quest-advisor-scetched-girl.png") %>');
-  background-size: 100% 100%;
-  width: 20%;
-  height: 26%;
-  top: 6%;
-  right: 18%;
-  position: absolute;
+
+
+.advisor.neanderthal {
+  background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
 }
+
+
 
 .advisor.warrior-quest-end {
   background: url('<%= asset_path("advisors/head_warrior_colored_small_quest_end.png") %>');
@@ -76,41 +72,51 @@
   background: url('<%= asset_path("advisors/head_chef_colored_small_quest_end.png") %>');
 }
 
-/*==========*/
+
+
+/* === Quest List === */
+
+.quest-list-content .advisor.sketched {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  margin-top: -30px;
+  float: right;
+}
+
+.quest-list-content .advisor.warrior.sketched {
+  top: 6%;
+  right: 0%;
+}
+
+.quest-list-content .advisor.chef.sketched {
+  top: 5%;
+  right: 35%;
+}
+
+.quest-list-content .advisor.girl.sketched {
+  top: 6%;
+  right: 18%;
+}
+
 .quest-answer-field {
   display: inline;
-}
-
-.tutorial-end-dialog {
-  position: absolute;
-  margin-left: -400px;
-  margin-top: 80px;
-  width: 800px; min-height: 100px;
-  background-color: #FFF;
-  padding: 4px 4px 4px 4px;
-  z-index:256;
-}
-
-.tutorial-end-dialog .inner-border {
-  border: 8px solid #BBB;
-  background-color: rgba(176, 176, 176, 0.15);
-  border-radius: 11px;
-  margin: 0;
-  padding: 4px 14px 14px 14px;
 }
 
 .quest-list-view {
   position: absolute;
   margin-left: -431px;
   margin-top: 90px;
+
   width: 764px;
-  /* min-height: 100px; */
   height: 576px;
+
   background-image: url('/client/assets/quest-selection-bg.png');
-  padding: 16px 20px 16px 20px;
-  z-index: 256;
   background-size: 100% 100%;
   background-color: transparent;
+
+  padding: 16px 20px 16px 20px;
+  z-index: 256;
   box-shadow: none;
   border-radius: 0px;
 }
@@ -133,10 +139,6 @@
   top: 23%;
   position: absolute;
   width: 105%;
-}
-
-.quest-list-view .advisor, .tutorial-end-dialog .advisor {
-  float: right;
 }
 
 .quest-list-items > div{
@@ -246,6 +248,87 @@
   display: inline-block;
 }
 
+/*==========*/
+
+.tutorial-end-dialog {
+  background-image: url('<%= asset_path("quest-selection-bg.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
+  width: 764px;
+  height: 576px;
+  z-index:256;
+}
+
+.tutorial-end-dialog .content {
+  overflow-y: scroll;
+  margin: 50px 80px;
+  width: 600px;
+  height: 450px;
+}
+
+.tutorial-end-dialog .content .advisor {
+  width: 120px;
+  height: 120px;
+  margin-top: 32px;
+}
+
+.tutorial-end-dialog .advisor.warrior {
+  
+}
+
+.tutorial-end-dialog .advisor.chef {
+  float: right;
+}
+
+.tutorial-end-dialog .advisor.girl {
+  
+}
+
+.tutorial-end-dialog .p5 {
+  margin-top: 30px;
+}
+
+.tutorial-end-dialog .okButton{
+  position: absolute;
+
+  width: 172px;
+  height: 129px;
+
+  background-image: url('<%= asset_path("quest-dialog-button.png") %>');
+  background-size: 100%;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+
+  bottom: -30px;
+  right: -30px;
+}
+
+.tutorial-end-dialog .okButton:hover{
+    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+}
+
+.tutorial-end-dialog .okButton:active{
+
+  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
+
+  transition: background 0s;
+}
+
+
+
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
   position: absolute;
   margin-left: -366px;
@@ -283,7 +366,7 @@
   margin: -4px;
 }
 
-.quest-dialog .inner-border.girl, .tutorial-end-dialog .inner-border.girl {
+.quest-dialog .inner-border.girl {
   border-color: #BC4;
   background-color: rgba(176, 192, 64, 0.15);
 }
@@ -521,33 +604,6 @@ div.dom-quest-container div.tutorial-dialog {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
-}
-
-.quest-dialog-button:hover{
-    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
-
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
-
-    /* Rules below not implemented in browsers yet */
-    -o-user-select: none;
-    user-select: none;
-}
-
-.quest-dialog-button:active{
-
-  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
-
-  -webkit-user-select: none; /* Chrome/Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+ */
-
-  /* Rules below not implemented in browsers yet */
-  -o-user-select: none;
-  user-select: none;
-
-  transition: background 0s;
 }
 
 .reward-recource-icon{
@@ -851,7 +907,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 }
 
-.scetched{
+.sketched{
   background-size: 100% 100%;
 }
 
@@ -894,7 +950,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 }
 
-.scetched{
+.sketched{
   background-size: 100% 100%;
 }
 

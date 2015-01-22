@@ -29,7 +29,9 @@ module.LeftHUDView = Ember.View.extend({
 	}.property('uiMarkerEnabled'),
 
 	menuClicked: function(){
-		this.get('controller').menuButtonClicked();
+		//this.get('controller').menuButtonClicked();
+		var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
+        WACKADOO.presentModalDialog(dialog);
 	},
 
 	rankingClicked: function(){

@@ -5,9 +5,9 @@
        
        <div class="quest-list-content">
 
-          <div class="advisor warrior scetched"></div>
-          <div class="advisor girl scetched"></div>
-          <div class="advisor chef scetched"></div>
+          <div class="advisor warrior sketched"></div>
+          <div class="advisor girl sketched"></div>
+          <div class="advisor chef sketched"></div>
 
           <h1>{{t tutorial.questList}}</h1>
 
@@ -22,24 +22,6 @@
              {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
              {{/each}}
           </div>
-          
-      <div class="advisor warrior tiny"></div>
-      <div class="advisor girl tiny"></div>
-      <div class="advisor chef tiny"></div>      
-
-      <h1>{{t tutorial.questList}}</h1>
-      <div class="quest-list-header">
-        <div class="quest-list-item-name">{{ t tutorial.name }}</div>
-        <div class="quest-list-item-status">{{ t tutorial.status }}</div>
-        <div class="quest-list-item-reward"></div>
-        <div class="quest-list-item-show"></div>
-      </div>
-
-      <div {{bindAttr class="questListBodyClass" }}>
-        {{#each questStates}}
-          {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
-        {{/each}}
-      </div>
       
        </div>
       <div class="quest-list-button" {{action "okPressed"}}></div>
@@ -221,7 +203,6 @@
         <div class="quest-dialog-button" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          {{else}}
           {{/if}}
         </div>
 
@@ -251,32 +232,30 @@
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane tutorial-end-dialog">
-      <div class="inner-border girl clearfix">
+      <div class="content clearfix">
         
-        <div class="advisor warrior"></div>
+        <div class="advisor warrior sketched"></div>
         <h1>{{t tutorial.end.header}}</h1>
         <p>{{t tutorial.end.p1}}</p>
         <p><b>{{t tutorial.end.p2}}</b></p>
         <div class="clearfix"></div>
 
-        <div class="advisor chef"></div>
+        <div class="advisor chef sketched"></div>
         <p class="chef">{{t tutorial.end.p3}}</p>
         <p class="chef">{{t tutorial.end.p4}}</p>
         <div class="clearfix"></div>
                 
-        <div class="advisor girl"></div>
+        <div class="advisor girl sketched"></div>
         <p class="p5">{{t tutorial.end.p5}}</p>
         <p>{{t tutorial.end.p6}}</p>
         <div class="clearfix"></div>
           
-        <div class="button ok-button clearfix" {{action "okPressed"}}>
+      </div>
+      <div class="okButton" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          {{else}}
-            {{t general.ok}}
           {{/if}}
         </div>
-      </div>
     </div>
   </div>
 </script>
