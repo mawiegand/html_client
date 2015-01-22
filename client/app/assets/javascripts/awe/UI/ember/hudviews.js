@@ -94,16 +94,19 @@ module.TopRightHUDView = Ember.View.extend({
 	character: null,
 	tutorialState: null,
 
-	isAllianceMember: function(){
+	allianceClicked: function(){
 		if(this.getPath("character.alliance_id"))
 		{
-			return true;
+			this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
 		}
-		return false;
-	}.property('character.alliance_id').cacheable(),
-
-	allianceClicked: function(){
-		this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
+		else
+		{
+			var campfire = WACKADOO.get('presentScreenController').getSlotsforBuilding(AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_campfire').id).get('building');
+			var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+		      unlockedAllianceCreation: this.getPath('campfire.unlockedAllianceCreation')
+		    });
+		    WACKADOO.presentModalDialog(dialog);
+		}
 	},
 	
 });

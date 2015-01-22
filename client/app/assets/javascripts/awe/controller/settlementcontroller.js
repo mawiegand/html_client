@@ -1196,20 +1196,38 @@ AWE.Controller = (function(module) {
       }
 
       var slots = that.view.get('slots');
-      if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= usedSlots) {
+      if (slots === null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= usedSlots) {
         return null;
       }
 
       for (var i = usedSlots % n; i != (usedSlots-1+n)%n; i = (i+1) % n) {
         var slotId = sequenceOfSlotIds[i];
 
-        if (slotId >= 0 && slots[slotId] != null && slots[slotId].get('building_id') == null) {
+        if (slotId >= 0 && slots[slotId] != null && slots[slotId].get('building_id') === null) {
           return slots[slotId];
         }
       }
 
       return null;
     };
+
+    that.getSlotsforBuilding = function(id) {
+      var slots = that.view.get('slots');
+      var returnSlots = [];
+      
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        if(slot.get('building_id') === id)
+        {
+          returnSlots.push(slot);
+        }
+      }
+      if(returnSlots.length === 1)
+      {
+        returnSlots = returnSlots[0];
+      }
+      return returnSlots;
+    }
 
     // ///////////////////////////////////////////////////////////////////////
     //

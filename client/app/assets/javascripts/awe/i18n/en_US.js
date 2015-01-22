@@ -521,7 +521,7 @@ AWE.I18n.en_US = function(module) {
 
       error:{
         blankPassword:"You can't set a blank password.",
-        specialChars: "Only numbers and letters are allowed."
+        specialChars: "Only numbers and letters are allowed.",
         failedToSetPassword:"The alliance password couldn't be set right now.",
         kickHeading:"Not Possible!",
         kickMessage:"You don't have permission to kick this member.",
