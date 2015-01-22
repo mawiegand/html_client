@@ -346,7 +346,6 @@
 
 
 /*=== Quest Dialog ===*/
-
 .quest-answer-field {
   display: inline;
 }
@@ -806,26 +805,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   transition: background-image 0s;
 }
 
-
-.modal-dialog-spinning-background {
-  background-size: 100%;
-
-  width: 2200px;
-  height: 2200px;
-  margin-top: -850px;
-  margin-left: -1100px;
-
-  -webkit-animation:spin 6s linear infinite;
-  -moz-animation:spin 6s linear infinite;
-  -ms-animation:spin 6s linear infinite;
-  animation:spin 6s linear infinite;
-}
-
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@-ms-keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-
 .quest-resource-icon.resource_cash {
   background-image: url("<%= asset_path 'icons/toad-xl.png' %>");
 }
@@ -877,10 +856,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .quest-dialog-bg{
   background-image: url("<%= asset_path("quest-dialog-bg-middle.png") %>");
-}
-
-.modal-dialog-spinning-background {
-  background-image: url('/client/assets/quest-dialog-light.png');
 }
 
 .quest-dialog-button{
@@ -944,6 +919,19 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   background-image: url('/client/assets/reward-dialog-info-button-active2.png');
 }
 
+.quest-description-dialog {
+  margin-left: -358px;
+  margin-top: -275px;
+  width: 660px;
+}
+.quest-description-dialog h1 {
+  font-size: 24px;
+}
+
+
+
+
+/*=== Level Up Dialog ===*/
 .level-up-dialog {
   width: 800px;
   height: 540px;
@@ -990,15 +978,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   z-index: 255;
 }
 
-.quest-description-dialog {
-  margin-left: -358px;
-  margin-top: -275px;
-  width: 660px;
-}
-.quest-description-dialog h1 {
-  font-size: 24px;
-}
-
 .level-up-scip-button{
   width: 0%;
   height: 0%;
@@ -1034,3 +1013,23 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
     left: 550px;
   }
 }
+
+.modal-dialog-spinning-background {
+  background-image: url('/client/assets/quest-dialog-light.png');
+  background-size: 100%;
+
+  width: 2200px;
+  height: 2200px;
+  margin-top: -850px;
+  margin-left: -1100px;
+
+  -webkit-animation:spin 6s linear infinite;
+  -moz-animation:spin 6s linear infinite;
+  -ms-animation:spin 6s linear infinite;
+  animation:spin 6s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@-ms-keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
