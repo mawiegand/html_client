@@ -369,6 +369,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
         {
+            Sample.sessionUpdate();
             Sample.track('started', 'session');
         }
 
