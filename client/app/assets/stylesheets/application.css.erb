@@ -591,9 +591,9 @@ canvas{
 /* == NEW DOM LEFT HUD START== */
 .settlement-map-button {
   width: 120px;
-  height: 400px;
+  height: 440px;
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   z-index: 50;
   pointer-events: none;
   left: -120px;
@@ -615,9 +615,8 @@ canvas{
   background-position: 0 0;
 }
 .settlement-hud-button-position{
-  top: 72px;
-  left: 12px;
-  position: relative;
+  bottom: 0px;
+  position: absolute;
 }
 .settelement-hud-button:hover{
   background-position: -100px 0;
@@ -636,9 +635,8 @@ canvas{
   background-position: 0 0;
 }
 .map-hud-button-position{
-  top: 72px;
-  left: 12px;
-  position: relative;
+  bottom: 0px;
+  position: absolute;
 }
 .map-hud-button:hover{
   background-position: -100px 0;
@@ -659,8 +657,7 @@ canvas{
 
 .menu-hud-button-position{
   position: relative;
-  top: 10px;
-  left: 12px;
+  top: 0px;
 }
 .menu-hud-button:hover{
   background-position: -52px 0;
@@ -681,7 +678,6 @@ canvas{
 .ranking-hud-button-position{
   position: relative;
   top: 20px;
-  left: 12px;
 }
 .ranking-hud-button:hover{
   background-position: -52px 0;
@@ -702,7 +698,6 @@ canvas{
 .map-mountains-hud-button-position{
   position: relative;
   top: 50px;
-  left: 12px;
 }
 .map-mountains-hud-button:hover{
   background-position: -52px 0;
@@ -717,7 +712,6 @@ canvas{
 .army-menu-hud-button-position{
   position: relative;
   top: 62px;
-  left: 12px;
 }
 .army-menu-hud-button{
   width: 52px;
@@ -743,9 +737,8 @@ canvas{
 }
 
 .army-hud-button-position{
-  position: relative;
-  top: 62px;
-  left: 12px;
+  position: absolute;
+  bottom: 100px;
 }
 
 .army-hud-button:hover{
@@ -757,6 +750,51 @@ canvas{
   opacity: 0.7;
   filter: alpha(opacity=70);
 }
+
+.assignment-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/assignment_button/assignment_button.png' %>") no-repeat;
+  background-position: 0 0;
+}
+
+.assignment-hud-button-position{
+  position: relative;
+  top: 42px;
+}
+
+.assignment-hud-button:hover{
+  background-position: -52px 0;
+  cursor: pointer;
+}
+
+.assignment-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.trade-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/trade_button/trade_button.png' %>") no-repeat;
+  background-position: 0 0;
+}
+
+.trade-hud-button-position{
+  position: relative;
+  top: 52px;
+}
+
+.trade-hud-button:hover{
+  background-position: -52px 0;
+  cursor: pointer;
+}
+
+.trade-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 /* == NEW DOM LEFT HUD END== */
 
 #hud-canvas-profile {

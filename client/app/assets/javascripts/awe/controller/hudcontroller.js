@@ -59,12 +59,14 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();
 
-      _domLeft = AWE.UI.Ember.LeftHUDView.create({
-        controller: this,
-      });
-
       var character = AWE.GS.CharacterManager.getCurrentCharacter();
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+
+      _domLeft = AWE.UI.Ember.LeftHUDView.create({
+        controller: this,
+        character: character,
+      });
+
       _domRight = AWE.UI.Ember.RightHUDView.create({
         controller: this,
         character: character,
@@ -514,13 +516,25 @@ AWE.Controller = (function(module) {
     
     that.notifyAboutNewScreenController = function(controller) {
       if (controller && /*HUDViews.leftHUDControlsView*/_domLeft) {
-        var mode = controller.typeName === "SettlementController" ? AWE.UI.HUDModeSettlement : AWE.UI.HUDModeMap;
-        //HUDViews.leftHUDControlsView.setHUDMode(mode);
+        var mode = null;
+        if(controller.typeName === "SettlementController")
+        {
+          mode = AWE.UI.HUDModeSettlement;
+        }
+        else
+        {
+          mode = AWE.UI.HUDModeMap;
+        }
+
         _domLeft.setHUDMode(mode);
       }
       
       // TODO Mail view -> hide buttons
     };
+
+    that.notifyAboutNewControllerSettlement = function(settlementId) {
+      _domLeft.setSettlement(settlementId);
+    }
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
@@ -584,7 +598,23 @@ AWE.Controller = (function(module) {
       });
       dialog.set('garrisonArmy', AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison')),
 	    WACKADOO.presentModalDialog(dialog);
-    };  
+    };
+
+    that.assignmentButtonClicked = function(tavern) {
+      var dialog = AWE.UI.Ember.AssignmentsDialog.create({
+        controller: WACKADOO.presentScreenController,
+        building: tavern,
+      });
+      WACKADOO.presentModalDialog(dialog);
+    };
+
+    that.tradeButtonClicked = function() {
+      var dialog = AWE.UI.Ember.TradeNewView.create({
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
+        controller: WACKADOO.presentScreenController
+      });
+      WACKADOO.presentModalDialog(dialog);
+    }
     
     that.avatarImageClicked = function() {
       WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
@@ -596,8 +626,33 @@ AWE.Controller = (function(module) {
       WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     }
     
-    that.allianceFlagClicked = function(allianceId) {      
-      WACKADOO.showAllianceDialog(allianceId); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
+    that.allianceFlagClicked = function(allianceId) {
+      if(allianceId)
+      {
+        WACKADOO.showAllianceDialog(allianceId); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      }
+      else
+      {
+        var unlockedAllianceCreation = false;
+        var character = AWE.GS.CharacterManager.getCurrentCharacter();
+        var settlement = AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId);
+        if(settlement)
+        {
+          var slots = settlement.get('enumerableSlots');
+          for(var i = 0; i < slots.length; i++) {
+            var slot = slots[i];
+            if(slot.getPath('building.unlockedAllianceCreation'))
+            {
+              unlockedAllianceCreation = true;
+            }
+          }
+        }
+
+        var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+            unlockedAllianceCreation: unlockedAllianceCreation
+          });
+          WACKADOO.presentModalDialog(dialog);
+      }       
     }
 
     // ///////////////////////////////////////////////////////////////////////

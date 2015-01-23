@@ -75,6 +75,7 @@ AWE.Controller = (function(module) {
       log('PRESENT SETTLEMENT ID', that.settlementId);
       this.settlementId = settlementId; 
       log('NEW SETTLEMENT ID', settlementId, that.settlementId);
+      WACKADOO.hudController.notifyAboutNewControllerSettlement(settlementId);
     }
     
     /** set the id of the settlement to display by setting the location id.
