@@ -342,12 +342,15 @@ AWE.UI.Ember = (function(module) {
         templateName: 'tax-change-new-dialog',
 
         settlement: this.get('settlement'),
-        valueText: this.getPath('settlement.taxPercentage'),
+        percentage: this.getPath('settlement.taxPercentage'),
+
+        taxMaximum: 15,
+        taxMinimum: 5,
 
         okTaxPressed:  function() {
-          var number = parseInt(this.get('valueText') || "0");
+          var number = this.get('percentage') || 0;
           log('OK_PRESSED', self,this, this.get('valueText'), number)
-          if (number >= 5 && number <= 15) {
+          if (number >= this.get('taxMinimum') && number <= this.get('taxMaximum') && number != this.getPath('settlement.taxPercentage')) {
             var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
             AWE.Action.Manager.queueAction(action, function(statusCode) {
               if (statusCode === 200 || statusCode === 203) {
@@ -358,7 +361,7 @@ AWE.UI.Ember = (function(module) {
               }
             });  
           }
-          else {
+          else if(number != this.getPath('settlement.taxPercentage')) {
             self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
           }
           this.destroy();            
@@ -554,10 +557,9 @@ AWE.UI.Ember = (function(module) {
     },
 	});
 
-  module.TaxesRangeView  = Ember.TextField.extend({
+  module.TaxesRangeView  = AWE.UI.Ember.SliderView.extend({
     classNames: ["taxes-range-slider"],
     attributeBindings: ["min", "max"],
-    type: "range",
     min: 5,
     max: 15,
     settlement: null,

@@ -393,7 +393,7 @@
   <div class="unit-image-wrapper">
     <div {{bindAttr class="unitType.db_field :unit-image-new"}}>
       <div class="count-text-big-background">
-        {{view AWE.UI.Ember.ArmyRecruitmentCounterView class="count-text-big" maxlength=4 type="text" valueBinding="number"}}
+        {{view AWE.UI.Ember.SliderInputView class="count-text-big" maxlength=4 type="text" valueBinding="number"}}
       </div>
     </div>
   </div>
@@ -439,7 +439,7 @@
     </div>
   </div>
 
-  {{view AWE.UI.Ember.JobsRangeView valueBinding="number"}}
+  {{view AWE.UI.Ember.JobsRangeView valueBinding="number" maxBinding="maxUnitRecruitment"}}
 </script>
 <!--Job Statusbar-->
 <script type="text/x-handlebars" data-template-name="army-job-cell">   

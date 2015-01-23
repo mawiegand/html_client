@@ -174,8 +174,8 @@
       </div>
       {{#if isFortress}}
         <div class="cell-slider">
-          <div class="slider-value-text">{{valueText}}%</div>
-          {{view AWE.UI.Ember.TaxesRangeView valueBinding="settlement.taxPercentage" settlementBinding="settlement"}}
+          <div class="slider-value-text">{{view AWE.UI.Ember.SliderInputView class="slider-value-text-input" maxlength=4 type="text" valueBinding="percentage" maxValueBinding="taxMaximum" minValueBinding="taxMinimum"}}%</div>
+          {{view AWE.UI.Ember.TaxesRangeView valueBinding="percentage" settlementBinding="settlement"}}
         </div>
         <div class="cell-confirm-button">
           <div class="confirm-green-button" {{action "okTaxPressed"}}>

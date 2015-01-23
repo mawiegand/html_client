@@ -782,6 +782,7 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     templateName: 'army-recruitment-info-view',
 
     numberValueRegex: /[^0-9]+/,
+    maxUnitRecruitment: 1000,
 
     isUIMarker: function(){
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
@@ -817,14 +818,7 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
 
     setupJobPressed: function()
     {
-      if(this.get('number').match(this.get('numberValueRegex')))
-      {
-        var dialog = AWE.UI.Ember.InfoDialog.create({
-          message: AWE.I18n.lookupTranslation('settlement.training.error.notOnlyNumbers')
-        });
-        WACKADOO.presentModalDialog(dialog);
-      }
-      else if(parseInt(this.get('number')) > 1000)
+      if(parseInt(this.get('number')) > this.get("maxUnitRecruitment"))
       {
         var dialog = AWE.UI.Ember.InfoDialog.create({
           message: AWE.I18n.lookupTranslation('settlement.training.error.tooLargeNumber')
@@ -839,14 +833,40 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     },
   });
 
-  module.ArmyRecruitmentCounterView = Ember.TextField.extend({
+  module.SliderInputView = Ember.TextField.extend({
     valueBinding: "number",
+    defaultValue: 0,
+    maxValue: 100,
+    minValue: 0,
+    numberValueRegex: /[^0-9]+/,
 
+    focusOut: function() {
+      if(this.get('value') === "")
+      {
+        this.set('value', this.get('defaultValue'));
+      }
+      else if(parseInt(this.get('value')) > this.get('maxValue'))
+      {
+        this.set('value', this.get('maxValue'));
+      }
+      else if(parseInt(this.get('value')) < this.get('minValue'))
+      {
+        this.set('value', this.get('minValue'));
+      }
+      else if(this.get('value').match(this.get('numberValueRegex')))
+      {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: AWE.I18n.lookupTranslation('settlement.training.error.notOnlyNumbers')
+        });
+        WACKADOO.presentModalDialog(dialog);
+        this.set('value', this.get('defaultValue'));
+      }
+    },
   });
 
   module.JobsRangeView = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
-    max: 1000,
+    max: 500,
     min: 1,
     valueBinding: "number",
   });
