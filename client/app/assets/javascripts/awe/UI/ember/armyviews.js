@@ -833,37 +833,6 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     },
   });
 
-  module.SliderInputView = Ember.TextField.extend({
-    valueBinding: "number",
-    defaultValue: 0,
-    maxValue: 100,
-    minValue: 0,
-    numberValueRegex: /[^0-9]+/,
-
-    focusOut: function() {
-      if(this.get('value') === "")
-      {
-        this.set('value', this.get('defaultValue'));
-      }
-      else if(parseInt(this.get('value')) > this.get('maxValue'))
-      {
-        this.set('value', this.get('maxValue'));
-      }
-      else if(parseInt(this.get('value')) < this.get('minValue'))
-      {
-        this.set('value', this.get('minValue'));
-      }
-      else if(this.get('value').match(this.get('numberValueRegex')))
-      {
-        var dialog = AWE.UI.Ember.InfoDialog.create({
-          message: AWE.I18n.lookupTranslation('settlement.training.error.notOnlyNumbers')
-        });
-        WACKADOO.presentModalDialog(dialog);
-        this.set('value', this.get('defaultValue'));
-      }
-    },
-  });
-
   module.JobsRangeView = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
     max: 500,
