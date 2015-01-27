@@ -51,7 +51,7 @@ module.LeftHUDView = Ember.View.extend({
       }
     }
     return false;
-  }.property('settlement.enumerableSlots.@each.building'),
+  }.property('settlement.enumerableSlots.@each.building.@each.level'),
 
   unlockedTrade: function() {
     var character = this.get('character');
@@ -68,7 +68,7 @@ module.LeftHUDView = Ember.View.extend({
       }
     }
     return false;
-  }.property('settlement.enumerableSlots.@each.building'),
+  }.property('settlement.enumerableSlots.@each.building.@each.level'),
   
   isUiMarkerEnabled: function() {
     return this.get('uiMarkerEnabled');
