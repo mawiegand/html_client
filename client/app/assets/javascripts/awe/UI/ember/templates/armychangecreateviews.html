@@ -74,7 +74,7 @@
                 {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
          	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
          	<p class="army-garrison-count army-other-count">
-                {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" valueBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
+                {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" resultBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
             </p>
             {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
          </div>
@@ -88,7 +88,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">
-            {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" valueBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
+            {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" resultBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
         </p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
      </div>
@@ -101,7 +101,7 @@
      	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">
-            {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" valueBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
+            {{view AWE.UI.Ember.SliderInputView class="army-other-count-input" maxlength=10 type="text" resultBinding="armyType.otherUnits" maxValueBinding="armyType.allUnits"}}
         </p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" maxBinding="armyType.allUnits"}}
      </div>

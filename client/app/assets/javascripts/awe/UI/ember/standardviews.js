@@ -411,11 +411,20 @@ AWE.UI.Ember = (function(module) {
   });
 
   module.SliderInputView = Ember.TextField.extend({
-    valueBinding: "number",
+    result: null,
     defaultValue: 0,
     maxValue: 100,
     minValue: 0,
     numberValueRegex: /[^0-9]+/,
+
+    init: function() {
+      this._super();
+      this.set("value", this.get("result"));
+    },
+
+    onResultChanged: function() {
+      this.set("value", this.get("result"));
+    }.observes('result'),
 
     focusOut: function() {
       if(this.get('value') === "")
@@ -438,22 +447,9 @@ AWE.UI.Ember = (function(module) {
         WACKADOO.presentModalDialog(dialog);
         this.set('value', this.get('defaultValue'));
       }
-    },
 
-    onValueChange: function() {
-      if(this.get('value') === "")
-      {
-        this.set('value', this.get('defaultValue'));
-      }
-      else if(parseInt(this.get('value')) > this.get('maxValue'))
-      {
-        this.set('value', this.get('maxValue'));
-      }
-      else if(parseInt(this.get('value')) < this.get('minValue'))
-      {
-        this.set('value', this.get('minValue'));
-      }
-    }.observes('value'),
+      this.set("result", this.get("value"));
+    },
   });
 
   module.RangeView = Ember.TextField.extend({
