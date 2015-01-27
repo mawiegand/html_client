@@ -28,7 +28,6 @@ AWE.UI = (function(module) {
 
     return that;
   };
-  
 
   module.createArmyView = function(spec, my) {
     
@@ -400,16 +399,12 @@ AWE.UI = (function(module) {
       }
       
       if (that.selected() || that.hovered() || (_army && _army.isOwn())) {
-        
+
+        var apBackgroundImage = "map/army/animation/neanderthal";
         if (!_healthBGShape) {
-          var healthBGGraphics = new Graphics();
-          healthBGGraphics.setStrokeStyle(1);
-          healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-          healthBGGraphics.beginFill('rgb(127, 127, 127)');
-          healthBGGraphics.drawRoundRect(0, 0, 64, 12, 4);
-          _healthBGShape = AWE.UI.createShapeView();
-          _healthBGShape.initWithControllerAndGraphics(my.controller, healthBGGraphics);
-          _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 12));
+          var _healthBGShape = AWE.UI.createImageView();
+          _healthBGShape.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/army/actionpoints/background"));
+          _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 16));
           this.addChild(_healthBGShape);    
         }
         
@@ -417,35 +412,57 @@ AWE.UI = (function(module) {
           _actionPointsLabelView = AWE.UI.createLabelView();
           _actionPointsLabelView.initWithControllerAndLabel(my.controller);
           _actionPointsLabelView.setColor('#000');
-          _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 102, 64, 24));      
+          _actionPointsLabelView.setFont("16px hvd_comic_serif_proregular");
+          _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 105, 64, 24));      
           that.addChild(_actionPointsLabelView);      
         }
         
-        if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
-          if(_army.get('ap_present') / _army.get('ap_max') > .75) {
-            var fillColor = '#6d6';
-          }
-          else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
-            var fillColor = '#dd6';
-          }
-          else {
-            var fillColor = '#d66';
-          }
-        
-          var healthGraphics = new Graphics();
-          healthGraphics.setStrokeStyle(1);
-          healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-          healthGraphics.beginFill(fillColor);
-          healthGraphics.drawRoundRect(0, 0, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
-          _healthShape = AWE.UI.createShapeView();
-          _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
-          _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
-          that.addChild(_healthShape);      
-          if (_actionPointsLabelView) { // move label to top
-            that.removeChild(_actionPointsLabelView);
-            that.addChild(_actionPointsLabelView);
-          }
+        var apFactor = _army.get('ap_present') / _army.get('ap_max');
+        if(apFactor === 0)
+        {
+
         }
+        else if(apFactor <= 0.25)
+        {
+          healthGraphics = AWE.UI.ImageCache.getImage("map/army/actionpoints/1");
+        }
+        else if(apFactor <= 0.5)
+        {
+          healthGraphics = AWE.UI.ImageCache.getImage("map/army/actionpoints/2");
+        }
+        else if(apFactor <= 0.75)
+        {
+          healthGraphics = AWE.UI.ImageCache.getImage("map/army/actionpoints/3");
+        }
+        else
+        {
+          healthGraphics = AWE.UI.ImageCache.getImage("map/army/actionpoints/4");
+        }
+
+
+        var healthProgress = 1
+
+        if(apFactor < 1)
+        {
+          var dateNow = new Date();
+          var dateNext = new Date(_army.get('ap_next'));
+          var timeUntillNextAp = (dateNext - dateNow) / 1000;
+          healthProgress = 1 - timeUntillNextAp / (_army.get('ap_seconds_per_point') / 2);
+        }
+
+        var progressFilling = true; //change to true if filling AP progress over time
+
+        var baseWidth = 64 * apFactor;
+        var healthWidth = baseWidth;
+        if(progressFilling && apFactor < 1)
+        {
+          var remainingWidth = 0.25 * 64 * healthProgress;
+          healthWidth = baseWidth + remainingWidth;
+        }
+        _healthShape = AWE.UI.createImageView();
+        _healthShape.initWithControllerAndImage(my.controller, healthGraphics);
+        _healthShape.setFrame(AWE.Geometry.createRect(16, 108, healthWidth, 16));
+        that.addChild(_healthShape);
       } 
       if (_healthShape) {
         _healthShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
@@ -453,9 +470,20 @@ AWE.UI = (function(module) {
       if (_healthBGShape) {
         _healthBGShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
       }
-      if (_actionPointsLabelView) {
+
+      if(!_healthCover)
+      {
+        var _healthCover = AWE.UI.createImageView();
+        _healthCover.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/army/actionpoints/cover"));
+        _healthCover.setFrame(AWE.Geometry.createRect(4, 99, 88, 32));
+        that.addChild(_healthCover);
+      }
+
+      if (_actionPointsLabelView) { //move label to top
+        that.removeChild(_actionPointsLabelView);
+        that.addChild(_actionPointsLabelView);
         _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
-        _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
+        _actionPointsLabelView.setText(_army.get('ap_present') + "/" + _army.get('ap_max'));
       }
       
       

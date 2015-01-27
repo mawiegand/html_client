@@ -93,6 +93,12 @@ AWE.Config = (function(module) {
     "map/army/suspended":     AWE.Config.RAILS_ASSET_PATH + 'suspension.png',
     "map/army/protected":     AWE.Config.RAILS_ASSET_PATH + 'verbot.png',
     "map/army/sandglass":     AWE.Config.RAILS_ASSET_PATH + 'icons/sandglass.png',
+    "map/army/actionpoints/background":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_background.png',
+    "map/army/actionpoints/1":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_1.png',
+    "map/army/actionpoints/2":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_2.png',
+    "map/army/actionpoints/3":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_3.png',
+    "map/army/actionpoints/4":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_full.png',
+    "map/army/actionpoints/cover":    AWE.Config.RAILS_ASSET_PATH + 'army/actionpoints/actionpoints_cover.png',
 
     "map/artifact/0":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_tnt.png',
     "map/artifact/1":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_steinrad.png',
