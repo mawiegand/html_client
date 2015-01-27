@@ -783,6 +783,7 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
 
     numberValueRegex: /[^0-9]+/,
     maxUnitRecruitment: 1000,
+    minUnitRecruitment: 1,
 
     isUIMarker: function(){
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
