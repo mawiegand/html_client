@@ -1042,7 +1042,7 @@ AWE.I18n.de_DE = function(module) {
         currentRank:"Aktuelle Rang",
         nextRank:"Nächster Rang",
         currentLevel:"Aktuelle Stufe",
-        nextLevel:"Nächster Stufe",
+        nextLevel:"Nächste Stufe",
         progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",
