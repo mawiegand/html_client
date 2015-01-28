@@ -365,7 +365,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
         {
-            Sample.track('started', 'session');
+          Sample.sessionUpdate();  
+          Sample.track('started', 'session');
         }
 
         if (AWE.Config.CHAT_SHOW) {
@@ -819,6 +820,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         */
       var startupArgs = this.get('startupArguments');
       var platform = startupArgs['platform'];
+      
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("fsRrapvL");
 
       if (platform == Sample.PLATFORM_ANDROID)
       {
@@ -841,7 +845,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (!args || !args.accessToken) {
         if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
         {
-            Sample.track('start_failed', { event_category: 'session'});
+            Sample.track('start_failed', 'session');
         }
 
 //      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
@@ -873,6 +877,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Settings.hudScale = 1;
       }
       var styleSheets = document.styleSheets;
+      
+      // TODO: improve the code below. Does it have to be run for hudScale == 1?
+      //       can't it read the values for top and marginLeft from the CSS? 
+      //       The present code will OVERRIDE any change to the css, without the
+      //       developer noticing it.
       for (n in styleSheets)
       {
         var theRules = styleSheets[n].cssRules;
@@ -899,8 +908,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
       AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
       
-      Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("wad-rt82-fhjk-18");
+      // make sure the html client uses the same session and install token
+      // as the portal. We want "convergence" over all host-names and modules
+      // of the HTML game.
+      if (args.installToken)
+      {
+        Sample.setInstallToken(args.installToken);
+      }
+      if (args.sessionToken)
+      {
+        Sample.setSessionToken(args.sessionToken);
+      }
       
       if (AWE.Facebook.isRunningInCanvas)
       {
