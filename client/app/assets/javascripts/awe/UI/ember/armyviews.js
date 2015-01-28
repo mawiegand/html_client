@@ -204,6 +204,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
     settlement: null,
 
     startTab: 0,
+    subTab: 0,
   
     /*setSettlment: function(){
       this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
@@ -364,6 +365,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 
   module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
 
+    controller: null,
     character: null,
     alliance:  null,
     allianceMember: null,
@@ -377,15 +379,6 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
-         view:  module.GarrisonInfoView.extend({
-         unitTypesBinding: "parentView.parentView.unitTypes",
-         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          }),
-         isTitelTab: true,
-         buttonClass: "header-menu-button-military"
-       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
-       { key:   "tab2",
          title: AWE.I18n.lookupTranslation('encyclopedia.infantry'), 
          view:  module.InfantryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -396,7 +389,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab3",
+       { key:   "tab2",
          title: AWE.I18n.lookupTranslation('encyclopedia.artillery'), 
          view:  module.ArtileryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -407,7 +400,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab4",
+       { key:   "tab3",
          title: AWE.I18n.lookupTranslation('encyclopedia.cavalery'), 
          view:  module.CavaleryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -418,7 +411,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab5",
+       { key:   "tab4",
          title: AWE.I18n.lookupTranslation('encyclopedia.specialUnits'), 
          view:  module.SpecialUnitInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -439,6 +432,52 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
    }.observes("startTab"),
 
  });
+
+module.MilitaryTabView = module.TabViewNew.extend({
+
+  character: null,
+  alliance:  null,
+  allianceMember: null,
+  unitTypes: null,
+  garrisonArmy: null,
+  settlement: null,
+  trainingQueues: null,
+  startTab: 0,
+  subTab: 0,
+
+  init: function() {
+    var self = this;
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
+         view:  module.GarrisonInfoView.extend({
+         unitTypesBinding: "parentView.parentView.unitTypes",
+         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          }),
+         buttonClass: "left-menu-button"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: AWE.I18n.lookupTranslation('settlement.training.recruit'), 
+         view:  module.ArmyInfoNewTabView.extend({ 
+          parentView: self,
+          controllerBinding: "parentView.controller",
+          garrisonArmyBinding: "parentView.garrisonArmy",
+          settlementBinding: "parentView.settlement",
+          trainingQueuesBinding: "parentView.trainingQueues",
+          startTabBinding: 'parentView.subTab',
+          }),
+         buttonClass: "right-menu-button"
+       }
+     ]);
+
+     this._super();
+   },
+
+   changeTab: function() {
+    this.selectTabByNumber(this.get("startTab"));
+   }.observes("startTab"),
+});
 
 module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
