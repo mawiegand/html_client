@@ -857,7 +857,7 @@ AWE.I18n.de_DE = function(module) {
       trade: {
         trade: "Handel",
         distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
-        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
+        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesamtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
 
         update: "Update",
         submit: "Senden",
@@ -1042,7 +1042,7 @@ AWE.I18n.de_DE = function(module) {
         currentRank:"Aktuelle Rang",
         nextRank:"Nächster Rang",
         currentLevel:"Aktuelle Stufe",
-        nextLevel:"Nächster Stufe",
+        nextLevel:"Nächste Stufe",
         progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",
