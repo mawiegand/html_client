@@ -135,7 +135,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
-              self.get('extrasController').startCountdown();
+              self.get('extrasController').startPterodactylus({x: -10, y: 10}, {x: 100, y: 80}, 10, 2);
             },
           });
           self.presentModalDialog(dialog);

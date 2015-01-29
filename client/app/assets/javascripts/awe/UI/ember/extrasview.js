@@ -11,7 +11,6 @@ AWE.UI.Ember = (function(module) {
   module.PteroView = Ember.View.extend({
     templateName: 'ptero-view',
   
-    controller: null,
     status: null,
 
     animState: function() {

@@ -5,39 +5,46 @@
 
 var AWE = AWE || {};
 
-AWE.Controller = (function(module) {
+AWE.GS = (function(module) {
           
-  module.createExtrasController = function(anchor) {
+  module.Pterodactylus = function(anchor) {
     
     var _pteroView = null;
     var _pteroShadowView = null;
 
     var pteroAnimState = null;
-    var _ptero = {
-      enabled: false,
-      started: false,
-      direction: 0,   //0 = left => right, 1 = right => left
-      currentFlapsPerAnim: 3,
-      flapIntervalMin: 2,   
-      flapIntervalMax: 4,   
-      flapsPerAnimMin: 2,   
-      flapsPerAnimMax: 5,
-      flapAnimFrames: 4,
-      frameDuration: 0.1,
-      startDelay: 5,
-      speed: 10,       
-      startPosition: {
+    var createPterodactylus = function() {
+      ptero = {};
+      ptero.enabled: false;
+      ptero.started: false;
+      ptero.direction: 0;   //0 = left => right, 1 = right => left
+      ptero.currentFlapsPerAnim: 3;
+      ptero.flapIntervalMin: 2;   
+      ptero.flapIntervalMax: 4;   
+      ptero.flapsPerAnimMin: 2;   
+      ptero.flapsPerAnimMax: 5;
+      ptero.flapAnimFrames: 4;
+      ptero.frameDuration: 0.1;
+      ptero.startDelay: 5;
+      ptero.speed: 10;       
+      ptero.startPosition: {
         x: "110%",
         y: "50%"
-      },
-      endPosition: {
+      };
+      ptero.endPosition: {
         x: "-10%",
         y: "80%"
-      }
+      };
+      ptero.view = AWE.UI.Ember.PteroView.create();
+
+      ptero.view.appendTo('#main-screen-controller');
     };
+
+    var newPtero = new _ptero();
 
     var _pterodactylusFlyIntervalMin = null;
     var _pterodactylusFlyIntervalMax = null;
+    var _autoPtero = false;
 
     var _lastPteroModeChange = null;
     var _initTime = null;
@@ -60,60 +67,10 @@ AWE.Controller = (function(module) {
 
       var self = this;
 
-      _pteroView = AWE.UI.Ember.PteroView.create({
-        controller: self,
-      });
-
-      var root = that.rootElement();
-      _pteroView.appendTo('#main-screen-controller');
+      
       pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
       
     };
-
-    that.enableAutoPterodactylus = function(minDelay, maxDelay) {
-      _pterodactylusFlyIntervalMin = minDelay;
-      _pterodactylusFlyIntervalMax = maxDelay;
-
-      _ptero.autoEnabled = true;
-    }
-
-    that.startPterodactylus = function(from, to, speed, delay) {
-      _ptero.startPosition.x = String(from.x) + '%' || _ptero.startPosition.x;
-      _ptero.startPosition.y = String(from.y) + '%' || _ptero.startPosition.y;
-      _ptero.endPosition.x = String(to.x) + '%' || _ptero.endPosition.x;
-      _ptero.endPosition.y = String(to.y) + '%' || _ptero.endPosition.y;
-      _ptero.startDelay = delay || _ptero.startDelay;
-      _ptero.speed = speed || _ptero.speed;
-
-      if(_ptero.startPosition.x < _ptero.endPosition.x)
-      {
-        _ptero.direction = 1;
-      }
-
-      _initTime = new Date();
-      _ptero.enabled = true;
-    }
-
-    that.startRandomPterodactylus = function() {
-      var delay = Math.getRandomBetween(_pterodactylusFlyIntervalMin, _pterodactylusFlyIntervalMax);
-      var start = {
-        x: Math.getRandomOfTwo(-10, 100),
-        y: Math.getRandomBetween(10, 90)
-      };
-
-      var endX = -10;
-      if(start.x === -10)
-      {
-        endX = 100;
-      }
-
-      var end = {
-        x: endX,
-        y: Math.getRandomBetween(10, 90)
-      };
-
-      that.startPterodactylus(start, end, _ptero.speed, delay);
-    }
 
     that.pteroNeedsFlap = function() {
       var now = new Date();
