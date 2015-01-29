@@ -62,6 +62,7 @@ AWE.Application = (function(module) {
     return /** @lends AWE.Application.MultiStageApplication# */ {
 
       hudController: null,
+      extrasController: null,
       notificationController: null,
 
       presentScreenController: null,
@@ -488,6 +489,7 @@ AWE.Application = (function(module) {
         if (this.get('readyForRunloop') && this.get('presentScreenController')) {
           this.testMouseOver();
           if (this.get('hudController')) this.get('hudController').runloop();
+          if (this.get('extrasController')) this.get('extrasController').runloop();
           if (this.get('notificationController')) this.get('notificationController').runloop();
           this.get('presentScreenController').runloop(); // hand over control to present screen controller
 
@@ -810,6 +812,14 @@ AWE.Application = (function(module) {
             controller.applicationController = this;
             controller.viewDidAppear();
           }
+        }
+      },
+
+      setExtrasController: function(controller) {
+        var presentExtrasController = this.get('extrasController');
+        log('in set extras controller', controller);
+        if (controller != presentExtrasController) {
+          this.set('extrasController', controller);
         }
       },
 

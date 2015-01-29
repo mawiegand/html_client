@@ -135,6 +135,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
+              self.get('extrasController').startCountdown();
             },
           });
           self.presentModalDialog(dialog);
@@ -357,6 +358,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             locationId: locationId
           });
         }
+
+        var extras = AWE.Controller.createExtrasController();
+        extras.init();
+        self.setExtrasController(extras);
 
         self.startRunloop();
         self.readyToRun();                            // ready to run
