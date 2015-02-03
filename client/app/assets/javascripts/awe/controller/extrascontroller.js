@@ -36,8 +36,8 @@ AWE.Controller = (function(module) {
       }
     };
 
-    var _pterodactylusFlyIntervalMin = null;
-    var _pterodactylusFlyIntervalMax = null;
+    var _pterodactylusFlyIntervalMin = 60;
+    var _pterodactylusFlyIntervalMax = 90;
 
     var _lastPteroModeChange = null;
     var _initTime = null;

@@ -7,72 +7,46 @@ var AWE = AWE || {};
 
 AWE.GS = (function(module) {
           
-  module.Pterodactylus = function(anchor) {
-    
-    var _pteroView = null;
-    var _pteroShadowView = null;
+  module.Pterodactylus = Ember.Object.extend({
 
-    var pteroAnimState = null;
-    var createPterodactylus = function() {
-      ptero = {};
-      ptero.enabled: false;
-      ptero.started: false;
-      ptero.direction: 0;   //0 = left => right, 1 = right => left
-      ptero.currentFlapsPerAnim: 3;
-      ptero.flapIntervalMin: 2;   
-      ptero.flapIntervalMax: 4;   
-      ptero.flapsPerAnimMin: 2;   
-      ptero.flapsPerAnimMax: 5;
-      ptero.flapAnimFrames: 4;
-      ptero.frameDuration: 0.1;
-      ptero.startDelay: 5;
-      ptero.speed: 10;       
-      ptero.startPosition: {
-        x: "110%",
-        y: "50%"
-      };
-      ptero.endPosition: {
-        x: "-10%",
-        y: "80%"
-      };
-      ptero.view = AWE.UI.Ember.PteroView.create();
+    pteroAnimState: null,
 
-      ptero.view.appendTo('#main-screen-controller');
-    };
+    enabled: false,
+    started: false,
 
-    var newPtero = new _ptero();
+    direction: 0, //0 = left => right, 1 = right => left
 
-    var _pterodactylusFlyIntervalMin = null;
-    var _pterodactylusFlyIntervalMax = null;
-    var _autoPtero = false;
+    currentFlapsPerAnim: 3,
+    flapIntervalMin: 2,   
+    flapIntervalMax: 4,  
+    flapsPerAnimMin: 2,   
+    flapsPerAnimMax: 5,
+    flapAnimFrames: 4,
+    frameDuration: 0.1,
+    startDelay: 5,
 
-    var _lastPteroModeChange = null;
+    speed: 10,
+
+    lastPteroModeChange = null,
     var _initTime = null;
 
+    startPosition: {
+        x: "110%",
+        y: "50%"
+      },
+    endPosition: {
+        x: "-10%",
+        y: "80%"
+      },
 
-    var that = module.createScreenController(anchor); ///< create base object
+    init: function() {
+      var view = AWE.UI.Ember.PteroView.create();
+      view.appendTo(anchor);
 
-    var _super = {};             ///< store locally overwritten methods of super object
-    _super.init = that.init; 
-    _super.runloop = that.runloop;
-
-    // ///////////////////////////////////////////////////////////////////////
-    //
-    //   Initialization
-    //
-    // ///////////////////////////////////////////////////////////////////////
-
-    that.init = function() {
-      _super.init();  
-
-      var self = this;
-
-      
       pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
-      
-    };
+    }
 
-    that.pteroNeedsFlap = function() {
+    pteroNeedsFlap: function() {
       var now = new Date();
       var timeSinceLastUpdate = now - _lastPteroModeChange;
       var interval = _ptero.flapIntervalMin + (Math.random()*(_ptero.flapIntervalMax - _ptero.flapIntervalMin));
@@ -83,9 +57,9 @@ AWE.GS = (function(module) {
         return true;
       }
       return false;
-    };
+    },
 
-    that.pteroCanGoIdle = function() {
+    pteroCanGoIdle: function() {
       var now = new Date();
       var animDuration = _ptero.currentFlapsPerAnim * _ptero.flapAnimFrames * _ptero.frameDuration;
 
@@ -96,9 +70,9 @@ AWE.GS = (function(module) {
         return true;
       }
       return false;
-    };
+    },
 
-    that.isReadyForTakeOff = function() {
+    isReadyForTakeOff: function() {
       var now = new Date();
       var timeSinceStart = now - _initTime;
       if(timeSinceStart / 1000 >= _ptero.startDelay)
@@ -129,7 +103,7 @@ AWE.GS = (function(module) {
         _ptero.started = true;
 
       }
-    }
+    },
 
     // ///////////////////////////////////////////////////////////////////////
     //
