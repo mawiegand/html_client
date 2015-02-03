@@ -512,6 +512,15 @@ AWE.I18n.de_DE = function(module) {
       invitationLink: 'Einladungslink',
       invitationLinkDescription: 'Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.',
       invitationLinkSendByMail: 'Per Mail versenden',
+
+      diplomacyInfo: {
+        heading: "Diplomatie System:",
+        content: "Eine Allianz stellt einer anderen ein Ultimatum. " +
+                 "Nach Ablauf des Ultimatums beginnt der Krieg zwischen beiden Allianzen. " +
+                 "Während des Kriegs können Allianzen anderen Allianzen Festungen abnehmen. " +
+                 "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem eine der beiden Seiten ihn aufgibt. " +
+                 "Nachdem ein Krieg beendet ist herrscht eine Zeit lang die Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
+      },
       
       progress: {
         header: 'Siegesfortschritt',

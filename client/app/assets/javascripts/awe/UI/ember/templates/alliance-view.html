@@ -125,6 +125,7 @@
           </div>
         </div>
     {{/if}}
+    <div class="diplomacy-info info-big-background" {{action "infoClicked"}}>i</div>
     {{#if relationsFound}}
       {{#if relationsAtUltimatum}}
         <div class="alliance-ultimatum">
@@ -188,5 +189,12 @@
         give up
       </div>
   {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-info">
+  <h1>{{t alliance.diplomacyInfo.heading}}</h1>
+  <div class="alliance-diplomacy-info">
+    <p>{{t alliance.diplomacyInfo.content}}</p>
   </div>
 </script>

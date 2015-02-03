@@ -583,6 +583,11 @@ AWE.UI.Ember = (function(module) {
       });
     },
 
+    infoClicked: function() {
+      var dialog = AWE.UI.Ember.AllianceDiplomacyInfoView.create();
+      WACKADOO.presentModalDialog(dialog);
+    },
+
     relationsFound: function() {
       var self = this;
       var relations = this.getPath('alliance.diplomacySourceRelations');
@@ -687,6 +692,12 @@ AWE.UI.Ember = (function(module) {
       this.update();
     }.observes('alliance.id'),
     
+  });
+
+  module.AllianceDiplomacyInfoView = module.PopUpDialog.extend({
+    templateName: 'alliance-diplomacy-info',
+    classNames: ['alliance-diplomacy-info-view'],
+
   });
   return module;
 

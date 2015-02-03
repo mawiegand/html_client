@@ -504,6 +504,16 @@ AWE.I18n.en_US = function(module) {
       invitationLinkDescription: 'Invite new players to start in the alliance region. If new players register using the invitation link, his or her home settlement will be placed in the regions governed by the alliance. Just select and copy the link or send it via mail.',
       invitationLinkSendByMailButton: 'Send by mail',
 
+      diplomacyInfo: {
+        heading: "Diplomacysystem:",
+        content: "An alliance makes an ultimatum towards another. " +
+                 "After the ultimatum has ended the alliances are at war. " +
+                 "While the war is ongoing alliances may conquer each others fortresses. " +
+                 "After war has raged for a while it may be ended by one side surrendering. " +
+                 "When a side has surrendered both alliances enter into the occupation phase. " +
+                 "During this phase no ultimatum maybe declared between the two alliances.",
+      },
+
       progress:{
         header:'Victory Progress',
         description:'An alliance can win the game round if one of the following victory criteria is achieved and maintained over a certain time period:',
