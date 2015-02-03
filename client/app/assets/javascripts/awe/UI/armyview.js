@@ -52,6 +52,7 @@ AWE.UI = (function(module) {
     var _healthShape = null;    
     var _healthBGShape = null;   
     var _actionPointsLabelView = null;
+    var _healthCover = null;
     var _flagLength = null;
     
     var _frameRectShape = null;
@@ -397,12 +398,28 @@ AWE.UI = (function(module) {
         that.removeChild(_healthShape);
         _healthShape = null;
       }
+
+      if(_healthCover)
+        {
+          that.removeChild(_healthCover);
+          _healthCover = null;
+        }
+
+      if (_actionPointsLabelView) {
+        that.removeChild(_actionPointsLabelView);
+        _actionPointsLabelView = null;
+      }
+
+      if (_healthBGShape) {
+        that.removeChild(_healthBGShape);
+        _healthBGShape = null;
+      }
       
       if (that.selected() || that.hovered() || (_army && _army.isOwn())) {
 
         var apBackgroundImage = "map/army/animation/neanderthal";
         if (!_healthBGShape) {
-          var _healthBGShape = AWE.UI.createImageView();
+          _healthBGShape = AWE.UI.createImageView();
           _healthBGShape.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/army/actionpoints/background"));
           _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 16));
           this.addChild(_healthBGShape);    
@@ -463,27 +480,28 @@ AWE.UI = (function(module) {
         _healthShape.initWithControllerAndImage(my.controller, healthGraphics);
         _healthShape.setFrame(AWE.Geometry.createRect(16, 108, healthWidth, 16));
         that.addChild(_healthShape);
+
+        if(!_healthCover)
+        {
+           _healthCover = AWE.UI.createImageView();
+          _healthCover.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/army/actionpoints/cover"));
+          _healthCover.setFrame(AWE.Geometry.createRect(4, 99, 88, 32));
+          that.addChild(_healthCover);
+        }
+
+        if (_actionPointsLabelView) { //move label to top
+          that.removeChild(_actionPointsLabelView);
+          that.addChild(_actionPointsLabelView);
+          _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
+          _actionPointsLabelView.setText(_army.get('ap_present') + "/" + _army.get('ap_max'));
+        }
+
       } 
       if (_healthShape) {
         _healthShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
       }
       if (_healthBGShape) {
         _healthBGShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
-      }
-
-      if(!_healthCover)
-      {
-        var _healthCover = AWE.UI.createImageView();
-        _healthCover.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/army/actionpoints/cover"));
-        _healthCover.setFrame(AWE.Geometry.createRect(4, 99, 88, 32));
-        that.addChild(_healthCover);
-      }
-
-      if (_actionPointsLabelView) { //move label to top
-        that.removeChild(_actionPointsLabelView);
-        that.addChild(_actionPointsLabelView);
-        _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
-        _actionPointsLabelView.setText(_army.get('ap_present') + "/" + _army.get('ap_max'));
       }
       
       

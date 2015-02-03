@@ -1039,7 +1039,7 @@ AWE.I18n.de_DE = function(module) {
       movingTab: "Umziehen",
 
       rank: {
-        currentRank:"Aktuelle Rang",
+        currentRank:"Aktueller Rang",
         nextRank:"Nächster Rang",
         currentLevel:"Aktuelle Stufe",
         nextLevel:"Nächste Stufe",
