@@ -9,7 +9,7 @@ AWE.GS = (function(module) {
           
   module.Pterodactylus = Ember.Object.extend({
 
-    pteroAnimState: null,
+    animState: null,
 
     enabled: false,
     started: false,
@@ -27,33 +27,50 @@ AWE.GS = (function(module) {
 
     speed: 10,
 
-    lastPteroModeChange = null,
-    var _initTime = null;
+    lastPteroModeChange: null,
+    enableTime: null,
 
     startPosition: {
         x: "110%",
-        y: "50%"
+        y: "10%"
       },
     endPosition: {
         x: "-10%",
         y: "80%"
       },
 
+    view: null,
+    id: 0,
+
+    onReached: null,
+
     init: function() {
       var view = AWE.UI.Ember.PteroView.create();
-      view.appendTo(anchor);
+      view.appendTo('#main-screen-controller');
 
-      pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
-    }
+      this.view = view;
+
+      this.animState = AWE.Config.ANIMATION_STATE_IDLE;
+      if(this.startPosition.x < this.endPosition.x)
+      {
+        this.direction = 1;
+      }
+    },
+
+    enable: function() {
+      this.enableTime = new Date();
+      this.enabled = true;
+    },
 
     pteroNeedsFlap: function() {
       var now = new Date();
-      var timeSinceLastUpdate = now - _lastPteroModeChange;
-      var interval = _ptero.flapIntervalMin + (Math.random()*(_ptero.flapIntervalMax - _ptero.flapIntervalMin));
+      var timeSinceLastUpdate = now - this.lastPteroModeChange;
+      var interval = Math.getRandomBetween(this.flapIntervalMin, this.flapIntervalMax);
       if(timeSinceLastUpdate / 1000 >= interval)
       {
-        _lastPteroModeChange = now;
-        _ptero.currentFlapsPerAnim = Math.floor(_ptero.flapsPerAnimMin + (Math.random()*(_ptero.flapsPerAnimMax - _ptero.flapsPerAnimMin + 1)));
+        this.lastPteroModeChange = now;
+        var currentFlaps = Math.getRandomBetween(this.flapsPerAnimMin, this.flapsPerAnimMax);
+        this.currentFlapsPerAnim = currentFlaps;
         return true;
       }
       return false;
@@ -61,29 +78,31 @@ AWE.GS = (function(module) {
 
     pteroCanGoIdle: function() {
       var now = new Date();
-      var animDuration = _ptero.currentFlapsPerAnim * _ptero.flapAnimFrames * _ptero.frameDuration;
+      var animDuration = this.currentFlapsPerAnim * this.flapAnimFrames * this.frameDuration;
 
-      var timeSinceLastUpdate = now - _lastPteroModeChange;
+      var timeSinceLastUpdate = now - this.lastPteroModeChange;
       if(timeSinceLastUpdate / 1000 >= animDuration)
       {
-        _lastPteroModeChange = now;
+        this.lastPteroModeChange = now;
         return true;
       }
       return false;
     },
 
     isReadyForTakeOff: function() {
+      var self = this;
       var now = new Date();
-      var timeSinceStart = now - _initTime;
-      if(timeSinceStart / 1000 >= _ptero.startDelay)
+      var timeSinceStart = now - self.enableTime;
+      if(timeSinceStart / 1000 >= self.startDelay)
       {
-        $('.ptero').css({
-          top: _ptero.startPosition.y,
-          left: _ptero.startPosition.x
+        var pteroIdClass = '.id-' + self.id + '.ptero';
+        self.view.$(pteroIdClass).css({
+          top: self.startPosition.y,
+          left: self.startPosition.x
         });
-        if(_ptero.direction === 1)
+        if(self.direction === 1)
         {
-          $('.ptero').css({
+          self.view.$(pteroIdClass).css({
             '-moz-transform': 'scaleX(-1)',
             '-o-transform': 'scaleX(-1)',
             '-webkit-transform': 'scaleX(-1)',
@@ -91,16 +110,25 @@ AWE.GS = (function(module) {
             'filter': 'FlipH',
             '-ms-filter': "FlipH"
           });
-          $('.ptero .shadow').css({
+          var pteroShadowIdClass = pteroIdClass + " .shadow"
+          self.view.$(pteroShadowIdClass).css({
             left: '50px',
           });
         }
-        $('.ptero').animate({
-          top: _ptero.endPosition.y,
-          left: _ptero.endPosition.x
-        }, _ptero.speed * 1000, 'linear', function(){_ptero.enabled = false});
+        self.view.$(pteroIdClass).animate({
+          top: self.endPosition.y,
+          left: self.endPosition.x
+        }, self.speed * 1000, 'linear', function(){
 
-        _ptero.started = true;
+          self.view.destroy();
+          if(self.onReached !== null)
+          {
+            self.onReached(self);
+          }
+          self.destroy();
+        });
+
+       this.started = true;
 
       }
     },
@@ -111,38 +139,64 @@ AWE.GS = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    var _loopCounter = 0;
 
-    that.runloop = function() {
-      if(_ptero.enabled)
+    runloop: function() {
+      if(this.enabled)
       {
-        if(_ptero.started) { 
+        if(this.started) { 
 
-          if(pteroAnimState === AWE.Config.ANIMATION_STATE_IDLE && that.pteroNeedsFlap())
+          if(this.animState === AWE.Config.ANIMATION_STATE_IDLE && this.pteroNeedsFlap())
           {
-            pteroAnimState = AWE.Config.ANIMATION_STATE_MOVE;
+            this.animState = AWE.Config.ANIMATION_STATE_MOVE;
           }
-          else if(pteroAnimState === AWE.Config.ANIMATION_STATE_MOVE && that.pteroCanGoIdle())
+          else if(this.animState === AWE.Config.ANIMATION_STATE_MOVE && this.pteroCanGoIdle())
           {
-            pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
+            this.animState = AWE.Config.ANIMATION_STATE_IDLE;
           }
 
-          _pteroView.setAnimState(pteroAnimState);
-
-          
-          _loopCounter++;
+          if(this.view)
+          {
+            this.view.setAnimState(this.animState);
+          }
         }
         else
         {
-          that.isReadyForTakeOff();
+          this.isReadyForTakeOff();
         }
       }
-    };
+    },
 
-    return that;
-  };
+    setStartPosition: function(x, y) {
+      this.startPosition.x = String(x) + '%';
+      this.startPosition.y = String(y) + '%';
+    },
+
+    setEndPosition: function(x, y) {
+      this.endPosition.x = String(x) + '%';
+      this.endPosition.y = String(y) + '%';
+    },
+
+    setSpeed: function(speed) {
+      this.speed = speed;
+    },
+
+    setDelay: function(delay) {
+      this.delay = delay;
+    },
+
+    setId: function(id) {
+      this.id = id;
+      this.view.setId(id);
+    },
+
+    clear: function() {
+      this.view.destroy();
+      this.destroy();
+    }
+
+  });
     
     
   return module;
     
-}(AWE.Controller || {}));
+}(AWE.GS || {}));

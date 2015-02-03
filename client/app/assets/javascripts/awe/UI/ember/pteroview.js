@@ -10,7 +10,7 @@ AWE.UI.Ember = (function(module) {
 
   module.PteroView = Ember.View.extend({
     templateName: 'ptero-view',
-  
+    id: 0,
     status: null,
 
     animState: function() {
@@ -20,6 +20,14 @@ AWE.UI.Ember = (function(module) {
     setAnimState: function(status) {
       this.set('status', status);
     },
+
+    idClass: function() {
+      return "id-" + this.get('id');
+    }.property('id'),
+
+    setId: function(id) {
+      this.set('id', id);
+    }
 
   });
       

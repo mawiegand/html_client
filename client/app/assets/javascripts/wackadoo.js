@@ -135,7 +135,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
-              self.get('extrasController').startRandomPterodactylus();
+              //self.get('extrasController').startRandomPterodactylus(60, 90);
+              self.get('extrasController').enableAutoPterodactylus();
             },
           });
           self.presentModalDialog(dialog);
@@ -617,6 +618,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
         hudController.notifyAboutNewScreenController(baseController);
       }
+
+      if(this.get('extrasController'))
+      {
+        this.get('extrasController').clearPterodactyls();
+        this.get('extrasController').enableAutoPterodactylus();
+      }
     },
 
     baseControllerActive: function() {
@@ -752,6 +759,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var hudController = this.get('hudController');
       if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
         hudController.notifyAboutNewScreenController(controller);
+      }
+      if(this.get('extrasController'))
+      {
+        this.get('extrasController').disableAutoPterodactylus();
+        this.get('extrasController').clearPterodactyls();
       }
       
       return controller;

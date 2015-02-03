@@ -54,7 +54,7 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/hudviews.html');
 
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alertviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/extrasview.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/pteroview.html');
 
   return module;
 

@@ -8,46 +8,17 @@ var AWE = AWE || {};
 AWE.Controller = (function(module) {
           
   module.createExtrasController = function(anchor) {
-    
-    var _pteroView = null;
-    var _pteroShadowView = null;
-
-    var pteroAnimState = null;
-    var _ptero = {
-      enabled: false,
-      started: false,
-      direction: 0,   //0 = left => right, 1 = right => left
-      currentFlapsPerAnim: 3,
-      flapIntervalMin: 2,   
-      flapIntervalMax: 4,   
-      flapsPerAnimMin: 2,   
-      flapsPerAnimMax: 5,
-      flapAnimFrames: 4,
-      frameDuration: 0.1,
-      startDelay: 5,
-      speed: 10,       
-      startPosition: {
-        x: "110%",
-        y: "50%"
-      },
-      endPosition: {
-        x: "-10%",
-        y: "80%"
-      }
-    };
-
-    var _pterodactylusFlyIntervalMin = 60;
-    var _pterodactylusFlyIntervalMax = 90;
-
-    var _lastPteroModeChange = null;
-    var _initTime = null;
-
 
     var that = module.createScreenController(anchor); ///< create base object
 
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
+
+    var _pteros = [];
+    var _autoPteroIntervalMin = 60; //in sec
+    var _autoPteroIntervalMax = 90; //in sec
+    var _autoPteroEnabled = false;
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -58,46 +29,74 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();  
 
-      var self = this;
-
-      _pteroView = AWE.UI.Ember.PteroView.create({
-        controller: self,
-      });
-
-      var root = that.rootElement();
-      _pteroView.appendTo('#main-screen-controller');
-      pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
-      
+      var self = this;      
     };
 
-    that.enableAutoPterodactylus = function(minDelay, maxDelay) {
-      _pterodactylusFlyIntervalMin = minDelay;
-      _pterodactylusFlyIntervalMax = maxDelay;
-
-      _ptero.autoEnabled = true;
+    that.enableAutoPterodactylus = function() {
+      _autoPteroEnabled = true;
+      that.autoPterodactylus();
     }
 
-    that.startPterodactylus = function(from, to, speed, delay) {
-      _ptero.startPosition.x = String(from.x) + '%' || _ptero.startPosition.x;
-      _ptero.startPosition.y = String(from.y) + '%' || _ptero.startPosition.y;
-      _ptero.endPosition.x = String(to.x) + '%' || _ptero.endPosition.x;
-      _ptero.endPosition.y = String(to.y) + '%' || _ptero.endPosition.y;
-      _ptero.startDelay = delay || _ptero.startDelay;
-      _ptero.speed = speed || _ptero.speed;
+    that.disableAutoPterodactylus = function() {
+      _autoPteroEnabled = false;
+    }
 
-      if(_ptero.startPosition.x < _ptero.endPosition.x)
+    that.clearPterodactyls = function() {
+      _pteros.forEach(function(ptero) {
+        ptero.clear();
+      });
+      _pteros = [];
+    }
+
+    that.autoPterodactylus = function(lastPtero) {
+      if(lastPtero)
       {
-        _ptero.direction = 1;
+        _pteros.splice(_pteros.indexOf(lastPtero), 1);
+      }
+      if(_autoPteroEnabled)
+      {
+        that.startRandomPterodactylus(_autoPteroIntervalMin, _autoPteroIntervalMax, that.autoPterodactylus);
+      }
+    };
+
+    that.startPterodactylus = function(from, to, delay, callback) {
+      var self = this;
+      var start = {};
+      start.x = String(from.x) + "%";
+      start.y = String(from.y) + "%";
+
+      var end = {};
+      end.x = String(to.x) + "%";
+      end.y = String(to.y) + "%";
+
+      var ptero = AWE.GS.Pterodactylus.create({
+        startPosition: {
+          x: start.x,
+          y: start.y
+        },
+        endPosition: {
+          x: end.x,
+          y: end.y
+        },
+        delay: delay,
+        onReached: callback,
+        controller: self
+      });
+
+      if(_pteros)
+      {
+        ptero.setId(_pteros.length);
       }
 
-      _initTime = new Date();
-      _ptero.enabled = true;
-    }
+      ptero.enable();
 
-    that.startRandomPterodactylus = function() {
-      var delay = Math.getRandomBetween(_pterodactylusFlyIntervalMin, _pterodactylusFlyIntervalMax);
+      _pteros.push(ptero);
+    };
+
+    that.startRandomPterodactylus = function(minDelay, maxDelay, callback) {
+      var delay = Math.getRandomBetween(minDelay, maxDelay);
       var start = {
-        x: Math.getRandomOfTwo(-10, 100),
+        x: Math.getRandomOfTwo(-10, 110),
         y: Math.getRandomBetween(10, 90)
       };
 
@@ -112,67 +111,8 @@ AWE.Controller = (function(module) {
         y: Math.getRandomBetween(10, 90)
       };
 
-      that.startPterodactylus(start, end, _ptero.speed, delay);
-    }
-
-    that.pteroNeedsFlap = function() {
-      var now = new Date();
-      var timeSinceLastUpdate = now - _lastPteroModeChange;
-      var interval = _ptero.flapIntervalMin + (Math.random()*(_ptero.flapIntervalMax - _ptero.flapIntervalMin));
-      if(timeSinceLastUpdate / 1000 >= interval)
-      {
-        _lastPteroModeChange = now;
-        _ptero.currentFlapsPerAnim = Math.floor(_ptero.flapsPerAnimMin + (Math.random()*(_ptero.flapsPerAnimMax - _ptero.flapsPerAnimMin + 1)));
-        return true;
-      }
-      return false;
+      that.startPterodactylus(start, end, delay, callback);
     };
-
-    that.pteroCanGoIdle = function() {
-      var now = new Date();
-      var animDuration = _ptero.currentFlapsPerAnim * _ptero.flapAnimFrames * _ptero.frameDuration;
-
-      var timeSinceLastUpdate = now - _lastPteroModeChange;
-      if(timeSinceLastUpdate / 1000 >= animDuration)
-      {
-        _lastPteroModeChange = now;
-        return true;
-      }
-      return false;
-    };
-
-    that.isReadyForTakeOff = function() {
-      var now = new Date();
-      var timeSinceStart = now - _initTime;
-      if(timeSinceStart / 1000 >= _ptero.startDelay)
-      {
-        $('.ptero').css({
-          top: _ptero.startPosition.y,
-          left: _ptero.startPosition.x
-        });
-        if(_ptero.direction === 1)
-        {
-          $('.ptero').css({
-            '-moz-transform': 'scaleX(-1)',
-            '-o-transform': 'scaleX(-1)',
-            '-webkit-transform': 'scaleX(-1)',
-            'transform': 'scaleX(-1)',
-            'filter': 'FlipH',
-            '-ms-filter': "FlipH"
-          });
-          $('.ptero .shadow').css({
-            left: '50px',
-          });
-        }
-        $('.ptero').animate({
-          top: _ptero.endPosition.y,
-          left: _ptero.endPosition.x
-        }, _ptero.speed * 1000, 'linear', function(){_ptero.enabled = false});
-
-        _ptero.started = true;
-
-      }
-    }
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -183,29 +123,9 @@ AWE.Controller = (function(module) {
     var _loopCounter = 0;
 
     that.runloop = function() {
-      if(_ptero.enabled)
-      {
-        if(_ptero.started) { 
-
-          if(pteroAnimState === AWE.Config.ANIMATION_STATE_IDLE && that.pteroNeedsFlap())
-          {
-            pteroAnimState = AWE.Config.ANIMATION_STATE_MOVE;
-          }
-          else if(pteroAnimState === AWE.Config.ANIMATION_STATE_MOVE && that.pteroCanGoIdle())
-          {
-            pteroAnimState = AWE.Config.ANIMATION_STATE_IDLE;
-          }
-
-          _pteroView.setAnimState(pteroAnimState);
-
-          
-          _loopCounter++;
-        }
-        else
-        {
-          that.isReadyForTakeOff();
-        }
-      }
+      _pteros.forEach(function(ptero){
+        ptero.runloop();
+      })
     };
 
     return that;
