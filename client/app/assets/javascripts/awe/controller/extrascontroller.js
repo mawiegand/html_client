@@ -78,7 +78,7 @@ AWE.Controller = (function(module) {
           x: end.x,
           y: end.y
         },
-        delay: delay,
+        startDelay: delay,
         onReached: callback,
         controller: self
       });
