@@ -1,4 +1,9 @@
 <script type="text/x-handlebars" data-template-name="character-info-dialog">
+  <div class="popup-dialog-header">
+    <a href="#" {{action "closeDialogsAndCenter"}}>
+      <div class="modal-dialog-center"></div>
+    </a>
+  </div>
   <h1>{{character.name}}</h1>
   <div class="character-info-container">
     <div class="avatar">

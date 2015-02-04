@@ -68,6 +68,33 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(confirmationDialog);
     },
 
+    closeDialogsAndCenter: function() {
+
+      if(WACKADOO.presentScreenController.typeName === 'MapController')
+      {
+        var mapController = WACKADOO.presentScreenController;
+        var locationID = this.getPath('character.base_location_id');
+        mapController.centerLocation(AWE.Map.Manager.getLocation(locationID));
+      }
+
+      var self = this;
+          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.getPath('character.avatar_string'));
+
+          AWE.Action.Manager.queueAction(action, function(statusCode) {
+            if(statusCode == 200) {
+              AWE.GS.CharacterManager.updateCurrentCharacter();
+              WACKADOO.closeAllModalDialogs();
+            }
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+            }
+          });
+    },
+
     processUserContentReport: function() {
       var self = this;
       var action = AWE.Action.Fundamental.createUserContentReportAction(this.get('character').getId(), 'character-description', this.get('character').getId());

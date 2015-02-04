@@ -433,7 +433,7 @@ module.ArmyRangeView  = AWE.UI.Ember.SliderView.extend({
       return this.get('rangeCurrentValue');
     }.property('rangeCurrentValue').cacheable(),
 
-    setNewValues: function(){
+    onChange: function(){
       var value = this.getPath("unitType.allUnits") - parseInt(this.get("value"));
       var other = parseInt(this.get("value"));
       this.setPath('unitType.garrisonUnits', value);

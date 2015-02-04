@@ -601,7 +601,7 @@ AWE.I18n.de_DE = function(module) {
     },
 
     welcome: {
-      heading: 'Willkommen bei Wack-a-Doo!',
+      heading: 'Willkommen bei Wack-A-Doo!',
       info: {
         first: {
           heading: "1. Baue dich auf",

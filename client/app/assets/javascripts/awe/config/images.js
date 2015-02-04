@@ -412,7 +412,7 @@ AWE.Config = (function(module) {
     "avatar/ranking/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_warrior_veilchen_rechts_0.png',
     "avatar/ranking/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_warrior_veilchen_rechts_1.png',
 
-    "advisor/quest-dialog-girl"           :    AWE.Config.RAILS_ASSET_PATH + 'advisors/quest-dialog-girl.png',
+    "advisor/quest-dialog-girl"           :    AWE.Config.RAILS_ASSET_PATH + 'advisors/quest-dialog/quest-dialog-girl.png',
 
     /* === EXTRAS SECTION === */
 

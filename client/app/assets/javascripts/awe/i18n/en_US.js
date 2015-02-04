@@ -594,7 +594,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     welcome: {
-      heading: 'Welcome to Wack-a-Doo!',
+      heading: 'Welcome to Wack-A-Doo!',
       info: {
         first: {
           heading: "1. Settle down",
@@ -1088,7 +1088,7 @@ AWE.I18n.en_US = function(module) {
         chooseNameCaption:'Choose name',
         changeNameCaption:'Change name',
         changeDescriptionCaption: 'Change description',
-        nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-a-Doo.',
+        nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-A-Doo.',
         nameChangeFreeAdvice:'You have two free chances to change your name, after which each name change will cost a couple of Golden Frogs. This is to prevent misuse. ',
         nameChangeCostAdvice:"You've already changed your name twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.",
         chooseGender:"Choose your gender",
@@ -1117,7 +1117,7 @@ AWE.I18n.en_US = function(module) {
         changeNameDialogCaption:"Enter your character's new name.",
 
         changeSameIPCaption:"Several players are currently using this IP address",
-        changeSameIPAdvice:'If you are playing Wack-a-Doo with multiple players using the same IP address, enter the player names here, separated by a comma. More information can be found here: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
+        changeSameIPAdvice:'If you are playing Wack-A-Doo with multiple players using the same IP address, enter the player names here, separated by a comma. More information can be found here: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
         changeSameIPButton:"Change the List",
         changeSameIIPChanged:"List has been saved.",
 
@@ -1147,7 +1147,7 @@ AWE.I18n.en_US = function(module) {
           changeGenderCost:"You don't have enough Golden Frogs to change your gender.",
           changeGenderError:"Your gender could not be changed. Please try again later.",
 
-          changePasswordInvalid:"This password doesn't meet the Wack-a-Doo requirements. Please choose another password.",
+          changePasswordInvalid:"This password doesn't meet the Wack-A-Doo requirements. Please choose another password.",
           changePasswordUnknown:"Your password could not be changed right now. Please try again later.",
           changePasswordNoMatch:"The two passwords you've entered don't match. Please try again.",
           
