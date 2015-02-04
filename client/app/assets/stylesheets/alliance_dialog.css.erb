@@ -198,6 +198,7 @@
 
 .alliance-diplomacy-container {
   margin-left: 15px;
+  pointer-events: none;
 }
 
 .alliance-diplomacy-container h3 {
@@ -211,6 +212,8 @@
   margin-top: 12px;
   display: block;
   float: left;
+
+  height: 70px;
 }
 
 .alliance-ultimatum-duration {
@@ -286,6 +289,7 @@
   background: url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>") no-repeat left top;
   text-align: center;
   cursor: pointer;
+  pointer-events: all;
 }
 
 .alliance-ultimatum-button:active {
@@ -324,9 +328,10 @@
   -ms-user-select: none;
   user-select: none;
 
-  position: absolute;
-  margin-top: 70px;
-  right: 16px;
+  margin-right: 20px;
+  pointer-events: all;
+
+  height: 0px;
 }
 
 .diplomacy-info:active {
