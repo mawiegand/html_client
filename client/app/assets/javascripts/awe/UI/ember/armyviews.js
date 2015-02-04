@@ -135,7 +135,7 @@ module.ArmyInfoNewDialog = module.PopUpDialog.extend({
 
 module.ArmyInfoNewView = module.ArmyInfoView.extend({
   templateName:   'army-new-info-view',
-
+  homeSettlement: null,
 
   nameClicked: function() {
       var character = this.get('owner');
@@ -172,6 +172,20 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       }
       return false;
     }.property("army.ap_present", "army.ap_max"),
+
+    armyHomeBaseObserver: function() {
+      var self = this;
+      if(!self.getPath('army.homeSettlement'))
+      {
+        AWE.GS.SettlementManager.updateSettlement(this.getPath('army.home_settlement_id'), module.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+          self.set('homeSettlement', settlement)
+        });
+      }
+      else
+      {
+        self.set('homeSettlement', self.getPath('army.homeSettlement'));
+      }
+    }.observes("army"),
 });
 
 //need custom tabs for military info
