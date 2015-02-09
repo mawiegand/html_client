@@ -23,6 +23,8 @@ AWE.UI.Ember = (function(module) {
     updatingLikes: false,
     
     ownResourcePool: false,
+
+    homeBase: null,
     
     init: function() {
       this._super();     
@@ -41,6 +43,23 @@ AWE.UI.Ember = (function(module) {
     showDescription: function() {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
     }.property('character.description'),
+
+    homeObserver: function() {
+      var self = this;
+
+      var locationId = this.getPath('character.base_location_id');
+      var homeBase = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
+
+      if(!homeBase && !this.getPath('character.npc'))
+      {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+          homeBase = settlement;
+        });
+      }
+
+      self.set('homeBase', homeBase);
+
+    }.observes('character.base_location_id'),
 
     sendUserContentReport: function() {
       var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
@@ -73,26 +92,12 @@ AWE.UI.Ember = (function(module) {
       if(WACKADOO.presentScreenController.typeName === 'MapController')
       {
         var mapController = WACKADOO.presentScreenController;
-        var locationID = this.getPath('character.base_location_id');
-        mapController.centerLocation(AWE.Map.Manager.getLocation(locationID));
+        var target = this.get('homeBase');
+
+        WACKADOO.closeAllModalDialogs();
+        mapController.setSelectedSettlement(target);
+        mapController.centerSettlement(target);
       }
-
-      var self = this;
-          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.getPath('character.avatar_string'));
-
-          AWE.Action.Manager.queueAction(action, function(statusCode) {
-            if(statusCode == 200) {
-              AWE.GS.CharacterManager.updateCurrentCharacter();
-              WACKADOO.closeAllModalDialogs();
-            }
-            else {
-              var errorDialog = AWE.UI.Ember.InfoDialog.create({
-                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
-                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
-              });
-              WACKADOO.presentModalDialog(errorDialog);
-            }
-          });
     },
 
     processUserContentReport: function() {

@@ -1,9 +1,4 @@
 <script type="text/x-handlebars" data-template-name="character-info-dialog">
-  <div class="popup-dialog-header">
-    <a href="#" {{action "closeDialogsAndCenter"}}>
-      <div class="modal-dialog-center"></div>
-    </a>
-  </div>
   <h1>{{character.name}}</h1>
   <div class="character-info-container">
     <div class="avatar">
@@ -11,6 +6,9 @@
     </div>
     <div class="character-details">
       <h2>{{local character.mundaneTitle.name}}</h2>
+      {{#if homeBase}}
+        <h3>{{t army.details.homeSettlement}}: </h3><h3 class="clickable" {{action "closeDialogsAndCenter"}}>{{homeBase.name}}</h3>
+      {{/if}}
       <div class="modal-dialog-buttons">
         <div class="battleIcon"></div>
         <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
