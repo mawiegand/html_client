@@ -1,7 +1,7 @@
 .ptero {
 	width: 128px;
 	height: 128px;
-	position: fixed;
+	position: absolute;
 	top: 10%;
 	left: 110%;
 	z-index: 40;
@@ -20,6 +20,9 @@
 	display: inline-block;
 	background-image: url("<%= asset_path 'extras/ptero/ptero_shadow.png' %>");
 	pointer-events: none;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 .ptero.anim-state-0, .ptero .shadow.anim-state-0 {

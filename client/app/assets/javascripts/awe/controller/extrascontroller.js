@@ -16,8 +16,8 @@ AWE.Controller = (function(module) {
     _super.runloop = that.runloop;
 
     var _pteros = [];
-    var _autoPteroIntervalMin = 60; //in sec
-    var _autoPteroIntervalMax = 90; //in sec
+    var _autoPteroIntervalMin = 1; //in sec
+    var _autoPteroIntervalMax = 2; //in sec
     var _autoPteroEnabled = false;
 
     // ///////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ AWE.Controller = (function(module) {
       var delay = Math.getRandomBetween(minDelay, maxDelay);
       var start = {
         x: Math.getRandomOfTwo(-10, 110),
-        y: Math.getRandomBetween(10, 90)
+        y: Math.getRandomBetween(10, 50)
       };
 
       var endX = -10;
@@ -108,7 +108,7 @@ AWE.Controller = (function(module) {
 
       var end = {
         x: endX,
-        y: Math.getRandomBetween(10, 90)
+        y: Math.getRandomBetween(start.y, 60)
       };
 
       that.startPterodactylus(start, end, delay, callback);
