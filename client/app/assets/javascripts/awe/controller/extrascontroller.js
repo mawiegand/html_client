@@ -16,8 +16,8 @@ AWE.Controller = (function(module) {
     _super.runloop = that.runloop;
 
     var _pteros = [];
-    var _autoPteroIntervalMin = 1; //in sec
-    var _autoPteroIntervalMax = 2; //in sec
+    var _autoPteroIntervalMin = 60; //in sec
+    var _autoPteroIntervalMax = 90; //in sec
     var _autoPteroEnabled = false;
 
     // ///////////////////////////////////////////////////////////////////////
