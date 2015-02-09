@@ -491,7 +491,7 @@
     {{/if}}
   </div>
   <div class="army-info-state-cell">
-    <div class="text-cell-left">{{t army.details.homeSettlement}}:</div><div class="text-cell-right">{{homeSettlement.name}}</div>
+    <div class="text-cell-left">{{t army.details.homeSettlement}}:</div><div {{bindAttr class=":text-cell-right isClickable"}} {{action "homeSettlementClicked"}}>{{homeSettlement.name}}</div>
     <div class="text-cell-left">{{t army.details.experience}}:</div><div class="text-cell-right">{{army.exp}}</div>
     <div class="text-cell-left">{{t army.details.rank}}:</div><div class="text-cell-right">{{army.rankToDisplay}}</div>
     <div class="text-cell-left">{{t army.details.actionPoints}}:</div><div class="text-cell-right">

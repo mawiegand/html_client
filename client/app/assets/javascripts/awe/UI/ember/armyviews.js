@@ -149,7 +149,8 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       });
       WACKADOO.presentModalDialog(dialog);
       return false; // prevent default behavior
-    },
+  },
+
   openAlliance: function() {
       var character = this.get('owner');
       if(!character)
@@ -163,6 +164,23 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       WACKADOO.showAllianceDialog(alliance.id);
     },
 
+  homeSettlementClicked: function() {
+    if(!this.getPath('army.npc'))
+    {
+      var settlement = this.get("homeSettlement");
+      WACKADOO.presentScreenController.setSelectedSettlement(settlement);
+      WACKADOO.presentScreenController.centerSettlement(settlement);
+      WACKADOO.closeAllModalDialogs();
+    }
+  },
+
+  isClickable: function() {
+    if(!this.getPath("army.npc"))
+    {
+      return "clickable";
+    }
+  }.property("army.npc"),
+
     canRegenAp: function() {
       var currentAp = this.getPath("army.ap_present");
       var maxAp = this.getPath("army.ap_max");
@@ -175,15 +193,23 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
     armyHomeBaseObserver: function() {
       var self = this;
-      if(!self.getPath('army.homeSettlement'))
+      if(!self.getPath('army.npc') && !self.getPath('army.homeSettlement'))
       {
         AWE.GS.SettlementManager.updateSettlement(this.getPath('army.home_settlement_id'), module.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
           self.set('homeSettlement', settlement)
         });
       }
-      else
+      else if(!self.getPath('army.npc'))
       {
         self.set('homeSettlement', self.getPath('army.homeSettlement'));
+      }
+      else
+      {
+        var settlementName = AWE.I18n.lookupTranslation('army.details.neanderHome');
+        var settlement = {
+          name: settlementName
+        }
+        self.setPath('homeSettlement', settlement);
       }
     }.observes("army"),
 });

@@ -176,6 +176,7 @@ AWE.I18n.en_US = function(module) {
         actionPoints:"Action points",
         nextActionPointAt:"Next action point at",
         homeSettlement: "Home settlement",
+        neanderHome: "Dirty Cave",
       },
       messages:{
         own:{

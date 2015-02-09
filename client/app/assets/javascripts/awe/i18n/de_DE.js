@@ -175,6 +175,7 @@ AWE.I18n.de_DE = function(module) {
         actionPoints: "Aktionspunkte",
         nextActionPointAt: "Nächster Aktionspunkt um",
         homeSettlement: "Heimatsiedlung",
+        neanderHome: "Dreckige Höhle",
       },
       messages: {
         own: {
