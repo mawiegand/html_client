@@ -2782,8 +2782,8 @@ AWE.Controller = function (module) {
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
-              if (army.isOwn() && view != _selectedView) {
-                //that.setSelectedArmy(army);
+              if (army.isOwn() && view != _selectedView && that.markSelectOwnArmy()) {
+                that.setSelectedArmy(army);
               }
             }
 
