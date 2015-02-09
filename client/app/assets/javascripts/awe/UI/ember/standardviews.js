@@ -117,6 +117,9 @@ AWE.UI.Ember = (function(module) {
       this.destroy();
     },
     onClose: null,
+
+    hasSettings: false,
+    
     destroy: function() {
       if (this.onClose) {
         this.onClose(this);

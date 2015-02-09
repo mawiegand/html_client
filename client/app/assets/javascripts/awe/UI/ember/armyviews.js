@@ -107,30 +107,51 @@ module.ArmyInfoNewDialog = module.PopUpDialog.extend({
 
   army: null,
 
-  settingsDialog: function() {
-    var arguments = {
-      input: this.getPath('army.name'),
-      inputMaxLength: 16       
-    };
-    var changeDialog = AWE.UI.Ember.InfoDialog.create({
-      heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
-      contentTemplateName: 'text-input-info',
-      arguments: arguments,
-      controller: this,
-      okText: AWE.I18n.lookupTranslation('general.change'),
-      cancelText: AWE.I18n.lookupTranslation('general.cancel'),
-      okPressed: function() {
-        var action = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-        AWE.Action.Manager.queueAction(action, function() { });  
-        this.destroy();
-      }, //Standart this.destroy
-      cancelPressed: function() { this.destroy()} //Standart: null
-    });
-    WACKADOO.presentModalDialog(changeDialog);
-    event.preventDefault();
+  owner: null,
 
-    return false;
+  ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('army', 'army.owner_id'),
+
+  hasSettings: function() {
+      var army = this.get('army'); 
+      return army ? army.isOwn() : false;
+  }.property('owner'),
+
+  settingsDialog: function() {
+      var self = this;
+      var input = this.getPath('army.name')
+      var arguments = {
+        input: input,
+        inputMaxLength: 16       
+      };
+      var changeDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
+        contentTemplateName: 'text-input-info',
+        arguments: arguments,
+        controller: this,
+        okText: AWE.I18n.lookupTranslation('general.change'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
+        okPressed: function() {
+          var action = AWE.Action.Military.createChangeArmyNameAction(self.get('army'), this.getPath('arguments.input'));
+          var alert = this;
+          AWE.Action.Manager.queueAction(action, function() { 
+            alert.destroy();
+          });  
+        }, //Standart this.destroy
+        cancelPressed: function() { this.destroy()} //Standart: null
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+      event.preventDefault();
   },
+
 });
 
 module.ArmyInfoNewView = module.ArmyInfoView.extend({

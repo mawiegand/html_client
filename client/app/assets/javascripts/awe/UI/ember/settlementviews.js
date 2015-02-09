@@ -187,6 +187,8 @@ AWE.UI.Ember = (function(module) {
     
     changingName: false,
 
+    hasSettings: true,
+
     settingsDialog: function() {
       this.set('message', null);
       var arguments = {
@@ -201,25 +203,11 @@ AWE.UI.Ember = (function(module) {
         okText: AWE.I18n.lookupTranslation('general.change'),
         cancelText: AWE.I18n.lookupTranslation('general.cancel'),
         okPressed: function() {
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            message: AWE.I18n.lookupTranslation('settlement.customization.nameChangeAdvice'),
-
-            controller: this.get('controller'),
-            input: this.getPath('arguments.input'),
-
-            okPressed: function() {
-              var controller = this.get('controller');
+          var controller = this.get('controller');
               if (controller) {
-                controller.processNewName(this.get('input'));
+                controller.processNewName(this.getPath('arguments.input'));
               } 
               this.destroy();
-            },
-            cancelPressed: function() {
-              this.destroy();
-            }
-          });
-          WACKADOO.presentModalDialog(dialog);
-          this.destroy();
         }, //Standart this.destroy
         cancelPressed: function() { this.destroy(); } //Standart: null
       });
@@ -286,33 +274,68 @@ AWE.UI.Ember = (function(module) {
       else {  // now, really send the name
         var self = this;
         var changeCounter = this.getPath('settlement.name_change_count');
-        this.set('changingName', true);
-        var action = AWE.Action.Settlement.createChangeSettlementNameAction(self.get('settlement'), newName);
-        AWE.Action.Manager.queueAction(action, function(status) {
-          self.set('changingName', false);
-          if (status === AWE.Net.OK) {
-            if (changeCounter > 0) {
-              AWE.GS.ResourcePoolManager.updateResourcePool();
-              return;
-            }
-          }
-          else if (status === AWE.Net.CONFLICT) {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
-          }
-          else if (status === AWE.Net.FORBIDDEN) {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
-          }
-          else {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
-          }
-
+        if(changeCounter > 0)
+        {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            message: self.get('message')
-          });
+            message: AWE.I18n.lookupTranslation('settlement.customization.nameChangeAdvice'),
 
+            controller: this,
+
+            okPressed: function() {
+              var controller = this.get('controller');
+              if (controller) {
+                controller.sendNewName(newName);
+              } 
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
+            }
+          });
           WACKADOO.presentModalDialog(dialog);
-        });        
+          return
+        }
+        else
+        {
+          this.sendNewName(newName);
+          return
+        }
       }
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: this.get('message')
+        });
+        WACKADOO.presentModalDialog(dialog);
+    },
+
+    sendNewName: function(newName) {
+      var self = this;
+
+      self.set('changingName', true);
+      var action = AWE.Action.Settlement.createChangeSettlementNameAction(self.get('settlement'), newName);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('changingName', false);
+        if (status === AWE.Net.OK) {
+          if (changeCounter > 0) {
+            AWE.GS.ResourcePoolManager.updateResourcePool();
+            return;
+          }
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
+        }
+
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: self.get('message')
+        });
+
+        WACKADOO.presentModalDialog(dialog);
+      });   
     },
     
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),

@@ -716,7 +716,7 @@ AWE.I18n.en_US = function(module) {
         changeName: "Change your name",
         chooseNameCaption: 'Name your settlement',
         changeNameCaption: 'Change the name of your settlement',
-        nameChangeAdvice: 'The first name change is free. Any additional changes will cost you one golden frog.',
+        nameChangeAdvice: 'This will cost you one golden frog.',
 
         changeNameDialogCaption: "Enter your new name.",
 
