@@ -2783,7 +2783,7 @@ AWE.Controller = function (module) {
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
               if (army.isOwn() && view != _selectedView) {
-                that.setSelectedArmy(army);
+                //that.setSelectedArmy(army);
               }
             }
 
