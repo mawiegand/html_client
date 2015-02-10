@@ -26,13 +26,13 @@
 
 .upgrade-container .row-first-half {
   width: 100%;
-  height: 50%;
+  height: 40%;
   position: relative;
 }
 
 .upgrade-container .row-second-half {
   width: 100%;
-  height: 50%;
+  height: 60%;
 }
 
 .cell-header {
@@ -82,6 +82,7 @@
 }
 
 .upgrade-button {
+  margin-top: 25px;
   color: white;
   display: inline-block;
   cursor: pointer;
@@ -96,6 +97,7 @@
 }
 
 .upgrade-button-disable{
+  margin-top: 25px;
   color: white;
   display: inline-block;
   width: 180px;
@@ -225,16 +227,19 @@
   cursor: pointer;
 }
 
+.buildingUpgradeImage {
+  width: 200px;
+  height: 165px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
 .first .buildingUpgradeImage {
-  position: absolute;
-  left: -10%;
-  bottom: -13%;
+  
 }
 
 .third .buildingUpgradeImage {
-  position: absolute;
-  left: -30%;
-  bottom: -13%;
+  -webkit-filter: drop-shadow(2px 2px 0 black) drop-shadow(-2px 2px 0 black) drop-shadow(-2px -2px 0 black) drop-shadow(2px -2px 0 black);
 }
 
 /* == Building Details == */
