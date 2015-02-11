@@ -340,6 +340,8 @@ AWE.UI = (function(module) {
     my.streetsHidden = true;
     my.VillagesHidden = true;
 		my.mapMode = module.MAP_MODE_TERRAIN;
+    my.targetView = null;
+    my.typeName = "RegionView";
 
     // public attributes and methods /////////////////////////////////////////
     
@@ -394,6 +396,10 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);
       _scaledContainer.setFrame(frame);
       _nonScaledContainer.setFrame(frame);
+      if(my.targetView)
+      {
+        my.targetView.setFrame(frame);
+      }
     }
     
     /** model has changed, need to upate state of view */
@@ -842,6 +848,10 @@ AWE.UI = (function(module) {
       }
     }
 
+    that.node = function() {
+      return _node;
+    }
+
     that.autoscaleIfNeeded = function() {
       if (this.autoscales() && (_backgroundImage || _backgroundShapeView)) {
 				var dimension = my.mapMode !== module.MAP_MODE_TERRAIN ? 256. : _backgroundImage.width();
@@ -864,7 +874,11 @@ AWE.UI = (function(module) {
     }
     
     that.onClick = function() {
-      log('onClick in Region');
+      my.controller.viewClicked(that);
+    }
+
+    that.setTargetView = function(view) {
+      my.targetView = view;
     }
             
     return that;

@@ -62,8 +62,82 @@ AWE.UI = (function(module) {
       return _targetedView;
     }
     
-      that.onClick = function() {
+    that.onClick = function() {
       my.controller.viewClicked(_targetedView);
+    };
+            
+    that.onMouseOver = function(evt){ 
+      my.controller.viewMouseOver(that);
+    };
+
+    that.onMouseOut = function(evt){
+      my.controller.viewMouseOut(that);
+    };    
+                    
+    return that;
+  };
+
+  module.createRegionTargetView = function(spec, my) {
+    
+    my = my || {};
+    
+    my.typeName = 'RegionTargetView';
+    
+    var _targetedView = null;
+    var _glowImageView = null;   
+
+    var that = module.createContainer(spec, my);
+
+    var _super = {
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setHovered: AWE.Ext.superior(that, "setHovered"),
+      updateView: AWE.Ext.superior(that, "updateView"),
+    };
+    
+    /** overwritten view methods */
+    
+    that.initWithControllerAndTargetedView = function(controller, targetedView, frame) {
+      _super.initWithController(controller, frame);
+      _targetedView = targetedView;
+      
+      _glowImageView = AWE.UI.createImageView();
+      _glowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/tiles/glow/512"));
+
+      if(frame) {
+        _glowImageView.setFrame(frame);
+      }
+      else
+      {
+        _glowImageView.setFrame(AWE.Geometry.createRect(0, 0, targetedView.frame.size.width, targetedView.frame.size.height));
+      }
+      _glowImageView.onClick = that.onClick;
+      _glowImageView.onMouseOver = that.onMouseOver;
+      _glowImageView.onMouseOut = that.onMouseOut;
+      this.addChild(_glowImageView);
+
+      if (!frame) {
+        my.frame.size.width = 128;
+        my.frame.size.height = 128;
+      }
+    };
+    
+    that.updateView = function() {
+      _super.updateView();
+    }
+    
+    that.targetedView = function() {
+      return _targetedView;
+    }
+
+    that.setFrame = function(newFrame) {
+      _super.setFrame(newFrame);
+      _glowImageView.setFrame(AWE.Geometry.createRect(0, 45, my.frame.size.width, my.frame.size.height));
+    }
+    
+    that.onClick = function() {
+      _targetedView.onClick();
     };
             
     that.onMouseOver = function(evt){ 

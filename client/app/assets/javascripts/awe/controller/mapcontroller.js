@@ -1510,10 +1510,16 @@ AWE.Controller = function (module) {
       if (currentAction) {
         if (currentAction.typeName === 'moveAction') {
           var targetLocations = getVisibleTargetLocations(currentAction.army);
+          var targetView = view;
           for (var key in targetLocations) {
             if (targetLocations.hasOwnProperty(key)) {
               var targetLocation = targetLocations[key];
-              if (view.location && view.location().id() == targetLocation.id()) {
+              if(targetView.typeName() === "RegionView")
+              {
+                targetView = fortressViews[view.node().id()];
+                targetLocation = fortressViews[view.node().id()].location();
+              }
+              if (targetView.location && targetView.location().id() == targetLocation.id()) {
                 actionCompleted = true;
                 break;
               }
@@ -2418,8 +2424,8 @@ AWE.Controller = function (module) {
 
     var setFortressPosition = function (view, frame) {
       view.setCenter(AWE.Geometry.createPoint(
-        frame.origin.x + frame.size.width / 2 ,
-        frame.origin.y + frame.size.height / 2 - 34
+        frame.origin.x + frame.size.width / 8 ,
+        frame.origin.y + frame.size.height / 8 - 34
       ));
     }
 
@@ -2869,8 +2875,8 @@ AWE.Controller = function (module) {
                 if (targetRegion && targetRegion.node()) {
                   var tframe = that.mc2vc(targetRegion.node().frame());
                   targetPos = AWE.Geometry.createPoint(
-                    tframe.origin.x + tframe.size.width / 2,
-                    tframe.origin.y + tframe.size.height / 2 - 60
+                    tframe.origin.x + tframe.size.width / 8,
+                    tframe.origin.y + tframe.size.height / 8 - 60
                   );
                 }
               }
@@ -2985,7 +2991,7 @@ AWE.Controller = function (module) {
 
       if (armyLocation) {
         // get all possible target locations
-        if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {           // if armyLocation is fortress
+        if (true || AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {           // if armyLocation is fortress
           var regionLocations = armyRegion.locations();
 
           if (regionLocations) {
@@ -3298,28 +3304,39 @@ AWE.Controller = function (module) {
           AWE.Ext.applyFunctionToElements(targetLocations, function (location) {
             var targetView = targetViews[location.id()];
 
+            // If the target is a fortress, get the region to move to
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === 'fortress') {
               var visible = that.isFortressVisible(that.mc2vc(location.node().frame()));
-              var locationView = fortressViews[location.node().id()];
+              var locationView = regionViews[location.node().id()];
+              if (visible && locationView) {
+                if (!targetView) {
+                  targetView = AWE.UI.createRegionTargetView();
+                  targetView.initWithControllerAndTargetedView(that, locationView, locationView.frame());
+                  _stages[2].addChild(targetView.displayObject());
+                  locationView.setTargetView(targetView);
+                }
+                setTargetPosition(targetView, locationView.center());
+                newTargetViews[location.id()] = targetView;
+              }
             }
+            //Settlement, outpost target view
             else {
               var visible = that.isSettlementVisible(that.mc2vc(location.node().frame()));
               var locationView = locationViews[location.id()];
-            }
-
-            if (visible && locationView) {
-              if (!targetView) {
-                targetView = AWE.UI.createTargetView();
-                targetView.initWithControllerAndTargetedView(that, locationView);
-                _stages[2].addChild(targetView.displayObject());
-                locationView.setTargetView(targetView);
-                //START GREEN ANIMATION
-                that.addBouncingAnnotationLabel(locationView, targetView, 10000000, AWE.Geometry.createPoint(15, -36),  2);
-                targetView.setNeedsUpdate();
-                //END
+              if (visible && locationView) {
+                if (!targetView) {
+                  targetView = AWE.UI.createTargetView();
+                  targetView.initWithControllerAndTargetedView(that, locationView);
+                  _stages[2].addChild(targetView.displayObject());
+                  locationView.setTargetView(targetView);
+                  //START GREEN ANIMATION
+                  that.addBouncingAnnotationLabel(locationView, targetView, 10000000, AWE.Geometry.createPoint(15, -36),  2);
+                  targetView.setNeedsUpdate();
+                  //END
+                }
+                setTargetPosition(targetView, locationView.center());
+                newTargetViews[location.id()] = targetView;
               }
-              setTargetPosition(targetView, locationView.center());
-              newTargetViews[location.id()] = targetView;
             }
           });
         }
