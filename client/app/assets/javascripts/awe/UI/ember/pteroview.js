@@ -10,6 +10,7 @@ AWE.UI.Ember = (function(module) {
 
   module.PteroView = Ember.View.extend({
     templateName: 'ptero-view',
+    classNames: ['ptero-container'],
     id: 0,
     status: null,
 
