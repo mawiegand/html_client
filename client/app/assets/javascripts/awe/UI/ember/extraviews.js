@@ -30,6 +30,11 @@ AWE.UI.Ember = (function(module) {
     }
 
   });
+
+  module.SmallFireView = Ember.View.extend({
+    templateName: 'small-fire-view',
+
+  });
       
   return module;
     
