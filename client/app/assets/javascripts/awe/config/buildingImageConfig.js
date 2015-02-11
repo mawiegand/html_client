@@ -46,7 +46,7 @@
       8: 2,
       9: 2,
       10: 2,
-      hasFire: false
+      hasFire: true
     },
     building_special_gatherer: {
       0: 0,
@@ -60,7 +60,7 @@
       8: 0,
       9: 1,
       10: 1,
-      hasFire: false
+      hasFire: true
     },
     building_barracks: {
       0: 0,
@@ -242,7 +242,7 @@
       8: 0,
       9: 0,
       10: 0,
-      hasFire: false
+      hasFire: true
     },
     building_cottage_2: {
       0: 0,
