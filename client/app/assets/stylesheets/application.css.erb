@@ -4426,8 +4426,13 @@ span.bonus {
 }
 
 .construction-progress-frogtrade.icon {
-  background: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>") 8px 8px no-repeat;
-  background-size: 32px;
+  background-image: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>");
+  background-size: 96px 48px;
+  cursor: pointer;
+}
+
+.construction-progress-frogtrade.icon:hover {
+  background-position: -48px 0;
 }
 
 .construction-progress-bar {
