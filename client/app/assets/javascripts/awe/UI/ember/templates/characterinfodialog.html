@@ -6,6 +6,9 @@
     </div>
     <div class="character-details">
       <h2>{{local character.mundaneTitle.name}}</h2>
+      {{#if homeBase}}
+        <h3>{{t army.details.homeSettlement}}: </h3><h3 class="clickable" {{action "closeDialogsAndCenter"}}>{{homeBase.name}}</h3>
+      {{/if}}
       <div class="modal-dialog-buttons">
         <div class="battleIcon"></div>
         <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
@@ -93,19 +96,4 @@
       {{/if}}
     </div>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="already-liked-info">
-  <div class="advisor girl"></div>
-  <p>{{t likesystem.alreadyLikedInfo }}</p>
-</script>
-
-<script type="text/x-handlebars" data-template-name="not-enough-like-amount-info">
-  <div class="advisor girl"></div>
-  <p>{{t likesystem.notEnoughLikeAmount }}</p>
-</script>
-
-<script type="text/x-handlebars" data-template-name="not-enough-dislike-amount-info">
-  <div class="advisor girl"></div>
-  <p>{{t likesystem.notEnoughDislikeAmount }}</p>
 </script>

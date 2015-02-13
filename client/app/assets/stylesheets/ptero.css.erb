@@ -1,0 +1,105 @@
+.ptero-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.ptero {
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 10%;
+	left: 110%;
+	z-index: 40;
+	display: inline-block;
+	background-image: url("<%= asset_path 'extras/ptero/ptero_anim.png' %>");
+	pointer-events: none;
+}
+
+.ptero .shadow {
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 200px;
+	left: -50px;
+	z-index: 39;
+	display: inline-block;
+	background-image: url("<%= asset_path 'extras/ptero/ptero_shadow.png' %>");
+	pointer-events: none;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+.ptero.anim-state-0, .ptero .shadow.anim-state-0 {
+    background-position: 0px -128px;
+    -webkit-animation: play_idle .3s steps(3) infinite;
+       -moz-animation: play_idle .3s steps(3) infinite;
+        -ms-animation: play_idle .3s steps(3) infinite;
+         -o-animation: play_idle .3s steps(3) infinite;
+            animation: play_idle .3s steps(3) infinite;
+}
+
+.ptero.anim-state-1, .ptero .shadow.anim-state-1 {
+    background-position: 0px 0px;
+    -webkit-animation: play_fly .4s steps(4) infinite;
+       -moz-animation: play_fly .4s steps(4) infinite;
+        -ms-animation: play_fly .4s steps(4) infinite;
+         -o-animation: play_fly .4s steps(4) infinite;
+            animation: play_fly .4s steps(4) infinite;
+}
+
+@-webkit-keyframes play_idle {
+   from { background-position: 0px -128px; }
+     to { background-position: -384px -128px; }
+}
+
+@-moz-keyframes play_idle {
+   from { background-position: 0px -128px; }
+     to { background-position: -384px -128px; }
+}
+
+@-ms-keyframes play_idle {
+   from { background-position: 0px -128px; }
+     to { background-position: -384px -128px; }
+}
+
+@-o-keyframes play_idle {
+   from { background-position: 0px -128px; }
+     to { background-position: -384px -128px; }
+}
+
+@keyframes play_idle {
+   from { background-position: 0px -128px; }
+     to { background-position: -384px -128px; }
+}
+
+
+@-webkit-keyframes play_fly {
+   from { background-position: 0px 0px; }
+     to { background-position: -512px 0px; }
+}
+
+@-moz-keyframes play_fly {
+   from { background-position: 0px 0px; }
+     to { background-position: -512px 0px; }
+}
+
+@-ms-keyframes play_fly {
+   from { background-position: 0px 0px; }
+     to { background-position: -512px 0px; }
+}
+
+@-o-keyframes play_fly {
+   from { background-position: 0px 0px; }
+     to { background-position: -512px 0px; }
+}
+
+@keyframes play_fly {
+   from { background-position: 0px 0px; }
+     to { background-position: -512px 0px; }
+}

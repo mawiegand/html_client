@@ -117,6 +117,9 @@ AWE.UI.Ember = (function(module) {
       this.destroy();
     },
     onClose: null,
+
+    hasSettings: false,
+    
     destroy: function() {
       if (this.onClose) {
         this.onClose(this);
@@ -185,8 +188,8 @@ AWE.UI.Ember = (function(module) {
     heading:      'Info',
     message:      '',
 
-    okText:       'ok',
-    cancelText:   'cancel',
+    okText:       'OK',
+    cancelText:   'Cancel',
     closeText:    'close',
 
     okPressed:     function() { this.destroy(); },
@@ -408,6 +411,48 @@ AWE.UI.Ember = (function(module) {
       }
     },
 
+  });
+
+  module.SliderInputView = Ember.TextField.extend({
+    result: null,
+    defaultValue: 0,
+    maxValue: 100,
+    minValue: 0,
+    numberValueRegex: /[^0-9]+/,
+
+    init: function() {
+      this._super();
+      this.set("value", this.get("result"));
+    },
+
+    onResultChanged: function() {
+      this.set("value", this.get("result"));
+    }.observes('result'),
+
+    focusOut: function() {
+      if(this.get('value') === "")
+      {
+        this.set('value', this.get('defaultValue'));
+      }
+      else if(parseInt(this.get('value')) > this.get('maxValue'))
+      {
+        this.set('value', this.get('maxValue'));
+      }
+      else if(parseInt(this.get('value')) < this.get('minValue'))
+      {
+        this.set('value', this.get('minValue'));
+      }
+      else if(this.get('value').match(this.get('numberValueRegex')))
+      {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: AWE.I18n.lookupTranslation('settlement.training.error.notOnlyNumbers')
+        });
+        WACKADOO.presentModalDialog(dialog);
+        this.set('value', this.get('defaultValue'));
+      }
+
+      this.set("result", this.get("value"));
+    },
   });
 
   module.RangeView = Ember.TextField.extend({

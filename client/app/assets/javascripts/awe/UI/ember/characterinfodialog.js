@@ -23,6 +23,8 @@ AWE.UI.Ember = (function(module) {
     updatingLikes: false,
     
     ownResourcePool: false,
+
+    homeBase: null,
     
     init: function() {
       this._super();     
@@ -42,9 +44,25 @@ AWE.UI.Ember = (function(module) {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
     }.property('character.description'),
 
+    homeObserver: function() {
+      var self = this;
+
+      var locationId = this.getPath('character.base_location_id');
+      var homeBase = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
+
+      if(!homeBase && !this.getPath('character.npc'))
+      {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+          homeBase = settlement;
+        });
+      }
+
+      self.set('homeBase', homeBase);
+
+    }.observes('character.base_location_id'),
+
     sendUserContentReport: function() {
-      var confirmationDialog = AWE.UI.Ember.Dialog.create({
-        templateName: 'info-dialog',
+      var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
 
         classNames: ['confirmation-dialog'],
       
@@ -67,6 +85,19 @@ AWE.UI.Ember = (function(module) {
         cancelPressed: function() { this.destroy(); }
       });
       WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    closeDialogsAndCenter: function() {
+
+      if(WACKADOO.presentScreenController.typeName === 'MapController')
+      {
+        var mapController = WACKADOO.presentScreenController;
+        var target = this.get('homeBase');
+
+        WACKADOO.closeAllModalDialogs();
+        mapController.setSelectedSettlement(target);
+        mapController.centerSettlement(target);
+      }
     },
 
     processUserContentReport: function() {
@@ -236,29 +267,24 @@ AWE.UI.Ember = (function(module) {
         else if(status === AWE.Net.CONFLICT)
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'already-liked-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else if (status === AWE.Net.NOT_FOUND) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-like-amount-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughLikeAmount '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else // handle unexpected error
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
@@ -282,29 +308,24 @@ AWE.UI.Ember = (function(module) {
         else if(status === AWE.Net.CONFLICT)
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'already-liked-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else if (status === AWE.Net.NOT_FOUND) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'not-enough-dislike-amount-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughDislikeAmount '),
+            okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else // handle unexpected error
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }

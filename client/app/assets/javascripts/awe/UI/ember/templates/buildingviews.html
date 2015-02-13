@@ -26,9 +26,6 @@
         <div class="construction-area front"></div>
         {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
     {{else}}
-      {{#unless isAndroid}}
-        {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
-      {{/unless}}
       <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}

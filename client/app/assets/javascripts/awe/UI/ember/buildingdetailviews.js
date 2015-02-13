@@ -83,7 +83,7 @@ AWE.UI.Ember = (function(module) {
 
     isMilitary: function() {
       return this.get('building').isMilitaryBuilding();
-    }.property('building').cacheable(),
+    }.property('building.level').cacheable(),
     
     infoClicked: function(event) {
       var slot = this.get('slot');
@@ -154,24 +154,27 @@ AWE.UI.Ember = (function(module) {
     militaryClicked: function(event) {
       var building = this.getPath("slot.building");
       var startTab = 0;
+      var subTab = 0;
       building.get("unlockedQueues").forEach(function(queue){
         if(queue.category === 'queue_category_training')
         {
+          startTab = 1;
+
           if(queue.symbolic_id === "queue_infantry")
           {
-            startTab = 1;
+            subTab = 0;
           }
           if(queue.symbolic_id === "queue_artillery")
           {
-            startTab = 2;
+            subTab = 1;
           }
           if(queue.symbolic_id === "queue_cavalry")
           {
-            startTab = 3;
+            subTab = 2;
           }
           if(queue.symbolic_id === "queue_special")
           {
-            startTab = 4;
+            subTab = 3;
           }
         }
       });
@@ -179,7 +182,8 @@ AWE.UI.Ember = (function(module) {
         //garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
         controller: WACKADOO.presentScreenController,
         settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
-        startTab: startTab
+        startTab: startTab,
+        subTab: subTab
       });
       dialog.set('garrisonArmy', AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison')),
       WACKADOO.presentModalDialog(dialog);

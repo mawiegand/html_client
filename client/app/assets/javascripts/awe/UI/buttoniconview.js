@@ -13,8 +13,10 @@ AWE.UI = (function(module) {
     var _iconImageView = null;
     
     var backgroundImagesForStates = {}; 
-    var iconImagesForStates = {}; 
-        
+    var iconImagesForStates = {};
+    
+    var isButtonDown = false;
+
     my = my || {};
     
     my.typeName = "ButtonIconView";
@@ -32,7 +34,7 @@ AWE.UI = (function(module) {
     
     that.onMouseOver = function() { 
       document.body.style.cursor = "pointer";
-      that.setHovered(true);  
+      that.setHovered(true);
     }
     that.onMouseOut =  function() {
       document.body.style.cursor = "default";
@@ -40,20 +42,38 @@ AWE.UI = (function(module) {
     }
 
     
-    that.initWithControllerImageAndIcon = function(controller, image, icon, frame) {
+    that.initWithControllerImageAndIcon = function(controller, image, icon, frame, iconHover) {
       _super.initWithController(controller, frame);
       
       my.container = new Container();
       
       backgroundImagesForStates[module.CONTROL_STATE_NORMAL] = image;
       iconImagesForStates[module.CONTROL_STATE_NORMAL] = icon;
+      if(iconHover)
+      {
+        iconImagesForStates[module.CONTROL_STATE_HOVERED] = iconHover;
+      }
 
       _backgroundImageView = AWE.UI.createImageView();
       _backgroundImageView.initWithControllerAndImage(controller, image);
       _backgroundImageView.setContentMode(module.ViewContentModeFit);
+      _backgroundImageView.onMouseDown = function() { 
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView ();
+      };
+      _backgroundImageView.onMouseUp = function(){
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
+      };
       _backgroundImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
+        }
+        else
+        {
+          that.onDisabledClick();
         }
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _backgroundImageView.onDoubleClick = function() { 
@@ -68,10 +88,26 @@ AWE.UI = (function(module) {
       _iconImageView = AWE.UI.createImageView();
       _iconImageView.initWithControllerAndImage(controller, icon);
       _iconImageView.setContentMode(module.ViewContentModeFit);
+      
       _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
+
+      _iconImageView.onMouseDown = function() { 
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView();
+      };
+      _iconImageView.onMouseUp = function(){
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
+      };
       _iconImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
+        }
+        else
+        {
+          that.onDisabledClick();
         }
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _iconImageView.onDoubleClick = function() { 
@@ -95,6 +131,13 @@ AWE.UI = (function(module) {
       if (this.enabled()) {  // make sure, the button has the correct alpha value, if enabled
         _backgroundImageView.setAlpha(this.alpha());
         _iconImageView.setAlpha(this.alpha());
+        if(isButtonDown){
+          _backgroundImageView.setAlpha(0.7 * this.alpha());
+          _iconImageView.setAlpha(0.7 * this.alpha());
+        }else{
+          _backgroundImageView.setAlpha(this.alpha());
+          _iconImageView.setAlpha(this.alpha());
+        }
       }
       
       if (!this.enabled()) {
@@ -177,6 +220,10 @@ AWE.UI = (function(module) {
       if (that.enabled()) {
         my.controller.buttonClicked(that);
       }
+    };
+
+    that.onDisabledClick = function() {
+
     };
     
         

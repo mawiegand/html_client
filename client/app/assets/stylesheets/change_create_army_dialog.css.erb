@@ -1,6 +1,6 @@
 /* == CHANGE AND CREATE ARMY == */
 
-.change-army-dialog-pane input[type="text"] {
+.change-army-dialog-pane .create-army-dialog-name {
   position: absolute;
   top: 42px;
   height: 30px;
@@ -156,6 +156,16 @@
   position: absolute;
   left: 15px;
 }
+
+.cell-icon.unit_neanderthal
+{
+  background:url("<%= asset_path 'dialogs/units/neanderthal/neandertaler_medium.png' %>") no-repeat center center;
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  left: 15px;
+}
+
 /*== Special==*/
 
 .army-type-cell
@@ -169,18 +179,41 @@
 	position: absolute;
 	left: 138px;
 }
+
 .army-other-count
 {
-	left: 542px;
+	left: 475px;
+  margin-top: 20px;
 }
 
-.army-other-count{}
+.army-other-count-input
+{
+  color: #735e3b;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  text-align: center;
+  
+  width: 120px;
+  height: 40px;
+
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+
+.army-other-count-input:focus {
+  cursor: auto;
+}
 
 .change-army-dialog-pane
 {
 	width: 650px;
-	height: 420px;
-  top: 55px;
+	height: 400px;
+  top: 75px;
+}
+
+.change-army-dialog-pane .error {
+  margin: 20px 30px;
 }
 
 .modal-dialog-green-button-small-right{

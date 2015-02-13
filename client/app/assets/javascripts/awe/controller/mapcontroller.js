@@ -90,6 +90,7 @@ AWE.Controller = function (module) {
     var currentMapTypeIndex = 0;
     
     var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
+    var autoselectSettlement = true;
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -754,7 +755,8 @@ AWE.Controller = function (module) {
         return;
       }
 
-      var dialog = AWE.UI.Ember./*ArmyInfoDialog*/ArmyInfoNewDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
+        
         army:army,
 
         changeStanceCallback:function () {
@@ -949,10 +951,15 @@ AWE.Controller = function (module) {
         armyAnnotationView.setActionMode('foundSettlement');
         _actionViewChanged = true;
 
-        var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
+        var dialog = AWE.UI.Ember.InfoDialog.create({
           army:armyAnnotationView.army(),
 
-          foundPressed:function (evt) {
+          heading: AWE.I18n.lookupTranslation('settlement.found.confirmationHeader'),
+          message: AWE.I18n.lookupTranslation('settlement.found.confirmationText'),
+
+          okText: AWE.I18n.lookupTranslation('settlement.found.confirmation'),
+
+          okPressed:function (evt) {
             var army = this.get('army');
             var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
 
@@ -1053,7 +1060,7 @@ AWE.Controller = function (module) {
 
       var dialog = AWE.UI.Ember.ArmyNewCreateDialog.create({
         locationId: location.id(),
-        /*create*/changePressed: function (evt) {
+        changePressed: function (evt) {
           if (this.get('garrisonOverfull')) {
             var errorDialog = AWE.UI.Ember.InfoDialog.create({
               heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
@@ -1093,46 +1100,7 @@ AWE.Controller = function (module) {
           that.updateUIMarker();
         },
         loading:false,
-      });/*AWE.UI.Ember.ArmyCreateDialog.create({
-        locationId: location.id(),
-        createPressed: function (evt) {
-          if (this.get('garrisonOverfull')) {
-            var errorDialog = AWE.UI.Ember.InfoDialog.create({
-              heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
-              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
-            });
-            that.applicationController.presentModalDialog(errorDialog);
-          }
-          else if (this.get('otherOverfull')) {
-            var errorDialog = AWE.UI.Ember.InfoDialog.create({
-              heading:AWE.I18n.lookupTranslation('army.form.errors.new'),
-              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
-            });
-            that.applicationController.presentModalDialog(errorDialog);
-          }
-          else {
-            var unitQuantities = this.unitQuantities();
-            var armyName = this.get('armyName');
-            if (!AWE.Util.hashEmpty(unitQuantities)) {
-              createArmyCreateAction(location, unitQuantities, armyName, (function (self) {
-                return function () {
-                  self.destroy();
-                }
-              })(this));
-              this.set('loading', true);
-            }
-            else {
-              this.destroy();
-            }
-          }
-        },
-        cancelPressed:function (evt) {
-          this.destroy();
-          that.updateUIMarker();
-        },
-        loading:false,
-      });*/
-      // garrisonArmy is set after create to trigger observer in view
+      });
       dialog.set('garrisonArmy', location.garrisonArmy()),
 
         that.applicationController.presentModalDialog(dialog);
@@ -1365,51 +1333,6 @@ AWE.Controller = function (module) {
       WACKADOO.presentModalDialog(dialog);
       dialog.set('garrisonArmy', location.garrisonArmy());
       dialog.set('otherArmy', army);
-
-      
-      /*AWE.UI.Ember.ArmyChangeDialog.create({
-        locationId:location.id(),
-        changePressed:function (evt) {
-          if (this.get('garrisonOverfull')) {
-            var errorDialog = AWE.UI.Ember.InfoDialog.create({
-              heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
-              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
-            });
-            that.applicationController.presentModalDialog(errorDialog);
-          }
-          else if (this.get('otherOverfull')) {
-            var errorDialog = AWE.UI.Ember.InfoDialog.create({
-              heading:AWE.I18n.lookupTranslation('army.form.errors.other'),
-              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
-            });
-            that.applicationController.presentModalDialog(errorDialog);
-          }
-          else {
-            var unitDifferences = this.unitDifferences();
-            if (!AWE.Util.hashEmpty(unitDifferences)) {
-              createArmyChangeAction(location, army, unitDifferences, (function (self) {
-                return function () {
-                  self.destroy();
-                }
-              })(this));
-              this.set('loading', true);
-            }
-            else {
-              this.destroy();
-            }
-          }
-        },
-        cancelPressed:function (evt) {
-          this.destroy();
-        },
-        loading:false,
-      });
-      WACKADOO.presentModalDialog(dialog);
-      dialog.set('garrisonArmy', location.garrisonArmy());
-      dialog.set('otherArmy', army);*/
-      // armies are set after create to trigger observer in view
-
-        /*that.applicationController.presentModalDialog(dialog);*/
     }
 
     var runningRetreatAction = false;
@@ -1679,7 +1602,15 @@ AWE.Controller = function (module) {
       if (view.typeName() === 'ArmyView') {
         if (that.markMoveOwnArmy()) {
           var annotationView = view.annotationView();
-          addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+          if(annotationView === null)
+          {
+            that.updateActionViews();
+            _selectView(view);
+          }
+          else
+          {
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
+          }
         }
         else if (that.markAttackButton()) {
           var annotationView = view.annotationView();
@@ -1696,7 +1627,7 @@ AWE.Controller = function (module) {
             if (that.markSelectOwnHomeSettlement()) {
               var annotationView = view.annotationView();
               if (annotationView) {
-                addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
+                addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 0));
               }
             }
             else {
@@ -1841,11 +1772,10 @@ AWE.Controller = function (module) {
       if (inspectorViews.inspector) {
         _stages[3].addChild(inspectorViews.inspector.displayObject());
         if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
-          addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
           var annotationView = view.annotationView();
           if(annotationView)
           {
-              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(250, 60));
           }
         }
         _inspectorChanged = true;
@@ -2629,11 +2559,21 @@ AWE.Controller = function (module) {
               if (view && view.locationType() == AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()]) {
                 if (!that.animatedMarker && AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base" &&
                   location.isOwn() && view != _selectedView && that.markSelectOwnHomeSettlement()) {
-                  var marker = AWE.UI.createMarkerView();
-                  marker.initWithControllerAndMarkedView(that, view);
-                  that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(10, -36));
-                  changedAnimation = true;
-                  view.setNeedsUpdate();
+
+                  if(autoselectSettlement)
+                  {
+                    var settlement = AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter());
+                    that.setSelectedSettlement(settlement);
+                    autoselectSettlement = false;
+                  }
+                  else
+                  {
+                    var marker = AWE.UI.createMarkerView();
+                    marker.initWithControllerAndMarkedView(that, view);
+                    that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(10, -36));
+                    changedAnimation = true;
+                    view.setNeedsUpdate();
+                  }
                 }
                 if (view.lastChange !== undefined &&  // if model of view updated
                   view.lastChange().getTime() < location.lastChange().getTime()) {
@@ -2842,6 +2782,9 @@ AWE.Controller = function (module) {
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
+              if (army.isOwn() && view != _selectedView && that.markSelectOwnArmy()) {
+                that.setSelectedArmy(army);
+              }
             }
 
             setArmyPosition(view, pos, army);
@@ -3419,7 +3362,7 @@ AWE.Controller = function (module) {
         if (_selectedView && !that.animatedMarker) {
           if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy()) {
             var annotationView = _selectedView.annotationView();
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
           else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
             var annotationView = view.annotationView();
@@ -3430,7 +3373,7 @@ AWE.Controller = function (module) {
             if (inspector && inspector.typeName('BaseInspectorView') && inspector.location().isOwn()) {
               addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);*/
               var annotationView = _selectedView.annotationView();
-              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(285, 45));
+              addMarkerToViewRight(annotationView, AWE.Geometry.createPoint(250, 60));
             //}
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {
@@ -3439,7 +3382,7 @@ AWE.Controller = function (module) {
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markSelectOwnHomeSettlement()) {
             var annotationView = _selectedView.annotationView();
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(-10, -10));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 0));
           }
         }
       }

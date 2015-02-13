@@ -3,7 +3,12 @@
   	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
-  		<div class="map-mountains-hud-button map-mountains-hud-button-position" style="opacity: 0;"></div>
+      {{#if unlockedAssignments}}
+        <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}></div>
+      {{/if}}
+      {{#if unlockedTrade}}
+        <div class="trade-hud-button trade-hud-button-position" {{action "tradeClicked"}}></div>
+      {{/if}}
   		<div class="army-hud-button army-hud-button-position" {{action "recruitClicked"}}></div>
 	  	<div class="map-hud-button map-hud-button-position" {{action "switchToMap"}}></div>
   	{{else}}
@@ -12,7 +17,7 @@
 	  	<div class="settelement-hud-button settlement-hud-button-position" {{action "switchToSettlement"}}></div>	  	
   	{{/if}}
   	{{#if isUiMarkerEnabled}}
-      {{view AWE.UI.Ember.UIMarker direction=3 top=275 left=110}}
+      {{view AWE.UI.Ember.UIMarker direction=3 top=340 left=100}}
     {{/if}}
   </div>
 </script>
@@ -34,10 +39,8 @@
 
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">
   <div class="top-right-hud" id="top-right-dom-hud">
-    {{#if isAllianceMember}}
-      <div class="alliance-hud-button" {{action "allianceClicked"}}>
-        <div class="alliance-hud-icon"></div>
-      </div>
-    {{/if}}
+    <div class="alliance-hud-button" {{action "allianceClicked"}}>
+      <div class="alliance-hud-icon"></div>
+    </div>
   </div>
 </script>

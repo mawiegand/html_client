@@ -9,86 +9,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
-    classNames: ['army-info-dialog'],
-    contentTemplateName: 'army-info-dialog',
-    
-    army: null,  
-      
-    arguments: {    // this must be improved; at least, we need bindings here. better: get rid of the arguments object
-//      army: null,
-      isSaving: false,
-    },
-    
-/*    init: function(args) {
-      this._super(args);
-      this.setPath('arguments.army', this.get('army'));
-    },
-    
-   armyObserver: function() {
-      this.setPath('arguments.army', this.get('army'));
-    }.observes('army'), */
-    
-    changeStanceCallback: null,
-    changeNameCallback: null,
-        
-    changeNamePressed: function(event) {
-          
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('army.form.changeNameHeading'),
-        input: this.getPath('army.name'),
-        army: this.getPath('army'),
-        
-        okPressed: function() {
-          var callback = this.getPath('parentView.changeNameCallback');
-          var action   = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-          AWE.Action.Manager.queueAction(action, function() {
-            if (callback) {
-              callback();
-            }
-          });  
-          this.destroy();            
-        },
-        cancelPressed: function() { this.destroy(); }
-      });
-      WACKADOO.presentModalDialog(changeDialog);
-    },
-
-    changeStancePressed: function(event) {
-      var self = this;
-      var callback = this.get('changeStanceCallback');
-      var army = this.getPath('army');
-
-      // isSaving = true
-      this.setPath('arguments.isSaving', true);
-       
-      var newStance = this.getPath('army.stance') === 0 ? 1 : 0;
-      var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
-      AWE.Action.Manager.queueAction(action, function() {
-        AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
-          self.setPath('arguments.isSaving', false);
-          if (callback) {
-            callback();
-          }
-        });
-      });  
-    },
-    
-    locationPressed: function(event) {
-      var self = this;
-//      log('---> army.homeSettlement', this.getPath('army.homeSettlement'));
-//      log('---> army.homeSettlement.location', this.getPath('army.homeSettlement.location'));
-      var location = this.getPath('army.homeSettlement.location');
-      
-      if (location != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerLocation(location);
-      }
-    },
-  });
-
 module.ArmyInfoView = Ember.View.extend({
     templateName: "army-info-view",
     
@@ -183,12 +103,60 @@ module.ArmyInfoView = Ember.View.extend({
 
 //army info dialog
 module.ArmyInfoNewDialog = module.PopUpDialog.extend({
-  templateName: 'army-new-info-dialog'
+  templateName: 'army-new-info-dialog',
+
+  army: null,
+
+  owner: null,
+
+  ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('army', 'army.owner_id'),
+
+  hasSettings: function() {
+      var army = this.get('army'); 
+      return army ? army.isOwn() : false;
+  }.property('owner'),
+
+  settingsDialog: function() {
+      var self = this;
+      var input = this.getPath('army.name')
+      var arguments = {
+        input: input,
+        inputMaxLength: 16       
+      };
+      var changeDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
+        contentTemplateName: 'text-input-info',
+        arguments: arguments,
+        controller: this,
+        okText: AWE.I18n.lookupTranslation('general.change'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
+        okPressed: function() {
+          var action = AWE.Action.Military.createChangeArmyNameAction(self.get('army'), this.getPath('arguments.input'));
+          var alert = this;
+          AWE.Action.Manager.queueAction(action, function() { 
+            alert.destroy();
+          });  
+        }, //Standart this.destroy
+        cancelPressed: function() { this.destroy()} //Standart: null
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+      event.preventDefault();
+  },
+
 });
 
 module.ArmyInfoNewView = module.ArmyInfoView.extend({
   templateName:   'army-new-info-view',
-
+  homeSettlement: null,
 
   nameClicked: function() {
       var character = this.get('owner');
@@ -202,7 +170,8 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       });
       WACKADOO.presentModalDialog(dialog);
       return false; // prevent default behavior
-    },
+  },
+
   openAlliance: function() {
       var character = this.get('owner');
       if(!character)
@@ -216,6 +185,23 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       WACKADOO.showAllianceDialog(alliance.id);
     },
 
+  homeSettlementClicked: function() {
+    if(!this.getPath('army.npc'))
+    {
+      var settlement = this.get("homeSettlement");
+      WACKADOO.presentScreenController.setSelectedSettlement(settlement);
+      WACKADOO.presentScreenController.centerSettlement(settlement);
+      WACKADOO.closeAllModalDialogs();
+    }
+  },
+
+  isClickable: function() {
+    if(!this.getPath("army.npc"))
+    {
+      return "clickable";
+    }
+  }.property("army.npc"),
+
     canRegenAp: function() {
       var currentAp = this.getPath("army.ap_present");
       var maxAp = this.getPath("army.ap_max");
@@ -225,6 +211,28 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
       }
       return false;
     }.property("army.ap_present", "army.ap_max"),
+
+    armyHomeBaseObserver: function() {
+      var self = this;
+      if(!self.getPath('army.npc') && !self.getPath('army.homeSettlement'))
+      {
+        AWE.GS.SettlementManager.updateSettlement(this.getPath('army.home_settlement_id'), module.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+          self.set('homeSettlement', settlement)
+        });
+      }
+      else if(!self.getPath('army.npc'))
+      {
+        self.set('homeSettlement', self.getPath('army.homeSettlement'));
+      }
+      else
+      {
+        var settlementName = AWE.I18n.lookupTranslation('army.details.neanderHome');
+        var settlement = {
+          name: settlementName
+        }
+        self.setPath('homeSettlement', settlement);
+      }
+    }.observes("army"),
 });
 
 //need custom tabs for military info
@@ -257,6 +265,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
     settlement: null,
 
     startTab: 0,
+    subTab: 0,
   
     /*setSettlment: function(){
       this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
@@ -417,6 +426,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 
   module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
 
+    controller: null,
     character: null,
     alliance:  null,
     allianceMember: null,
@@ -430,15 +440,6 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
-         view:  module.GarrisonInfoView.extend({
-         unitTypesBinding: "parentView.parentView.unitTypes",
-         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
-          }),
-         isTitelTab: true,
-         buttonClass: "header-menu-button-military"
-       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
-       { key:   "tab2",
          title: AWE.I18n.lookupTranslation('encyclopedia.infantry'), 
          view:  module.InfantryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -449,7 +450,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab3",
+       { key:   "tab2",
          title: AWE.I18n.lookupTranslation('encyclopedia.artillery'), 
          view:  module.ArtileryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -460,7 +461,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab4",
+       { key:   "tab3",
          title: AWE.I18n.lookupTranslation('encyclopedia.cavalery'), 
          view:  module.CavaleryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -471,7 +472,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
        },
-       { key:   "tab5",
+       { key:   "tab4",
          title: AWE.I18n.lookupTranslation('encyclopedia.specialUnits'), 
          view:  module.SpecialUnitInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
@@ -492,6 +493,52 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
    }.observes("startTab"),
 
  });
+
+module.MilitaryTabView = module.TabViewNew.extend({
+
+  character: null,
+  alliance:  null,
+  allianceMember: null,
+  unitTypes: null,
+  garrisonArmy: null,
+  settlement: null,
+  trainingQueues: null,
+  startTab: 0,
+  subTab: 0,
+
+  init: function() {
+    var self = this;
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
+         view:  module.GarrisonInfoView.extend({
+         unitTypesBinding: "parentView.parentView.unitTypes",
+         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          }),
+         buttonClass: "left-menu-button"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: AWE.I18n.lookupTranslation('settlement.training.recruit'), 
+         view:  module.ArmyInfoNewTabView.extend({ 
+          parentView: self,
+          controllerBinding: "parentView.controller",
+          garrisonArmyBinding: "parentView.garrisonArmy",
+          settlementBinding: "parentView.settlement",
+          trainingQueuesBinding: "parentView.trainingQueues",
+          startTabBinding: 'parentView.subTab',
+          }),
+         buttonClass: "right-menu-button"
+       }
+     ]);
+
+     this._super();
+   },
+
+   changeTab: function() {
+    this.selectTabByNumber(this.get("startTab"));
+   }.observes("startTab"),
+});
 
 module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
@@ -599,7 +646,14 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var stoneId = rules.getResourceTypeWithSymbolicId("resource_stone").id;
       } 
       var stoneCost = this.getTotalCostsForResource(stoneId);
-      return stoneCost;
+      if(stoneCost.toString().match(/[0-9]+/))
+      {
+        return stoneCost;
+      }
+      else
+      {
+        return "0";
+      }
     }.property('totalCosts').cacheable(),
 
     getTotalWoodCosts: function()
@@ -610,7 +664,14 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var woodId = rules.getResourceTypeWithSymbolicId("resource_wood").id;
       } 
       var woodCost = this.getTotalCostsForResource(woodId);
-      return woodCost;
+      if(woodCost.toString().match(/[0-9]+/))
+      {
+        return woodCost;
+      }
+      else
+      {
+        return "0";
+      }
 
     }.property('totalCosts').cacheable(),
 
@@ -622,7 +683,15 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
         var furId = rules.getResourceTypeWithSymbolicId("resource_fur").id;
       } 
       var furCost = this.getTotalCostsForResource(furId);
-      return furCost;
+      
+      if(furCost.toString().match(/[0-9]+/))
+      {
+        return furCost;
+      }
+      else
+      {
+        return "0";
+      }
 
     }.property('totalCosts').cacheable(),
 
@@ -812,6 +881,10 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
   module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
     templateName: 'army-recruitment-info-view',
 
+    numberValueRegex: /[^0-9]+/,
+    maxUnitRecruitment: 1000,
+    minUnitRecruitment: 1,
+
     isUIMarker: function(){
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON) ;
@@ -845,16 +918,25 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     }.property().cacheable(),
 
     setupJobPressed: function()
+    {
+      if(parseInt(this.get('number')) > this.get("maxUnitRecruitment"))
       {
-        
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: AWE.I18n.lookupTranslation('settlement.training.error.tooLargeNumber')
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else
+      {
         this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('unitType.id'), this.get('number'));
         this.get('parentView').destroy();
-      },
-    });
+      }
+    },
+  });
 
-  module.JobsRangeView  = AWE.UI.Ember.SliderView.extend({
+  module.JobsRangeView = AWE.UI.Ember.SliderView.extend({
     classNames: ["jobs-range-slider"],
-    max: 1000,
+    max: 500,
     min: 1,
     valueBinding: "number",
   });
@@ -1405,10 +1487,10 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
       if (!army) {
         return ;
       }   
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
         army: army,
       }); 
-      dialog.showModal();    
+      WACKADOO.presentModalDialog(dialog);   
       return false; // prevent default behavior
     },  
 

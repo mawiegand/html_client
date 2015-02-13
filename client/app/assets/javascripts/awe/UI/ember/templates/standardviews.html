@@ -116,19 +116,28 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 info-dialog">
-      {{#if contentTemplateName}}
-        {{view Ember.View templateNameBinding="contentTemplateName" argumentsBinding="arguments"}}
-      {{else}}
-        <h1>{{ heading }}</h1>
-        <p>{{ message }}</p>
-      {{/if}}
-      <div class="controls-bar">
-        {{#if okPressed }}
-          <div class="icon-button ok-button" {{action "okPressed"}}>{{okText}}</div>
-        {{/if}}
-        {{#if cancelPressed }}
-          </div><div class="icon-button cancel-button" {{action "cancelPressed"}}>{{cancelText}}</div>
-        {{/if}}
+      <h1>{{ heading }}</h1>
+      <div class="content">
+        <div class="content-text">
+          {{#if contentTemplateName}}
+            {{view Ember.View templateNameBinding="contentTemplateName" argumentsBinding="arguments"}}
+          {{else}}
+            <p>{{ message }}</p>
+          {{/if}}
+        </div>
+        <div class="controlls">
+          {{#if okPressed }}
+            {{#if cancelPressed}}
+              <div class="info-button ok-cancel-button" {{action "okPressed"}}>{{okText}}</div>
+            {{else}}
+              <div class="info-button ok-button" {{action "okPressed"}}>{{okText}}</div>
+            {{/if}}
+
+          {{/if}}
+          {{#if cancelPressed }}
+            <div class="info-button cancel-button" {{action "cancelPressed"}}>{{cancelText}}</div>
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
@@ -167,7 +176,7 @@
     <div class="center-helper">
       <div class="modal-dialog-pane-new z-layer-4">
         <div class="modal-dialog-container">
-          {{#if settingsDialog }}
+          {{#if hasSettings }}
           <a href="#" {{action "settingsDialog"}}>
             <div class="modal-dialog-settings"></div>
           </a>

@@ -6,22 +6,22 @@ AWE.I18n.de_DE = function(module) {
   module.localizedStrings = {
  
     general: {
-      open:     'öffnen',
-      close:    'schließen',
-      cancel:   'abbrechen',
+      open:     'Öffnen',
+      close:    'Schließen',
+      cancel:   'Abbrechen',
       ok:       'Ok!',
-      finished: 'fertig',
+      finished: 'Fertig',
       info:     'Info',
       error:    'Fehler',
       warning:  'Achtung',
       and:      'und',
       or:       'oder',
-      yes:      'ja',
-      no:       'nein',
+      yes:      'Ja',
+      no:       'Nein',
       nr:       'Nr.',
       of:       'von',
       with:     'mit',
-      change:   'ändern',
+      change:   'Ändern',
       start:    'Start',
       loading:  'Laden...',
 
@@ -175,6 +175,7 @@ AWE.I18n.de_DE = function(module) {
         actionPoints: "Aktionspunkte",
         nextActionPointAt: "Nächster Aktionspunkt um",
         homeSettlement: "Heimatsiedlung",
+        neanderHome: "Dreckige Höhle",
       },
       messages: {
         own: {
@@ -512,6 +513,15 @@ AWE.I18n.de_DE = function(module) {
       invitationLink: 'Einladungslink',
       invitationLinkDescription: 'Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.',
       invitationLinkSendByMail: 'Per Mail versenden',
+
+      diplomacyInfo: {
+        heading: "Diplomatie System:",
+        content: "Eine Allianz stellt einer anderen ein Ultimatum. " +
+                 "Nach Ablauf des Ultimatums beginnt der Krieg zwischen beiden Allianzen. " +
+                 "Während des Kriegs können Allianzen anderen Allianzen Festungen abnehmen. " +
+                 "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem eine der beiden Seiten ihn aufgibt. " +
+                 "Nachdem ein Krieg beendet ist herrscht eine Zeit lang die Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
+      },
       
       progress: {
         header: 'Siegesfortschritt',
@@ -570,34 +580,47 @@ AWE.I18n.de_DE = function(module) {
       confirmReport: {
         heading: "Melden bestätigen",
         message: "Willst Du wirklich die Allianz Beschreibung melden?",
-        cancel: "Nein, doch nicht",
-        ok: "Ja, wirklich.",
+        cancel: "Nein",
+        ok: "Ja",
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
       confirmApplication: {
         heading: "Bewerbung bestätigen",
         message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
-        cancel: "Nein, doch nicht",
-        ok: "Ja, wirklich.",
+        cancel: "Nein",
+        ok: "Ja",
         success: "Bewerbung war erfolgreich",
         error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
       confirmDiplomacyRelation: {
         heading: "Änderung der Diplomatie bestätigen",
         message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
-        cancel: "Nein, doch nicht",
-        ok: "Ja, wirklich.",
+        cancel: "Nein",
+        ok: "Ja",
       },
     },
 
     welcome: {
-      heading: 'Willkomen bei Wack-a-Doo!',
-      headingWithName: 'Willkomen bei Wack-a-Doo,',
-      headingPlan: 'Der Plan',
-      image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
-      headingSituation: 'Die Situation',
-      formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
+      heading: 'Willkommen bei Wack-A-Doo!',
+      info: {
+        first: {
+          heading: "1. Baue dich auf",
+          text: "Übernimm einen Stamm und baue eine große Siedlung auf.",
+        },
+        second: {
+          heading: "2. Breite dich aus",
+          text: "Bilde Einheiten aus und erkunde deine Umgebung.",
+        },
+        third: {
+          heading: "3. Verbünde dich",
+          text: "Verbünde dich mit Freunden und gründe eine mächtige Allianz.",
+        },
+        fourth: {
+          heading: "4. Werde unsterblich",
+          text: "Erobere die Welt und gewinne das Spiel.",
+        }
+      },
     },
 
     facebook: {
@@ -718,7 +741,7 @@ AWE.I18n.de_DE = function(module) {
         changeName: "Deinen Namen ändern",
         chooseNameCaption: 'Siedlungsnamen wählen',
         changeNameCaption: 'Siedlungsnamen ändern',
-        nameChangeAdvice: 'Die allererste Änderung des Namens im Spiel ist kostenlos, jede weitere Änderung kostet ein paar Kröten.',
+        nameChangeAdvice: 'Das kostet dich 1 Kröte.',
 
         changeNameDialogCaption: "Gib den neuen Namen ein.",
         
@@ -824,6 +847,10 @@ AWE.I18n.de_DE = function(module) {
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
         hurry: "Halbieren",
+        error: {
+          notOnlyNumbers: "Es sind nur Zahlen erlaubt!",
+          tooLargeNumber: "Das sind zu viele. Maximum sind 1000 Einheiten."
+        },
       },
 
       military: {
@@ -840,7 +867,7 @@ AWE.I18n.de_DE = function(module) {
       trade: {
         trade: "Handel",
         distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
-        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
+        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesamtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
 
         update: "Update",
         submit: "Senden",
@@ -880,7 +907,7 @@ AWE.I18n.de_DE = function(module) {
         confirmationHeader: "Hier eine Lagerstätte gründen?",
         confirmationFlavour: "Eine Siedlung in Ehren kann niemand verwehren. Harrharrharr.",
         confirmationText: "Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Anführer aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur Verfügung.",
-        confirmation: "jetzt und hier gründen",
+        confirmation: "Gründen",
         errorHeader: "Lagerstätte kann nicht gegründet werden.",
         errorFlavour: "Grmpf.",
         errorText: "Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen gegründet werden, in der sich noch keine andere Lagerstätte von Dir oder Dein Hauptdorf befindet.",
@@ -1022,10 +1049,10 @@ AWE.I18n.de_DE = function(module) {
       movingTab: "Umziehen",
 
       rank: {
-        currentRank:"Aktuelle Rang",
+        currentRank:"Aktueller Rang",
         nextRank:"Nächster Rang",
         currentLevel:"Aktuelle Stufe",
-        nextLevel:"Nächster Stufe",
+        nextLevel:"Nächste Stufe",
         progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",

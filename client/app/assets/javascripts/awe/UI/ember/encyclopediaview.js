@@ -123,7 +123,8 @@ AWE.UI.Ember = (function(module) {
 
   module.EncyclopediaUnitNewView = module.PopUpDialog.extend({
     templateName: 'encyclopedia-unit-new',
-    classNames: ['encyclopedia-unit-new'],   
+    classNames: ['encyclopedia-unit-new'],
+
   }); 
 
   module.EncyclopediaUnitView = Ember.View.extend({

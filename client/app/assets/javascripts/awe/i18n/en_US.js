@@ -176,6 +176,7 @@ AWE.I18n.en_US = function(module) {
         actionPoints:"Action points",
         nextActionPointAt:"Next action point at",
         homeSettlement: "Home settlement",
+        neanderHome: "Dirty Cave",
       },
       messages:{
         own:{
@@ -504,6 +505,16 @@ AWE.I18n.en_US = function(module) {
       invitationLinkDescription: 'Invite new players to start in the alliance region. If new players register using the invitation link, his or her home settlement will be placed in the regions governed by the alliance. Just select and copy the link or send it via mail.',
       invitationLinkSendByMailButton: 'Send by mail',
 
+      diplomacyInfo: {
+        heading: "Diplomacysystem:",
+        content: "An alliance makes an ultimatum towards another. " +
+                 "After the ultimatum has ended the alliances are at war. " +
+                 "While the war is ongoing alliances may conquer each others fortresses. " +
+                 "After war has raged for a while it may be ended by one side surrendering. " +
+                 "When a side has surrendered both alliances enter into the occupation phase. " +
+                 "During this phase no ultimatum maybe declared between the two alliances.",
+      },
+
       progress:{
         header:'Victory Progress',
         description:'An alliance can win the game round if one of the following victory criteria is achieved and maintained over a certain time period:',
@@ -521,6 +532,7 @@ AWE.I18n.en_US = function(module) {
 
       error:{
         blankPassword:"You can't set a blank password.",
+        specialChars: "Only numbers and letters are allowed.",
         failedToSetPassword:"The alliance password couldn't be set right now.",
         kickHeading:"Not Possible!",
         kickMessage:"You don't have permission to kick this member.",
@@ -582,13 +594,26 @@ AWE.I18n.en_US = function(module) {
       },
     },
 
-    welcome:{
-      heading:'Welcome to Wack-a-Doo!',
-      headingWithName: 'Welcome to Wack-a-Doo,',
-      headingPlan:'The Plan',
-      image:AWE.Config.RAILS_ASSET_PATH + 'whatdoido_en_US.jpeg',
-      headingSituation:'The Situation',
-      formattedText:'<p>Being a <b>demigod</b> to a tiny tribe of stoneage caveman you\'ve just convinced your followers to leave their cave behind and to live in something modern called "a village". Unfortunately, the only thing their glorious chieftain let them build was a pompous hut for himself. Now, you should <b>build housing for some Hunter-Gatherers</b> ASAP.</p><p><b>Have fun!</p>',
+    welcome: {
+      heading: 'Welcome to Wack-A-Doo!',
+      info: {
+        first: {
+          heading: "1. Settle down",
+          text: "Take command of a stoneage tribe and build up a huge settlement."
+        },
+        second: {
+          heading: "2. Explore and Expand",
+          text: "Train units and explore the surrounding area."
+        },
+        third: {
+          heading: "3. Be Social",
+          text: "Cooperate with your friends and form mighty alliances."
+        },
+        fourth: {
+          heading: "4. Become Legend",
+          text: "Rule the world, secure and epic win."
+        }
+      }
     },
 
     shop:{
@@ -691,7 +716,7 @@ AWE.I18n.en_US = function(module) {
         changeName: "Change your name",
         chooseNameCaption: 'Name your settlement',
         changeNameCaption: 'Change the name of your settlement',
-        nameChangeAdvice: 'The first name change is free. Any additional changes will cost you a few golden frogs.',
+        nameChangeAdvice: 'This will cost you one golden frog.',
 
         changeNameDialogCaption: "Enter your new name.",
 
@@ -796,6 +821,10 @@ AWE.I18n.en_US = function(module) {
           end:" assignments in the queue. Please wait until something else is finished.",
         },
         hurry:"halve",
+        error: {
+          notOnlyNumbers: "Only numbers allowed!",
+          tooLargeNumber: "That's too much! Maximum is 1000 units."
+        },
       },
 
       military:{
@@ -1060,7 +1089,7 @@ AWE.I18n.en_US = function(module) {
         chooseNameCaption:'Choose name',
         changeNameCaption:'Change name',
         changeDescriptionCaption: 'Change description',
-        nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-a-Doo.',
+        nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-A-Doo.',
         nameChangeFreeAdvice:'You have two free chances to change your name, after which each name change will cost a couple of Golden Frogs. This is to prevent misuse. ',
         nameChangeCostAdvice:"You've already changed your name twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.",
         chooseGender:"Choose your gender",
@@ -1089,7 +1118,7 @@ AWE.I18n.en_US = function(module) {
         changeNameDialogCaption:"Enter your character's new name.",
 
         changeSameIPCaption:"Several players are currently using this IP address",
-        changeSameIPAdvice:'If you are playing Wack-a-Doo with multiple players using the same IP address, enter the player names here, separated by a comma. More information can be found here: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
+        changeSameIPAdvice:'If you are playing Wack-A-Doo with multiple players using the same IP address, enter the player names here, separated by a comma. More information can be found here: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
         changeSameIPButton:"Change the List",
         changeSameIIPChanged:"List has been saved.",
 
@@ -1119,7 +1148,7 @@ AWE.I18n.en_US = function(module) {
           changeGenderCost:"You don't have enough Golden Frogs to change your gender.",
           changeGenderError:"Your gender could not be changed. Please try again later.",
 
-          changePasswordInvalid:"This password doesn't meet the Wack-a-Doo requirements. Please choose another password.",
+          changePasswordInvalid:"This password doesn't meet the Wack-A-Doo requirements. Please choose another password.",
           changePasswordUnknown:"Your password could not be changed right now. Please try again later.",
           changePasswordNoMatch:"The two passwords you've entered don't match. Please try again.",
           

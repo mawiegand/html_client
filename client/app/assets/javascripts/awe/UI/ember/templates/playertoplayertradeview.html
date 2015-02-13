@@ -198,7 +198,7 @@
     <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
       <div {{bindAttr class="resourceType.type.symbolic_id :is-active :trade :send"}}></div>
       <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView valueBinding="resourceType.amount" resourceTypeBinding="resourceType" settlementBinding="parentView.settlement" maxAmountBinding="parentView.maxAmount" currentIDBinding="parentView.currentID"}}</div>
-      <div class="recipient-text count-text">{{resourceType.amount}}</div>
+      {{view AWE.UI.Ember.SliderInputView class="recipient-text count-text" maxlength=5 type="text" resultBinding="resourceType.amount" maxValueBinding="parentView.maxAmount"}}
     </div>
     {{/each}}
     <div class="modal-dialog-body-trade player-to-player-trade-cell" style="text-align: end; line-height: 50px; right: 38px;

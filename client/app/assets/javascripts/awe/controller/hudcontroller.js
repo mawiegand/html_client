@@ -59,12 +59,14 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();
 
-      _domLeft = AWE.UI.Ember.LeftHUDView.create({
-        controller: this,
-      });
-
       var character = AWE.GS.CharacterManager.getCurrentCharacter();
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+
+      _domLeft = AWE.UI.Ember.LeftHUDView.create({
+        controller: this,
+        character: character,
+      });
+
       _domRight = AWE.UI.Ember.RightHUDView.create({
         controller: this,
         character: character,
@@ -216,9 +218,12 @@ AWE.Controller = (function(module) {
     
     that.presentNotEnoughCreditsWarning = function() {
       var info = AWE.UI.Ember.InfoDialog.create({
-        contentTemplateName: 'not-enough-credits-info',
-        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+        heading:             AWE.I18n.lookupTranslation('shop.notenoughcredits.title'),
+        message:             AWE.I18n.lookupTranslation('shop.notenoughcredits.message'),
+
         okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
+        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+
         okPressed:           function() {
           if (AWE.Facebook.isRunningInCanvas) {
             var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
@@ -237,13 +242,8 @@ AWE.Controller = (function(module) {
 
     that.presentNotEnoughGoldenFrogsWarning = function() {
       var info = AWE.UI.Ember.InfoDialog.create({
-        contentTemplateName: 'not-enough-goldenfrogs-info',
-//        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
-        okText:              AWE.I18n.lookupTranslation('general.ok'),
-        okPressed:           function() {
-          this.destroy();
-        },
-//        cancelPressed:       function() { this.destroy(); },
+        heading:             AWE.I18n.lookupTranslation('shop.notenoughgoldenfrogs.title'),
+        message:             AWE.I18n.lookupTranslation('shop.notenoughgoldenfrogs.message'),
       });
       that.applicationController.presentModalDialog(info);
     }
@@ -516,13 +516,25 @@ AWE.Controller = (function(module) {
     
     that.notifyAboutNewScreenController = function(controller) {
       if (controller && /*HUDViews.leftHUDControlsView*/_domLeft) {
-        var mode = controller.typeName === "SettlementController" ? AWE.UI.HUDModeSettlement : AWE.UI.HUDModeMap;
-        //HUDViews.leftHUDControlsView.setHUDMode(mode);
+        var mode = null;
+        if(controller.typeName === "SettlementController")
+        {
+          mode = AWE.UI.HUDModeSettlement;
+        }
+        else
+        {
+          mode = AWE.UI.HUDModeMap;
+        }
+
         _domLeft.setHUDMode(mode);
       }
       
       // TODO Mail view -> hide buttons
     };
+
+    that.notifyAboutNewControllerSettlement = function(settlementId) {
+      _domLeft.setSettlement(settlementId);
+    }
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
@@ -586,7 +598,23 @@ AWE.Controller = (function(module) {
       });
       dialog.set('garrisonArmy', AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison')),
 	    WACKADOO.presentModalDialog(dialog);
-    };  
+    };
+
+    that.assignmentButtonClicked = function(tavern) {
+      var dialog = AWE.UI.Ember.AssignmentsDialog.create({
+        controller: WACKADOO.presentScreenController,
+        building: tavern,
+      });
+      WACKADOO.presentModalDialog(dialog);
+    };
+
+    that.tradeButtonClicked = function() {
+      var dialog = AWE.UI.Ember.TradeNewView.create({
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
+        controller: WACKADOO.presentScreenController
+      });
+      WACKADOO.presentModalDialog(dialog);
+    }
     
     that.avatarImageClicked = function() {
       WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
@@ -598,8 +626,33 @@ AWE.Controller = (function(module) {
       WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     }
     
-    that.allianceFlagClicked = function(allianceId) {      
-      WACKADOO.showAllianceDialog(allianceId); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
+    that.allianceFlagClicked = function(allianceId) {
+      if(allianceId)
+      {
+        WACKADOO.showAllianceDialog(allianceId); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      }
+      else
+      {
+        var unlockedAllianceCreation = false;
+        var character = AWE.GS.CharacterManager.getCurrentCharacter();
+        var settlement = AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId);
+        if(settlement)
+        {
+          var slots = settlement.get('enumerableSlots');
+          for(var i = 0; i < slots.length; i++) {
+            var slot = slots[i];
+            if(slot.getPath('building.unlockedAllianceCreation'))
+            {
+              unlockedAllianceCreation = true;
+            }
+          }
+        }
+
+        var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+            unlockedAllianceCreation: unlockedAllianceCreation
+          });
+          WACKADOO.presentModalDialog(dialog);
+      }       
     }
 
     // ///////////////////////////////////////////////////////////////////////
@@ -736,10 +789,9 @@ AWE.Controller = (function(module) {
         else {
           log(status, "ERROR: The server did not accept the message.");
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            contentTemplateName: 'server-command-failed-info',
-            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            okPressed:           null,
-            cancelPressed:       function() { this.destroy(); },
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           });          
           WACKADOO.presentModalDialog(dialog);
         }
@@ -1195,7 +1247,7 @@ AWE.Controller = (function(module) {
         });
                 
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged() || animating) {
+        if (_needsDisplay || _loopCounter % 10 == 0 || that.modelChanged() || animating) {//was 60, changed to 10 for better button view update on profile HUD by mouse down
           
           if (true) {
             var runningAnimations = [];

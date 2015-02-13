@@ -187,24 +187,29 @@ AWE.UI.Ember = (function(module) {
     
     changingName: false,
 
+    hasSettings: true,
+
     settingsDialog: function() {
       this.set('message', null);
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
+      var arguments = {
         input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
+        inputMaxLength: 16        
+      };
+      var changeDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
+        contentTemplateName: 'text-input-info',
+        arguments: arguments,
         controller: this,
-
+        okText: AWE.I18n.lookupTranslation('general.change'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
         okPressed: function() {
           var controller = this.get('controller');
-          if (controller) {
-            controller.processNewName(this.getPath('input'));
-          }
-          this.destroy();
-        },
-
-        cancelPressed: function() { this.destroy(); },
+              if (controller) {
+                controller.processNewName(this.getPath('arguments.input'));
+              } 
+              this.destroy();
+        }, //Standart this.destroy
+        cancelPressed: function() { this.destroy(); } //Standart: null
       });
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
@@ -236,7 +241,7 @@ AWE.UI.Ember = (function(module) {
         classNames: ['change-army-name-dialog'],
         heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
         input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
+        inputMaxLength: 1,
         controller: this,
         
         okPressed: function() {
@@ -269,26 +274,68 @@ AWE.UI.Ember = (function(module) {
       else {  // now, really send the name
         var self = this;
         var changeCounter = this.getPath('settlement.name_change_count');
-        this.set('changingName', true);
-        var action = AWE.Action.Settlement.createChangeSettlementNameAction(self.get('settlement'), newName);
-        AWE.Action.Manager.queueAction(action, function(status) {
-          self.set('changingName', false);
-          if (status === AWE.Net.OK) {
-            if (changeCounter > 0) {
-              AWE.GS.ResourcePoolManager.updateResourcePool();
+        if(changeCounter > 0)
+        {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            message: AWE.I18n.lookupTranslation('settlement.customization.nameChangeAdvice'),
+
+            controller: this,
+
+            okPressed: function() {
+              var controller = this.get('controller');
+              if (controller) {
+                controller.sendNewName(newName);
+              } 
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
             }
-          }
-          else if (status === AWE.Net.CONFLICT) {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
-          }
-          else if (status === AWE.Net.FORBIDDEN) {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
-          }
-          else {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
-          }
-        });        
+          });
+          WACKADOO.presentModalDialog(dialog);
+          return
+        }
+        else
+        {
+          this.sendNewName(newName);
+          return
+        }
       }
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: this.get('message')
+        });
+        WACKADOO.presentModalDialog(dialog);
+    },
+
+    sendNewName: function(newName) {
+      var self = this;
+
+      self.set('changingName', true);
+      var action = AWE.Action.Settlement.createChangeSettlementNameAction(self.get('settlement'), newName);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('changingName', false);
+        if (status === AWE.Net.OK) {
+          if (changeCounter > 0) {
+            AWE.GS.ResourcePoolManager.updateResourcePool();
+            return;
+          }
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
+        }
+
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          message: self.get('message')
+        });
+
+        WACKADOO.presentModalDialog(dialog);
+      });   
     },
     
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
@@ -318,12 +365,15 @@ AWE.UI.Ember = (function(module) {
         templateName: 'tax-change-new-dialog',
 
         settlement: this.get('settlement'),
-        valueText: this.getPath('settlement.taxPercentage'),
+        percentage: this.getPath('settlement.taxPercentage'),
+
+        taxMaximum: 15,
+        taxMinimum: 5,
 
         okTaxPressed:  function() {
-          var number = parseInt(this.get('valueText') || "0");
+          var number = this.get('percentage') || 0;
           log('OK_PRESSED', self,this, this.get('valueText'), number)
-          if (number >= 5 && number <= 15) {
+          if (number >= this.get('taxMinimum') && number <= this.get('taxMaximum') && number != this.getPath('settlement.taxPercentage')) {
             var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
             AWE.Action.Manager.queueAction(action, function(statusCode) {
               if (statusCode === 200 || statusCode === 203) {
@@ -334,7 +384,7 @@ AWE.UI.Ember = (function(module) {
               }
             });  
           }
-          else {
+          else if(number != this.getPath('settlement.taxPercentage')) {
             self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
           }
           this.destroy();            
@@ -530,10 +580,9 @@ AWE.UI.Ember = (function(module) {
     },
 	});
 
-  module.TaxesRangeView  = Ember.TextField.extend({
+  module.TaxesRangeView  = AWE.UI.Ember.SliderView.extend({
     classNames: ["taxes-range-slider"],
     attributeBindings: ["min", "max"],
-    type: "range",
     min: 5,
     max: 15,
     settlement: null,

@@ -73,6 +73,8 @@ AWE.UI = (function(module) {
     }    
     
     that.recalcView = function() {
+
+      var self = this;
       
       var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
       var region           = my.inspectedObject;
@@ -85,12 +87,15 @@ AWE.UI = (function(module) {
       this.setAllianceColor(allianceColor);
       
       var location = null;
-      AWE.Map.Manager.fetchLocationsForRegion(region, function() {
-        if (region.location(0)) {
+
+      if (region.location(0)) {
           location = region.location(0);
-        }
-      });      
-      this.setSkimButtonsEnabled(isOwnRegion && location && location !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(location));
+          self.setSkimButtonsEnabled(isOwnRegion && location /*&& location !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(location)*/);
+      }
+      else
+      {
+        AWE.Map.Manager.fetchLocationsForRegion(region);
+      }
       
       _super.recalcView();
       

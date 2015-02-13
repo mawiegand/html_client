@@ -2,18 +2,41 @@
 <script type="text/x-handlebars" data-template-name="welcome-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4 welcome-dialog">
-      {{#if characterName }}
-        <h1>{{t welcome.headingWithName}} {{characterName}}!</h1>
-      {{else}}
+    <div class="modal-dialog-pane z-layer-4 startup-dialog">
+      <div class="arrow first"></div>
+      <div class="arrow second"></div>
+      <div class="arrow third"></div>
+      <div class="content">
         <h1>{{t welcome.heading}}</h1>
-      {{/if}}
-      <h2>{{t welcome.headingPlan}}</h2>
-      <img {{bindAttr src="imageSrc"}}></img>
-      <h2>{{t welcome.headingSituation}}</h2>
-      {{{t welcome.formattedText}}}
+        <table>
+          <tr>
+            <td class="first advice">
+            <h2>{{t welcome.info.first.heading}}</h2>
+            <p>{{t welcome.info.first.text}}</p>
+            <div class="info-image"></div>
+            </td>
+            <td class="second advice">
+              <div class="info-image"></div>
+              <h2>{{t welcome.info.second.heading}}</h2>
+              <p>{{t welcome.info.second.text}}</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="third advice">
+              <h2>{{t welcome.info.third.heading}}</h2>
+              <p>{{t welcome.info.third.text}}</p>
+              <div class="info-image"></div>
+            </td>
+            <td class="fourth advice">
+              <div class="info-image"></div>
+              <h2>{{t welcome.info.fourth.heading}}</h2>
+              <p>{{t welcome.info.fourth.text}}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
       {{#if okPressed }}
-        <div class="image-button image-ok-button" {{action "okPressed"}}>{{t general.announcement.play}}</div>
+        <div class="startup-dialog-button" {{action "okPressed"}}></div>
       {{/if}}
     </div>
   </div>

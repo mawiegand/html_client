@@ -119,6 +119,8 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="encyclopedia-unit-new">
+{{#if isUnit}}
+{{/if}}
   <div class="popup-dialog-header">
     <a href="#" {{action "closeDialog"}}>
       <div class="modal-dialog-back"></div>
@@ -134,6 +136,7 @@
         HP: {{unit.hitpoints}}<br/>
         Def: {{unit.armor}}<br/>
         Crit: {{unit.critical_hit_damage}} <br/>
+        Vel: {{unit.velocity}}<br/>
       </div>
       <div class="modal-dialog-text">
         {{local unit.description}}

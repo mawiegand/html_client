@@ -12,6 +12,8 @@ AWE.UI = (function(module) {
     var _labelText = null;
     var _labelText2 = null;
     var _imageView = null;
+
+    var isButtonDown = false;
     
     var imagesForStates = {}; 
         
@@ -51,6 +53,17 @@ AWE.UI = (function(module) {
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
       _imageView.setContentMode(module.ViewContentModeFit);
+
+      _imageView.onMouseDown = function() {
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView ();
+      };
+      _imageView.onMouseUp = function(){
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
+      };
       _imageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
@@ -71,6 +84,16 @@ AWE.UI = (function(module) {
       _labelText2.x = my.frame.size.width / 2;
       _labelText2.y = my.frame.size.height / 2;
       _labelText2.view = that;
+      _labelText2.onMouseUp = function(){
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
+      }
+      _labelText2.onMouseDown = function(){
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView ();
+      }
       _labelText2.onMouseOver = function(event) { that.onMouseOver(event); }
       _labelText2.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_labelText2);
@@ -81,6 +104,16 @@ AWE.UI = (function(module) {
       _labelText.x = my.frame.size.width / 2;
       _labelText.y = my.frame.size.height / 2;
       _labelText.view = that;
+      _labelText.onMouseUp = function(){
+        that.setNeedsUpdate();
+        isButtonDown = false;
+        that.updateView ();
+      }
+       _labelText.onMouseDown = function(){
+        that.setNeedsUpdate();
+        isButtonDown = true;
+        that.updateView ();
+      }
       _labelText.onMouseOver = function(event) { that.onMouseOver(event); }
       _labelText.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_labelText);
@@ -96,7 +129,16 @@ AWE.UI = (function(module) {
       _imageView.setAlpha(this.alpha()); // usual case
 
       if (this.enabled()) {  // make sure, the button has the correct alpha value, if enabled
-        _imageView.setAlpha(this.alpha());
+        //_imageView.setAlpha(this.alpha());
+        if(isButtonDown){
+           _imageView.setAlpha(0.7 * this.alpha());
+           _labelText.alpha = 0.7;
+           _labelText2.alpha = 0.7;
+        }else{
+           _imageView.setAlpha(this.alpha());
+           _labelText.alpha = 1.0;
+           _labelText2.alpha = 1.0;
+        }
       }
       
       if (!this.enabled()) {
@@ -202,7 +244,17 @@ AWE.UI = (function(module) {
     }
     
     /* actions */
-    
+    that.mouseDownFromDOM = function(){
+      that.setNeedsUpdate();
+      isButtonDown = true;
+      that.updateView ();
+    }
+
+    that.mouseUpFromDOM = function(){
+      that.setNeedsUpdate();
+      isButtonDown = false;
+      that.updateView ();
+    }
     
     that.onClick = function() {
       log('button on click');

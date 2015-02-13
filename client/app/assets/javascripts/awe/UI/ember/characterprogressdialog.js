@@ -70,11 +70,7 @@ AWE.UI.Ember = (function(module) {
       //var compressedVersion = $(window).width() < 1024; // that's not a good option! may run in window / frame / div
       var self = this;
       
-      console.log("meh");
-      
       //if (popupAnimations2) {
-          
-          console.log("mehhh");
           
           if($(window).width() < 1024){
             self.$(".level-up-dialog-bg").delay(0).animate({

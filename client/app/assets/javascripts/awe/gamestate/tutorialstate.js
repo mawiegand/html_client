@@ -1463,7 +1463,8 @@ AWE.GS = (function(module) {
           questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
         var dialog = AWE.UI.Ember.QuestDialog.create({
           questState: questState,
-          modeStart: true, 
+          modeStart: true,
+          popupAnimations: true,
           okPressed:    function() {
             this.destroy();
             // log('---> checkForNewQuests: set displayed');
@@ -1496,7 +1497,7 @@ AWE.GS = (function(module) {
         modeExisting: true,
         questState: questState,
         spinningAnimation: applaud,
-        popupAnimations: applaud,
+        popupAnimations: true,
       });
       WACKADOO.presentModalDialog(infoDialog);      
 

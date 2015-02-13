@@ -144,9 +144,7 @@ AWE.UI.Ember = (function(module) {
 
     sendAllianceApplication: function() {
       this.set('applicationMessage', null);
-      var confirmationDialog = AWE.UI.Ember.Dialog.create({
-        templateName: 'info-dialog',
-
+      var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
         classNames: ['confirmation-dialog'],
         
         controller: this,
@@ -269,15 +267,11 @@ AWE.UI.Ember = (function(module) {
           alliance         === undefined || alliance         === null ||
           currentCharacter === undefined || currentCharacter === null) {
 
-        var dialog = AWE.UI.Ember.Dialog.create({
-          contentTemplateName: 'info-dialog',
-          
+        var dialog = AWE.UI.Ember.InfoDialog.create({          
           heading:             AWE.I18n.lookupTranslation('error.genericClientHeading'),
           message:             AWE.I18n.lookupTranslation('error.genericClientMessage'),
           
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
+          okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
         });          
         WACKADOO.presentModalDialog(dialog);
 
@@ -287,22 +281,17 @@ AWE.UI.Ember = (function(module) {
                currentCharacter.get('id')          !== alliance.get('leader_id') ||
                character.get('id')                 === alliance.get('leader_id')) {
 
-        var dialog = AWE.UI.Ember.Dialog.create({
-          contentTemplateName: 'info-dialog',
-          
+        var dialog = AWE.UI.Ember.InfoDialog.create({          
           heading:             AWE.I18n.lookupTranslation('alliance.error.kickHeading'),
           message:             AWE.I18n.lookupTranslation('alliance.error.kickMessage'),
           
-          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-          okPressed:           null,
-          cancelPressed:       function() { this.destroy(); },
+          okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
         });          
         WACKADOO.presentModalDialog(dialog);
 
       }
       else {
-        var confirmationDialog = AWE.UI.Ember.Dialog.create({
-          templateName: 'info-dialog',
+        var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
 
           classNames: ['confirmation-dialog'],
         
@@ -323,10 +312,9 @@ AWE.UI.Ember = (function(module) {
               else {
                 log(status, "The server did not accept the kick member command.");
                 var dialog = AWE.UI.Ember.InfoDialog.create({
-                  contentTemplateName: 'server-command-failed-info',
-                  cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-                  okPressed:           null,
-                  cancelPressed:       function() { this.destroy(); },
+                  heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+                  message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+                  okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
                 });          
                 WACKADOO.presentModalDialog(dialog);
               } 
@@ -595,6 +583,11 @@ AWE.UI.Ember = (function(module) {
       });
     },
 
+    infoClicked: function() {
+      var dialog = AWE.UI.Ember.AllianceDiplomacyInfoView.create();
+      WACKADOO.presentModalDialog(dialog);
+    },
+
     relationsFound: function() {
       var self = this;
       var relations = this.getPath('alliance.diplomacySourceRelations');
@@ -649,6 +642,61 @@ AWE.UI.Ember = (function(module) {
       });
       return capitulationRelations;
     }.property('alliance.diplomacySourceRelations'),
+
+  });
+  
+  module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
+    width: 120,
+    height: 150,
+    
+    alliance: null,
+    shape: null,
+    controller: null,
+    
+    init: function() {
+      this._super();
+    },
+    
+    bannerUpdate: function() {   // BUG: presently, if the alliance is set after the creation of the banner view, it sometimes doesn't display the alliance banner: example: on game server open the settlement dialog for another alliance, that you haven't looked-at before (client has not loaded that alliance)
+      log('BANNER UPDATE');
+      var allianceId = this.getPath('alliance.id');
+      var allianceColor = this.getPath('alliance.color');
+      var shape  = this.get('shape');
+      var width  = this.get('width')  || 200;
+      var height = this.get('height') || 200;
+      
+      if (width * 5 / 4 < height) {
+        height = width * 5 / 4; 
+      }
+      else {
+        width = height * 4 / 5;
+      }
+      if (shape) {
+        this.removeChild(shape);
+      }
+      if (!allianceId) {
+        this.set('shape', null);
+        return ;
+      }
+      log('SHAPE', width, height, allianceId);
+      shape = AWE.UI.createAllianceFlagView();
+      shape.initWithController(this.get('controller'));
+      shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
+      shape.setAllianceId(allianceId);
+      shape.setAllianceColor(allianceColor);
+      shape.setTagVisible(true);
+      shape.setDirection('down');
+      this.addChild(shape);
+      this.set('shape', shape);
+      shape.updateView();      
+      this.update();
+    }.observes('alliance.id'),
+    
+  });
+
+  module.AllianceDiplomacyInfoView = module.PopUpDialog.extend({
+    templateName: 'alliance-diplomacy-info',
+    classNames: ['alliance-diplomacy-info-view'],
 
   });
   return module;

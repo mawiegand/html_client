@@ -179,13 +179,12 @@ AWE.UI.Ember = (function(module) {
       var dialog = AWE.UI.Ember.InfoDialog.create({
         heading:    AWE.I18n.lookupTranslation('alliance.confirmLeave.heading'),
         message:    message,
-        allianceId: this.getPath('character.alliance_id'),
 
-        cancelPressed: function() {
-          this.destroy();
-        },
         okText: AWE.I18n.lookupTranslation('general.yes'),
         cancelText: AWE.I18n.lookupTranslation('general.cancel'),
+
+        allianceId: this.getPath('character.alliance_id'),
+
         okPressed: function() {
           var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
           if (!action) {
@@ -201,7 +200,10 @@ AWE.UI.Ember = (function(module) {
             });
           }
           this.destroy();
-        }
+        },
+        cancelPressed: function() {
+          this.destroy();
+        },
       });
       WACKADOO.presentModalDialog(dialog);
     },

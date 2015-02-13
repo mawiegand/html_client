@@ -19,6 +19,8 @@ AWE.UI = (function(module) {
     var _levelBackgroundImage;
     var _levelForegroundImage;
     var _levelArcShape;
+
+    var isButtonDown = false;
     
     var _levelProgress = 0;
     var _levelProgressMax = 100;
@@ -58,6 +60,17 @@ AWE.UI = (function(module) {
       if (!_levelBackgroundImage) {
         _levelBackgroundImage = new Bitmap();   
         _levelBackgroundImage.view = that;
+        _levelBackgroundImage.onMouseUp = function(){
+          that.setNeedsUpdate();
+          isButtonDown = false;
+          that.recalcView ();
+      };
+       _levelBackgroundImage.onMouseDown = function(){
+          that.setNeedsUpdate();
+          isButtonDown = true;
+          that.recalcView ();
+      };
+
         _levelBackgroundImage.onClick = function() {
           that.onClick();
         };
@@ -70,6 +83,7 @@ AWE.UI = (function(module) {
         _levelForegroundImage.x = 10
         _levelForegroundImage.y = 10;
         _levelForegroundImage.view = that;
+
         _levelForegroundImage.onClick = function() {
           that.onClick();
         };
@@ -84,6 +98,7 @@ AWE.UI = (function(module) {
         _levelTextShadow.x = _frameWidth / 2;
         _levelTextShadow.y = _frameHeight / 2;
         _levelTextShadow.view = that;
+
         _levelTextShadow.onClick = function() { 
           that.onClick(); 
         }
@@ -97,12 +112,31 @@ AWE.UI = (function(module) {
         _levelText.x = _frameWidth / 2;
         _levelText.y = _frameHeight / 2;
         _levelText.view = that;
+
         _levelText.onClick = function() { 
           that.onClick(); 
         }
         my.container.addChild(_levelText);
       }
-      
+      if(isButtonDown){
+        if(_levelBackgroundImage)
+          _levelBackgroundImage.alpha = 0.7;
+        if(_levelForegroundImage)
+          _levelForegroundImage.alpha = 0.7;
+        if(_levelTextShadow)
+          _levelTextShadow.alpha = 0.7;
+        if(_levelText)
+          _levelText.alpha = 0.7;
+      }else{
+        if(_levelBackgroundImage)
+          _levelBackgroundImage.alpha = 1.0;
+        if(_levelForegroundImage)
+          _levelForegroundImage.alpha = 1.0;
+        if(_levelTextShadow)
+          _levelTextShadow.alpha = 1.0;
+        if(_levelText)
+          _levelText.alpha = 1.0;
+      }
       this.redrawLevelProgress();      
     };  
     
@@ -154,6 +188,18 @@ AWE.UI = (function(module) {
     
     that.displayObject = function() {
       return my.container;
+    }
+
+    that.mouseDownFromDOM = function(){
+      that.setNeedsUpdate();
+      isButtonDown = true;
+      that.recalcView ();
+    }
+
+    that.mouseUpFromDOM = function(){
+      that.setNeedsUpdate();
+      isButtonDown = false;
+      that.recalcView ();
     }
      
     

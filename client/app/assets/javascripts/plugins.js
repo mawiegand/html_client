@@ -34,4 +34,17 @@ window.log = function f(){
 
 
 // place any jQuery/helper plugins in here, instead of separate, slower script files.
+Math.getRandomBetween = function(min, max) {
+  return min + (Math.random()*(max - min));
+};
 
+Math.getRandomOfTwo = function(x, y) {
+  if(Math.random() < 0.5)
+  {
+    return x;
+  }
+  else
+  {
+    return y;
+  }
+};

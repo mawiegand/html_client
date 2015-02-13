@@ -135,6 +135,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
+              //self.get('extrasController').startRandomPterodactylus(60, 90);
+              self.get('extrasController').enableAutoPterodactylus();
             },
           });
           self.presentModalDialog(dialog);
@@ -327,6 +329,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);*/
         var identifier        = AWE.GS.CharacterManager.getCurrentCharacter().get('identifier');
 
+        AWE.GS.SettlementManager.updateOwnSettlements();
+
         var hud = AWE.Controller.createHUDController();
         hud.init();
         self.setHudController(hud);
@@ -351,8 +355,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
         else {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
-          self.activateBaseController({locationId: locationId});
+          self.activateBaseController({
+            locationId: locationId
+          });
         }
+
+        var extras = AWE.Controller.createExtrasController();
+        extras.init();
+        self.setExtrasController(extras);
 
         self.startRunloop();
         self.readyToRun();                            // ready to run
@@ -365,7 +375,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
         {
-            Sample.track('started', 'session');
+          Sample.sessionUpdate();  
+          Sample.track('started', 'session');
         }
 
         if (AWE.Config.CHAT_SHOW) {
@@ -607,6 +618,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
         hudController.notifyAboutNewScreenController(baseController);
       }
+
+      if(this.get('extrasController'))
+      {
+        this.get('extrasController').clearPterodactyls();
+        this.get('extrasController').enableAutoPterodactylus();
+      }
     },
 
     baseControllerActive: function() {
@@ -743,6 +760,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
         hudController.notifyAboutNewScreenController(controller);
       }
+      if(this.get('extrasController'))
+      {
+        this.get('extrasController').disableAutoPterodactylus();
+        this.get('extrasController').clearPterodactyls();
+      }
       
       return controller;
     },
@@ -819,6 +841,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         */
       var startupArgs = this.get('startupArguments');
       var platform = startupArgs['platform'];
+      
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("fsRrapvL");
 
       if (platform == Sample.PLATFORM_ANDROID)
       {
@@ -841,7 +866,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (!args || !args.accessToken) {
         if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
         {
-            Sample.track('start_failed', { event_category: 'session'});
+            Sample.track('start_failed', 'session');
         }
 
 //      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
@@ -873,6 +898,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Settings.hudScale = 1;
       }
       var styleSheets = document.styleSheets;
+      
+      // TODO: improve the code below. Does it have to be run for hudScale == 1?
+      //       can't it read the values for top and marginLeft from the CSS? 
+      //       The present code will OVERRIDE any change to the css, without the
+      //       developer noticing it.
       for (n in styleSheets)
       {
         var theRules = styleSheets[n].cssRules;
@@ -899,8 +929,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
       AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
       
-      Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("wad-rt82-fhjk-18");
+      // make sure the html client uses the same session and install token
+      // as the portal. We want "convergence" over all host-names and modules
+      // of the HTML game.
+      if (args.installToken)
+      {
+        Sample.setInstallToken(args.installToken);
+      }
+      if (args.sessionToken)
+      {
+        Sample.setSessionToken(args.sessionToken);
+      }
       
       if (AWE.Facebook.isRunningInCanvas)
       {

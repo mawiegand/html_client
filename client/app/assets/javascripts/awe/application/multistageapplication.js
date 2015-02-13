@@ -57,9 +57,12 @@ AWE.Application = (function(module) {
     var _uiEnabled = false;
     var _hideHud = true;
 
+    var mouseCommonTarget = null;
+
     return /** @lends AWE.Application.MultiStageApplication# */ {
 
       hudController: null,
+      extrasController: null,
       notificationController: null,
 
       presentScreenController: null,
@@ -363,6 +366,41 @@ AWE.Application = (function(module) {
         if (presentScreenController && presentScreenController.onMouseUp) {
           presentScreenController.onMouseUp(evt);
         }
+
+         //added mouseup event for canvas buttons, as example was onclick used
+        log('entered mouseup handler');
+        var presentScreenController = this.get('presentScreenController');
+
+        if (presentScreenController && presentScreenController.isScrolling()) {
+          return ; // just ignore it here!
+        }
+
+        if ($(evt.target).parents('div#jappix_mini').length) {
+          log('catched by jappix');
+          return;
+        }
+
+        //default mouseup, if target not under mouse pointer
+        if(mouseCommonTarget){
+          if (mouseCommonTarget && mouseCommonTarget.view && mouseCommonTarget.view.onMouseDown) { // TODO: in our view layer: propagate clicks upwards along responder chain.
+            log('mouseup on mouseCommonTarget'+ mouseCommonTarget.view+' '+ mouseCommonTarget.view.typeName());
+            if (mouseCommonTarget.view.enabled()) {
+              log("mouseup forwarded to mouseCommonTarget.view.onMouseUp(..)");
+              mouseCommonTarget.view.onMouseUp(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+              mouseCommonTarget = null;
+            }
+            else {
+              console.log('mouseup on disabled view.');
+             }
+          }
+          else if (mouseCommonTarget && mouseCommonTarget.onMouseUp) {
+            log("mouseup forwarded to target.onMouseUp(..)");
+            mouseCommonTarget.onMouseUp(evt);
+            mouseCommonTarget = null;
+          }
+        }
+
+        var allStages = this.get('allStages');
       },
 
       /** finds the easelJS DisplayObject that the mouse is over and generates
@@ -451,6 +489,7 @@ AWE.Application = (function(module) {
         if (this.get('readyForRunloop') && this.get('presentScreenController')) {
           this.testMouseOver();
           if (this.get('hudController')) this.get('hudController').runloop();
+          if (this.get('extrasController')) this.get('extrasController').runloop();
           if (this.get('notificationController')) this.get('notificationController').runloop();
           this.get('presentScreenController').runloop(); // hand over control to present screen controller
 
@@ -521,6 +560,58 @@ AWE.Application = (function(module) {
         var controller = this.get('presentScreenController');
         if (!this.get('isModal') && controller && controller.onMouseDown) {
           controller.onMouseDown(evt);
+        }
+
+        //added mousedown event for canvas buttons, as example was onclick used
+        log('entered mousedown handler');
+        var presentScreenController = this.get('presentScreenController');
+
+        if (presentScreenController && presentScreenController.isScrolling()) {
+          // log("ignored click --> presentScreenController.isScrolling() == true");
+          return ; // just ignore it here!
+        }
+
+        if (this.get('isModal')) {
+          // log("ignored click --> isModal == true");
+          return ;
+        }
+
+        if ($(evt.target).parents('div#jappix_mini').length) {
+          log('catched by jappix');
+          return;
+        }
+
+        var allStages = this.get('allStages');
+        // TODO: can we use stage.mouseX here or should we better apply the stage-transformations to pageX?
+
+        var target = null;
+        for (var layer=0; layer < allStages.length && !target; layer++) {
+          // targetLayer = layer;
+          if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
+            var stage = allStages[layer].stage;
+            target = stage.getObjectUnderPoint(evt.pageX-stage.canvas.offsetLeft, evt.pageY-stage.canvas.offsetTop); // TODO: don't use absolute evt.pageX here, right?!
+            mouseCommonTarget = target;
+          }
+        }
+
+        if (target) {
+          if (target && target.view && target.view.onMouseDown) { // TODO: in our view layer: propagate clicks upwards along responder chain.
+            log('mousedown on target'+ target.view+' '+ target.view.typeName());
+            if (target.view.enabled()) {
+              log("mousedown forwarded to target.view.onMouseDown(..)");
+              target.view.onMouseDown(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            }
+            else {
+              console.log('mousedown on disabled view.');
+            }
+          }
+          else if (target && target.onMouseDown) {
+            log("mousedown forwarded to target.onMouseDown(..)");
+            target.onMouseDown(evt);
+          }
+        }
+        else {
+          log("mousedown passed through all layers");
         }
       },
 
@@ -721,6 +812,14 @@ AWE.Application = (function(module) {
             controller.applicationController = this;
             controller.viewDidAppear();
           }
+        }
+      },
+
+      setExtrasController: function(controller) {
+        var presentExtrasController = this.get('extrasController');
+        log('in set extras controller', controller);
+        if (controller != presentExtrasController) {
+          this.set('extrasController', controller);
         }
       },
 
