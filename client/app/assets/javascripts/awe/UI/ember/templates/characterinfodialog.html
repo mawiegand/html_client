@@ -1,4 +1,12 @@
 <script type="text/x-handlebars" data-template-name="character-info-dialog">
+  {{#if homeSettlement}}
+    <div class="popup-dialog-header">
+      <a href="#" {{action "closeDialogAndCenter"}} alt="{{homeSettlement.name}}">
+        <div class="modal-dialog-center"></div>
+      </a>
+    </div>
+  {{#if homeSettlement}}
+  
   <h1>{{character.name}}</h1>
   <div class="character-info-container">
     <div class="avatar">
