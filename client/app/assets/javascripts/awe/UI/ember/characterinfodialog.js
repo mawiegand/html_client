@@ -23,8 +23,6 @@ AWE.UI.Ember = (function(module) {
     updatingLikes: false,
     
     ownResourcePool: false,
-
-    homeBase: null,
     
     init: function() {
       this._super();     
@@ -43,23 +41,6 @@ AWE.UI.Ember = (function(module) {
     showDescription: function() {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
     }.property('character.description'),
-
-    homeObserver: function() {
-      var self = this;
-
-      var locationId = this.getPath('character.base_location_id');
-      var homeBase = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
-
-      if(!homeBase && !this.getPath('character.npc'))
-      {
-        AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
-          homeBase = settlement;
-        });
-      }
-
-      self.set('homeBase', homeBase);
-
-    }.observes('character.base_location_id'),
 
     sendUserContentReport: function() {
       var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
@@ -92,7 +73,7 @@ AWE.UI.Ember = (function(module) {
       if(WACKADOO.presentScreenController.typeName === 'MapController')
       {
         var mapController = WACKADOO.presentScreenController;
-        var target = this.get('homeBase');
+        var target = this.get('homeSettlement');
 
         WACKADOO.closeAllModalDialogs();
         mapController.setSelectedSettlement(target);
