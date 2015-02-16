@@ -68,7 +68,7 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(confirmationDialog);
     },
 
-    closeDialogsAndCenter: function() {
+    closeDialogAndCenter: function() {
 
       if(WACKADOO.presentScreenController.typeName === 'MapController')
       {
