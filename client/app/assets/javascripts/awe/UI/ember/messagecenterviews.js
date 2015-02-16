@@ -21,7 +21,7 @@ AWE.UI.Ember = (function(module) {
     tagName: 'span',
     value: null,
     nullValue: function() {
-      return this.get('value') === null || this.get('value') === undefined; 
+      return this.get('value') === null || typeof this.get('value') === "undefined"; 
     }.property('value').cacheable(),
   });
 
