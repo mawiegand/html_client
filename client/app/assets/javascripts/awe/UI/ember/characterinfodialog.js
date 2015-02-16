@@ -52,7 +52,7 @@ AWE.UI.Ember = (function(module) {
 
       if(!homeBase && !this.getPath('character.npc'))
       {
-        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
           homeBase = settlement;
         });
       }
