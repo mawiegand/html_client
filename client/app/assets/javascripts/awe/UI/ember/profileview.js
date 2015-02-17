@@ -335,9 +335,15 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     changingName:     false,
     changingGender:   false,
 
-    dirArrow: 1,
-    topArrow: 60,
-    leftArrow: 220,
+    customizeDirArrow: 1,
+    customizeTopArrow: 60,
+    customizeLeftArrow: 220,
+
+    closeDirArrow: 1,
+    closeTopArrow: 60,
+    closeLeftArrow: 220,
+
+    showCloseMarker: false,
 
     //isGenderM: true,
     changeGenderPressed: function() {
@@ -459,7 +465,8 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     
     changeNamePressed: function() {
       this.set('message', null);
-      this.processNewName(this.getPath('changedInput'));      
+      this.set('changedNameOnce', true);
+      this.processNewName(this.getPath('changedInput'));   
     },
     
 
@@ -500,6 +507,11 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
+              var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+              if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE))
+              {
+                self.set("showCloseMarker", true);
+              }
             } 
             return;  
           }
@@ -521,9 +533,21 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
       }
     },
 
-     customizeButtonUIMarker: function() {
+    customizeButtonUIMarker: function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
+    closeButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE))
+        {
+          if(this.get('showCloseMarker'))
+          {
+            return true;
+          }
+        }
+        return false;
     }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
    });
