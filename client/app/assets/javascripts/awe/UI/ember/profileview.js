@@ -23,9 +23,10 @@ AWE.UI.Ember = (function(module) {
     character: null,
     alliance:  null,
     allianceMember: null,
+    nameChanged: false,
 
     isInTutorial: function(){
-      return !AWE.GS.TutorialStateManager.nameChanged;
+      return !this.get('nameChanged');
     }.property('nameChanged'),
     
     // FIXME hack for users that have already changed their name before reached the appropriate quest 
@@ -107,6 +108,7 @@ module.ProfileNewTabView = module.TabViewNew.extend({
     character: null,
     alliance:  null,
     allianceMember: null,
+    changedName: false,
 
     init: function() {
 
@@ -131,7 +133,8 @@ module.ProfileNewTabView = module.TabViewNew.extend({
          title: "Customize", 
          view: module.ProfileNewCustomizeView.extend({ 
             characterBinding: "parentView.parentView.character", 
-            allianceBinding:  "parentView.parentView.alliance", 
+            allianceBinding:  "parentView.parentView.alliance",
+            nameChangedBinding: "parentView.parentView.parentView.nameChanged" 
           }),
          buttonClass: "right-menu-button"
        }
@@ -468,8 +471,8 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     changeNamePressed: function() {
       this.set('message', null);
       this.set('changedNameOnce', true);
-      AWE.GS.TutorialStateManager.setNameChanged(true); //Hack
-      //this.processNewName(this.getPath('changedInput'));
+      this.set('nameChanged', true); //Hack
+      this.processNewName(this.getPath('changedInput'));
     },
     
 
@@ -510,7 +513,6 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
-              AWE.GS.TutorialStateManager.setNameChanged(true); //Hack
             } 
             return;  
           }
@@ -533,8 +535,13 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     },
 
     customizeButtonUIMarker: function() {
-      return !AWE.GS.TutorialStateManager.nameChanged;
-    }.property('AWE.GS.TutorialStateManager.nameChanged'),
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE) && !this.get('nameChanged'))
+      {
+        return true;
+      }
+      return false;
+    }.property('nameChanged'),
 
    });
 

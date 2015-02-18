@@ -1192,12 +1192,6 @@ AWE.GS = (function(module) {
     that = module.createEntityManager(my);
     
     that.tutorialState = null;
-
-    that.nameChanged = false;
-
-    that.setNameChanged = function(state) {
-      this.nameChanged = state;
-    };
   
     that.getTutorialState = function() {
       return this.tutorialState;
@@ -1242,7 +1236,7 @@ AWE.GS = (function(module) {
     }
 
     that.tutorialEnabled = function() {
-      return AWE.Config.USE_TUTORIAL && that.tutorialState != null;
+      return AWE.Config.USE_TUTORIAL && that.tutorialState.get('openQuestStates');
     }
 
     that.triggerTutorialChecks = function() {
@@ -1393,7 +1387,7 @@ AWE.GS = (function(module) {
           // log('---> stop checking in checkForNewQuests, ERROR');
         }
       });
-    }     
+    }      
 
     that.showNextNewQuest = function() {
       var newQuestStates = that.tutorialState.get('newQuestStates');
