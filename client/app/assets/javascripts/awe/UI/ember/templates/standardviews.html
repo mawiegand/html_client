@@ -183,7 +183,9 @@
           {{/if}}
           <a href="#" {{action "closeDialog"}}>
             {{#if showCloseMarker}}
-              {{view AWE.UI.Ember.UIMarker direction=1 top="-20" left=500}}
+              {{#unless isInTutorial}}
+                {{view AWE.UI.Ember.UIMarker direction=1 top="-20" left=500}}
+              {{/unless}}
             {{/if}}
             <div class="modal-dialog-close"></div>
           </a>

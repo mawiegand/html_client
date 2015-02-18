@@ -266,10 +266,6 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
     startTab: 0,
     subTab: 0,
-  
-    /*setSettlment: function(){
-      this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
-    }.observes('garrisonArmy'),*/
 
     garrisonArmyObserver: function() {
       if (this.get('garrisonArmy')) {
@@ -291,6 +287,14 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
         });
       }
     }.observes('garrisonArmy', 'garrisonArmy.owner_id'),
+
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
   });
 
@@ -446,8 +450,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
           controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           settlementBinding: "parentView.parentView.settlement",
-          trainingQueuesBinding: "parentView.parentView.trainingQueues",
-          showCloseMarkerBinding: "parentView.parentView.parentView.showCloseMarker"
+          trainingQueuesBinding: "parentView.parentView.trainingQueues"
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -528,8 +531,7 @@ module.MilitaryTabView = module.TabViewNew.extend({
           garrisonArmyBinding: "parentView.garrisonArmy",
           settlementBinding: "parentView.settlement",
           trainingQueuesBinding: "parentView.trainingQueues",
-          startTabBinding: 'parentView.subTab',
-          showCloseMarkerBinding: 'showCloseMarker'
+          startTabBinding: 'parentView.subTab'
           }),
          buttonClass: "right-menu-button"
        }
@@ -548,7 +550,6 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     unitType: null,
     queue: null,
     controller: null,
-    showCloseMarker: false,
 
     openDialog: function()
       {
@@ -569,15 +570,13 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
 
     openJobDialog: function()
       {
-          var showCloseMarker = this.getPath("parentView.showCloseMarker");
           var unitTypeObject = this.get("unitType");
           var queueObject = this.get('queue');
           var controllerLocal = this.get('controller');
           var dialog = AWE.UI.Ember.ArmyRecruitmentJobView.create({
             unitType: unitTypeObject,
             queue: queueObject,
-            controller: controllerLocal,
-            showCloseMarkerBinding: showCloseMarker
+            controller: controllerLocal
           });
           WACKADOO.presentModalDialog(dialog);
           return false;
@@ -883,6 +882,14 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
     queue: null,
     controller: null,
 
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
     });
 
   module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
@@ -935,11 +942,7 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
       }
       else
       {
-        if(this.get('isUIMarker'))
-        {
-          this.set('showCloseMarker', true);
-        }
-        //this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('unitType.id'), this.get('number'));
+        this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('unitType.id'), this.get('number'));
         this.get('parentView').destroy();
       }
     },

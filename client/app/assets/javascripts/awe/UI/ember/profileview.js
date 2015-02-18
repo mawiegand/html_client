@@ -24,7 +24,9 @@ AWE.UI.Ember = (function(module) {
     alliance:  null,
     allianceMember: null,
 
-    onClose:   null,
+    isInTutorial: function(){
+      return !AWE.GS.TutorialStateManager.nameChanged;
+    }.property('nameChanged'),
     
     // FIXME hack for users that have already changed their name before reached the appropriate quest 
     characterObserver: function() {
@@ -466,7 +468,8 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     changeNamePressed: function() {
       this.set('message', null);
       this.set('changedNameOnce', true);
-      this.processNewName(this.getPath('changedInput'));   
+      AWE.GS.TutorialStateManager.setNameChanged(true); //Hack
+      //this.processNewName(this.getPath('changedInput'));
     },
     
 
@@ -507,11 +510,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
-              var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-              if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE))
-              {
-                self.set("showCloseMarker", true);
-              }
+              AWE.GS.TutorialStateManager.setNameChanged(true); //Hack
             } 
             return;  
           }
@@ -534,21 +533,8 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     },
 
     customizeButtonUIMarker: function() {
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);
-    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
-
-    closeButtonUIMarker: function() {
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE))
-        {
-          if(this.get('showCloseMarker'))
-          {
-            return true;
-          }
-        }
-        return false;
-    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+      return !AWE.GS.TutorialStateManager.nameChanged;
+    }.property('AWE.GS.TutorialStateManager.nameChanged'),
 
    });
 
@@ -720,15 +706,15 @@ module.UserNameTextfield = Ember.TextField.extend({
       {
         if(this.getPath('parentView.character.name') != this.get('value'))
         {
-          this.setPath('parentView.dirArrow', 0);
-          this.setPath('parentView.topArrow', 182);
-          this.setPath('parentView.leftArrow', 390); 
+          this.setPath('parentView.customizeDirArrow', 0);
+          this.setPath('parentView.customizeTopArrow', 182);
+          this.setPath('parentView.customizeLeftArrow', 390); 
         }
         else
         {
-          this.setPath('parentView.dirArrow', 1);
-          this.setPath('parentView.topArrow', 60);
-          this.setPath('parentView.leftArrow', 220);
+          this.setPath('parentView.customizeDirArrow', 1);
+          this.setPath('parentView.customizeTopArrow', 60);
+          this.setPath('parentView.customizeLeftArrow', 220);
         }
       }
       //return tutorialState.isUIMarkerActive(AWE.GS.MARK_PROFILE);

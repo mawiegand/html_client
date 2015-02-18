@@ -226,6 +226,14 @@ module.SelectBuildingNewDialog = module.PopUpDialog.extend({
       this.get('controller').unselectSlot();
       this.destroy();
     },
+
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_BUILDING_OPTION)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
 module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {

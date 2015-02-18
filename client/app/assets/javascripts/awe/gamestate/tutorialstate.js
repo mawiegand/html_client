@@ -1192,6 +1192,12 @@ AWE.GS = (function(module) {
     that = module.createEntityManager(my);
     
     that.tutorialState = null;
+
+    that.nameChanged = false;
+
+    that.setNameChanged = function(state) {
+      this.nameChanged = state;
+    };
   
     that.getTutorialState = function() {
       return this.tutorialState;
@@ -1387,7 +1393,7 @@ AWE.GS = (function(module) {
           // log('---> stop checking in checkForNewQuests, ERROR');
         }
       });
-    }      
+    }     
 
     that.showNextNewQuest = function() {
       var newQuestStates = that.tutorialState.get('newQuestStates');
