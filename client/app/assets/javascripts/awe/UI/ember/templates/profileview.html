@@ -10,7 +10,7 @@
   <h1 class="modal-dialog-heading">{{character.name}}</h1>
     <div class="modal-dialog-body profile-info-self-dialog-pane scrolling">
         <div class="profile-tab-view">
-            {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" }}
+            {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" changedNameBinding="changedName"}}
         </div>
     </div>
 </script>
@@ -117,8 +117,7 @@
 
 <script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
 {{#if customizeButtonUIMarker}}
-      {{view AWE.UI.Ember.UIMarker directionBinding="dirArrow" topBinding="topArrow" leftBinding="leftArrow"}}
-  <!--{{view AWE.UI.Ember.UIMarker direction=1 top=60 left=220}}-->
+      {{view AWE.UI.Ember.UIMarker directionBinding="customizeDirArrow" topBinding="customizeTopArrow" leftBinding="customizeLeftArrow"}}
 {{/if}}
 <div class="row row2 rowcustomize">
     <div class="cell cell-30 avatar">

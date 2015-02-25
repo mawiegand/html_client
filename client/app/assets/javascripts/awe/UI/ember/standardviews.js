@@ -112,10 +112,13 @@ AWE.UI.Ember = (function(module) {
    */
   module.PopUpDialog = Ember.View.extend({
     layoutName: "popup-dialog",
+
+    showCloseMarker: false,
     
     closeDialog: function() {
       this.destroy();
     },
+
     onClose: null,
 
     hasSettings: false,
@@ -125,6 +128,10 @@ AWE.UI.Ember = (function(module) {
         this.onClose(this);
       }
       this._super();
+    },
+
+    setCloseMarker: function(show) {
+      this.set("showCloseMarker", show);
     },
   });
 

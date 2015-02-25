@@ -1236,7 +1236,7 @@ AWE.GS = (function(module) {
     }
 
     that.tutorialEnabled = function() {
-      return AWE.Config.USE_TUTORIAL && that.tutorialState != null;
+      return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_completed;
     }
 
     that.triggerTutorialChecks = function() {
@@ -1387,7 +1387,7 @@ AWE.GS = (function(module) {
           // log('---> stop checking in checkForNewQuests, ERROR');
         }
       });
-    }      
+    }     
 
     that.showNextNewQuest = function() {
       var newQuestStates = that.tutorialState.get('newQuestStates');
