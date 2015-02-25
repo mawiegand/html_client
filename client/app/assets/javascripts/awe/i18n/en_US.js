@@ -1254,11 +1254,11 @@ AWE.I18n.en_US = function(module) {
 
       end:{
         header:"Success - you've completed the tutorial. ",
-        p1:"Congratulations Demigod. You've taken the first steps on your journey to greatness! You've successfully worked through the tutorial and you now know the basics of Wack-A-Doo.",
-        p2:"As a reward, we've unlocked the Platinum Account for you for the next few days. You can find details of this in the Bonanza, which is accessible on the upper right menu. ",
-        p3:"We will watch your further development and will provide a series of optional tasks for you to complete. Accomplish these tasks whenever you like. Or don't. ",
-        p4:"Don't let the number of open tasks bother you. Just improve your home settlement, recruit units and armies and increase your power and influence.",
-        p5:"There is no single valid strategy that will guarantee a smooth ride ahead. There's just one rule to remember: resources, resources, resources. A powerful army wins a battle, but a flourishing economy wins the war. ",
+        p1:"Congratulations Demigod. You've successfully worked through the tutorial and you now know the basics of Wack-A-Doo.",
+        p2:"As a reward, we've unlocked the Platinum Account for you for the next few days. You can find details of this in the Shop.",
+        p3:"We will watch your further development and will provide a series of optional tasks for you to complete.",
+        p4:"Improve your home settlement, recruit units and armies and increase your power and influence.",
+        p5:"There is no single valid strategy that will guarantee a smooth ride ahead. There's just one rule to remember: A powerful army wins a battle, but a flourishing economy wins the war. ",
         p6:"Have fun and whack on!",
         redeemError:{
           header:"Attention",
