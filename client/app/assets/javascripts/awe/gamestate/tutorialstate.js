@@ -1486,7 +1486,7 @@ AWE.GS = (function(module) {
     
     that.showQuestInfoDialog = function(quest) {
       
-      if (!that.tutorialEnabled()) return;
+      
 
       // log('---> showQuestInfoDialog');
       
