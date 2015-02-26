@@ -1277,12 +1277,12 @@ AWE.I18n.de_DE = function(module) {
 
       end: {
         header: "Tutorial erfolgreich beendet.",
-        p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hast das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
-        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account samt Komfortfunktionen. Details dazu in der Fundgrube oben rechts.",
-        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten. Diese Aufgaben kannst Du erfüllen, wann immer es Dir gefällt.",
-        p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und Deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
-        p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber wenn es eine Aussage mit Allgemeingültigkeit gibt, ist es folgende: Rohstoffe, Rohstoffe und noch mehr Rohstoffe. Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
-      	p6: "Viel Spaß in Wack-A-Doo und whack on!",
+        p1: "Glückwunsch Halbgott,  Du hast das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
+        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den Platinum-Account . Details dazu in der Fundgrube oben rechts.",
+        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten.",
+        p4: "Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und Deinen Einfluss, wie es Dir gefällt!",
+        p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber beachte folgenden Tip: Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
+        p6: "Viel Spaß in Wack-A-Doo und whack on!",
         redeemError: {
           header:       "Achtung",
           message:      "Die Belohnung konnte nicht freigeschaltet werden, da sie bereits einmal freigeschaltet wurde.",
@@ -1553,6 +1553,13 @@ AWE.I18n.de_DE = function(module) {
       armyInfo:{
         next: "Nächster",
       }
+    },
+    extras: {
+      retentionEgg: {
+        alertHeading: "Noch nicht Schlüpfbereit",
+        alertContent: "Das Ei ist noch zum schlüpfen bereit.\nWenn es geschlüpft ist erhältst du eine riesige Menge Rohstoffe!",
+        redeemMessage: "Schau mal wie süß sie sind!",
+      },
     },
   }
   

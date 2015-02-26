@@ -10570,12 +10570,14 @@ var JappixMini = (function () {
 
             // Filter the links
             /* Begin 5D Mod Add */
+            /* WAD-913 remove it 
             if (nick) {
               if (self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick)) {
                 body = JappixLinks.apply(body, 'mini');
               }
             }
             /* End 5D Mod Add */
+            body = JappixLinks.apply(body, 'mini');
 
             // Generate the message code
             if(me_command) {

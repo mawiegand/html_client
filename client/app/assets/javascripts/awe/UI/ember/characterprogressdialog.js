@@ -122,8 +122,8 @@ AWE.UI.Ember = (function(module) {
           });
           
           self.$(".level-up-girl").delay(0).animate({
-              top: '-66%',
-              left: '-33%'
+              top: '-69%',
+              left: '-46%'
           },{
             duration: 250,
             easing: 'easeInQuart'

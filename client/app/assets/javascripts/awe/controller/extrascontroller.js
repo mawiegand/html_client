@@ -20,6 +20,14 @@ AWE.Controller = (function(module) {
     var _autoPteroIntervalMax = 90; //in sec
     var _autoPteroEnabled = false;
 
+    var _egg = null;
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Initialization
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
     that.init = function() {
       _super.init();  
 
@@ -116,6 +124,37 @@ AWE.Controller = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     //
+    //   Retention Egg
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.initRetentionEgg = function(targetView) {
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      var bonus = {
+          stone: 8000,
+          wood: 8000,
+          fur: 8000
+        };
+        var startTime = null;
+        if(character.can_redeem_retention_bonus_start_time !== null)
+        {
+          startTime = new Date(character.can_redeem_retention_bonus_start_time);
+        }
+        var endTime = null;
+        if(character.can_redeem_retention_bonus_at !== null)
+        {
+          endTime = new Date(character.can_redeem_retention_bonus_at);
+        }
+      _egg = AWE.GS.RetentionBonus.create({
+        startTime: startTime,
+        endTime: endTime,
+        bonus: bonus
+      });
+      _egg.initAtTargetView(targetView);
+    }
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
     //   Runloop
     //
     // /////////////////////////////////////////////////////////////////////// 
@@ -126,6 +165,10 @@ AWE.Controller = (function(module) {
       _pteros.forEach(function(ptero){
         ptero.runloop();
       })
+      if(_egg !== null)
+      {
+        _egg.runloop();
+      }
     };
 
     return that;

@@ -11,6 +11,14 @@ AWE.UI.Ember = (function(module) {
     smallDetailTemplate: true,
     conversionView: false,
 
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
     building: function() {
       return this.getPath("slot.building");
     }.property("slot.building"),

@@ -1,3 +1,13 @@
+.ptero-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
 .ptero {
 	width: 128px;
 	height: 128px;
@@ -93,44 +103,3 @@
    from { background-position: 0px 0px; }
      to { background-position: -512px 0px; }
 }
-
-.small-fire {
-  width: 16px;
-  height: 16px;
-  position: relative;
-  z-index: 40;
-  display: inline-block;
-  background-image: url("<%= asset_path 'extras/fire/small_fire/small_fire_anim.png' %>");
-  pointer-events: none;
-  -webkit-animation: fire_small 1s steps(5) infinite;
-     -moz-animation: fire_small 1s steps(5) infinite;
-      -ms-animation: fire_small 1s steps(5) infinite;
-       -o-animation: fire_small 1s steps(5) infinite;
-          animation: fire_small 1s steps(5) infinite;
-}
-
-@-webkit-keyframes fire_small {
-   from { background-position: 0px 0px; }
-     to { background-position: -80px 0px; }
-}
-
-@-moz-keyframes fire_small {
-   from { background-position: 0px 0px; }
-     to { background-position: -80px 0px; }
-}
-
-@-ms-keyframes fire_small {
-   from { background-position: 0px 0px; }
-     to { background-position: -80px 0px; }
-}
-
-@-o-keyframes fire_small {
-   from { background-position: 0px 0px; }
-     to { background-position: -80px 0px; }
-}
-
-@keyframes fire_small {
-   from { background-position: 0px 0px; }
-     to { background-position: -80px 0px; }
-}
-

@@ -263,8 +263,15 @@
   border-radius: 0px;
 }
 
+.tutorial-end-dialog p {
+  margin: 0;
+}
+
+.tutorial-end-dialog .clearfix {
+  height: 30px;
+}
+
 .tutorial-end-dialog .content {
-  overflow-y: scroll;
   margin: 50px 80px;
   width: 600px;
   height: 450px;
@@ -273,7 +280,6 @@
 .tutorial-end-dialog .content .advisor {
   width: 120px;
   height: 120px;
-  margin-top: 32px;
 }
 
 .tutorial-end-dialog .advisor.warrior {
@@ -286,10 +292,6 @@
 
 .tutorial-end-dialog .advisor.girl {
   
-}
-
-.tutorial-end-dialog .p5 {
-  margin-top: 30px;
 }
 
 .tutorial-end-dialog .okButton{
@@ -754,7 +756,8 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 }
 
 .advisor.chef{
-  background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+  background-image: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+  background-size: 100%;
 }
 
 .quest-dialog-button{
@@ -837,15 +840,17 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 }
 
 .level-up-girl{
-  background-image: url('<%= asset_path("levelup/level-up-girl.png") %>');
+  background-image: url('<%= asset_path("levelup/level_up_dame.png") %>');
   background-size: 100% 100%;
-  width: 238px;
+
+  width: 440px;
+  height: 760px;
+
   position: absolute;
-  z-index: 258;
+  z-index: 265;
   opacity: 0;
   top: 42%;
-  left: -33%;
-  height: 700px;
+  left: -46%;
 }
 
 .level-up-dialog-bg-text{
@@ -873,7 +878,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .level-up-spinning-background.modal-dialog-spinning-background{
   position: absolute;
-  top: -194px;
+  top: -65%;
   z-index: 255;
 }
 

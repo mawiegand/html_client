@@ -1,0 +1,42 @@
+<script type="text/x-handlebars" data-template-name="egg-view">
+{{#if showEgg}}
+  <div {{bindAttr class=":egg isActive"}} {{action "eggClicked"}}>
+  {{#unless isActive}}
+    <div class="construction-progress-bar">      
+      <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
+      <span class="construction-progress-bar-label">{{formatDuration remainingTime}}</span>
+    </div>
+   {{/unless}}
+  </div>
+{{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="egg-redeem-dialog">
+  <div class="modal-dialog-background" {{action "closeClicked"}}>
+    <div class="center-helper">
+      <div class="egg-redeem-dialog">
+       
+        <div class="egg-dinos"></div>
+           
+        <div class="egg-redeem-text">
+          <p>{{t extras.retentionEgg.redeemMessage}}</p>
+          <table>
+            <tr>
+              <td><div class="resource_stone"></div></td>
+              <td><div class="resource_wood"></div></td>
+              <td><div class="resource_fur"></div></td>
+            </tr>
+            <tr>
+              <td>+{{bonusStone}}</td>
+              <td>+{{bonusWood}}</td>
+              <td>+{{bonusFur}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="quest-dialog-button egg-redeem-button" {{action "okClicked"}}>
+          <div class="quest-simple-button"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

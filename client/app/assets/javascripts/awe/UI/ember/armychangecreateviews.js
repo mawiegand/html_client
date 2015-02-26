@@ -21,6 +21,14 @@ AWE.UI.Ember = (function(module) {
       log('ERROR Action not connected: changeWasPressed.');
     },
 
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_CREATE_ARMY_DIALOG_FLOW)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
     otherArmyObserver: function() {
       if (this.get('otherArmy')) {
         AWE.GS.ArmyManager.updateArmy(this.get('otherArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);

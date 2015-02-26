@@ -27,7 +27,9 @@
  *= require upgrade_convert_dialog
  *= require profile_self_dialog
  *= require quest_dialogs
- *= require extras
+ *= require ptero
+ *= require retentionegg
+ *= require fire
 */
 
 
@@ -2192,6 +2194,7 @@ h1.slot-tooltip {
   height: 500px;
   background: url('<%= asset_path("dialogs/info-dialog/info-dialog_background.png") %>') no-repeat center;
   box-shadow: none;
+  zoom:1;
 }
 
 .info-dialog h1 {
@@ -4426,8 +4429,13 @@ span.bonus {
 }
 
 .construction-progress-frogtrade.icon {
-  background: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>") 8px 8px no-repeat;
-  background-size: 32px;
+  background-image: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>");
+  background-size: 96px 48px;
+  cursor: pointer;
+}
+
+.construction-progress-frogtrade.icon:hover {
+  background-position: -48px 0;
 }
 
 .construction-progress-bar {
@@ -6154,8 +6162,10 @@ a.trading-carts-speedup-button:hover {
 
 .ranking-view .advisor { 
   position: absolute;
-  left: 634px;
-  top: -26px;
+  right: 0;
+  top: -10px;
+  width: 180px;
+  height: 180px;
 }
 
 

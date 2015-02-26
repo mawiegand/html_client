@@ -24,6 +24,14 @@ AWE.UI.Ember = (function(module) {
     open: function(){
       WACKADOO.presentModalDialog(this);
     },
+
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
   module.AssignmentNewInfoView = module.AssignmentView.extend({
@@ -48,9 +56,13 @@ AWE.UI.Ember = (function(module) {
     templateName: 'assignments-dialog',
     classNames: ['assignments-dialog'],
 
-    /*open: function(){
-      WACKADOO.presentModalDialog(this);
-    },*/
+    isInTutorial: function(){
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if(tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT)){
+        return true;
+      }
+      return false;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
   module.AssignmentsTab = Ember.View.extend({

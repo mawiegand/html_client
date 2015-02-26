@@ -431,7 +431,7 @@ AWE.UI = (function(module) {
           _actionPointsLabelView.setColor('#000');
           _actionPointsLabelView.setFont("16px hvd_comic_serif_proregular");
           _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 105, 64, 24));      
-          that.addChild(_actionPointsLabelView);      
+          //that.addChild(_actionPointsLabelView);      
         }
         
         var apFactor = _army.get('ap_present') / _army.get('ap_max');
@@ -491,7 +491,7 @@ AWE.UI = (function(module) {
 
         if (_actionPointsLabelView) { //move label to top
           that.removeChild(_actionPointsLabelView);
-          that.addChild(_actionPointsLabelView);
+          //that.addChild(_actionPointsLabelView);
           _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
           _actionPointsLabelView.setText(_army.get('ap_present') + "/" + _army.get('ap_max'));
         }
