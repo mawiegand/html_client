@@ -1,90 +1,4 @@
 /*== ARTIFACTS ==*/
-
-.gold-button-queue.artefact-speedup-button
-{
-  top: 90px;
-  left: 70px;
-}
-
-.progress-value.progress-value-artifact-progress
-{
-  line-height: 44px;
-  text-align: start;
-  position: relative;
-  left: 40px;
-}
-
-.cell.training-background-job.artifact-progress
-{
-  top: 60px;
-  left: 30px;
-}
-
-.artifact-info-dialog-pane .cost-cell,
-.artifact-initiation-dialog-pane .cost-cell
-{
-  width: 225px;
-  height: 200px;
-  display: inline-block;
-  float: left;
-}
-
-.artifact-info-dialog-pane .cost-half-row,
-.artifact-initiation-dialog-pane .cost-half-row
-{
-  width: 26%;
-  height: 28px;
-  float: left;
-  position: relative;
-  left: 10px;
-}
-
-.artifact-info-dialog-pane .cost-half-row-effect,
-.artifact-initiation-dialog-pane .cost-half-row-effect
-{
-  width: 26%;
-  height: 28px;
-  float: left;
-  position: relative;
-  left: 50px;
-}
-
-.artifact-info-dialog-pane .cost-row,
-.artifact-initiation-dialog-pane .cost-row
-{
-  width: 100%;
-  height: 36px;
-  position: relative;
-  top: 23px;
-  left: 4px;
-}
-
-.artifact-info-dialog-pane .cost-text,
-.artifact-initiation-dialog-pane .cost-text
-{
-  /*color: rgb(146,141,130) !important;*/
-  display: inline-block;
-  float: left;
-}
-
-.military-costs-green-background.artifact-costs-green-background
-{
-  left: 40px;
-  top: 0px;
-  cursor: pointer;
-  color: white;
-}
-
-.artifact-info-dialog-pane .item,
-.artifact-initiation-dialog-pane .item{
-  width: 200px;
-  height: 200px;
-}
-.artifact-info-dialog-pane .item-padding,
-.artifact-initiation-dialog-pane .item-padding{
-  padding-left: 70px;
-}
-
 .artifact-info-dialog-pane .item.artifact_0,
 .artifact-initiation-dialog-pane .item.artifact_0{
   background:url("<%= asset_path 'artifacts_big/artifact_tnt_inactive.png' %>") no-repeat center center;
@@ -145,18 +59,112 @@
   background:url("<%= asset_path 'artifacts_big/artifact_hammer_active.png' %>") no-repeat center center;
 }
 
-.artifact-initiation-dialog-pane .cell-icon{
+.artifact-info-dialog-pane .item.artifact_6,
+.artifact-initiation-dialog-pane .item.artifact_6{
+  background:url("<%= asset_path 'artifacts_big/artifact_head_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_6.is-active,
+.artifact-initiation-dialog-pane .item.artifact_6.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_head_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_7,
+.artifact-initiation-dialog-pane .item.artifact_7{
+  background:url("<%= asset_path 'artifacts_big/artifact_figure_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_7.is-active,
+.artifact-initiation-dialog-pane .item.artifact_7.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_figure_active.png' %>") no-repeat center center;
+}
+.gold-button-queue.artefact-speedup-button
+{
+  top: 90px;
+  left: 70px;
+}
+
+.progress-value.progress-value-artifact-progress
+{
+  line-height: 44px;
+  text-align: start;
+  position: relative;
+  left: 40px;
+}
+
+.cell.training-background-job.artifact-progress
+{
+  top: 60px;
+  left: 30px;
+}
+
+
+
+.artifact-info-dialog-pane .cost-cell
+{
+  width: 225px;
+  height: 200px;
+  display: inline-block;
+  float: right;
+}
+
+.artifact-info-dialog-pane .cost-half-row
+{
+  width: 26%;
+  height: 28px;
+  float: left;
+  position: relative;
+  left: 10px;
+}
+
+.artifact-info-dialog-pane .cost-half-row-effect
+{
+  width: 26%;
+  height: 28px;
+  float: left;
+  position: relative;
+  left: 50px;
+}
+
+.artifact-info-dialog-pane .cost-row
+{
+  width: 100%;
+  height: 36px;
+  position: relative;
+  top: 23px;
+  left: 4px;
+}
+
+.artifact-info-dialog-pane .cost-text,
+.artifact-initiation-dialog-pane .cost-text
+{
+  /*color: rgb(146,141,130) !important;*/
+  display: inline-block;
+  float: left;
+}
+
+.artifact-info-dialog-pane .item,
+.artifact-initiation-dialog-pane .item{
+  width: 200px;
+  height: 200px;
+}
+.artifact-info-dialog-pane .item-padding,
+.artifact-initiation-dialog-pane .item-padding {
+  padding-left: 70px;
+}
+
+.artifact-initiation-dialog-pane .cell-icon {
   width: 38%;
   height: 200px;
   display: inline-block;
   float: left;
 }
-.artifact-initiation-dialog-pane .cell-stats{
+.artifact-initiation-dialog-pane .cell-stats {
   width: 58%;
   display: inline-block;
   float: left;
 }
-.artifact-initiation-dialog-pane .cell-info{
+.artifact-initiation-dialog-pane .cell-info {
   width: 95%;
   display: inline-block;
   float: left;
@@ -165,15 +173,13 @@
 }
 
 /* info */
-.artifact-info-dialog-pane .bonus-cell
-{
+.artifact-info-dialog-pane .bonus-cell {
   display: inline-block;
   float: left;
   width: 45%;
 }
 
-.artifact-info-dialog-pane .button-name
-{
+.artifact-info-dialog-pane .button-name {
   width: 192px;
   height: 52px;
   position: relative;
@@ -183,8 +189,7 @@
   right: 25px;
 }
 
-.artifact-info-dialog-pane .button-alliance
-{
+.artifact-info-dialog-pane .button-alliance {
   width: 184px;
   height: 56px;
   position: relative;
@@ -194,21 +199,58 @@
   right: 14px;
 }
 
-.artifact-info-dialog-pane .cell-icon{
+.artifact-info-dialog-pane .cell-icon {
   width: 38%;
   height: 200px;
   display: inline-block;
   float: left;
 }
-.artifact-info-dialog-pane .cell-stats{
+
+.artifact-info-dialog-pane .cell-stats {
   width: 62%;
   display: inline-block;
   float: left;
 }
-.artifact-info-dialog-pane .cell-info{
+
+.artifact-info-dialog-pane .cell-info {
   width: 95%;
   display: inline-block;
   float: left;
   padding-left: 15px;
   line-height: 28px;
 }
+
+.artifact-info-dialog-pane .artifact-bonus-view {
+  clear: both;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.artifact-info-dialog-pane .artifact-bonus-view table {
+  margin-right: 50px;
+  float: left;
+}
+
+/* ==== Artifact Initialisation ==== */
+.artifact-bonus-view {
+  float: left;
+  clear: right;
+  margin-top: 15px;
+}
+
+.init-button
+{
+  position: relative;
+  float: right;
+
+  right: 10px;
+  top: 10px;
+
+  cursor: pointer;
+  color: white;
+}
+
+.init-button table {
+  margin: 20px auto;
+}
+
