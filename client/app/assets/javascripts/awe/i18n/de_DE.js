@@ -1554,6 +1554,13 @@ AWE.I18n.de_DE = function(module) {
         next: "Nächster",
       }
     },
+    extras: {
+      retentionEgg: {
+        alertHeading: "Noch nicht Schlüpfbereit",
+        alertContent: "Das Ei ist noch zum schlüpfen bereit.\nWenn es geschlüpft ist erhältst du eine riesige Menge Rohstoffe!",
+        redeemMessage: "Schau mal wie süß sie sind!",
+      },
+    },
   }
   
   return module;

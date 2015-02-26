@@ -1532,6 +1532,13 @@ AWE.I18n.en_US = function(module) {
         next: "Next",
       }
     },
+    extras: {
+      retentionEgg: {
+        alertHeading: "Not Ready to Hatch",
+        alertContent: "The egg is not ready to hatch yet.\nOnce it hatched you will receive a huge amount of resources!",
+        redeemMessage: "Look at how cute they are!",
+      },
+    },
   };
   
   return module;

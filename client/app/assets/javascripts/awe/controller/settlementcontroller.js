@@ -174,7 +174,7 @@ AWE.Controller = (function(module) {
       }
       else {
         log('ERROR: screen for settlement of type ' + type + ' not yet implemented.');
-      }    
+      }
       return settlementScreen;
     }
     
@@ -188,7 +188,8 @@ AWE.Controller = (function(module) {
       this.updateView();
       this.view = this.createView();
       if (this.view) {
-        this.view.appendTo('#main-screen-controller');   
+        this.view.appendTo('#main-screen-controller');
+        WACKADOO.extrasController.initRetentionEgg('#retentionEgg');
       }
     }
     
