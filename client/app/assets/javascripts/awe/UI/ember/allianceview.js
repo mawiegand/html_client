@@ -350,6 +350,19 @@ AWE.UI.Ember = (function(module) {
       });
     }.observes('candidate'),
 
+    sendMessageClicked: function() {
+      //alert("Hello Mail click!!!!");
+      var alliance = this.get('alliance');
+      if(!alliance)
+      {
+        return false;
+      }
+      WACKADOO.closeAllModalDialogs();
+      WACKADOO.activateMessagesController({ alliance: alliance });
+
+      return false;// prevent default behavior
+    },
+
     updateView: function() {
       this.rerender();
     }.observes('alliance.leaderId'),
