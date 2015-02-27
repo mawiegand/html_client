@@ -69,16 +69,17 @@ AWE.UI.Ember = (function(module) {
     },
 
     closeDialogAndCenter: function() {
-
-      if(WACKADOO.presentScreenController.typeName === 'MapController')
+      if(WACKADOO.presentScreenController.typeName !== 'MapController')
       {
-        var mapController = WACKADOO.presentScreenController;
-        var target = this.get('homeSettlement');
-
-        WACKADOO.closeAllModalDialogs();
-        mapController.setSelectedSettlement(target);
-        mapController.centerSettlement(target);
+        WACKADOO.activateMapController(true);
       }
+
+      var mapController = WACKADOO.presentScreenController;
+      var target = this.get('homeSettlement');
+
+      WACKADOO.closeAllModalDialogs();
+      mapController.setSelectedSettlement(target);
+      mapController.centerSettlement(target);
     },
 
     processUserContentReport: function() {
