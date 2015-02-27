@@ -1384,6 +1384,10 @@ AWE.Controller = (function(module) {
       });
     };
 
+    that.updateGarrisonArmyFromServer = function () {
+      AWE.GS.ArmyManager.updateArmy(AWE.GS.SettlementManager.getSettlement(that.settlementId).get('garrison_id'));
+    };
+
     that.updateModel = (function() {
             
       var lastSettlementUpdateCheck = new Date(1970);
@@ -1409,7 +1413,7 @@ AWE.Controller = (function(module) {
               }
               that.updateStandardAssignmentsFromServer();
               that.updateSpecialAssignmentsFromServer();
-              // TODO update garrison army
+              that.updateGarrisonArmyFromServer();
             }
           });
 
