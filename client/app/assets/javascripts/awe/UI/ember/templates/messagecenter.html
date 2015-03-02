@@ -332,7 +332,9 @@
     <div class="new-mail-dialog-pane no-scrolling">
         <div class="row player-name-input">
           <div class="cell cell-66">
-            {{view Ember.TextField valueBinding="recipientValue" placeholderBinding="playerNamePlaceholder"}}
+            {{#unless isAllianceMessage}}
+              {{view Ember.TextField valueBinding="recipientValue" placeholderBinding="playerNamePlaceholder"}}
+            {{/unless}}
           </div>
           <div class="cell cell-33"><div class="alliance-ultimatum-button send-mail-button" {{action "submitMessage"}}>{{t messaging.send}}</div></div>
         </div>
@@ -354,9 +356,15 @@
         <a href="#" {{action "closeDialog"}}>
           <div class="modal-dialog-back"></div>
         </a>
-        <h1 class="popup-header-center" >{{recipient}}</h1>
+        <h1 class="popup-header-center" >
+          {{#if isAllianceMessage}}
+            {{alliance.name}}
+          {{else}}
+            {{recipient}}
+          {{/if}}
+        </h1>
  </div>
  <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling" style="top: 80px;">
-    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller"}}
+    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller" isAllianceMessageBinding="isAllianceMessage"}}
   </div>
 </script>

@@ -337,6 +337,11 @@ AWE.UI.Ember = (function(module) {
   module.MessageWriteDialog = module.PopUpDialog.extend({
     templateName: 'message-write-dialog',
 
+    isAllianceMessage: function(){
+      var alliance = this.getPath('alliance');
+      return (alliance !== undefined && alliance !== null);
+    }.property('alliance'),
+
     closeDialog: function() {
       this.destroy();
     },
@@ -408,6 +413,7 @@ AWE.UI.Ember = (function(module) {
       this._super();
 
       this.set('recipientValue', this.getPath('parentView.recipient'));
+      this.set('allianceValue', this.getPath('parentView.alliance'));
       this.set('subjectValue', this.getPath('parentView.subject'));
       this.set('bodyValue', this.getPath('parentView.body'));
     },
@@ -421,13 +427,15 @@ AWE.UI.Ember = (function(module) {
     }.property(),
 
     recipientValue: null,
+    allianceValue: null,
     subjectValue: null,
     bodyValue: null,
 
     submitMessage: function() {
       var sendNewMessage = null;
       sendNewMessage = module.NewMessage.create({
-        recipient: this.get('recipientValue'),  
+        recipient: this.get('recipientValue'),
+        alliance:  this.get('allianceValue'),
         subject:   this.get('subjectValue'),
         body:      this.get('bodyValue'),
         sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
