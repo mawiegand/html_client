@@ -13,7 +13,11 @@
       <div class="level destructing">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
-  <div {{bindAttr class="size type :building-image"}}></div>
+  <div {{bindAttr class="size type :building-image"}}>
+    {{#if hasFire}}
+      <div class="small-fire"></div>
+    {{/if}}
+  </div>
   {{#if slot.building.underConversion}}
     <div class="construction-area front"></div>
     {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}

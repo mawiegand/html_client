@@ -34,6 +34,12 @@ AWE.Controller = (function(module) {
       var self = this;      
     };
 
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Pterodactyl
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
     that.enableAutoPterodactylus = function() {
       _autoPteroEnabled = true;
       that.autoPterodactylus();

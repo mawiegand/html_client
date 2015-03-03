@@ -108,7 +108,10 @@ AWE.UI.Ember = (function(module) {
       return this.get('level') >= 18;
     }.property('level').cacheable(),
 
-
+    hasFire: function() {
+      var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+      return AWE.Config.BuildingImageLibrary.hasFire(buildingId);
+    }.property('level', 'building.buildingId'),
   });
   
   module.SlotClickArea = Ember.View.extend({
