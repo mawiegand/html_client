@@ -130,7 +130,7 @@ module.ArmyInfoNewDialog = module.PopUpDialog.extend({
       var input = this.getPath('army.name')
       var arguments = {
         input: input,
-        inputMaxLength: 16       
+        inputMaxLength: 18       
       };
       var changeDialog = AWE.UI.Ember.InfoDialog.create({
         heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'), //Standart: "Info"
