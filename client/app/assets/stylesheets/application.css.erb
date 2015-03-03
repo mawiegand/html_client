@@ -29,6 +29,7 @@
  *= require quest_dialogs
  *= require ptero
  *= require retentionegg
+ *= require fire
 */
 
 
@@ -1527,6 +1528,7 @@ canvas{
   position: absolute;
   top: 14px;
   right: 44px;
+  z-index:300;
 }
 
 .modal-dialog-center:active {
@@ -7374,5 +7376,20 @@ div.dom-quest-container div.tutorial-dialog {
     z-index: 259;
   }
   
+}
+
+.button_green_high
+{
+  cursor: pointer;
+  background:url("<%= asset_path 'dialogs/buttons/button_green_high.png' %>") no-repeat center center;
+  width: 184px;
+  height: 200px;
+}
+
+.item_speedup_building
+{
+  width: 40px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>") no-repeat center center;
 }
 
