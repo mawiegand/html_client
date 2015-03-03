@@ -920,7 +920,7 @@ AWE.I18n.de_DE = function(module) {
       },
 
       artifact: {
-        artifactInfo: "Artifact Info",
+        artifactInfo: "Artefakt Info",
         artifactInitiation: "Artifact Initiation",
         noArtifact: "Kein Artefakt vorhanden",
         costs: "Kosten",
