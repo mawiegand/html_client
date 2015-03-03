@@ -410,6 +410,7 @@
         8: 5,
         9: 5,
         10: 6,
+        hasFire: true
     },
     building_infantry_tower: {
       0: 0,
