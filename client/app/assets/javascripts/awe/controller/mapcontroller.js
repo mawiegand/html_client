@@ -2902,8 +2902,14 @@ AWE.Controller = function (module) {
 
                 movementArrow.setHovered(_hoveredView === view);
                 movementArrow.setSelected(_selectedView === view);
-
-                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x + 24, view.frame().origin.y + 10));
+                if(army.npc)
+                {
+                  movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x + view.frame().size.width / 2, view.frame().origin.y));
+                }
+                else
+                {
+                  movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x + view.frame().size.width / 2, view.frame().origin.y + 10));
+                }
                 movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
                 newMovementArrowViews[army.getId()] = movementArrow;
               }
