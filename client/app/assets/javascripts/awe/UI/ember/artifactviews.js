@@ -3,50 +3,21 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = function(module) {
 
-  module.ArtifactInfoDialog = Ember.View.extend({
-    templateName: "artifact-info-view",
+/*New artifact dialogs and views START*/
+  module.ArtifactInitiationDialog = module.PopUpDialog.extend({
+    templateName: 'artifact-initiation-dialog',
+
+    settlement: null,
+    controller: null,
+    artifactBinding: 'AWE.GS.game.currentArtifact',
+  });
+
+  module.ArtifactInitiationView = Ember.View.extend({
+    templateName: 'artifact-initiation-view',
+
     artifact: null,
 
     owner: null,
-    
-    description: function() {
-      var artifact = this.get('artifact');
-      if (artifact != null) {
-        var type = artifact.get('artifactType');
-      }
-      if (type != null) {
-        if (artifact.initiated) {
-          return AWE.Util.Rules.lookupTranslation(type.description_initiated);
-        }
-        else {
-          return AWE.Util.Rules.lookupTranslation(type.description);
-        }
-      }
-    }.property('artifact').cacheable(),
-    
-    ownerObserver: function() {
-      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('artifact.owner_id'));
-      var self = this;
-      this.set('owner', owner);
-      if (!owner) {
-        AWE.GS.CharacterManager.updateCharacter(this.getPath('artifact.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
-          self.set('owner', character);
-        });
-      }
-    }.observes('artifact', 'artifact.owner_id'),
-
-    onClose: null,
-
-    destroy: function() {
-      if (this.onClose) {
-        this.onClose(this);
-      }
-      this._super();
-    },
-  });
-  
-  module.ArtifactInitiationView = Ember.View.extend({
-    templateName: "artifact-initiation-view",
 
     settlement: null,
     controller: null,
@@ -68,8 +39,6 @@ AWE.UI.Ember = function(module) {
 
       var self = this;
       // TODO: resourcen testen
-
-
       this.set('sending', true);
 
       this.get('controller').startArtifactInitiation(this.get('artifact'), function() {
@@ -132,10 +101,42 @@ AWE.UI.Ember = function(module) {
         this.startTimer();
       }
     }.observes('artifact.initiating'),
+    
+    description: function() {
+      var artifact = this.get('artifact');
+      if (artifact != null) {
+        var type = artifact.get('artifactType');
+      }
+      if (type != null) {
+        if (artifact.initiated) {
+          return AWE.Util.Rules.lookupTranslation(type.description_initiated);
+        }
+        else {
+          return AWE.Util.Rules.lookupTranslation(type.description);
+        }
+      }
+    }.property('artifact').cacheable(),
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('artifact.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('artifact.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('artifact', 'artifact.owner_id'),
+
+    isActive: function() {
+      return this.getPath('artifact.initiated')
+    }.property('artifact.initiated'),
+
   });
 
   module.ArtifactBonusView = Ember.View.extend({
-    templateName: "artifact-bonus-view",
+    templateName: 'artifact-bonus-view',
+    classNames: ['artifact-bonus-view'],
 
     artifact: null,
 
@@ -208,20 +209,17 @@ AWE.UI.Ember = function(module) {
 
       return bonuses;
     }.property('artifact.type_id').cacheable(),
+
   });
 
-/*New artifact dialogs and views START*/
-  module.ArtifactInitiationDialog = module.PopUpDialog.extend({
-    templateName: 'artifact-initiation-dialog',
+//Info dialog
+  module.ArtifactInfoNewDialog = module.PopUpDialog.extend({
+    templateName: 'artifact-info-new-dialog',
 
-    settlement: null,
-    controller: null,
-    artifactBinding: 'AWE.GS.game.currentArtifact',
   });
 
-   module.ArtifactInitiationNewView = module.ArtifactInitiationView.extend({
-    templateName: 'artifact-initiation-new-view',
-
+  module.ArtifactInfoNewView = Ember.View.extend({
+    templateName: 'artifact-info-new-view',
     artifact: null,
 
     owner: null,
@@ -252,25 +250,14 @@ AWE.UI.Ember = function(module) {
       }
     }.observes('artifact', 'artifact.owner_id'),
 
-    /*debugTest: function(){
-      debugger
-      return true;
-    }.property(),*/
+    onClose: null,
 
-   });
-
-module.ArtifactBonusNewView = module.ArtifactBonusView.extend({
-    templateName: 'artifact-bonus-new-view',
-
-    });
-
-//Info dialog
-module.ArtifactInfoNewDialog = module.PopUpDialog.extend({
-    templateName: 'artifact-info-new-dialog',
-
-    });
-module.ArtifactInfoNewView = module.ArtifactInfoDialog.extend({
-    templateName: 'artifact-info-new-view',
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }
+      this._super();
+    },
 
     nameClicked: function() {
       var character = this.get('owner');
@@ -284,6 +271,7 @@ module.ArtifactInfoNewView = module.ArtifactInfoDialog.extend({
       WACKADOO.presentModalDialog(dialog);
       return false; // prevent default behavior
     },
+
     openAlliance: function() {
       var character = this.get('owner');
       if(!character)
@@ -296,13 +284,12 @@ module.ArtifactInfoNewView = module.ArtifactInfoDialog.extend({
       
       WACKADOO.showAllianceDialog(alliance.id);
     }
+  });
 
-    });
-module.ArtifactBonusInfoNewView = module.ArtifactBonusNewView.extend({
+  module.ArtifactBonusInfoNewView = module.ArtifactBonusView.extend({
     templateName: 'artifact-bonus-info-new-view',
 
-    });
-/*New artifact dialogs and views END*/
+  });
 
   return module;
 
