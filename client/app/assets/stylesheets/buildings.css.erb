@@ -440,6 +440,7 @@
 /*Campfire*/
 .building_campfire.building-image {
   background: url('<%= asset_path("buildings/base/building_campfire/small/building_campfire_small.png") %>') no-repeat;
+  background-position: 0 0;
 }
 
 /*Quarry*/
@@ -930,5 +931,38 @@
 .building_alliance_hall.building-image .small-fire {
   top: 74px;
   left:77px;
+}
+
+.building_campfire.building-image {
+    -webkit-animation: camp_fire .5s steps(5) infinite;
+       -moz-animation: camp_fire .5s steps(5) infinite;
+        -ms-animation: camp_fire .5s steps(5) infinite;
+         -o-animation: camp_fire .5s steps(5) infinite;
+            animation: camp_fire .5s steps(5) infinite;
+}
+
+@-webkit-keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-moz-keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-ms-keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-o-keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
 }
 
