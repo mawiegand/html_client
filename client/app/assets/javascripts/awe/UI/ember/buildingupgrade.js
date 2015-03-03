@@ -147,6 +147,21 @@ AWE.UI.Ember = (function(module) {
       return false;
     }.property("building", "level"),
 
+    buildingSingleCapacity: function() {
+      var capacity = 0;
+      this.get('buildingCapacity').forEach(function(cap) {
+        if(capacity === 0)
+        {
+          capacity = cap.capacity;
+        }
+        if(cap.capacity !== capacity)
+        {
+          return false;
+        }
+      });
+      return {capacity: capacity};
+    }.property("building", "level"),
+
     buildingPopulation: function() {
       var population = this.get("building").getPopulationForLevel(this.get("level"));
       if(population)
@@ -324,7 +339,11 @@ AWE.UI.Ember = (function(module) {
       {
         return false;
       }
-      return symbolicId; 
+      if(symbolicId)
+      {
+        return symbolicId;
+      }
+      return "unknown";
     }.property("capacity.resourceType.symbolic_id"),
 
     capacitySize: function() {
