@@ -476,10 +476,13 @@ AWE.UI = (function(module) {
           var remainingWidth = 0.25 * 64 * healthProgress;
           healthWidth = baseWidth + remainingWidth;
         }
-        _healthShape = AWE.UI.createImageView();
-        _healthShape.initWithControllerAndImage(my.controller, healthGraphics);
-        _healthShape.setFrame(AWE.Geometry.createRect(16, 108, healthWidth, 16));
-        that.addChild(_healthShape);
+        if(apFactor > 0)
+        {
+          _healthShape = AWE.UI.createImageView();
+          _healthShape.initWithControllerAndImage(my.controller, healthGraphics);
+          _healthShape.setFrame(AWE.Geometry.createRect(16, 108, healthWidth, 16));
+          that.addChild(_healthShape);
+        }
 
         if(!_healthCover)
         {
