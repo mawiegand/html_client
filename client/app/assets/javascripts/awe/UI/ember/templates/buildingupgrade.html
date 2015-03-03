@@ -136,7 +136,7 @@
         {{#each buildingResourceProductions}}
           {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
         {{/each}}
-      {{/if}}
+    {{/if}}
       {{#if buildingExperienceProductions}}
         <tr>
           <td class="resource_xp item small"></td>
@@ -147,9 +147,13 @@
   {{/if}}
   {{#if buildingCapacity}}
     <table class="resources-table">
+    {{#if buildingSingleCapacity}}
+        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
+    {{else}}
       {{#each buildingCapacity}}
         {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
       {{/each}}
+    {{/if}}
     </table>
   {{/if}}
   {{#if buildingTradeCarts}}
@@ -216,10 +220,14 @@
     {{/if}}
     {{#if buildingCapacity}}
       <table class="resources-table">
-        {{#each buildingCapacity}}
-          {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
-        {{/each}}
-      </table>
+    {{#if buildingSingleCapacity}}
+        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
+    {{else}}
+      {{#each buildingCapacity}}
+        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+      {{/each}}
+    {{/if}}
+    </table>
     {{/if}}
     {{#if buildingProductionBoni}}
       <table class="resources-table">
