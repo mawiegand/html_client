@@ -249,14 +249,14 @@ AWE.UI.Ember = (function(module) {
         else if(status === AWE.Net.CONFLICT)
         {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo '),
+            message:             AWE.I18n.lookupTranslation('likesystem.alreadyLikedInfo'),
             okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
         else if (status === AWE.Net.NOT_FOUND) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
-            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughLikeAmount '),
+            message:             AWE.I18n.lookupTranslation('likesystem.notEnoughLikeAmount'),
             okText:              AWE.I18n.lookupTranslation('likesystem.cancelText'),
           });
           WACKADOO.presentModalDialog(dialog);
