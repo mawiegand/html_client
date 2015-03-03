@@ -358,7 +358,7 @@ AWE.UI.Ember = (function(module) {
         return false;
       }
       WACKADOO.closeAllModalDialogs();
-      WACKADOO.activateMessagesController({ alliance: alliance });
+      WACKADOO.activateMessagesController({ alliance_recipient: alliance });
 
       return false;// prevent default behavior
     },

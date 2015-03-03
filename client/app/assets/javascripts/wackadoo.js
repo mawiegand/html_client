@@ -699,11 +699,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var alliance    = allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
 
       args = args || {};
-      if (args.alliance !== undefined && args.alliance !== null)
+      if (args.alliance_recipient !== undefined && args.alliance_recipient !== null)
       {
           var dialog = AWE.UI.Ember.MessageWriteDialog.create({
               controller: this.get('hudController'),
-              alliance: args.alliance ,
+              alliance_recipient: args.alliance_recipient ,
 
           });
           WACKADOO.presentModalDialog(dialog);
