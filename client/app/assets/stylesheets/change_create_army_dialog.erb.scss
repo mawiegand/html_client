@@ -9,7 +9,7 @@
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  font-family: $main-font !important;
   padding: 2px!important;
   margin-left: 13px!important;
   color: rgb(113,93,49);
@@ -188,8 +188,8 @@
 
 .army-other-count-input
 {
-  color: #735e3b;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  color: $font-brown;
+  font-family: $main-font;
   text-align: center;
   
   width: 120px;
@@ -221,7 +221,7 @@
 	text-align: center;
 	line-height: 15px;
 	font-size: 15px;
-	font-family: 'hvd_comic_serif_proregular', 'cursive';
+	font-family: $main-font;
 	width: 180px;
 	height: 52px;
   cursor: pointer;

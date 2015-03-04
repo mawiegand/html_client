@@ -121,7 +121,7 @@
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  font-family: $main-font !important;
   padding: 2px!important;
   margin-left: 13px!important;
   resize: none;
@@ -156,7 +156,7 @@
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  font-family: $main-font !important;
   padding: 2px!important;
   margin-left: 13px!important;
   resize: none;
@@ -250,8 +250,8 @@
 {
   width: 150px;
   text-align: center;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
-  color: #735e3b;
+  font-family: $main-font;
+  color: $font-brown;
   height: 50px;
   background-color: transparent;
   border: none;
