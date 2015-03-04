@@ -1236,6 +1236,10 @@ AWE.GS = (function(module) {
     }
 
     that.tutorialEnabled = function() {
+      return AWE.Config.USE_TUTORIAL && that.tutorialState.get('openQuestStates');
+    }
+
+    that.tutorialActive = function() {
       return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_completed;
     }
 

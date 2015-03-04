@@ -2,9 +2,9 @@
 {{#if showEgg}}
   <div {{bindAttr class=":egg isActive"}} {{action "eggClicked"}}>
   {{#unless isActive}}
-    <div class="construction-progress-bar">      
-      <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
-      <span class="construction-progress-bar-label">{{formatDuration remainingTime}}</span>
+    <div class="egg-progress-bar">      
+      <span class="egg-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
+      <span class="egg-progress-bar-label">{{formatDuration remainingTime}}</span>
     </div>
    {{/unless}}
   </div>
