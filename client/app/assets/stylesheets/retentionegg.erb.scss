@@ -15,9 +15,54 @@
   background-image: url("<%= asset_path 'extras/egg/egg_active.png' %>");
 }
 
-.egg-container .egg .construction-progress-bar {
-  top: 10px;
-  left: 23px;
+.egg-container .egg .egg-progress-bar {
+  top: 0px;
+  left: -8px;
+  position: absolute;
+  width: 140px;
+  height: 24px;
+  background-image: url("<%= asset_path 'extras/egg/progressbar_green_empty.png' %>");
+}
+
+.egg-progress-bar > span.egg-progress-bar-level {
+  display: block;
+  height: 19px;
+  position: absolute;
+  top: 3px;
+  overflow: hidden;  
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: #0AFF00;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #0AFF00),color-stop(1, #0A2800));
+  background-image: -webkit-linear-gradient(top, #0AFF00, #0A2800); 
+  background-image: -moz-linear-gradient(top, #0AFF00, #0A2800);
+  background-image: -ms-linear-gradient(top, #0AFF00, #0A2800);
+  background-image: -o-linear-gradient(top, #0AFF00, #0A2800);  
+  -webkit-box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
+  -moz-box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);  
+}
+
+.egg-progress-bar-label {
+  position: absolute;
+  left: 30px;
+  width: 82px;
+  height: 24px;
+  font-family: 'Freckle Face';
+  color: white;
+  font-size: 16px;  
+  text-align: center;
+  vertical-align: middle; 
+  text-shadow: none; 
 }
 
 .egg-redeem-dialog {
