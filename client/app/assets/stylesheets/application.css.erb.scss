@@ -1,39 +1,4 @@
 /*
- * This is a manifest file that'll automatically include all the stylesheets available in this directory
- * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
- * the top of the compiled file, but it's generally better to create a new file per style scope.
- *= require_self
-
- *= require font_face
- *= require slots
- *= require units 
- *= require buildings
-
- *= require alliance_dialog
- *= require mail_dialog
- *= require menu_dialog
- *= require assignments_dialog
- *= require artifacts_dialog
- *= require taxes_dialog
- *= require resource_info_dialog
- *= require move_dialog
- *= require recruitment_dialog
- *= require trade_dialog
- *= require military_dialog
- *= require army_info_dialog
- *= require change_create_army_dialog
- *= require building_selection_dialog
- *= require building_info_dialog
- *= require upgrade_convert_dialog
- *= require profile_self_dialog
- *= require quest_dialogs
- *= require ptero
- *= require retentionegg
- *= require fire
-*/
-
-
-/*
  * HTML5 Boilerplate
  *
  * What follows is the result of much research on cross-browser styling.
@@ -7393,3 +7358,31 @@ div.dom-quest-container div.tutorial-dialog {
   background: url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>") no-repeat center center;
 }
 
+@import 'config';
+
+@import 'font_face';
+@import 'slots';
+@import 'units ';
+@import 'buildings';
+
+@import 'alliance_dialog';
+@import 'mail_dialog';
+@import 'menu_dialog';
+@import 'assignments_dialog';
+@import 'artifacts_dialog';
+@import 'taxes_dialog';
+@import 'resource_info_dialog';
+@import 'move_dialog';
+@import 'recruitment_dialog';
+@import 'trade_dialog';
+@import 'military_dialog';
+@import 'army_info_dialog';
+@import 'change_create_army_dialog';
+@import 'building_selection_dialog';
+@import 'building_info_dialog';
+@import 'upgrade_convert_dialog';
+@import 'profile_self_dialog';
+@import 'quest_dialogs';
+@import 'ptero';
+@import 'retentionegg';
+@import 'fire';

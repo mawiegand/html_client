@@ -1,9 +1,12 @@
 /**  ==  Buildings Big  == **/
-
-.big-building {
-  width: 310px;
-  height: 256px; 
+.building-info-image {
+  .big-building {
+    width: 310px;
+    height: 256px;
+    border: 10px brown solid;
+  }
 }
+
 
 /*Chief Cottage*/
 .building_fortress_fortification.big-building,
@@ -383,7 +386,7 @@
   background-position: -600px -167px;
 }
 
-/**  ==  Buildings Small  == **/
+/* ==== Buildings Shown on Settlement ==== */
 .small-building {
   pointer-events:none;
 }
@@ -817,35 +820,6 @@
   background-position: -720px 0px;
 }
 
-.outpost-picture .large-building.hover,
-.base-picture .large-building.hover,
-.outpost-picture .small-building.hover,
-.base-picture .small-building.hover,
-.fortress-picture .small-building.hover {
-  background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
-  cursor: pointer;
-}
-
-.base-picture .small-building.size1.hover {
-}
-.base-picture .small-building.size2.hover {
-}
-.base-picture .small-building.size3.hover {
-}
-
-.base-picture .large-building.size1:hover {
-}
-.base-picture .large-building.size2:hover {
-}
-.base-picture .large-building.size3:hover {
-}
-.base-picture .large-building.size4:hover {
-}
-.base-picture .large-building.size5:hover {
-}
-.base-picture .large-building.size6:hover {
-}
-
 .building-image.size0 {
   background-position: 0 0px;
 }
@@ -871,9 +845,17 @@
   background-position: -480px -128px;
 }
 
+/* ==== Grid ==== */
+.outpost-picture .large-building.hover,
+.base-picture .large-building.hover,
+.outpost-picture .small-building.hover,
+.base-picture .small-building.hover,
+.fortress-picture .small-building.hover {
+  background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
+  cursor: pointer;
+}
 
 /* ==== Small Fire Positions === */
-
 .building_chief_cottage.building-image.size0 .small-fire,
 .building_fortress_fortification.building-image.size0 .small-fire {
   top: 64px;
@@ -928,6 +910,7 @@
   left:77px;
 }
 
+/* ==== Campfire Animations ==== */
 .building_campfire.building-image {
     -webkit-animation: camp_fire .5s steps(5) infinite;
        -moz-animation: camp_fire .5s steps(5) infinite;
