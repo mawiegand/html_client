@@ -301,7 +301,7 @@ AWE.Controller = (function(module) {
         }
         else
         {
-          var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
+          var dialog = AWE.UI.Ember.BuildingSelectionDialog.create({
             controller: this,
             slot: slot});
           WACKADOO.presentModalDialog(dialog);
