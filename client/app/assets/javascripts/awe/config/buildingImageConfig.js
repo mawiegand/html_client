@@ -391,11 +391,11 @@
       3: 0,
       4: 0,
       5: 0,
-      6: 1,
-      7: 1,
-      8: 1,
-      9: 1,
-      10: 1,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0,
+      10: 0,
       hasFire: false
     },
     building_fortress_fortification: {
