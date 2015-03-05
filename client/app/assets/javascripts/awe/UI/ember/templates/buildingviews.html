@@ -55,8 +55,13 @@
         {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
     {{else}}
       <div class="level">
-        <span {{bindAttr class="slot.building.level"}}>
+        <span class="xRotator">
+        <span class="yRotator">
+          <span class="zRotator">
+          {{slot.building.level}}
+          </span>
         </span>
+      </span>
       </div>
     {{/if}}
   {{/if}}

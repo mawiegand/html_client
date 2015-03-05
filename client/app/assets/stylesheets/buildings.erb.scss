@@ -409,11 +409,12 @@
             animation: camp_fire .5s steps(5) infinite;
   }
   .level {
+    perspective: 1000px;
     width: 46px;
     height: 46px;
 
-    padding-top: 7px;
-    font-size: 20px;
+    padding-top: 8px;
+    font-size: 19px;
     font-family: 'Freckle Face', 'cursive';
     text-align: center;
 
@@ -423,14 +424,24 @@
 
     color: #ffe79e;
 
+    z-index: 9;
+    
     background-image: url('<%= asset_path("extras/level_signs/sign.png") %>');
     background-position: 0 0;
     background-repeat: no-repeat;
     background-size: 100%;
 
-    span {
-      width: 46px;
-      height: 46px;
+    .xRotator {
+      -ms-transform: rotateX(0deg); /* IE 9 */
+      -webkit-transform: rotateX(0deg); /* Chrome, Safari, Opera */
+      transform: rotateX(0deg);
+      display: inline-block;
+      .yRotator {
+        -ms-transform: skew(0deg, 18deg); /* IE 9 */
+        -webkit-transform: skew(0deg, 18deg); /* Chrome, Safari, Opera */
+        transform: skew(0deg, 18deg);
+        display: inline-block;
+      }
     }
   }
 }
