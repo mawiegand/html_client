@@ -242,11 +242,17 @@ AWE.Config = (function(module) {
     "hud/annotation/button/cancel/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_cancel/icon_cancel.png',
     "hud/annotation/button/cancel/hover":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_cancel/icon_cancel_hover.png',
     
-    "hud/annotation/button/background/blue":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_info/colored/button_info_colored.png',
-    "hud/annotation/button/background/red":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_move/colored/button_move_colored.png',
-    "hud/annotation/button/background/green":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_upgrade/colored/button_upgrade_colored.png',
-    "hud/annotation/button/background/purple":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_trade/colored/button_trade_colored.png',
-    "hud/annotation/button/background/yellow":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_action/colored/button_action_colored.png',
+    "hud/annotation/button/background/blue":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_blue/button_blue.png',
+    "hud/annotation/button/background/red":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_red/button_red.png',
+    "hud/annotation/button/background/green":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_green/button_green.png',
+    "hud/annotation/button/background/purple":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_purple/button_purple.png',
+    "hud/annotation/button/background/yellow":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_yellow/button_yellow.png',
+
+    "hud/annotation/button/background/blue/active":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_blue/button_blue_active.png',
+    "hud/annotation/button/background/red/active":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_red/button_red_active.png',
+    "hud/annotation/button/background/green/active":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_green/button_green_active.png',
+
+    "hud/annotation/activestate":        AWE.Config.RAILS_ASSET_PATH + 'hud/annotation_button_active_state.png',
 
     "hud/bubble/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble.png',
     "hud/bubble/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',

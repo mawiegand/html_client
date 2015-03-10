@@ -79,11 +79,17 @@ AWE.UI = (function(module) {
 
       if (!enterButton && isOwnLocation) {
         enterButton = AWE.UI.createButtonIconView();
+        var backgrounds = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue")
+        }
+        var icons = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"),
+          hover:  AWE.UI.ImageCache.getImage("hud/annotation/button/enter/hover")
+        }
         enterButton.initWithControllerImageAndIcon(my.controller,
-          AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"),
-          AWE.Geometry.createRect(-10, 52, 64, 64),
-          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/hover")
+          backgrounds, 
+          icons,
+          AWE.Geometry.createRect(-10, 52, 64, 64)
         );
         enterButton.onClick = function() {
           that.onEnterButtonClick();
@@ -102,11 +108,20 @@ AWE.UI = (function(module) {
       var battleCheck = false;
       if (!attackButton && isOwnLocation) { // check ongoing battle
         attackButton = AWE.UI.createButtonIconView();
+        var backgrounds = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"),
+          active: AWE.UI.ImageCache.getImage("hud/annotation/button/background/red/active")
+        }
+        var icons = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
+          hover:  AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover"),
+          active:  AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover")
+        }
         attackButton.initWithControllerImageAndIcon(my.controller,
-          AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
+          backgrounds, 
+          icons,
           AWE.Geometry.createRect(30, 110, 64, 64),
-          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover")
+          AWE.UI.ImageCache.getImage("hud/annotation/activestate")
         );
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
@@ -121,11 +136,17 @@ AWE.UI = (function(module) {
 
       if (!_battleInfoButtonView) {
         _battleInfoButtonView = AWE.UI.createButtonIconView();
+        var backgrounds = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue")
+        }
+        var icons = {
+          normal: AWE.UI.ImageCache.getImage("hud/icon/info"),
+          hover:  AWE.UI.ImageCache.getImage("hud/icon/info/hover")
+        }
         _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
-          AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/icon/info"),
-          AWE.Geometry.createRect(-10, -18, 64, 64),
-          AWE.UI.ImageCache.getImage("hud/icon/info/hover")
+          backgrounds, 
+          icons,
+          AWE.Geometry.createRect(-10, -18, 64, 64)
         );
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
@@ -141,11 +162,17 @@ AWE.UI = (function(module) {
       
       if (!_newArmyButtonView && isOwnLocation && my.location != null && my.location.garrisonArmy() != null && !my.location.garrisonArmy().get('isFighting')) {
         _newArmyButtonView = AWE.UI.createButtonIconView();
+        var backgrounds = {
+          normal: AWE.UI.ImageCache.getImage("hud/annotation/button/background/yellow")
+        }
+        var icons = {
+          normal: AWE.UI.ImageCache.getImage("hud/icon/army"),
+          hover:  AWE.UI.ImageCache.getImage("hud/icon/army/hover")
+        }
         _newArmyButtonView.initWithControllerImageAndIcon(my.controller,
-          AWE.UI.ImageCache.getImage("hud/annotation/button/background/yellow"), 
-          AWE.UI.ImageCache.getImage("hud/icon/army"),
-          AWE.Geometry.createRect(140, 52, 64, 64),
-          AWE.UI.ImageCache.getImage("hud/icon/army/hover")
+          backgrounds, 
+          icons,
+          AWE.Geometry.createRect(140, 52, 64, 64)
         );
         _newArmyButtonView.onClick = function() {
           if (that.onNewArmyButtonClick) {

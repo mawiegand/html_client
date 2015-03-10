@@ -1,0 +1,104 @@
+.egg-container {
+  position: absolute;
+  top: -50px;
+  left: 287px;
+}
+
+.egg-container .egg {
+  width: 128px;
+  height: 128px;
+  background-image: url("<%= asset_path 'extras/egg/egg_inactive.png' %>");
+  cursor: pointer;
+}
+
+.egg-container .egg.is-active {
+  background-image: url("<%= asset_path 'extras/egg/egg_active.png' %>");
+}
+
+.egg-container .egg .construction-progress-bar {
+  top: 10px;
+  left: 23px;
+}
+
+.egg-redeem-dialog {
+  width: 800px;
+  height: 524px;
+  left: -50%;
+  margin-top: -30%;
+  overflow: visible;
+  position: relative;
+  background-image: url("<%= asset_path 'levelup/level-up-background.png' %>");
+  background-size: 100% 100%;
+  z-index: 256;
+  zoom: 1;
+}
+
+.egg-redeem-dialog .egg-dinos {
+  background-image: url("<%= asset_path 'extras/egg/egg_dinos.png' %>");
+  background-size: 100% 100%;
+  width: 504px;
+  height: 488px;
+  position: absolute;
+  left: -56px;
+  top: -30px;
+}
+
+.egg-redeem-dialog .egg-redeem-button {
+  width: 172px;
+  height: 129px;
+  cursor: pointer;
+}
+
+.egg-redeem-dialog .egg-redeem-text {
+  position: absolute;
+  left: 415px;
+  top: 45px;
+  width: 290px;
+  color: white;
+  text-shadow: none;
+  font-size: 2em;
+  font-family: "hvd_comic_serif_proregular";
+}
+
+.egg-redeem-dialog .egg-redeem-text td {
+  width: 100px;
+  text-align: center;
+  font-size: 0.8em;
+}
+
+.egg-redeem-dialog .egg-redeem-text .resource_stone {
+  width: 52px;
+  height: 52px;
+  background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_stone/resourcebar_stone_item.png' %>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.egg-redeem-dialog .egg-redeem-text .resource_wood {
+  width: 52px;
+  height: 52px;
+  background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_wood/resourcebar_wood_item.png' %>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.egg-redeem-dialog .egg-redeem-text .resource_fur {
+  width: 52px;
+  height: 52px;
+  background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_fur/resourcebar_fur_item.png' %>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+}
+
+.egg-redeem-dialog .egg-redeem-text p {
+  width: 90%;
+  float: right;
+  margin-top: 10px;
+  margin-bottom: 55px;
+}
+
+
+

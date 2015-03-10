@@ -4211,7 +4211,7 @@ span.bonus {
 .building-info-button-background {
   top: 60px;
   left: -10px;
-  background-image: url("<%= asset_path 'hud/button_info/colored/button_info_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_blue.png' %>");
 }
 
 .building-info-button-icon {
@@ -4223,7 +4223,7 @@ span.bonus {
 .building-upgrade-button-background {
   top: 80px;
   left: 30px;
-  background-image: url("<%= asset_path 'hud/button_upgrade/colored/button_upgrade_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
 }
 
 .building-upgrade-button-icon {
@@ -4235,7 +4235,7 @@ span.bonus {
 .building-convert-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-convert-button-icon {
@@ -4247,7 +4247,7 @@ span.bonus {
 .building-destroy-button-background {
   top: 50px;
   left: 120px;
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
 }
 
 .building-destroy-button-icon {
@@ -4259,7 +4259,7 @@ span.bonus {
 .building-assignment-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-assignment-button-icon {
@@ -4271,7 +4271,7 @@ span.bonus {
 .building-diplomacy-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-diplomacy-button-icon {
@@ -4283,7 +4283,7 @@ span.bonus {
 .building-trade-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-trade-button-icon {
@@ -4295,7 +4295,7 @@ span.bonus {
 .building-artifact-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-artifact-button-icon {
@@ -4307,7 +4307,7 @@ span.bonus {
 .building-army-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-army-button-icon {
@@ -4373,7 +4373,7 @@ span.bonus {
 }
 
 .construction-progress-cancel.background {
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
   background-size: 48px;
   cursor: pointer;
 }
@@ -4393,7 +4393,7 @@ span.bonus {
 }
 
 .construction-progress-frogtrade.background {
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
   background-size: 48px;
 }
 
@@ -7342,6 +7342,16 @@ div.dom-quest-container div.tutorial-dialog {
   }
   
 }
+
+.annotation-button
+{
+  .icon
+  {
+
+  }
+}
+
+.annotation-button.red {}
 
 .button_green_high
 {

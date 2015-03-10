@@ -19,7 +19,7 @@ AWE.UI = (function(module) {
     that = {};
     
     that.onAnimationEnd = spec.onAnimationEnd || null;
-    
+
     that.animating = function() {
       return my.animating;
     }
@@ -75,6 +75,37 @@ AWE.UI = (function(module) {
       
       if (this.updateView && my.animating) {
         this.updateView(my.view, progress, my.frameCount);
+      }
+      my.frameCount++;
+      
+      _super.update();
+    }
+    
+    return that;
+  };
+
+
+
+  module.createEndlessAnimation = function(spec, my) {
+  
+    var that;
+
+    my = my || {};
+    
+    my.started = null;
+    my.frameCount = 0;
+    
+    that = module.createAnimation(spec, my);
+    
+    var _super = {
+      update: AWE.Ext.superior(that, "update"),
+    }
+
+    that.updateView = spec.updateView || null; ///< function that does the update on the view.
+
+    that.update = function() {        
+      if (this.updateView && my.animating) {
+        this.updateView(my.view);
       }
       my.frameCount++;
       
