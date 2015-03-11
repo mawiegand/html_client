@@ -10,11 +10,6 @@
     <div class="base-background-picture" {{action  unselectSlot}}></div>
     {{#if "settlement"}}
       {{#if "haveSlots"}}
-        {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
-        {{view AWE.UI.Ember.BuildingView classNames="wallLeft" levelBinding="wallSlot.building.level"}}
-        {{view AWE.UI.Ember.BuildingView classNames="wallRight" levelBinding="wallSlot.building.level"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall" slotBinding="wallSlot" settlementBinding="settlement"}}
-
         <div id="retentionEgg"></div>
         
         {{#each smallSlots}}
