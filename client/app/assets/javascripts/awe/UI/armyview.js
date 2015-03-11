@@ -431,7 +431,7 @@ AWE.UI = (function(module) {
           _actionPointsLabelView.setColor('#000');
           _actionPointsLabelView.setFont("16px hvd_comic_serif_proregular");
           _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 105, 64, 24));      
-          //that.addChild(_actionPointsLabelView);      
+          //that.addChild(_actionPointsLabelView);      //Removed due to readability
         }
         
         var apFactor = _army.get('ap_present') / _army.get('ap_max');
@@ -464,7 +464,7 @@ AWE.UI = (function(module) {
           var dateNow = new Date();
           var dateNext = new Date(_army.get('ap_next'));
           var timeUntillNextAp = (dateNext - dateNow) / 1000;
-          healthProgress = 1 - timeUntillNextAp / (_army.get('ap_seconds_per_point') / 2);
+          healthProgress = 1 - timeUntillNextAp / _army.get('ap_seconds_per_point');
         }
 
         var progressFilling = true; //change to true if filling AP progress over time
