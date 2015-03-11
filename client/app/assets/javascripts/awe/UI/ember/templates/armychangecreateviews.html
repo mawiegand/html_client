@@ -14,6 +14,7 @@
             {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" classNames="create-army-dialog-name" }}
         {{else}}
             <p class="error">{{ t army.create.error }}</p>
+            {{view AWE.UI.Ember.GarrisonInfoView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy"}}
         {{/if}}
 
    </div>
