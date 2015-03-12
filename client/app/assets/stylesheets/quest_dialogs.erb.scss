@@ -65,10 +65,11 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
+  background-size: 100%;
 
   position: fixed; 
-  margin-left: -400px;
-  margin-top: 80px;
+  margin-left: -22%;
+  margin-top: 8%;
   width: 764px;
   height: 576px;
 
@@ -485,12 +486,12 @@ div.dom-quest-container div.tutorial-dialog {
 /*==========*/
 
 .quest-dialog-bg{
-  position: absolute;
+  position: fixed;
   height: 0px;
   width: 0px;
   top: 0px;
   margin: 0 auto;
-  left: 0px;
+  left: 52%;
 
   background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
   background-color: none;
@@ -503,7 +504,7 @@ div.dom-quest-container div.tutorial-dialog {
 .quest-dialog-content{
   width: 510px;
   height: 350px;
-  position: fixed;
+  position: absolute;
 
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */

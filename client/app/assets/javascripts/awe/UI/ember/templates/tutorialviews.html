@@ -1,5 +1,5 @@
 <script type="text/x-handlebars" data-template-name="quest-list-view">
-  <div class="modal-dialog-background"></div>
+  <div class="modal-dialog-background" onClick="WACKADOO.closeAllModalDialogs()"></div>
     <div class="horizontal-center-helper">
       <div class="modal-dialog-pane quest-list-view">
         <div class="quest-list-header">
@@ -11,7 +11,7 @@
         <div class="quest-list-content">
           <div class="quest-list-items">
             {{#each questStates}}
-            {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+            {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
             {{/each}}
           </div>
         </div>
