@@ -925,7 +925,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             || theRules[m].selectorText === ".topbar-info-box.settlement" 
             || theRules[m].selectorText === ".shop-dialog-pane"
             || theRules[m].selectorText === ".quest-list-view"
-            || theRules[m].selectorText === ".top-right-hud") {
+            || theRules[m].selectorText === ".top-right-hud"
+            || theRules[m].selectorText === ".egg-redeem-dialog") {
             theRules[m].style.zoom = AWE.Settings.hudScale;
           }
           if (theRules[m].selectorText === '.topbar-info-box') {
