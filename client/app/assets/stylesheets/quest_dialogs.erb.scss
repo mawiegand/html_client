@@ -65,10 +65,11 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
+  background-size: 100%;
 
-  position: absolute; 
-  margin-left: -400px;
-  margin-top: 80px;
+  position: fixed; 
+  margin-left: -382px;
+  margin-top: 72px;
   width: 764px;
   height: 576px;
 
@@ -229,7 +230,8 @@
   .quest-list-view{
     height: 346px;
     width: 436px;
-    right: -238px;
+    margin-left: -218px;
+    margin-top: 10px;
   }
 
   .quest-list-content h1 {
@@ -239,6 +241,11 @@
   .quest-list-item-name {
     top: 2px;
     font-size: 18px;
+  }
+
+  .quest-list-header .advisor.sketched {
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -484,13 +491,12 @@ div.dom-quest-container div.tutorial-dialog {
 
 /*==========*/
 
-.quest-dialog-bg{
-  position: absolute;
+.quest-dialog-bg {
+  position: fixed;
   height: 0px;
   width: 0px;
-  top: 0px;
-  margin: 0 auto;
-  left: 0px;
+  margin-top: 0;
+  margin-left: 0;
 
   background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
   background-color: none;
