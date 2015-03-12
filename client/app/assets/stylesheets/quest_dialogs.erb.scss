@@ -227,6 +227,12 @@
 }
 
 @media (max-width : 960px){
+  .quest-list-view{
+    height: 346px;
+    width: 436px;
+    margin-left: -218px;
+  }
+
   .quest-list-content h1 {
     font-size: 19px;
   }
@@ -234,6 +240,11 @@
   .quest-list-item-name {
     top: 2px;
     font-size: 18px;
+  }
+
+  .quest-list-header .advisor.sketched {
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -484,7 +495,7 @@ div.dom-quest-container div.tutorial-dialog {
   height: 0px;
   width: 0px;
   margin-top: 0;
-  margin-left: -325px;
+  margin-left: 0;
 
   background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
   background-color: none;

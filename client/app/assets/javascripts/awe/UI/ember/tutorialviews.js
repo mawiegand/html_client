@@ -130,7 +130,7 @@ AWE.UI.Ember = (function(module) {
         self.$(".quest-dialog-bg").delay(100).animate({
           height: '477px',
           width: '650px',
-          marginTop: '166px',
+          marginTop: '38px',
           marginLeft: '-325px',
           zoom: AWE.Settings.hudScale
         }, {  duration: 600,
@@ -187,7 +187,7 @@ AWE.UI.Ember = (function(module) {
         self.$(".quest-dialog-bg").css({
           height: '477px',
           width: '650px',
-          marginTop: '166px',
+          marginTop: '38px',
           marginLeft: '-325px',
           zoom: AWE.Settings.hudScale
         })
