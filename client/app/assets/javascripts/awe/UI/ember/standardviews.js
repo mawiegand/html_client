@@ -407,14 +407,14 @@ AWE.UI.Ember = (function(module) {
     onPlusClicked: function(){
       if(this.get("value") < this.get("max"))
       {
-        this.set("value", (parseInt(this.get("value")) + 1))
+        this.set("value", (parseInt(this.get("value")) + 1));
       }
     },
 
     onMinusClicked: function(){
       if(this.get("value") > 0)
       {
-        this.set("value", (this.get("value") - 1))
+        this.set("value", (this.get("value") - 1));
       }
     },
 
@@ -467,6 +467,10 @@ AWE.UI.Ember = (function(module) {
     min: 0,
     max: 1,
     value: null,
+
+    input: function(event) {
+      this.set('value', event.target.value);
+    },
 
     attributeBindings: ["min", "max"],
     type: "range",
