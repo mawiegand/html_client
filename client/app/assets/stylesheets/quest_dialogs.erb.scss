@@ -68,8 +68,8 @@
   background-size: 100%;
 
   position: fixed; 
-  margin-left: -22%;
-  margin-top: 8%;
+  margin-left: -382px;
+  margin-top: 72px;
   width: 764px;
   height: 576px;
 
@@ -227,12 +227,6 @@
 }
 
 @media (max-width : 960px){
-  .quest-list-view{
-    height: 346px;
-    width: 436px;
-    right: -238px;
-  }
-
   .quest-list-content h1 {
     font-size: 19px;
   }
@@ -485,13 +479,12 @@ div.dom-quest-container div.tutorial-dialog {
 
 /*==========*/
 
-.quest-dialog-bg{
+.quest-dialog-bg {
   position: fixed;
   height: 0px;
   width: 0px;
-  top: 0px;
-  margin: 0 auto;
-  left: 52%;
+  margin-top: 0;
+  margin-left: -325px;
 
   background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
   background-color: none;
