@@ -278,6 +278,17 @@ AWE.UI.Ember = function(module) {
       //log('#### sa view', this);
     },
 
+    updateSpecialAssignment: function() {
+      var self = this;
+
+      var t = this.get('timeRemaining');
+      if (t !== undefined && t !== null && t <= 0) {
+        AWE.GS.SpecialAssignmentManager.updateSpecialAssignmentOfCurrentCharacter(null, function() {
+          self.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+        });
+      }
+    }.observes('timeRemaining', 'currentCharacter.specialAssignment'),
+
     assignmentType: function() {
       return AWE.GS.RulesManager.getRules().getSpecialAssignmentType(AWE.GS.CharacterManager.getCurrentCharacter().getPath('specialAssignment.type_id'));
     }.property('specialAssignment'),
