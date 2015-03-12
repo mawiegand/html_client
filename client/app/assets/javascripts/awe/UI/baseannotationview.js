@@ -27,6 +27,7 @@ AWE.UI = (function(module) {
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;
+    var _infoText4View = null;
 
     var _backgroundShapeView = null;
 
@@ -245,9 +246,23 @@ AWE.UI = (function(module) {
         _infoText1View.setIconImage("map/icon/army/size");
         my.infoContainer.addChild(_infoText1View);
       }
+
       var settlement = my.location.settlement();
       _infoText1View.setText('' + (settlement ? settlement.get('score') : my.location.settlementScore()));
-      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('present_defense_bonus') || 0)*100)+"%" : '-'));      
+      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('present_defense_bonus') || 0)*100)+"%" : '-'));
+
+      if (!_infoText4View && settlement && settlement.isOwn()) {
+        _infoText4View = AWE.UI.createLabelView();
+        _infoText4View.initWithControllerAndLabel(my.controller);
+        _infoText4View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+        _infoText4View.setTextAlign("left");
+        my.infoContainer.addChild(_infoText4View);
+      }
+
+      if(_infoText4View && settlement && settlement.isOwn())
+      {
+        _infoText4View.setText(AWE.I18n.lookupTranslation('building.commandPointShort') + ': ' + (settlement.get('command_points') - settlement.get('commandPointsUsed')));
+      }
 
       if (!_infoText3View && my.location.garrisonArmy() && my.location.garrisonArmy().get('isSuspended')) {
         _infoText3View = AWE.UI.createLabelView();
