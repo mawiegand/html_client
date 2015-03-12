@@ -4210,7 +4210,7 @@ span.bonus {
 .building-info-button-background {
   top: 60px;
   left: -10px;
-  background-image: url("<%= asset_path 'hud/button_blue.png' %>");
+  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
 }
 
 .building-info-button-icon {
