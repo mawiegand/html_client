@@ -946,7 +946,7 @@ canvas{
 }
 
 .modal-dialog-body {
-  height: 422px;
+  height: 420px;
   width: 100%;
   position: absolute;
   top: 55px;
@@ -2156,14 +2156,13 @@ h1.slot-tooltip {
 .info-dialog {
   font-family: $main-font;
   text-align: center;
-  position: absolute; 
+  position: fixed; 
   margin-left: -350px;
   margin-top: -270px;
   width: 676px; 
   height: 500px;
   background: url('<%= asset_path("dialogs/info-dialog/info-dialog_background.png") %>') no-repeat center;
   box-shadow: none;
-  zoom:1;
 }
 
 .info-dialog h1 {
@@ -4211,7 +4210,7 @@ span.bonus {
 .building-info-button-background {
   top: 60px;
   left: -10px;
-  background-image: url("<%= asset_path 'hud/button_info/colored/button_info_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
 }
 
 .building-info-button-icon {
@@ -4223,7 +4222,7 @@ span.bonus {
 .building-upgrade-button-background {
   top: 80px;
   left: 30px;
-  background-image: url("<%= asset_path 'hud/button_upgrade/colored/button_upgrade_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
 }
 
 .building-upgrade-button-icon {
@@ -4235,7 +4234,7 @@ span.bonus {
 .building-convert-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-convert-button-icon {
@@ -4247,7 +4246,7 @@ span.bonus {
 .building-destroy-button-background {
   top: 50px;
   left: 120px;
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
 }
 
 .building-destroy-button-icon {
@@ -4259,7 +4258,7 @@ span.bonus {
 .building-assignment-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-assignment-button-icon {
@@ -4271,7 +4270,7 @@ span.bonus {
 .building-diplomacy-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-diplomacy-button-icon {
@@ -4283,7 +4282,7 @@ span.bonus {
 .building-trade-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-trade-button-icon {
@@ -4295,7 +4294,7 @@ span.bonus {
 .building-artifact-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-artifact-button-icon {
@@ -4307,7 +4306,7 @@ span.bonus {
 .building-army-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-army-button-icon {
@@ -4324,7 +4323,7 @@ span.bonus {
   top: -30px;
   left: 40px;
   pointer-events:auto;
-  z-index: 50;
+  z-index: 9;
 }
 
 .construction-progress-coins {
@@ -4373,7 +4372,7 @@ span.bonus {
 }
 
 .construction-progress-cancel.background {
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
   background-size: 48px;
   cursor: pointer;
 }
@@ -4393,7 +4392,7 @@ span.bonus {
 }
 
 .construction-progress-frogtrade.background {
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
   background-size: 48px;
 }
 
@@ -5172,31 +5171,6 @@ table .datetime {
   border: none !important;
 }
 
-.outpost-picture .level, 
-.fortress-picture .level, 
-.base-picture .level {
-  /*background-color: #BBB;
-  color: #444;*/
-  color: white;
-  text-align: center;
-}
-
-.outpost-picture .level,
-.base-picture .level,
-.fortress-picture .level {
-  font-size: 24px;
-  font-family: 'Freckle Face', 'cursive';
-  text-shadow: 2px 2px black;
-  /*border: 2px solid #444;
-  border-radius: 4px;*/
-  width: 16px;
-  padding: 4px 0px;
-  z-index: 1;
-  position: absolute;
-  left:   47px;
-  bottom: 23px;
-}
-
 
 .fortress-picture .small-building.slot1,
 .fortress-picture .building-gui.slot1 {
@@ -5262,20 +5236,6 @@ table .datetime {
 }
 .fortress-picture .tower.size3:hover {
   background-position: -714px -454px;
-}
-
-.outpost-picture .small-building .level,
-.base-picture .small-building .level {
-  position: absolute;
-  left:   47px;
-  bottom: 23px;
-}
-
-.outpost-picture .large-building .level,
-.base-picture .large-building .level {
-  position: absolute;
-  right: 10px;
-  top:   10px;
 }
 
 
@@ -6715,7 +6675,7 @@ button.fb-button {
 
 
 .quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
-  float:right;
+  float: right;
   margin-left: 4px;
   margin-right: -22px;
   margin-top: -30px;
@@ -7342,6 +7302,16 @@ div.dom-quest-container div.tutorial-dialog {
   }
   
 }
+
+.annotation-button
+{
+  .icon
+  {
+
+  }
+}
+
+.annotation-button.red {}
 
 .button_green_high
 {
