@@ -907,6 +907,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+      var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
+      if (isAndroid) {
+        $('.scale-down').css("zoom", "0.6");
+      } else {
+        AWE.Settings.hudScale = 1;
+      }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
