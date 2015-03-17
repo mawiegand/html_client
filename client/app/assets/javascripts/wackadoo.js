@@ -909,7 +909,27 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
       if (isAndroid) {
-        $('.scale-down').css("zoom", "0.6");
+        AWE.Settings.hudScale = 0.6;
+        var styleSheets = document.styleSheets;
+      
+        // TODO: improve the code below. Does it have to be run for hudScale == 1?
+        //       can't it read the values for top and marginLeft from the CSS? 
+        //       The present code will OVERRIDE any change to the css, without the
+        //       developer noticing it.
+        for (n in styleSheets)
+        {
+          var theRules = styleSheets[n].cssRules;
+          for (m in theRules)
+          {
+            if (".scale-down" === theRules[m].selectorText) {
+              theRules[m].style.zoom = AWE.Settings.hudScale;
+            }
+            if (theRules[m].selectorText === '.topbar-info-box') {
+              theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
+              theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
+            }
+          }       
+        }
       } else {
         AWE.Settings.hudScale = 1;
       }
