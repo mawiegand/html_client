@@ -137,6 +137,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               self.get('presentScreenController').welcomeDialogClosed();
               //self.get('extrasController').startRandomPterodactylus(60, 90);
               self.get('extrasController').enableAutoPterodactylus();
+			  
+			  if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+				  $(window).scrollTop($(window).height() / 2);
+				  $(window).scrollLeft($(window).width() / 2);
+			  }
             },
           });
           self.presentModalDialog(dialog);
@@ -187,6 +192,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var beginner  = character && character.get('chat_beginner');
       var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
+	  openPane = false; // Android Hotfix
 
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
