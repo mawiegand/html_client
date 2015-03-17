@@ -100,7 +100,7 @@
 <script type="text/x-handlebars" data-template-name="army-create-dialog">
       <div class="modal-dialog-background"></div>
       <div class="horizontal-center-helper">
-        <div class="modal-dialog-pane" id="army-create-form">
+        <div class="modal-dialog-pane scale-down" id="army-create-form">
           <div class="inner-border">
             <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
             <div class="advisor warrior"></div>
@@ -140,7 +140,7 @@
 <script type="text/x-handlebars" data-template-name="army-change-dialog">
       <div class="modal-dialog-background"></div>
       <div class="horizontal-center-helper">
-        <div class="modal-dialog-pane" id="army-change-form">
+        <div class="modal-dialog-pane scale-down" id="army-change-form">
           <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
           <h2>{{ t army.change.header }}</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
@@ -192,7 +192,7 @@
 
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">
-    <div class="modal-dialog-pane z-layer-4 army-list-view" id="army-list-dialog">
+    <div class="modal-dialog-pane z-layer-4 army-list-view scale-down" id="army-list-dialog">
     <div class="advisor tiny warrior"></div>
 
       <a class="close clickable" {{action "closeClicked"}}></a>
@@ -223,7 +223,6 @@
       {{/if}}
     </div>
   </div>
-  <!--<div class="modal-dialog-pane army-list-dialog-pane" id="army-list-dialog">-->
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-list-item">

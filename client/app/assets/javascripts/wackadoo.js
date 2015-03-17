@@ -907,40 +907,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
-      var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
-      if (isAndroid) {
-        AWE.Settings.hudScale = 0.6;
-      } else {
-        AWE.Settings.hudScale = 1;
-      }
-      var styleSheets = document.styleSheets;
-      
-      // TODO: improve the code below. Does it have to be run for hudScale == 1?
-      //       can't it read the values for top and marginLeft from the CSS? 
-      //       The present code will OVERRIDE any change to the css, without the
-      //       developer noticing it.
-      for (n in styleSheets)
-      {
-        var theRules = styleSheets[n].cssRules;
-        for (m in theRules)
-        {
-          if (theRules[m].selectorText === ".modal-dialog-pane-new" 
-            || theRules[m].selectorText === ".modal-dialog-pane" 
-            || theRules[m].selectorText === ".right-hud" 
-            || theRules[m].selectorText === ".settlement-map-button" 
-            || theRules[m].selectorText === ".topbar-info-box.settlement" 
-            || theRules[m].selectorText === ".shop-dialog-pane"
-            || theRules[m].selectorText === ".quest-list-view"
-            || theRules[m].selectorText === ".top-right-hud"
-            || theRules[m].selectorText === ".egg-redeem-dialog") {
-            theRules[m].style.zoom = AWE.Settings.hudScale;
-          }
-          if (theRules[m].selectorText === '.topbar-info-box') {
-            theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
-            theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
-          }
-        }       
-      }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
