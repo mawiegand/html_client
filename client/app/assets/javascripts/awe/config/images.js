@@ -86,7 +86,8 @@ AWE.Config = (function(module) {
     "map/army/rank4":         AWE.Config.RAILS_ASSET_PATH + 'army/rank4.png',
     "map/army/rank5":         AWE.Config.RAILS_ASSET_PATH + 'army/rank4.png',
 
-    "map/army/target":        AWE.Config.RAILS_ASSET_PATH + 'army/target.png',
+    "map/army/target":        AWE.Config.RAILS_ASSET_PATH + 'army/target_green.png',
+    "map/army/target/attack":        AWE.Config.RAILS_ASSET_PATH + 'army/target_red.png',
     "map/army/target_background": AWE.Config.RAILS_ASSET_PATH + 'white_background.png',
 
     "map/army/battle":        AWE.Config.RAILS_ASSET_PATH + 'battle.png',

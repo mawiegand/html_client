@@ -16,6 +16,7 @@ AWE.UI = (function(module) {
     var _targetedView = null;
     var _arrowImageView = null;
     var _hoverImageView = null;   
+    var _action = null;
 
     var that = module.createContainer(spec, my);
 
@@ -29,7 +30,7 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
-    that.initWithControllerAndTargetedView = function(controller, targetedView, frame) {
+    that.initWithControllerAndTargetedView = function(controller, targetedView, options, frame) {
       _super.initWithController(controller, frame);
       _targetedView = targetedView;
       
@@ -40,7 +41,15 @@ AWE.UI = (function(module) {
       this.addChild(_hoverImageView);
 
       _arrowImageView = AWE.UI.createImageView();
-      _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target"));
+      if(options && options.action && options.action === AWE.Config.ACTION_ATTACK)
+      {
+        _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target/attack"));
+      }
+      else
+      {
+        _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target"));
+      }
+      
       _arrowImageView.setFrame(AWE.Geometry.createRect(0, 0, 64, 64));
       _arrowImageView.onClick = that.onClick;
       _arrowImageView.onMouseOver = that.onMouseOver;

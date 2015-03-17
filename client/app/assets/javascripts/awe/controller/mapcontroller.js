@@ -3353,8 +3353,10 @@ AWE.Controller = function (module) {
             if (visible && targetedView) {
               if (!targetView) {
                 targetView = AWE.UI.createTargetView();
-                targetView.initWithControllerAndTargetedView(that, targetedView);
+                targetView.initWithControllerAndTargetedView(that, targetedView, {action: AWE.Config.ACTION_ATTACK});
                 _stages[2].addChild(targetView.displayObject());
+                that.addBouncingAnnotationLabel(targetedView, targetView, 10000000, AWE.Geometry.createPoint(15, -36),  2);
+                targetView.setNeedsUpdate();
               }
               setTargetPosition(targetView, targetedView.center());
               newTargetViews[targetArmy.getId()] = targetView;
