@@ -294,11 +294,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showStartupDialogs: function() {
 
-      if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
-        this.showAnnouncement();
+      if (AWE.GS.game.getPath('currentCharacter.beginner') === true) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+        this.showWelcomeDialog();
       }
       else {
-        this.showWelcomeDialog();
+        this.showAnnouncement();
       }
 
       if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
