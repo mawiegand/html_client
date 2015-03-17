@@ -515,7 +515,20 @@ AWE.UI = (function(module) {
 				);
 			//single node
 			} else if ($.isFunction(value.frame)) {
-				target = value.frame().copy();
+				var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
+      			if (isAndroid) {
+					var f = value.frame().copy();
+					target = AWE.Geometry.createRect(
+						f.origin.x + 50000,
+						f.origin.y + 50000,
+						f.size.width / 1.4,
+						f.size.height/ 1.4
+					);
+				}
+				else
+				{
+					target = value.frame().copy();
+				}
 			//location
 			} else if ($.isFunction(value.position) && $.isFunction(value.node)) {
 				var f = value.node().frame();
@@ -528,7 +541,13 @@ AWE.UI = (function(module) {
 				);
 			//region
 			} else if ($.isFunction(value.node)) {
-				target = value.node().frame().copy();
+				var f = value.node().frame().copy();
+				target = AWE.Geometry.createRect(
+					f.x +500,
+					f.y,
+					f.width,
+					f.height
+				);
 			//frame
 			} else if (value.origin !== undefined &&
 				value.size !== undefined) {
