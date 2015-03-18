@@ -88,8 +88,8 @@ AWE.UI.Ember = (function(module) {
     didInsertElement: function() {
       //For android, center on chief
       if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
-        $(window).scrollTop($(window).height() / 2);
-        $(window).scrollLeft($(window).width() / 2);
+        $(window).scrollTop($(window).height() / 1.25);
+        $(window).scrollLeft($(window).width() / 2.35);
       }
     }
 
