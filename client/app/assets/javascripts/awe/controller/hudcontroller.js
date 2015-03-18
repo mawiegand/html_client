@@ -571,7 +571,12 @@ AWE.Controller = (function(module) {
       WACKADOO.baseButtonDoubleClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
       if (!baseControllerActive) {
         AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
-      } 
+      }
+      //For android, center on chief
+      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+        $(window).scrollTop($(window).height() / 2);
+        $(window).scrollLeft($(window).width() / 2);
+      }
     };
     
     that.switchToMapButtonClicked = function() {

@@ -137,11 +137,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               self.get('presentScreenController').welcomeDialogClosed();
               //self.get('extrasController').startRandomPterodactylus(60, 90);
               self.get('extrasController').enableAutoPterodactylus();
-			  
-			  if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
-				  $(window).scrollTop($(window).height() / 2);
-				  $(window).scrollLeft($(window).width() / 2);
-			  }
             },
           });
           self.presentModalDialog(dialog);
@@ -523,8 +518,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
-
-
           this.get('presentScreenController').moveTo(node, true);
         }
       }
