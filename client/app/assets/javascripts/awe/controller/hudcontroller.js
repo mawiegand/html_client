@@ -572,11 +572,6 @@ AWE.Controller = (function(module) {
       if (!baseControllerActive) {
         AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
       }
-      //For android, center on chief
-      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
-        $(window).scrollTop($(window).height() / 2);
-        $(window).scrollLeft($(window).width() / 2);
-      }
     };
     
     that.switchToMapButtonClicked = function() {
