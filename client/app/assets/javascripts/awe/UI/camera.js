@@ -519,8 +519,8 @@ AWE.UI = (function(module) {
       			if (isAndroid) {
 					var f = value.frame().copy();
 					target = AWE.Geometry.createRect(
-						f.origin.x + 50000,
-						f.origin.y + 50000,
+						f.origin.x + f.size.width / 12.52,
+						f.origin.y + f.size.height / 12.52,
 						f.size.width / 1.4,
 						f.size.height/ 1.4
 					);
