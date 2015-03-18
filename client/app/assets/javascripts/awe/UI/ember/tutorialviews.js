@@ -175,7 +175,10 @@ AWE.UI.Ember = (function(module) {
                   easing: 'easeOutBack',
                   complete: function() {
                     if (spinningAnimation) {
-                      self.set('spinningBackground', true);
+                      if(navigator.userAgent.toLowerCase().indexOf('android') < 0)
+                      {
+                        self.set('spinningBackground', true);
+                      }
                     }   
                   }
                 });
@@ -214,8 +217,11 @@ AWE.UI.Ember = (function(module) {
           easing: 'easeOutBack',
           complete: function() {
             if (spinningAnimation) {
-              self.set('spinningBackground', true);
-            }   
+              if(navigator.userAgent.toLowerCase().indexOf('android') < 0)
+              {
+                self.set('spinningBackground', true);
+              }
+            }
           }
         });
         
