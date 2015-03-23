@@ -372,12 +372,12 @@ AWE.UI = (function(module) {
         _flagView.setAllianceColor(_army.get('alliance_color'));
         _flagView.setAllianceId(_army.get('alliance_id'));
         _flagView.setDirection('left');
-        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -19, flagLength, 20));
         _flagLength = flagLength;
         that.addChildAt(_flagView, 0);  
       }
       if (_flagView && _flagView.frame().size.width !== flagLength) {
-        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -19, flagLength, 20));
         _flagLength = flagLength;        
       }
 
