@@ -1541,6 +1541,10 @@ AWE.GS = (function(module) {
             }
             /*var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
             WACKADOO.presentModalDialog(dialog);*/
+            AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+              var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+              WACKADOO.presentModalDialog(dialog);
+            });
           }
         },
       });          
