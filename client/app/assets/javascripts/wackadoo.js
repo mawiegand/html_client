@@ -880,7 +880,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
 
 //      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
-        document.location.href = AWE.Config.PORTAL_ROOT;
+        if(navigator.userAgent.toLowerCase().indexOf('android') >= 0)
+        {
+          try {
+            AndroidDelegate.logout();
+          }
+          catch (err)
+          {}
+        }
+        else
+        {
+          document.location.href = AWE.Config.PORTAL_ROOT;
+        }
         return ;
       }
       else {
