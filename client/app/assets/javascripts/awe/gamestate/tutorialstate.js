@@ -1539,8 +1539,8 @@ AWE.GS = (function(module) {
               AndroidDelegate.tutorialCompleted();
             } catch (err) {
             }
-            var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
-            WACKADOO.presentModalDialog(dialog);
+            /*var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
+            WACKADOO.presentModalDialog(dialog);*/
           }
         },
       });          
