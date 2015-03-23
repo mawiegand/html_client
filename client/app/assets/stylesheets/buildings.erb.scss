@@ -1,8 +1,9 @@
-/**  ==  Buildings Big  == **/
-
-.big-building {
-  width: 310px;
-  height: 256px; 
+/**  ==  Buildings Big, Images Used in BuildingInfo and BuildingUpgrade  == **/
+.building-info-image {
+  .big-building {
+    width: 310px;
+    height: 256px;
+  }
 }
 
 /*Chief Cottage*/
@@ -325,6 +326,7 @@
 }
 
 
+/* ==== Different Construction sizes ==== */
 .big-building.size0 {
   background-position: 0 0;
 }
@@ -350,6 +352,8 @@
   background-position: -960px -256px;
 }
 
+
+/* ==== Special construction sizes for upgrade dialog ==== */
 .buildingUpgradeImage.big-building.size0,
 .buildingUpgradeImage.big-building.size0.silhouette {
   background-position: 0 0;
@@ -383,173 +387,224 @@
   background-position: -600px -167px;
 }
 
-/**  ==  Buildings Small  == **/
-.small-building {
-  pointer-events:none;
-}
 
+
+/* ==== Buildings Shown on Settlement and in building selection ==== */
 .building-image {
   position: absolute;
   top: -8px;
   width: 160px;
   height: 128px; 
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+
+.small-building {
+  pointer-events:none;
+  .building_campfire.building-image {
+    -webkit-animation: camp_fire .5s steps(5) infinite;
+       -moz-animation: camp_fire .5s steps(5) infinite;
+        -ms-animation: camp_fire .5s steps(5) infinite;
+         -o-animation: camp_fire .5s steps(5) infinite;
+            animation: camp_fire .5s steps(5) infinite;
+  }
+  .level {
+    perspective: 1000px;
+    width: 46px;
+    height: 46px;
+
+    padding-top: 8px;
+    font-size: 19px;
+    font-family: 'Freckle Face', 'cursive';
+    text-align: center;
+
+    position: absolute;
+    left: 50px;
+    bottom: 0;
+
+    color: #ffe79e;
+
+    z-index: 3;
+    
+    background-image: url('<%= asset_path("extras/level_signs/sign.png") %>');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    .xRotator {
+      -ms-transform: rotateX(0deg); /* IE 9 */
+      -webkit-transform: rotateX(0deg); /* Chrome, Safari, Opera */
+      transform: rotateX(0deg);
+      display: inline-block;
+      .yRotator {
+        -ms-transform: skew(0deg, 18deg); /* IE 9 */
+        -webkit-transform: skew(0deg, 18deg); /* Chrome, Safari, Opera */
+        transform: skew(0deg, 18deg);
+        display: inline-block;
+      }
+    }
+  }
 }
 
 /*Cief Cottage*/
 .building_chief_cottage.building-image {
-  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>');
 }
 
 /*Gatherer*/
 .building_gatherer.building-image {
-  background: url('<%= asset_path("buildings/base/building_gatherer/small/building_gatherer_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_gatherer/small/building_gatherer_small.png") %>');
 }
 
 /*Special Gatherer*/
 .building_special_gatherer.building-image {
-  background: url('<%= asset_path("buildings/base/building_special_gatherer/small/building_special_gatherer_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_special_gatherer/small/building_special_gatherer_small.png") %>');
 }
 
 
 /*Barracks*/
 .building_barracks.building-image,
 .building_infantry_tower.building-image {
-  background: url('<%= asset_path("buildings/base/building_barracks/small/building_barracks_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_barracks/small/building_barracks_small.png") %>');
 }
 
 /*Barracks*/
 .building_barracks_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_barracks_copper/small/building_barracks_copper_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_barracks_copper/small/building_barracks_copper_small.png") %>');
 }
 
 /*Cottage*/
 .building_cottage.building-image {
-  background: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>');
 }
 
 /*Tavern*/
 .building_tavern.building-image {
-  background: url('<%= asset_path("buildings/base/building_tavern/small/building_tavern_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_tavern/small/building_tavern_small.png") %>');
 }
 
 /*Storeage*/
 .building_storage.building-image {
-  background: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>');
 }
 
 /*Campfire*/
 .building_campfire.building-image {
-  background: url('<%= asset_path("buildings/base/building_campfire/small/building_campfire_small.png") %>') no-repeat;
-  background-position: 0 0;
+  background-image: url('<%= asset_path("buildings/base/building_campfire/small/building_campfire_small.png") %>');
 }
 
 /*Quarry*/
 .building_quarry.building-image {
-  background: url('<%= asset_path("buildings/base/building_quarry/small/building_quarry_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_quarry/small/building_quarry_small.png") %>');
 }
 
 /*Logger*/
 .building_logger.building-image {
-  background: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>');
 }
 
 /*Training Cave*/
 .building_training_cave.building-image {
-  background: url('<%= asset_path("buildings/base/building_training_cave/small/building_training_cave_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_training_cave/small/building_training_cave_small.png") %>');
 }
 
 /*Furrier*/
 .building_furrier.building-image {
-  background: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>');
 }
 
 /*Artifact Cave*/
 .building_artifact_stand.building-image {
-  background: url('<%= asset_path("buildings/base/building_artifact_stand/small/building_artifact_stand_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_artifact_stand/small/building_artifact_stand_small.png") %>');
 }
 
 /*Copper Smelter*/
 .building_copper_smelter.building-image {
-  background: url('<%= asset_path("buildings/base/building_copper_smelter/small/building_copper_smelter_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_copper_smelter/small/building_copper_smelter_small.png") %>');
 }
 
 /*Firing Range*/
 .building_firing_range.building-image,
 .building_artillery_tower.building-image {
-  background: url('<%= asset_path("buildings/base/building_firing_range/small/building_firing_range_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_firing_range/small/building_firing_range_small.png") %>');
 }
 
 .building_firing_range_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_firing_range_copper/small/building_firing_range_copper_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_firing_range_copper/small/building_firing_range_copper_small.png") %>');
 }
 
 /*Alliance Hall*/
 .building_alliance_hall.building-image {
-  background: url('<%= asset_path("buildings/base/building_alliance_hall/small/building_alliance_hall_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_alliance_hall/small/building_alliance_hall_small.png") %>');
 }
 
 /*Cottage 2*/
 .building_cottage_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>');
 }
 
 /*Storeage 2*/
 .building_storage_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>');
 }
 
 /*Quarry 2*/
 .building_quarry_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_quarry_copper/small/building_quarry_copper_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_quarry_copper/small/building_quarry_copper_small.png") %>');
 }
 
 /*Logger 2*/
 .building_logger_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>');
 }
 
 /*Stud*/
 .building_stud.building-image,
 .building_cavalry_tower.building-image {
-  background: url('<%= asset_path("buildings/base/building_stud/small/building_stud_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_stud/small/building_stud_small.png") %>');
 }
 
 .building_stud_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_stud_copper/small/building_stud_copper_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_stud_copper/small/building_stud_copper_small.png") %>');
 }
 
 /*Command Post*/
 .building_command_post.building-image {
-  background: url('<%= asset_path("buildings/base/building_command_post/small/building_command_post_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_command_post/small/building_command_post_small.png") %>');
 }
 
 /*Furrier 2*/
 .building_furrier_2.building-image {
-  background: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>');
 }
 
 /*Garison*/
 .building_garrison.building-image {
-  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>');
 }
 
 /*Haunt*/
 .building_haunt.building-image {
-  background: url('<%= asset_path("buildings/base/building_haunt/small/building_haunt_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_haunt/small/building_haunt_small.png") %>');
 }
 
 /*Field Camp*/
 .building_field_camp.building-image {
-  background: url('<%= asset_path("buildings/base/building_field_camp/small/building_field_camp_small.png") %>') no-repeat;
+  background-image: url('<%= asset_path("buildings/base/building_field_camp/small/building_field_camp_small.png") %>');
 }
 
 /*Wacky Lab*/
 .building_altar.building-image {
-  background: url('<%= asset_path("buildings/base/building_altar/small/building_altar_small.png") %>') no-repeat center center;
+  background-image: url('<%= asset_path("buildings/base/building_altar/small/building_altar_small.png") %>');
 }
 
-/* == Construction Images == */
+.building-image.building_fortress_fortification {
+  background-image: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>');
+}
 
+
+
+/* == Construction Images == */
 .construction-area {
   width: 160px;
   height: 128px;
@@ -564,6 +619,7 @@
 .construction-area.front {
   background: url('<%= asset_path("buildings/base/under_construction/front/under_construction_front.png") %>') no-repeat center center;
 }
+
 
 .base-screen .building-option-image.building_artifact_stand.level1 {
   background-position: 0px 0px;
@@ -596,7 +652,7 @@
   background-position: 0px 0px;
 }
 
-/** image for base and outpost buildings */
+/** images shown in the encyclopedia */
 .building-option-image.building_quarry {
   background: url('<%= asset_path("buildings/base/building_quarry/small/building_quarry_small.png") %>') no-repeat center center;
 }
@@ -681,9 +737,6 @@
 .building-option-image.building_artifact_stand {
   background: url('<%= asset_path("buildings/base/building_artifact_stand/small/building_artifact_stand_small.png") %>') no-repeat center center;
 }
-
-
-/** special colony buildings */
 .building-option-image.building_haunt {
   background: url('<%= asset_path("buildings/base/building_haunt/small/building_haunt_small.png") %>') no-repeat center center;
 }
@@ -693,7 +746,6 @@
 .building-option-image.building_field_camp {
   background: url('<%= asset_path("buildings/base/building_field_camp/small/building_field_camp_small.png") %>') no-repeat center center;
 }
-
 /** image for building_siege_tower */
 .building-option-image.building_siege_tower {
   background: url('<%= asset_path("buildings/base/building_siege_tower/small/building_siege_tower_small.png") %>') no-repeat center center;
@@ -712,10 +764,6 @@
 }
 /** image for building_fortress_fortification*/
 .building-option-image.building_fortress_fortification {
-  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat center center;
-}
-
-.building-image.building_fortress_fortification {
   background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat center center;
 }
 
@@ -817,35 +865,6 @@
   background-position: -720px 0px;
 }
 
-.outpost-picture .large-building.hover,
-.base-picture .large-building.hover,
-.outpost-picture .small-building.hover,
-.base-picture .small-building.hover,
-.fortress-picture .small-building.hover {
-  background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
-  cursor: pointer;
-}
-
-.base-picture .small-building.size1.hover {
-}
-.base-picture .small-building.size2.hover {
-}
-.base-picture .small-building.size3.hover {
-}
-
-.base-picture .large-building.size1:hover {
-}
-.base-picture .large-building.size2:hover {
-}
-.base-picture .large-building.size3:hover {
-}
-.base-picture .large-building.size4:hover {
-}
-.base-picture .large-building.size5:hover {
-}
-.base-picture .large-building.size6:hover {
-}
-
 .building-image.size0 {
   background-position: 0 0px;
 }
@@ -871,9 +890,17 @@
   background-position: -480px -128px;
 }
 
+/* ==== Grid ==== */
+.outpost-picture .large-building.hover,
+.base-picture .large-building.hover,
+.outpost-picture .small-building.hover,
+.base-picture .small-building.hover,
+.fortress-picture .small-building.hover {
+  background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
+  cursor: pointer;
+}
 
 /* ==== Small Fire Positions === */
-
 .building_chief_cottage.building-image.size0 .small-fire,
 .building_fortress_fortification.building-image.size0 .small-fire {
   top: 64px;
@@ -928,13 +955,7 @@
   left:77px;
 }
 
-.building_campfire.building-image {
-    -webkit-animation: camp_fire .5s steps(5) infinite;
-       -moz-animation: camp_fire .5s steps(5) infinite;
-        -ms-animation: camp_fire .5s steps(5) infinite;
-         -o-animation: camp_fire .5s steps(5) infinite;
-            animation: camp_fire .5s steps(5) infinite;
-}
+/* ==== Campfire Animations ==== */
 
 @-webkit-keyframes camp_fire {
    from { background-position: 0px 0px; }

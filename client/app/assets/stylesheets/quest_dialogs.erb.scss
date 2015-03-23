@@ -65,10 +65,11 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
+  background-size: 100%;
 
-  position: absolute; 
-  margin-left: -400px;
-  margin-top: 80px;
+  position: fixed; 
+  margin-left: -382px;
+  margin-top: 72px;
   width: 764px;
   height: 576px;
 
@@ -229,7 +230,8 @@
   .quest-list-view{
     height: 346px;
     width: 436px;
-    right: -238px;
+    margin-left: -218px;
+    margin-top: 10px;
   }
 
   .quest-list-content h1 {
@@ -239,6 +241,11 @@
   .quest-list-item-name {
     top: 2px;
     font-size: 18px;
+  }
+
+  .quest-list-header .advisor.sketched {
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -484,13 +491,12 @@ div.dom-quest-container div.tutorial-dialog {
 
 /*==========*/
 
-.quest-dialog-bg{
-  position: absolute;
+.quest-dialog-bg {
+  position: fixed;
   height: 0px;
   width: 0px;
-  top: 0px;
-  margin: 0 auto;
-  left: 0px;
+  margin-top: 0;
+  margin-left: 0;
 
   background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
   background-color: none;
@@ -574,7 +580,7 @@ div.dom-quest-container div.tutorial-dialog {
 }
 
 .quest-dialog-text h3{
-  font-size :124%;
+  font-size : 1.5em;
 }
 
 p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
@@ -763,32 +769,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .quest-dialog-button{
   top: 80%;
   left: 84%;
-}
-
-@media (max-width : 800px) {
-  .quest-dialog-text h1, .quest-dialog-text h3{
-    font-size: 13px;
-    font-family: 'Freckle Face', 'cursive';
-    text-shadow: none;
-    color: #dcdcbf;
-    font-weight: 0;
-    margin: 0;
-  }
-
-  .quest-dialog-text h3{
-    margin-top: 20px;
-    font-size : 12px;
-  }
-
-  p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
-    font-family: 'Asap', 'sans-serif';
-    text-align: left;
-    text-shadow: none;
-    color: #dcdcbf;
-    line-height: 1.15;
-    font-size: 11px;
-    margin: 4px 0;
-  }
 }
 
 @media (min-width : 1023px) {

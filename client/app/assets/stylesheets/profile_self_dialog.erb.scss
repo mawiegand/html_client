@@ -18,7 +18,7 @@
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  font-family: $main-font !important;
   padding: 2px!important;
   margin-left: 13px!important;
   resize: none;
@@ -39,7 +39,7 @@
   font-size: 1.0em;
   padding: 0 20px 0 20px;
   margin: 20px 0 0 0;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
 }
 
 .profile-info-self-dialog-pane .row1 {
@@ -506,7 +506,7 @@
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  font-family: $main-font !important;
   padding: 2px!important;
   margin-left: 13px!important;
   resize: none;

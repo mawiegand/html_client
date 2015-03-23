@@ -1,38 +1,4 @@
-/*
- * This is a manifest file that'll automatically include all the stylesheets available in this directory
- * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
- * the top of the compiled file, but it's generally better to create a new file per style scope.
- *= require_self
-
- *= require font_face
- *= require slots
- *= require units 
- *= require buildings
-
- *= require alliance_dialog
- *= require mail_dialog
- *= require menu_dialog
- *= require assignments_dialog
- *= require artifacts_dialog
- *= require taxes_dialog
- *= require resource_info_dialog
- *= require move_dialog
- *= require recruitment_dialog
- *= require trade_dialog
- *= require military_dialog
- *= require army_info_dialog
- *= require change_create_army_dialog
- *= require building_selection_dialog
- *= require building_info_dialog
- *= require upgrade_convert_dialog
- *= require profile_self_dialog
- *= require quest_dialogs
- *= require ptero
- *= require retentionegg
- *= require fire
-*/
-
-
+@import 'config';
 /*
  * HTML5 Boilerplate
  *
@@ -259,7 +225,6 @@ td { vertical-align: top; }
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  text-shadow: white 0px 1px 1px;
   color: #555;
 }
 
@@ -586,7 +551,7 @@ canvas{
   position: relative;
   text-align: center;
   line-height: 30px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   color: white;
 }
 /* == NEW DOM RIGHT HUD END== */
@@ -960,9 +925,9 @@ canvas{
 }
 
 .modal-dialog-pane-new {
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   font-size: 28px;
-  color: #735e3b;
+  color: $font-brown;
   text-shadow: none;
   position: fixed; 
   margin-left: -338px;
@@ -981,7 +946,7 @@ canvas{
 }
 
 .modal-dialog-body {
-  height: 422px;
+  height: 420px;
   width: 100%;
   position: absolute;
   top: 55px;
@@ -1121,7 +1086,7 @@ canvas{
   color:#eae0c2;
   font-size: 28px !important;
   margin-top: 10px !important;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   text-shadow: none;
   display: inline-block;
 }
@@ -1222,9 +1187,9 @@ canvas{
 }
 
 .modal-dialog-pane-new h2, .modal-dialog-buttons{
-  color:#735e3b;
+  color: $font-brown;
   font-size:28px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   text-shadow: none;
   /*position: absolute;
     top: 80px;
@@ -1387,9 +1352,9 @@ canvas{
 }
 
 .character-details h3 {
-  color:#735e3b;
+  color: $font-brown;
   font-size: 20px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   text-shadow: none;
   display: inline-block;
   margin-right: 20px;
@@ -1400,7 +1365,7 @@ canvas{
   top: 205px;
   color: #3576b2;
   font-size: 38px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   left: 197px;
   width: 136px;
   text-align: center;
@@ -1411,7 +1376,7 @@ canvas{
   top: 205px;
   color: #3576b2;
   font-size: 38px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   left: 338px;
   width: 136px;
   text-align: center;
@@ -1443,7 +1408,7 @@ canvas{
 
 .modal-dialog-text{
   font-family: 'Montserrat', sans-serif;
-  color:#735e3b;
+  color: $font-brown;
   position: absolute;
   font-size: 22px;
   text-shadow: none;
@@ -2189,20 +2154,19 @@ h1.slot-tooltip {
 
 /** standard info dialog */
 .info-dialog {
-  font-family: 'hvd_comic_serif_proregular';
+  font-family: $main-font;
   text-align: center;
-  position: absolute; 
+  position: fixed; 
   margin-left: -350px;
   margin-top: -270px;
   width: 676px; 
   height: 500px;
   background: url('<%= asset_path("dialogs/info-dialog/info-dialog_background.png") %>') no-repeat center;
   box-shadow: none;
-  zoom:1;
 }
 
 .info-dialog h1 {
-  font-family: 'hvd_comic_serif_proregular';
+  font-family: $main-font;
   margin-top: 60px;
   color: white;
   text-shadow: 0px 0px 8px black;
@@ -2285,7 +2249,7 @@ h1.slot-tooltip {
 
   cursor: default;
   font-size: 16px;
-  position: absolute; 
+  position: fixed; 
   margin-left: -431px;
   margin-top: -325px;
   width: 764px;
@@ -2306,7 +2270,7 @@ h1.slot-tooltip {
 .startup-dialog .content,
 .startup-dialog .content h1,
 .startup-dialog .content h2 {
-  font-family: 'hvd_comic_serif_proregular';
+  font-family: $main-font;
   color: #725d3a;
 }
 
@@ -2465,7 +2429,7 @@ h1.slot-tooltip {
 
 .welcome-dialog {
   font-size: 16px;
-  position: absolute; 
+  position: fixed; 
   margin-left: -400px;
   margin-top: -300px;  
   width: 800px; 
@@ -4246,7 +4210,7 @@ span.bonus {
 .building-info-button-background {
   top: 60px;
   left: -10px;
-  background-image: url("<%= asset_path 'hud/button_info/colored/button_info_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
 }
 
 .building-info-button-icon {
@@ -4258,7 +4222,7 @@ span.bonus {
 .building-upgrade-button-background {
   top: 80px;
   left: 30px;
-  background-image: url("<%= asset_path 'hud/button_upgrade/colored/button_upgrade_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
 }
 
 .building-upgrade-button-icon {
@@ -4270,7 +4234,7 @@ span.bonus {
 .building-convert-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-convert-button-icon {
@@ -4282,7 +4246,7 @@ span.bonus {
 .building-destroy-button-background {
   top: 50px;
   left: 120px;
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
 }
 
 .building-destroy-button-icon {
@@ -4294,7 +4258,7 @@ span.bonus {
 .building-assignment-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-assignment-button-icon {
@@ -4306,7 +4270,7 @@ span.bonus {
 .building-diplomacy-button-background {
   top: 5px;
   left: 140px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-diplomacy-button-icon {
@@ -4318,7 +4282,7 @@ span.bonus {
 .building-trade-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-trade-button-icon {
@@ -4330,7 +4294,7 @@ span.bonus {
 .building-artifact-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-artifact-button-icon {
@@ -4342,7 +4306,7 @@ span.bonus {
 .building-army-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
 }
 
 .building-army-button-icon {
@@ -4359,7 +4323,7 @@ span.bonus {
   top: -30px;
   left: 40px;
   pointer-events:auto;
-  z-index: 50;
+  z-index: 9;
 }
 
 .construction-progress-coins {
@@ -4381,7 +4345,7 @@ span.bonus {
 }
 
 .construction-progress-coins.label {
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   color: white;
   font-size: 22px;  
   text-align: left;
@@ -4408,7 +4372,7 @@ span.bonus {
 }
 
 .construction-progress-cancel.background {
-  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_red/button_red.png' %>");
   background-size: 48px;
   cursor: pointer;
 }
@@ -4428,7 +4392,7 @@ span.bonus {
 }
 
 .construction-progress-frogtrade.background {
-  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_yellow/button_yellow.png' %>");
   background-size: 48px;
 }
 
@@ -4484,7 +4448,7 @@ span.bonus {
   left: 0px;
   width: 82px;
   height: 16px;
-  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  font-family: $main-font;
   color: white;
   font-size: 11px;  
   text-align: center;
@@ -4552,7 +4516,7 @@ span.bonus {
   width: 90%;
   margin-top: 13px;
   text-align: center;
-  font-family: 'hvd_comic_serif_proregular';
+  font-family: $main-font;
   font-size: 18px;
   color: #fff;
   cursor: pointer;
@@ -4862,8 +4826,8 @@ table .datetime {
 .base-picture {
   position: relative;
   float: left;
-  width: 1024px;  
-  /*height: 1024px;*/
+  /*width: 1024px;  
+  height: 1024px;*/
   margin-top: 210px;
 }
 
@@ -4923,7 +4887,7 @@ table .datetime {
 }
 
 .settlement-right-footer {
-  width: 50%;
+  width: 49.99%;
   height: 100%;
   float: right;
   margin-left: -512px;
@@ -5207,31 +5171,6 @@ table .datetime {
   border: none !important;
 }
 
-.outpost-picture .level, 
-.fortress-picture .level, 
-.base-picture .level {
-  /*background-color: #BBB;
-  color: #444;*/
-  color: white;
-  text-align: center;
-}
-
-.outpost-picture .level,
-.base-picture .level,
-.fortress-picture .level {
-  font-size: 24px;
-  font-family: 'Freckle Face', 'cursive';
-  text-shadow: 2px 2px black;
-  /*border: 2px solid #444;
-  border-radius: 4px;*/
-  width: 16px;
-  padding: 4px 0px;
-  z-index: 1;
-  position: absolute;
-  left:   47px;
-  bottom: 23px;
-}
-
 
 .fortress-picture .small-building.slot1,
 .fortress-picture .building-gui.slot1 {
@@ -5297,20 +5236,6 @@ table .datetime {
 }
 .fortress-picture .tower.size3:hover {
   background-position: -714px -454px;
-}
-
-.outpost-picture .small-building .level,
-.base-picture .small-building .level {
-  position: absolute;
-  left:   47px;
-  bottom: 23px;
-}
-
-.outpost-picture .large-building .level,
-.base-picture .large-building .level {
-  position: absolute;
-  right: 10px;
-  top:   10px;
 }
 
 
@@ -6750,7 +6675,7 @@ button.fb-button {
 
 
 .quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
-  float:right;
+  float: right;
   margin-left: 4px;
   margin-right: -22px;
   margin-top: -30px;
@@ -7255,7 +7180,7 @@ div.dom-quest-container div.tutorial-dialog {
   height:50px !important;
   width: 100% !important;
   padding-right: 0px !important;
-  font-family: 'hvd_comic_serif_proregular' !important;
+  font-family: $main-font !important;
   top:50px !important;
 }
 
@@ -7378,6 +7303,16 @@ div.dom-quest-container div.tutorial-dialog {
   
 }
 
+.annotation-button
+{
+  .icon
+  {
+
+  }
+}
+
+.annotation-button.red {}
+
 .button_green_high
 {
   cursor: pointer;
@@ -7393,3 +7328,30 @@ div.dom-quest-container div.tutorial-dialog {
   background: url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>") no-repeat center center;
 }
 
+@import 'font_face';
+@import 'slots';
+@import 'units ';
+@import 'buildings';
+
+@import 'alliance_dialog';
+@import 'mail_dialog';
+@import 'menu_dialog';
+@import 'assignments_dialog';
+@import 'artifacts_dialog';
+@import 'taxes_dialog';
+@import 'resource_info_dialog';
+@import 'move_dialog';
+@import 'recruitment_dialog';
+@import 'trade_dialog';
+@import 'military_dialog';
+@import 'army_info_dialog';
+@import 'change_create_army_dialog';
+@import 'building_selection_dialog';
+@import 'building_info_dialog';
+@import 'upgrade_convert_dialog';
+@import 'profile_self_dialog';
+@import 'quest_dialogs';
+@import 'ptero';
+@import 'retentionegg';
+@import 'fire';
+@import 'android';

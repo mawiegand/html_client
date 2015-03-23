@@ -187,6 +187,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var beginner  = character && character.get('chat_beginner');
       var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
+	  openPane = false; // Android Hotfix
 
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
@@ -288,11 +289,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showStartupDialogs: function() {
 
-      if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
-        this.showAnnouncement();
+      if (AWE.GS.game.getPath('currentCharacter.beginner') === true) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+        this.showWelcomeDialog();
       }
       else {
-        this.showWelcomeDialog();
+        this.showAnnouncement();
       }
 
       if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
@@ -517,8 +518,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
-
-
           this.get('presentScreenController').moveTo(node, true);
         }
       }
@@ -905,34 +904,28 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
       if (isAndroid) {
         AWE.Settings.hudScale = 0.6;
+        var styleSheets = document.styleSheets;
+      
+        // TODO: improve the code below. Does it have to be run for hudScale == 1?
+        //       can't it read the values for top and marginLeft from the CSS? 
+        //       The present code will OVERRIDE any change to the css, without the
+        //       developer noticing it.
+        for (n in styleSheets)
+        {
+          var theRules = styleSheets[n].cssRules;
+          for (m in theRules)
+          {
+            if (".scale-down" === theRules[m].selectorText) {
+              theRules[m].style.zoom = AWE.Settings.hudScale;
+            }
+            if (theRules[m].selectorText === '.topbar-info-box') {
+              theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
+              theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
+            }
+          }       
+        }
       } else {
         AWE.Settings.hudScale = 1;
-      }
-      var styleSheets = document.styleSheets;
-      
-      // TODO: improve the code below. Does it have to be run for hudScale == 1?
-      //       can't it read the values for top and marginLeft from the CSS? 
-      //       The present code will OVERRIDE any change to the css, without the
-      //       developer noticing it.
-      for (n in styleSheets)
-      {
-        var theRules = styleSheets[n].cssRules;
-        for (m in theRules)
-        {
-          if (theRules[m].selectorText === ".modal-dialog-pane-new" 
-            || theRules[m].selectorText === ".modal-dialog-pane" 
-            || theRules[m].selectorText === ".right-hud" 
-            || theRules[m].selectorText === ".settlement-map-button" 
-            || theRules[m].selectorText === ".topbar-info-box.settlement" 
-            || theRules[m].selectorText === ".shop-dialog-pane"
-            || theRules[m].selectorText === ".top-right-hud") {
-            theRules[m].style.zoom = AWE.Settings.hudScale;
-          }
-          if (theRules[m].selectorText === '.topbar-info-box') {
-            theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
-            theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
-          }
-        }       
       }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));

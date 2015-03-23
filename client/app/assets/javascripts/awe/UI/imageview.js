@@ -81,6 +81,11 @@ AWE.UI = (function(module) {
       recalcScale();
       this.setNeedsDisplay();
     }
+
+    that.setPivot = function(x, y) {
+      _bitmap.regX = x;
+      _bitmap.regY = y;
+    }
     
     that.contentMode = function() { return contentMode; }
     
@@ -92,6 +97,10 @@ AWE.UI = (function(module) {
     that.setNewSize = function(x, y) {
       _bitmap.scaleX = x / _bitmap.image.width;
       _bitmap.scaleY = y / _bitmap.image.height;
+    }
+
+    that.rotate = function(deg) {
+      _bitmap.rotation += deg;
     }
         
     that.displayObject = function() { return _bitmap; }

@@ -63,7 +63,7 @@
 <script type="text/x-handlebars" data-template-name="text-input-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4" id="text-input-dialog">
+    <div class="modal-dialog-pane z-layer-4 scale-down" id="text-input-dialog">
       <h1>{{ heading }}</h1>
       {{view Ember.TextField class="text-field" maxlength=inputMaxLength placeholder="Name" type="text" valueBinding="input"}} 
       <div class="controls-bar">
@@ -77,7 +77,7 @@
 <script type="text/x-handlebars" data-template-name="textarea-input-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4" id="text-area-dialog">
+    <div class="modal-dialog-pane z-layer-4 scale-down" id="text-area-dialog">
       <h1>{{ heading }}</h1>
       {{view Ember.TextArea class="text-field" maxlength=inputMaxLength placeholder=placeholderText type="text" rows=rowsSize cols=colsSize valueBinding="input"}}
       <div class="controls-bar">
@@ -93,7 +93,7 @@
 <div class="popup-dialog">
     <div class="modal-dialog-background z-layer-3"></div>
     <div class="center-helper">
-      <div class="modal-dialog-pane-new z-layer-4">
+      <div class="modal-dialog-pane-new z-layer-4 scale-down">
         <div class="modal-dialog-container">
           <a href="#" {{action "closeDialog"}}>
             <div class="modal-dialog-close"></div>
@@ -115,7 +115,7 @@
 <script type="text/x-handlebars" data-template-name="info-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4 info-dialog">
+    <div class="modal-dialog-pane z-layer-4 info-dialog scale-down">
       <h1>{{ heading }}</h1>
       <div class="content">
         <div class="content-text">
@@ -174,7 +174,7 @@
   <div class="popup-dialog">
     <div class="modal-dialog-background z-layer-3" onClick="WACKADOO.closeAllModalDialogs()"></div>
     <div class="center-helper">
-      <div class="modal-dialog-pane-new z-layer-4">
+      <div class="modal-dialog-pane-new z-layer-4 scale-down">
         <div class="modal-dialog-container">
           {{#if hasSettings }}
           <a href="#" {{action "settingsDialog"}}>

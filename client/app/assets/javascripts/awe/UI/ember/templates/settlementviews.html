@@ -129,7 +129,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-abandon-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4 abandon-dialog">
+    <div class="modal-dialog-pane z-layer-4 abandon-dialog scale-down">
       <h1>Aufgabe der Lagerstätte</h1>
       {{#if error}}
         <p>Fehler: Lagerstätte konnte nicht aufgegeben werden.</p>
@@ -150,7 +150,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-invation-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane z-layer-4 invation-dialog">
+    <div class="modal-dialog-pane z-layer-4 invation-dialog scale-down">
       <h1>{{t settlement.invitationLink.header}}</h1>
       <p>{{t settlement.invitationLink.text}}</p>
       <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "linkPressed"}}>{{t settlement.invitationLink.send}}</div>
