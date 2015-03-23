@@ -1465,6 +1465,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
 
 
     closeClicked: function() {
+      $('#layers').css('overflow', 'visible');
       this.destroy();
     },
 
