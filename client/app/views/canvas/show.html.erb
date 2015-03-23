@@ -21,7 +21,8 @@
     requestUrl:         window.location.href,
   });
 
-  if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+  // android+ condition ->Hotfix for android client bug
+  if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
   {
       Sample.setEndpoint("/psiori/event")
       Sample.setAppToken("fsRrapvL");

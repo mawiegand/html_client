@@ -373,7 +373,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         Sample.setUserId(identifier);
 
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
         {
           Sample.sessionUpdate();  
           Sample.track('started', 'session');
@@ -849,32 +849,33 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       /** Set the pisori installtoken, sessiontoken and platform
         * so that events don´t get tracked twice
         */
-      var startupArgs = this.get('startupArguments');
-      var platform = startupArgs['platform'];
+      var platform = args['platform'];
       
       Sample.setEndpoint("/psiori/event")
       Sample.setAppToken("fsRrapvL");
 
-      if (platform == Sample.PLATFORM_ANDROID)
+      // android+ condition ->Hotfix for android client bug
+      if (platform == Sample.PLATFORM_ANDROID || platform == 'android+')
       {
-          var sessionToken = startupArgs['session_token'];
-          var installToken = startupArgs['install_token'];
-          if (sessionToken != "undefined" && sessionToken != null)
+          var sessionToken = args['session_token'];
+          var installToken = args['install_token'];
+          if (sessionToken)
           {
-              Sampl.setSessionToken(sessionToken);
+              Sample.setSessionToken(sessionToken);
           }
-          if (installToken != "undefined" && installToken != null)
+          if (installToken)
           {
-              Sampl.setInstallToken(installToken);
+              Sample.setInstallToken(installToken);
           }
-          if (platform != "undefined" && platform != null)
+          if (platform)
           {
-              Sampl.setPlatform(platform);
+              Sample.setPlatform(Sample.PLATFORM_ANDROID);
           }
       }
 
       if (!args || !args.accessToken) {
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+        // android+ condition ->Hotfix for android client bug
+        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
         {
             Sample.track('start_failed', 'session');
         }
@@ -970,7 +971,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         styleSheet.insertRule(".shop-dialog-pane { height: 500px; margin-top: 100px; overflow: scroll; }", styleSheet.rules.length);
       }*/
 
-      if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+      // android+ condition ->Hotfix for android client bug
+      if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
       {
          Sample.sessionStart();
          Sample.autoPing(30);
