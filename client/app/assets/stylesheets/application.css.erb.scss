@@ -5641,9 +5641,8 @@ a.trading-carts-speedup-button:hover {
 }
 
 .catapult-start-dialog {
-  position: absolute;
-  margin-top:100px;
-  margin-left: -290px;
+  position: fixed;
+  margin-left: -280px;
   padding:0;
   z-index:256;
 
@@ -5744,7 +5743,7 @@ a.trading-carts-speedup-button:hover {
   position: absolute;
   bottom: 52px;
   left: 100px;
-  width: 100px;
+  width: 120px;
   height: 52px;
 
   font-weight: bold;

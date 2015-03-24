@@ -914,7 +914,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
       if (isAndroid) {
-        AWE.Settings.hudScale = 0.6;
+        AWE.Settings.hudScale = 0.5;
         var styleSheets = document.styleSheets;
       
         // TODO: improve the code below. Does it have to be run for hudScale == 1?
@@ -926,7 +926,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var theRules = styleSheets[n].cssRules;
           for (m in theRules)
           {
-            if (".scale-down" === theRules[m].selectorText) {
+            if (theRules[m].selectorText === ".scale-down") {
               theRules[m].style.zoom = AWE.Settings.hudScale;
             }
             if (theRules[m].selectorText === '.topbar-info-box') {
