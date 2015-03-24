@@ -73,7 +73,7 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="building-option-details-new-view">
+<script type="text/x-handlebars" data-template-name="building-option-details-view">
    <div class="building-selection-cell">
    {{#if uiMarker}}
       {{view AWE.UI.Ember.UIMarker direction=2 top="-5" left=40}}
@@ -110,11 +110,11 @@
         <h1 class="popup-header-center" >{{local building.name}}</h1>
   </div>
   <div class="modal-dialog-body building-information-dialog-pane scrolling">
-    {{view AWE.UI.Ember.BuildingOptionDetailNewDialogView buildingBinding="building" levelBinding="level"}}
+    {{view AWE.UI.Ember.BuildingOptionDetailDialogView buildingBinding="building" levelBinding="level"}}
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="building-option-details-new-dialog-view">
+<script type="text/x-handlebars" data-template-name="building-option-details-dialog-view">
   <div class="row row1">
     <div class="row row1">
       <div class="cell cell-50 building-info-image">
@@ -149,7 +149,7 @@
 
 <script type="text/x-handlebars" data-template-name="settlement-new-view-select-building">
   {{#each constructionOptions}}
-      {{view AWE.UI.Ember.BuildingOptionDetailNewView buildingBinding="this"}}
+      {{view AWE.UI.Ember.BuildingOptionDetailView buildingBinding="this"}}
   {{/each}}
 </script>
 

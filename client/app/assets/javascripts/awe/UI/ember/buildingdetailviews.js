@@ -268,9 +268,11 @@ module.SelectBuildingNewView = Ember.View.extend({
   });
   
   
+ 
+
   module.BuildingOptionDetailView = Ember.View.extend({
-    templateName:      "building-option-details",
-    classNames: ['building-option-details'],
+    templateName:      "building-option-details-view",
+    classNames: ['building-option-details-new-view', 'building-option-details'],
     classNameBindings:  "same",
     
     building: null,
@@ -293,13 +295,7 @@ module.SelectBuildingNewView = Ember.View.extend({
     same: function() {
       return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
     }.property('building', 'hovered').cacheable(),
-  });
-
-  module.BuildingOptionDetailNewView = module.BuildingOptionDetailView.extend({
-    templateName:      "building-option-details-new-view",
-    classNames: ['building-option-details-new-view'],
-
-    building: null,
+  
 
     onInfoClicked: function()
     {
@@ -331,10 +327,31 @@ module.SelectBuildingNewView = Ember.View.extend({
     
   });
 
-   module.BuildingOptionDetailNewDialogView = module.BuildingOptionDetailView.extend({
-    templateName:      "building-option-details-new-dialog-view",
-    classNames: ['building-option-details-new-dialog-view'],
+   module.BuildingOptionDetailDialogView = Ember.View.extend({
+    templateName:      "building-option-details-dialog-view",
+    classNames: ['building-option-details-new-dialog-view', 'building-option-details'],
+    classNameBindings:  "same",
+    
+    building: null,
+    hovered: null,
+   
+    unmetRequirementGroups: function() {
+      var building = this.get('building');
+      return building ? building.unmetRequirementGroups() : null;
+    }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),    
 
+    requirementsMet: function() {
+      var unmetRequirements = this.get('unmetRequirementGroups');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirementGroups', 'unmetRequirementGroups.length'), 
+    
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet'),   
+   
+    same: function() {
+      return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
+    }.property('building', 'hovered').cacheable(),
     buildingImageLevel: function() {
       var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(this.getPath("building.buildingType.symbolic_id"), this.get("level"));
       return "size" + imageLevel;
