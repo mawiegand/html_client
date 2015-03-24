@@ -300,8 +300,8 @@ AWE.UI.Ember = (function(module) {
     garrisonArmy: null,
   });
   
-  module.ArmyNewChangeView = module.ArmyAbstractView.extend ({
-    templateName: 'army-new-change-content-view',
+  module.ArmyChangeView = module.ArmyAbstractView.extend ({
+    templateName: 'army-change-content-view',
 	  unitTypes: null,
 	  garrisonArmy: null,
     otherArmy: null,

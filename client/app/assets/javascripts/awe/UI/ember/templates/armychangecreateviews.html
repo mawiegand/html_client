@@ -10,7 +10,7 @@
     {{/if}} 
 
         {{#if remainingArmies }}
-            {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+            {{view AWE.UI.Ember.ArmyChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
             {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" classNames="create-army-dialog-name" }}
         {{else}}
             <p class="error">{{ t army.create.error }}</p>
@@ -25,12 +25,12 @@
     <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
 
-   	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes" isCreateArmyBinding="isCreateArmy"}}
+   	{{view AWE.UI.Ember.ArmyChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes" isCreateArmyBinding="isCreateArmy"}}
 
    </div>
 </script>
    
-<script type="text/x-handlebars" data-template-name="army-new-change-content-view">   
+<script type="text/x-handlebars" data-template-name="army-change-content-view">   
 		<div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right">
 		  <div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>
             {{#if isCreateArmy }}
