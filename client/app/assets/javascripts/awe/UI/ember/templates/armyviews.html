@@ -97,47 +97,6 @@
     </div>  
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-create-dialog">
-      <div class="modal-dialog-background"></div>
-      <div class="horizontal-center-helper">
-        <div class="modal-dialog-pane scale-down" id="army-create-form">
-          <div class="inner-border">
-            <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
-            <div class="advisor warrior"></div>
-          
-            <h2>{{ t army.create.header }}</h2>
-            <p class="citation">{{t army.form.advisorHint}}</p>
-            
-            <div class="clear"></div>
-             
-            {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-            <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
-            {{#if loadingSettlement }}
-              {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
-            {{else}}
-              {{#if settlement.garrison.isFighting}}
-                {{t army.form.garrisonFighting}}
-              {{else}}
-                {{#if remainingArmies }}
-                  <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
-                  <div class="buttons">
-                    <div class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</div>&nbsp;&nbsp;&nbsp;
-                    <div class="clickable button" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</div>
-                  </div>
-                {{else}}
-                  {{ t army.create.error }}
-                {{/if}}
-              {{/if}}
-            {{/if}}
-            {{#if "loading" }}
-              <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.create.loadingMessage }}</p>
-            {{/if}}
-          </div>
-        </div>
-      </div>
-</script>
-
-
 
 <script type="text/x-handlebars" data-template-name="army-form">
       <table>

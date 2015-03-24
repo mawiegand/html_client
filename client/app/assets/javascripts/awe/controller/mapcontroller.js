@@ -1058,7 +1058,7 @@ AWE.Controller = function (module) {
         removeMarker();
       }
 
-      var dialog = AWE.UI.Ember.ArmyNewCreateDialog.create({
+      var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         changePressed: function (evt) {
           if (this.get('garrisonOverfull')) {

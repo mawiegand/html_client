@@ -150,8 +150,8 @@ AWE.UI.Ember = (function(module) {
   
 
 //create dialog from change dialog
-  module.ArmyNewCreateDialog = module.ArmyChangeDialog.extend({
-    templateName: 'army-new-create-dialog',
+  module.ArmyCreateDialog = module.ArmyChangeDialog.extend({
+    templateName: 'army-create-dialog',
 
     locationId: null,
     garrisonArmy: null,

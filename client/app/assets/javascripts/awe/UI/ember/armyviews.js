@@ -253,7 +253,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
   });
 //tab end
 //military Recruitment dialog start
-  module.MilitaryInfoDialogNew = module.ArmyNewCreateDialog.extend({
+  module.MilitaryInfoDialogNew = module.ArmyCreateDialog.extend({
     templateName: 'military-new-info-dialog',
 
     //army: null,
@@ -1180,80 +1180,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     
   });
   
-  module.ArmyCreateDialog = module.ArmyDialog.extend({
-    templateName: 'army-create-dialog',
-    
-    init: function() {
-      var self = this;
-      this._super();
-      this.set('loadingSettlement', true);
-      AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
-        self.set('loadingSettlement', false);
-      });
-    },
-    
-    loadingSettlement: false,
-      
-    settlement: function() {
-      return AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId'))
-    }.property('hashableSettlements.changedAt').cacheable(),
-    
-    remainingArmies: function() {
-      var commandPoints = (this.getPath('settlement.command_points') || 0);
-      var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
-      return commandPoints > armiesCount ? commandPoints - armiesCount : 0;
-    }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
-    
-    hashableSettlements: function() {
-      var locationId = this.get('locationId');
-      // log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
-      return AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId);
-    }.property('locationId').cacheable(),          
-
-    unitTypes: function() {
-      var list = [];
-      var details = this.getPath('garrisonArmy.details');
-      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      if (details) { log('build list')
-        AWE.Ext.applyFunction(unitTypes, function(unitType) {
-          if (details[unitType.db_field] !== undefined && details[unitType.db_field] > 0) {
-            list.push(Ember.Object.create({
-              name: unitType.name,
-              symbolic_id: unitType.db_field, 
-              allUnits: details[unitType.db_field],
-              garrisonUnits: details[unitType.db_field],
-              otherUnits: 0,
-            }));
-          }
-        });
-      }
-      log("LIST", list, details);
-      return list;
-    }.property('garrisonArmy.details.@each', 'unitTypesChange').cacheable(),
-
-    unitQuantities: function() {
-      var unitQuantities = {};
-      var unitTypes = this.get('unitTypes') || [];
-      unitTypes.forEach(function(unitType) {
-        var quantity = unitType.get('otherUnits');
-        if (quantity > 0) {
-          unitQuantities[unitType.get('symbolic_id')] = quantity; 
-        }
-      });
-      return unitQuantities;
-    },
-    
-    otherArmySizeMaxBinding: 'settlement.army_size_max',    
-    
-    armyName: '',
-    
-    createPressed: function() {
-      log('ERROR Action not connected: createWasPressed.');
-    },
-  });
-  
-
-  
+ 
   module.ArmyForm = Ember.View.extend({
     templateName: 'army-form',
     unitTypes: null,
