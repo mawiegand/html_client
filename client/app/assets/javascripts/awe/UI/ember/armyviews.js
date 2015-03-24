@@ -253,8 +253,8 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
   });
 //tab end
 //military Recruitment dialog start
-  module.MilitaryInfoDialogNew = module.ArmyCreateDialog.extend({
-    templateName: 'military-new-info-dialog',
+  module.MilitaryInfoDialog = module.ArmyCreateDialog.extend({
+    templateName: 'military-info-dialog',
 
     //army: null,
     garrisonArmy: null,

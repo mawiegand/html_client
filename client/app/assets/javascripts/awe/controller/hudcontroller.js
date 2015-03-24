@@ -591,7 +591,7 @@ AWE.Controller = (function(module) {
     };
     
     that.recruitButtonClicked = function() {
-      var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
+      var dialog = AWE.UI.Ember.MilitaryInfoDialog.create({
         //garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
         controller: WACKADOO.presentScreenController,
         settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
