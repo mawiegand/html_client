@@ -27,9 +27,9 @@ AWE.Config = (function(module) {
     "map/tiles/plain256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/plain256.jpg',
     "map/tiles/mountains256": AWE.Config.RAILS_ASSET_PATH + 'tiles/mountains256.jpg',
     "map/tiles/desert256":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert256.jpg',
-    "map/tiles/swamp256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp256.jpg',
-
-    //========== TILES SMALL
+	"map/tiles/swamp256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp256.jpg',
+	
+	//========== TILES LARGE
     "map/tiles/split512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/base512.jpg',
     "map/tiles/base512":      AWE.Config.RAILS_ASSET_PATH + 'tiles/base512.jpg',
     "map/tiles/forest512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/forest512.jpg',
@@ -66,8 +66,6 @@ AWE.Config = (function(module) {
     "map/outpost/small":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostsmall.png',
     "map/outpost/middle":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostmiddle.png',
     "map/outpost/large":        AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostlarge.png',
-
-    "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
 
     "map/icon/bubble":        AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
 
@@ -121,20 +119,9 @@ AWE.Config = (function(module) {
 
     "map/easement/yes":       AWE.Config.RAILS_ASSET_PATH + 'ok.png',
     "map/easement/no":        AWE.Config.RAILS_ASSET_PATH + 'verbot.png',
-
-    "map/display/icon":       AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
-
     "map/region/icon":        AWE.Config.RAILS_ASSET_PATH + 'dot.png',
-    
-    "map/button1":            AWE.Config.RAILS_ASSET_PATH + 'green_button.png',
-    "map/button1highlighted": AWE.Config.RAILS_ASSET_PATH + 'red_button.png',
-    "map/button1disabled":    AWE.Config.RAILS_ASSET_PATH + 'green_button_disabled.png',
-    "map/button2":            AWE.Config.RAILS_ASSET_PATH + 'red_button.png',
-    "map/button3":            AWE.Config.RAILS_ASSET_PATH + 'blue_button.png',
 
-    "ui/button/newarmy":           AWE.Config.RAILS_ASSET_PATH + 'newarmybutton.png',
     "ui/button/settlement":        AWE.Config.RAILS_ASSET_PATH + 'settlementbutton.png',
-    "ui/button/attacknpc":         AWE.Config.RAILS_ASSET_PATH + 'attacknpc.png',
 
     "ui/button/standard/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/button_standard_normal.png',
     "ui/button/standard/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/button_standard_hover.png',
@@ -156,18 +143,13 @@ AWE.Config = (function(module) {
     
     "map/icon/owner":         AWE.Config.RAILS_ASSET_PATH + 'icons/heads.png',
     "map/icon/home":          AWE.Config.RAILS_ASSET_PATH + 'icons/house.png',
-    "map/icon/actionpoints":  AWE.Config.RAILS_ASSET_PATH + 'icons/magnifier.png',
     "map/icon/rank":          AWE.Config.RAILS_ASSET_PATH + 'icons/star.png',
     "map/icon/army/strength": AWE.Config.RAILS_ASSET_PATH + 'icons/flash.png',
     "map/icon/army/size":     AWE.Config.RAILS_ASSET_PATH + 'icons/heads.png',
-    "map/icon/army/size1":    AWE.Config.RAILS_ASSET_PATH + 'icons/gearwheel.png',
-    "map/icon/army/size2":    AWE.Config.RAILS_ASSET_PATH + 'icons/gearwheel.png',
-    "map/icon/army/size3":    AWE.Config.RAILS_ASSET_PATH + 'icons/gearwheel.png',
     "map/icon/army/cavalry":  AWE.Config.RAILS_ASSET_PATH + 'icons/cavalry.png',
     "map/icon/army/infantry": AWE.Config.RAILS_ASSET_PATH + 'icons/infantry.png',
     "map/icon/army/artillery":AWE.Config.RAILS_ASSET_PATH + 'icons/artillery.png',
     "map/icon/fist":          AWE.Config.RAILS_ASSET_PATH + 'icons/fist.png',
-    "map/icon/greenCheckMark":AWE.Config.RAILS_ASSET_PATH + 'ok.png',
 
     "activityindicator/small": AWE.Config.RAILS_ASSET_PATH + 'icons/activityindicator_small.svg',
     
@@ -198,9 +180,6 @@ AWE.Config = (function(module) {
     "screen/reward/background/leafs":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-bg.png',
     "screen/reward/textfield/large":   AWE.Config.RAILS_ASSET_PATH + 'dialog-textfield1.png',
     "screen/reward/textfield/small":   AWE.Config.RAILS_ASSET_PATH + 'dialog-textfield2.png',
-    "screen/reward/button/dialog/normal":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-button.png',
-    "screen/reward/button/dialog/hovored":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-button-active.png',
-    "screen/reward/button/dialog/active":   AWE.Config.RAILS_ASSET_PATH + 'quest-dialog-button-active2.png',
     "screen/reward/button/close/normal":   AWE.Config.RAILS_ASSET_PATH + 'quest-x-button.png',
     "screen/reward/button/close/hovered":   AWE.Config.RAILS_ASSET_PATH + 'quest-x-button-hover.png',
     "screen/reward/button/close/active":   AWE.Config.RAILS_ASSET_PATH + 'quest-x-button-active.png',
@@ -213,7 +192,6 @@ AWE.Config = (function(module) {
 
     "hud/callout":               AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_callout.png',
 
-    "hud/frog/face":             AWE.Config.RAILS_ASSET_PATH + 'kopfkroete40.png',
     "hud/banner/large":          AWE.Config.RAILS_ASSET_PATH + 'ui/bannerframe.png',
     "hud/banner/small":          AWE.Config.RAILS_ASSET_PATH + 'ui/bannerframe_small.png',
 
@@ -308,7 +286,6 @@ AWE.Config = (function(module) {
     "resource/icon/fur/middle"  :    AWE.Config.RAILS_ASSET_PATH + 'icons/fur-middle.png',
     "resource/icon/cash/middle" :    AWE.Config.RAILS_ASSET_PATH + 'icons/toad-middle.png',
 
-    "resource/icon/wood/large" :    AWE.Config.RAILS_ASSET_PATH + 'icons/wood-large.png',
     "resource/icon/stone/large":    AWE.Config.RAILS_ASSET_PATH + 'icons/stone-large.png',
     "resource/icon/fur/large"  :    AWE.Config.RAILS_ASSET_PATH + 'icons/fur-large.png',
     "resource/icon/cash/large" :    AWE.Config.RAILS_ASSET_PATH + 'icons/toad-large.png',
