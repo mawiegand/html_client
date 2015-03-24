@@ -11,6 +11,7 @@ AWE.UI = (function(module) {
         
     var _backgroundImageView = null;
     var _iconImageView = null;
+    var _activeGlowView = null;
     
     var backgroundImagesForStates = {}; 
     var iconImagesForStates = {};
@@ -42,20 +43,56 @@ AWE.UI = (function(module) {
     }
 
     
-    that.initWithControllerImageAndIcon = function(controller, image, icon, frame, iconHover) {
+    that.initWithControllerImageAndIcon = function(controller, images, icons, frame, activeGlow) {
       _super.initWithController(controller, frame);
       
       my.container = new Container();
       
-      backgroundImagesForStates[module.CONTROL_STATE_NORMAL] = image;
-      iconImagesForStates[module.CONTROL_STATE_NORMAL] = icon;
-      if(iconHover)
+      backgroundImagesForStates[module.CONTROL_STATE_NORMAL] = images.normal;
+      iconImagesForStates[module.CONTROL_STATE_NORMAL] = icons.normal;
+
+      if(images.hover)
       {
-        iconImagesForStates[module.CONTROL_STATE_HOVERED] = iconHover;
+        backgroundImagesForStates[module.CONTROL_STATE_HOVERED] = images.hover;
+      }
+      if(icons.hover)
+      {
+         iconImagesForStates[module.CONTROL_STATE_HOVERED] = icons.hover;
+      }
+      if(images.active)
+      {
+        backgroundImagesForStates[module.CONTROL_STATE_SELECTED] = images.active;
+      }
+      if(icons.active)
+      {
+        iconImagesForStates[module.CONTROL_STATE_SELECTED] = icons.active;
+      }
+
+      if(activeGlow)
+      {
+        _activeGlowView = AWE.UI.createImageView();
+        _activeGlowView.initWithControllerAndImage(controller, activeGlow);
+        _activeGlowView.setContentMode(module.ViewContentModeFit);
+
+        _activeGlowView.setFrame(AWE.Geometry.createRect(activeGlow.width / 4, activeGlow.height / 4, activeGlow.width, activeGlow.height));
+        _activeGlowView.setPivot(activeGlow.width/2, activeGlow.height/2);
+        _activeGlowView.setAlpha(0);
+        my.container.addChild(_activeGlowView.displayObject());
+        var animation = AWE.UI.createEndlessAnimation({
+          view:_activeGlowView,
+          duration:10000,
+
+          updateView:function () {
+            return function (view) {
+              view.rotate(5);
+            };
+          }(),
+        });
+        controller.addAnimation(animation);
       }
 
       _backgroundImageView = AWE.UI.createImageView();
-      _backgroundImageView.initWithControllerAndImage(controller, image);
+      _backgroundImageView.initWithControllerAndImage(controller, images.normal);
       _backgroundImageView.setContentMode(module.ViewContentModeFit);
       _backgroundImageView.onMouseDown = function() { 
         that.setNeedsUpdate();
@@ -86,10 +123,10 @@ AWE.UI = (function(module) {
       my.container.addChild(_backgroundImageView.displayObject());
       
       _iconImageView = AWE.UI.createImageView();
-      _iconImageView.initWithControllerAndImage(controller, icon);
+      _iconImageView.initWithControllerAndImage(controller, icons.normal);
       _iconImageView.setContentMode(module.ViewContentModeFit);
       
-      _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
+      _iconImageView.setFrame(AWE.Geometry.createRect((images.normal.width - icons.normal.width) / 2, (images.normal.height - icons.normal.height) / 2, icons.normal.width, icons.normal.height));
 
       _iconImageView.onMouseDown = function() { 
         that.setNeedsUpdate();
@@ -118,7 +155,7 @@ AWE.UI = (function(module) {
       _iconImageView.onMouseOver = function(event) { that.onMouseOver(event); }
       _iconImageView.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_iconImageView.displayObject());      
-    
+
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
     }
@@ -134,7 +171,8 @@ AWE.UI = (function(module) {
         if(isButtonDown){
           _backgroundImageView.setAlpha(0.7 * this.alpha());
           _iconImageView.setAlpha(0.7 * this.alpha());
-        }else{
+        }
+        else{
           _backgroundImageView.setAlpha(this.alpha());
           _iconImageView.setAlpha(this.alpha());
         }
@@ -151,6 +189,10 @@ AWE.UI = (function(module) {
       else if (this.selected()) {
         _backgroundImageView.setImage(this.backgroundImageForState(module.CONTROL_STATE_SELECTED));
         _iconImageView.setImage(this.iconImageForState(module.CONTROL_STATE_SELECTED));
+        if(_activeGlowView != null)
+        {
+          _activeGlowView.setAlpha(1);
+        }
       }
       else if (this.hovered()) {
         _backgroundImageView.setImage(this.backgroundImageForState(module.CONTROL_STATE_HOVERED));
@@ -159,6 +201,10 @@ AWE.UI = (function(module) {
       else {
         _backgroundImageView.setImage(this.backgroundImageForState(module.CONTROL_STATE_NORMAL));
         _iconImageView.setImage(this.iconImageForState(module.CONTROL_STATE_NORMAL));
+        if(_activeGlowView != null)
+        {
+          _activeGlowView.setAlpha(0);
+        }
       }
     }
     

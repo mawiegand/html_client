@@ -1539,8 +1539,12 @@ AWE.GS = (function(module) {
               AndroidDelegate.tutorialCompleted();
             } catch (err) {
             }
-            var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
-            WACKADOO.presentModalDialog(dialog);
+            /*var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
+            WACKADOO.presentModalDialog(dialog);*/
+            AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+              var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+              WACKADOO.presentModalDialog(dialog);
+            });
           }
         },
       });          

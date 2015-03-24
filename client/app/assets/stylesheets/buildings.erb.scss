@@ -408,6 +408,42 @@
          -o-animation: camp_fire .5s steps(5) infinite;
             animation: camp_fire .5s steps(5) infinite;
   }
+  .level {
+    perspective: 1000px;
+    width: 46px;
+    height: 46px;
+
+    padding-top: 8px;
+    font-size: 19px;
+    font-family: 'Freckle Face', 'cursive';
+    text-align: center;
+
+    position: absolute;
+    left: 50px;
+    bottom: 0;
+
+    color: #ffe79e;
+
+    z-index: 3;
+    
+    background-image: url('<%= asset_path("extras/level_signs/sign.png") %>');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+    .xRotator {
+      -ms-transform: rotateX(0deg); /* IE 9 */
+      -webkit-transform: rotateX(0deg); /* Chrome, Safari, Opera */
+      transform: rotateX(0deg);
+      display: inline-block;
+      .yRotator {
+        -ms-transform: skew(0deg, 18deg); /* IE 9 */
+        -webkit-transform: skew(0deg, 18deg); /* Chrome, Safari, Opera */
+        transform: skew(0deg, 18deg);
+        display: inline-block;
+      }
+    }
+  }
 }
 
 /*Cief Cottage*/
@@ -583,7 +619,6 @@
 .construction-area.front {
   background: url('<%= asset_path("buildings/base/under_construction/front/under_construction_front.png") %>') no-repeat center center;
 }
-
 
 
 .base-screen .building-option-image.building_artifact_stand.level1 {

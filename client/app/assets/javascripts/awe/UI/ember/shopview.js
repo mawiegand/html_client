@@ -151,7 +151,7 @@ AWE.UI.Ember = (function(module) {
     offer: null,
 
     buySpecialOfferPressed: function() {
-      var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: this.get('offer'), parent: this});
+      var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.ShopManager.getShop().specialOffer});
       WACKADOO.presentModalDialog(dialog);
       return false;
     },
@@ -214,10 +214,53 @@ AWE.UI.Ember = (function(module) {
       return AWE.GS.RulesManager.getRules().special_offer.display_strings[AWE.Settings.locale][3];
     }.property(),
 
+
+
     buyPressed: function() {
-      this.getPath('parent.parentView').buySpecialOfferPressed(this.getPath('offer.id'));
-      this.destroy();
-      return false;
+      if (!AWE.GS.ShopManager.getShop()) {
+          AWE.GS.ShopManager.init();
+      }
+      var shop = AWE.GS.ShopManager.getShop();
+      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(this.getPath('offer.id'));
+      var price = offer.get('price');
+
+      var creditAmount = this.getPath('shop.creditAmount') || 0;
+      if (creditAmount < price) {
+        log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+        WACKADOO.hudController.presentNotEnoughCreditsWarning();
+        return ;
+      }
+
+      AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
+        if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+          var info = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
+            message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
+          });
+
+          AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
+            AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
+          });
+
+          WACKADOO.presentModalDialog(info);
+          AWE.GS.ShopManager.fetchCreditAmount(function(){
+            WACKADOO.hudController.setModelChanged();
+          });
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+            WACKADOO.hudController.setModelChanged();
+          });
+          AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+        }
+        else {
+          WACKADOO.hudController.presentNotEnoughCreditsWarning();
+        }
+      }, function() {                                   // error handler
+        var info = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+          message: AWE.I18n.lookupTranslation('shop.error.message'),
+        });
+        WACKADOO.presentModalDialog(info);
+      })
     },
   });
   

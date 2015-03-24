@@ -2,15 +2,39 @@
 {{#if "slot.building"}}
   {{#if slot.building.underConversion}}
     <div class="construction-area back"></div>
-    <div class="level constructing">{{slot.building.level}}</div>
+    <div class="level constructing">
+      <span class="xRotator">
+        <span class="yRotator">
+          <span class="zRotator">
+          {{slot.building.level}}
+          </span>
+        </span>
+      </span>
+    </div>
   {{/if}}
   {{#if slot.building.underConstruction}}
     <div class="construction-area back"></div>
-    <div class="level constructing">{{slot.building.level}}</div>
+    <div class="level constructing">
+      <span class="xRotator">
+        <span class="yRotator">
+          <span class="zRotator">
+          {{slot.building.level}}
+          </span>
+        </span>
+      </span>
+    </div>
   {{else}}
     {{#if slot.building.underDestruction}}
       <div class="construction-area back"></div>
-      <div class="level destructing">{{slot.building.level}}</div>
+      <div class="level destructing">
+        <span class="xRotator">
+        <span class="yRotator">
+          <span class="zRotator">
+          {{slot.building.level}}
+          </span>
+        </span>
+      </span>
+      </div>
     {{/if}}
   {{/if}}
   <div {{bindAttr class="size type :building-image"}}>
@@ -30,7 +54,15 @@
         <div class="construction-area front"></div>
         {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
     {{else}}
-      <div class="level">{{slot.building.level}}</div>
+      <div class="level">
+        <span class="xRotator">
+        <span class="yRotator">
+          <span class="zRotator">
+          {{slot.building.level}}
+          </span>
+        </span>
+      </span>
+      </div>
     {{/if}}
   {{/if}}
 {{/if}}
