@@ -4959,7 +4959,13 @@ table .datetime {
   height: 128px;
 /*  z-index: 2;*/
   border-radius: 5px;
-  background: url('<%= asset_path("buildings/base/grid_base.png") %>') no-repeat center center;  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+.slot-background {
+  position: absolute;
+  width: 160px;
+  height: 128px;
+  background: url('<%= asset_path("buildings/base/grid_base.png") %>') no-repeat center center;
 }
 
 .small-building .click-area,

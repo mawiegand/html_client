@@ -44,7 +44,7 @@ AWE.UI.Ember = (function(module) {
         collection.sort(function(a,b) {
           return a.get('slot_num') - b.get('slot_num');
         });
-        if(this.get('unlockedSlots') !== -1)
+        if(this.get('unlockedSlots') !== -1 && AWE.GS.CharacterManager.getCurrentCharacter().has_limited_grid)
         {
           var filteredCollection = [];
           filteredCollection[0] = collection[0]; //TODO: Remove wall slot
