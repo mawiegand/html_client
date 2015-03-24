@@ -1252,59 +1252,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     },
   });
   
-  module.ArmyChangeDialog = module.ArmyDialog.extend({
-    templateName: 'army-change-dialog',
-    
-    garrisonArmy: null,
-    otherArmy: null,
-    otherArmyObserver: function() {
-      if (this.get('otherArmy')) {
-        AWE.GS.ArmyManager.updateArmy(this.get('otherArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
-      }
-    }.observes('otherArmy'),
-    
-    otherArmySizeMaxBinding: 'otherArmy.size_max',
 
-    unitTypes: function() {
-      var list = [];
-      var garrisonDetails = this.getPath('garrisonArmy.details');
-      var otherDetails = this.getPath('otherArmy.details');
-      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      if (garrisonDetails && otherDetails) { log('build list')
-        AWE.Ext.applyFunction(unitTypes, function(unitType) {
-          if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0) ||
-              (otherDetails[unitType.db_field] !== undefined && otherDetails[unitType.db_field] > 0)) {
-            list.push(Ember.Object.create({
-              name: unitType.name,
-              symbolic_id: unitType.db_field, 
-              allUnits: garrisonDetails[unitType.db_field] + otherDetails[unitType.db_field],
-              garrisonUnits: garrisonDetails[unitType.db_field],
-              otherUnits: otherDetails[unitType.db_field],
-            }));
-          }
-        });
-      }
-      // log("LIST", list, details);
-      return list;
-    }.property('garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
-    
-    unitDifferences: function() {
-      var unitDifferences = {};
-      var unitTypes = this.get('unitTypes');
-      var otherDetails = this.getPath('otherArmy.details') || [];
-      unitTypes.forEach(function(unitType) {
-        var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
-        if (difference != 0) {
-          unitDifferences[unitType.get('symbolic_id')] = difference; 
-        }
-      });
-      return unitDifferences;
-    },
-
-    changePressed: function() {
-      log('ERROR Action not connected: changeWasPressed.');
-    },
-  });
   
   module.ArmyForm = Ember.View.extend({
     templateName: 'army-form',

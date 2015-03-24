@@ -137,24 +137,7 @@
       </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-change-dialog">
-      <div class="modal-dialog-background"></div>
-      <div class="horizontal-center-helper">
-        <div class="modal-dialog-pane scale-down" id="army-change-form">
-          <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
-          <h2>{{ t army.change.header }}</h2>
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <div class="buttons">
-            {{#if "loading" }}
-              <div>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.change.loadingMessage }}</div>
-            {{else}}
-              <div class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</div>&nbsp;&nbsp;&nbsp;
-              <div class="clickable button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</div>
-            {{/if}}
-          </div>
-        </div>
-      </div>
-</script>
+
 
 <script type="text/x-handlebars" data-template-name="army-form">
       <table>

@@ -9,8 +9,8 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
   
-  module.ArmyNewChangeDialog = module.PopUpDialog.extend({
-    templateName: 'army-new-change-dialog',
+  module.ArmyChangeDialog = module.PopUpDialog.extend({
+    templateName: 'army-change-dialog',
 
     locationId: null,
     garrisonArmy: null,
@@ -150,7 +150,7 @@ AWE.UI.Ember = (function(module) {
   
 
 //create dialog from change dialog
-  module.ArmyNewCreateDialog = module.ArmyNewChangeDialog.extend({
+  module.ArmyNewCreateDialog = module.ArmyChangeDialog.extend({
     templateName: 'army-new-create-dialog',
 
     locationId: null,

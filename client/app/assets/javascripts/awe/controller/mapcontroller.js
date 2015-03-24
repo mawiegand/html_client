@@ -1291,7 +1291,7 @@ AWE.Controller = function (module) {
       var location = army.get('location');
       if (!location) return;
 
-      var dialog = AWE.UI.Ember.ArmyNewChangeDialog.create({
+      var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
       
         locationId:location.id(),
         changePressed:function (evt) {//green CHANGE button in change army view
