@@ -313,7 +313,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
-  module.TabView = Ember.View.extend({
+  module.TabViewNew = Ember.View.extend({
     templateName: 'tab-view',
     classNames:   'tab-view',
 
@@ -364,12 +364,7 @@ AWE.UI.Ember = (function(module) {
       }
     },
     
-  });
-
-  module.TabViewNew = module.TabView.extend({
-    templateName: 'tab-view-new',
-    classNames:   'tab-view-new',
-
+  
     cellClass: function(){
       return "cell-" + Math.round(100 / this.get("tabViews").length);
     }.property("tabViews"),
