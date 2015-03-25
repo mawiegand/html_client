@@ -601,6 +601,7 @@ AWE.Controller = (function(module) {
     };
 
     that.assignmentButtonClicked = function(tavern) {
+      WACKADOO.presentScreenController.updateGossipIfNecessary();
       var dialog = AWE.UI.Ember.AssignmentsDialog.create({
         controller: WACKADOO.presentScreenController,
         building: tavern,
