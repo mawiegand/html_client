@@ -63,7 +63,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         {
           sessionStorage.startupArguments = null;
         }
-        window.location.replace(AWE.Config.PORTAL_ROOT);
+        window.location.reload();
       }
     },
 
