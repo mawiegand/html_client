@@ -1188,7 +1188,7 @@ AWE.Controller = (function(module) {
 
     that.nextBuildingSlotToMark = function() {
       //Buildings:  [-1, Gatherer, Barracks, Small Huts, Tavern, Storage, Campfire];
-      var sequenceOfSlotIds = [-1, 26, 25, 14, 15, 31, 9];
+      var sequenceOfSlotIds = [-1, 26, 25, 14, 15, 31, 9, 19, 21, 8, 10, 30, 32];
       var usedSlots = that.view.getPath('settlement.usedBuildingSlots');
       var n = sequenceOfSlotIds.length;
 

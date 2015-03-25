@@ -1240,7 +1240,7 @@ AWE.GS = (function(module) {
     }
 
     that.tutorialActive = function() {
-      return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_completed;
+      return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_finished;
     }
 
     that.triggerTutorialChecks = function() {
