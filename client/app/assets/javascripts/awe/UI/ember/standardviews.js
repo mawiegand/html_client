@@ -126,6 +126,7 @@ AWE.UI.Ember = (function(module) {
     destroy: function() {
       if (this.onClose) {
         this.onClose(this);
+        $('#layers').css('overflow', 'visible');
       }
       this._super();
     },

@@ -132,6 +132,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             announcement: announcement,
             okPressed:    function() {
               AWE.GS.TutorialStateManager.checkForNewQuests();
+              $('#layers').css('overflow', 'visible');
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
