@@ -102,8 +102,8 @@ module.ArmyInfoView = Ember.View.extend({
 //NEW DIALOGS START
 
 //army info dialog
-module.ArmyInfoNewDialog = module.PopUpDialog.extend({
-  templateName: 'army-new-info-dialog',
+module.ArmyInfoDialog = module.PopUpDialog.extend({
+  templateName: 'army-info-dialog',
 
   army: null,
 
@@ -1376,7 +1376,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
       if (!army) {
         return ;
       }   
-      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
         army: army,
       }); 
       WACKADOO.presentModalDialog(dialog);   

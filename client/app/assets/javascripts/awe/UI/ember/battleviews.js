@@ -113,7 +113,7 @@ AWE.UI.Ember = (function(module) {
       if (!army) {
         return ;
       }
-      var dialog = AWE.UI.Ember.ArmyInfoNewDialog.create({
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
         army: army,
       });
       WACKADOO.presentModalDialog(dialog);     

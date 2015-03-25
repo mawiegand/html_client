@@ -1,7 +1,3 @@
-<script type="text/x-handlebars" data-template-name="army-info-dialog">
-  {{view AWE.UI.Ember.ArmyInfoView armyBinding="parentView.army" isSavingBinding="arguments.isSaving"}}
-</script>
-
 <script type="text/x-handlebars" data-template-name="army-info-view">
 
     <div class="army-info-view clearfix">
@@ -417,7 +413,7 @@
 </script>
 <!--Army info dialog-->
 
-<script type="text/x-handlebars" data-template-name="army-new-info-dialog">
+<script type="text/x-handlebars" data-template-name="army-info-dialog">
   <h1 class="modal-dialog-heading">{{army.name}}</h1>
    <div class="modal-dialog-body modal-dialog-body-info scrolling">
       {{view AWE.UI.Ember.ArmyInfoNewView armyBinding="army"}}
