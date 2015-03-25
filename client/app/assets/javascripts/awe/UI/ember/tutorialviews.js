@@ -28,7 +28,8 @@ AWE.UI.Ember = (function(module) {
     },
     
     okPressed: function() {
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');          
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
+      $('#layers').css('overflow', 'visible');
       this.destroy();
     }
   });  
@@ -97,6 +98,7 @@ AWE.UI.Ember = (function(module) {
         this.redeemButtonPressed(); // remove the function later, if this proves to be good.
       }
       else {
+        $('#layers').css('overflow', 'visible');
         this.destroy();
       }
     },
