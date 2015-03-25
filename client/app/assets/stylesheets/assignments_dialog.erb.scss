@@ -34,6 +34,20 @@
   margin: auto;
 }
 
+.assignments-dialog-pane .speedup-toad {
+  text-align: right;
+  color: white;
+  padding-top: 16px;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 77px;
+  right: -34px;
+  background-image: url("<%= asset_path 'dialogs/items/normal/item_toads.png' %>");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
 .assignments-dialog-pane .assignment_stone{
   background:url("<%= asset_path 'dialogs/items/grey/item_stone_big_grey.png' %>") no-repeat center center;
   width: 60px;
@@ -166,6 +180,7 @@
   background:url("<%= asset_path 'dialogs/backgrounds/background_item_grey.png' %>") no-repeat center center;
   width: 88px;
   height: 92px;
+  position: relative;
 }
 
 .assignments-dialog-pane .item.is-active{

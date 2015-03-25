@@ -218,6 +218,10 @@ AWE.UI.Ember = (function(module) {
       return this.get('assignment') && this.getPath('assignment.ended_at') != null;
     }.property('assignment.ended_at').cacheable(),
 
+    isHalved: function() {
+      return this.get('assignment') && this.getPath('assignment.halved_at') != null;
+    }.property('assignment.halved_at'),
+
     currentAssignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentAssignmentTypes();
@@ -239,6 +243,12 @@ AWE.UI.Ember = (function(module) {
       /*var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
       return AWE.GS.RulesManager.getRules().getSpecialAssignmentTypesOfLevel(level);*/
     }.property('building', 'currentCharacter.assignment_level').cacheable(),
+
+    speedUp: function() {
+      var self = this;
+      this.get('controller').standardAssignmentSpeedupPressed(this.get('assignment'), function() {
+      });
+    },
 
   });
 

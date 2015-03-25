@@ -44,9 +44,9 @@
 {{#if isUIMarker}}
   {{view AWE.UI.Ember.UIMarker direction=2 top=105 left=37}}
 {{/if}}
-<div {{bindAttr class=":item isActive"}}{{action "openDialog"}}>
+<div {{bindAttr class=":item isActive"}}>
   <div {{bindAttr class=":info :info-big-background isActive"}}>i</div>
-  <div class="assigment-item-wrapper">
+  <div class="assigment-item-wrapper" {{action "openDialog"}}>
     <div {{bindAttr class="assignmentType :assignment_icon isActive"}}></div>
   </div>        
   {{#if isActiveProgress}}
@@ -54,6 +54,9 @@
       <div class="progress-bar" {{bindAttr style="barWidth"}}></div>
       <div class="progress-text">{{percent}}%</div>
     </div>
+    {{#unless isHalved}}
+    <div class="speedup-toad" {{action speedUp}}>2</div>
+    {{/unless}}
   {{/if}}
 </div>
 </script>
