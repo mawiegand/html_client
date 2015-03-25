@@ -446,7 +446,7 @@ AWE.UI.Ember = (function(module) {
   });
 
 
-  module.MessageCenterTabView = module.TabViewNew.extend({
+  module.MessageCenterTabView = module.TabView.extend({
 
     character: null,
     alliance: null,

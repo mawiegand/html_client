@@ -528,7 +528,7 @@ module.TradeNewView = module.PopUpDialog.extend( /** @lends AWE.UI.Ember.Profile
 
   });
 
-module.TradeNewTabView = module.TabViewNew.extend({
+module.TradeNewTabView = module.TabView.extend({
 
     settlement: null,
     controller: null,
@@ -567,7 +567,7 @@ module.TradeNewTabView = module.TabViewNew.extend({
 
  });
 
-module.InOutboundTabView = module.TabViewNew.extend({
+module.InOutboundTabView = module.TabView.extend({
 
     settlement: null,
     controller: null,

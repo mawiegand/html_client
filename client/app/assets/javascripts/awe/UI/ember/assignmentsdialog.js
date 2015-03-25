@@ -242,7 +242,7 @@ AWE.UI.Ember = (function(module) {
 
   });
 
-  module.AssignmentTabView = module.TabViewNew.extend({
+  module.AssignmentTabView = module.TabView.extend({
     
     character: null,   // must be bound to the character
     

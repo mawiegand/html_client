@@ -237,7 +237,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
 //need custom tabs for military info
 //tabs start
-  module.TabArmyInfoView = module.TabViewNew.extend({
+  module.TabArmyInfoView = module.TabView.extend({
     templateName: 'tab-view-army-info',
     classNames:   'tab-view-army-info',
 
@@ -499,7 +499,7 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 
  });
 
-module.MilitaryTabView = module.TabViewNew.extend({
+module.MilitaryTabView = module.TabView.extend({
 
   character: null,
   alliance:  null,

@@ -103,7 +103,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
-module.ProfileNewTabView = module.TabViewNew.extend({
+module.ProfileNewTabView = module.TabView.extend({
 
     character: null,
     alliance:  null,

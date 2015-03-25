@@ -313,7 +313,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
-  module.TabViewNew = Ember.View.extend({
+  module.TabView = Ember.View.extend({
     templateName: 'tab-view',
     classNames:   'tab-view',
 

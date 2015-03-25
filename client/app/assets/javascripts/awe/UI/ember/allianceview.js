@@ -83,7 +83,7 @@ AWE.UI.Ember = (function(module) {
   });
 
   //Tab View Controller
-  module.AllianceTabView = module.TabViewNew.extend({
+  module.AllianceTabView = module.TabView.extend({
     alliance: null,
 
     init: function() {

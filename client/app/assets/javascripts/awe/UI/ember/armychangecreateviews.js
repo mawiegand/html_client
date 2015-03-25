@@ -393,7 +393,7 @@ AWE.UI.Ember = (function(module) {
   
 });
   
-  module.ArmyChangeTabView = module.TabViewNew.extend({
+  module.ArmyChangeTabView = module.TabView.extend({
 
     locationId: null,
     garrisonArmy: null,
