@@ -230,7 +230,12 @@ AWE.Controller = (function(module) {
             WACKADOO.presentModalDialog(dialog);
           }
           else {
-            AWE.GS.ShopManager.openCreditShopWindow();
+			if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+			  WACKADOO.hudController.ingameShopButtonClicked();
+			}
+			else {
+              AWE.GS.ShopManager.openCreditShopWindow();
+		    }
           }
 
           this.destroy();
