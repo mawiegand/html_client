@@ -416,11 +416,11 @@
 <script type="text/x-handlebars" data-template-name="army-info-dialog">
   <h1 class="modal-dialog-heading">{{army.name}}</h1>
    <div class="modal-dialog-body modal-dialog-body-info scrolling">
-      {{view AWE.UI.Ember.ArmyInfoNewView armyBinding="army"}}
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="army"}}
    </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-new-info-view">
+<script type="text/x-handlebars" data-template-name="army-info-view">
   <div class="army-info-buttons-cell">
     <div class="button-blue-info-wide army-info-button" {{action "nameClicked"}}><div class="button-blue-info-wide-titel">{{owner.name}}</div></div>
     {{#if owner.alliance_tag}}
