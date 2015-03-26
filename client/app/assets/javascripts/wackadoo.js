@@ -99,6 +99,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           this.destroy();
 
           self.get('presentScreenController').welcomeDialogClosed();
+		  
+	      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+	        $(window).scrollTop($(window).height() / 1.25);
+	        $(window).scrollLeft($(window).width() / 2.35);
+	      }
         },
       });
       this.presentModalDialog(dialog);
@@ -138,6 +143,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               self.get('presentScreenController').welcomeDialogClosed();
               //self.get('extrasController').startRandomPterodactylus(60, 90);
               self.get('extrasController').enableAutoPterodactylus();
+			  
+		      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+		        $(window).scrollTop($(window).height() / 1.25);
+		        $(window).scrollLeft($(window).width() / 2.35);
+		      }
             },
           });
           self.presentModalDialog(dialog);
