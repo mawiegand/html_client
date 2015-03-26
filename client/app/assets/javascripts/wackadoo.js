@@ -944,6 +944,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
               theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
             }
+			if (theRules[m].selectorText === '.jm_chat-content') {
+			  theRules[m].style.height = '175px';
+			}
           }       
         }
       } else {

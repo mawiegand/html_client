@@ -231,7 +231,13 @@ AWE.Controller = (function(module) {
           }
           else {
 			if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
-			  WACKADOO.hudController.ingameShopButtonClicked();
+		        try
+		        {
+		          AndroidDelegate.openShop();
+		        }
+		        catch(err)
+		        {
+				}
 			}
 			else {
               AWE.GS.ShopManager.openCreditShopWindow();
