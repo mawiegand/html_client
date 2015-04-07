@@ -490,8 +490,12 @@ AWE.UI.Ember = (function(module) {
     }.property('ultimatumTime'),
 
     warGiveUp: function() {
-      return this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "00min";
-    }.property(),
+      if(this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "00min")
+      {
+        return true;
+      }
+      return false;
+    }.property('ultimatumTimeString', 'ultimatum.diplomacy_status'),
 
     giveUp: function() {
       this.nextDiplomacyRelation();
