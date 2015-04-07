@@ -17,6 +17,13 @@ module.LeftHUDView = Ember.View.extend({
   uiMarkerEnabled: false,
   character: null,
   settlement: null,
+  timer: null,
+  timeUntillNextAssignment: null,
+
+  init: function() {
+    this._super();
+    this.startTimer();
+  },
 
   setHUDMode: function(currentMode) {
     this.set('mode', currentMode);
@@ -52,6 +59,70 @@ module.LeftHUDView = Ember.View.extend({
     }
     return false;
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
+
+  getNextAssignmentToFinish: function() {
+    var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
+    var nextAssignment = null;
+    if(assignments != null)
+    {
+      for(var i = 0; i < assignments.length; i++)
+      {
+        var assignment = assignments[i];
+        if(assignment.get('isActive'))
+        {
+          if(nextAssignment != null)
+          {
+            var nextEndTime = new Date(nextAssignment.ended_at);
+            var currentEndTime = new Date(assignment.ended_at);
+            if(currentEndTime < nextEndTime)
+            {
+              nextAssignment = assignment;
+            }
+          }
+          else
+          {
+            nextAssignment = assignment;
+          }
+        }
+      }
+    }
+    return nextAssignment;
+  },
+
+  calcTimeRemaining: function() {
+    if(this.getNextAssignmentToFinish() != null)
+    {
+      var now = new Date();
+      var endTime = new Date(this.getNextAssignmentToFinish().ended_at);
+      var duration = (endTime - now)/1000;
+      if(duration < 60 && duration > 0)
+      {
+        this.set('timeUntillNextAssignment', Math.floor(duration));
+        return
+      }
+      this.set('timeUntillNextAssignment', null);
+    }
+  },
+
+  startTimer: function() {
+    var timer = this.get('timer');
+    if (!timer) {
+      timer = setInterval((function(self) {
+        return function() {
+          self.calcTimeRemaining();
+        };
+      }(this)), 1000);
+      this.set('timer', timer);
+    }
+  },
+
+  stopTimer: function() {
+    var timer = this.get('timer');
+    if (timer) {
+      clearInterval(timer);
+      this.set('timer', null);
+    }
+  },
 
   unlockedTrade: function() {
     var character = this.get('character');
