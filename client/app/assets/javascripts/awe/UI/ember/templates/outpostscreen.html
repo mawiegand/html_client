@@ -12,7 +12,6 @@
         {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallLeft" levelBinding="wallSlot.building.level"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallRight" levelBinding="wallSlot.building.level"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall" slotBinding="wallSlot" settlementBinding="settlement"}}
         
         {{#each smallSlots}}
           {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
@@ -48,7 +47,7 @@
   </div>
     
   {{#if "settlement"}}
-    <div class="topbar-info-box settlement">
+    <div class="topbar-info-box settlement scale-down">
       {{#if shouldDisplaySettlementSwitch}} 
         <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
         <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  

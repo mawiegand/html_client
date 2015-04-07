@@ -1236,7 +1236,11 @@ AWE.GS = (function(module) {
     }
 
     that.tutorialEnabled = function() {
-      return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_completed;
+      return AWE.Config.USE_TUTORIAL && that.tutorialState.get('openQuestStates');
+    }
+
+    that.tutorialActive = function() {
+      return AWE.Config.USE_TUTORIAL && !that.tutorialState.tutorial_finished;
     }
 
     that.triggerTutorialChecks = function() {
@@ -1535,8 +1539,19 @@ AWE.GS = (function(module) {
               AndroidDelegate.tutorialCompleted();
             } catch (err) {
             }
-            var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
-            WACKADOO.presentModalDialog(dialog);
+            /*var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
+            WACKADOO.presentModalDialog(dialog);*/
+            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {debugger}, function() {
+              var dialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
+                message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
+              });
+              WACKADOO.presentModalDialog(dialog);
+            });
+            AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+              var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+              WACKADOO.presentModalDialog(dialog);
+            });
           }
         },
       });          

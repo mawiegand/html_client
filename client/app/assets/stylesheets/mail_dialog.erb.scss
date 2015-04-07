@@ -1,0 +1,286 @@
+/* == MAIL INBOX & OUTBOX== */
+
+.modal-dialog-body.modal-dialog-inbox-tab-body
+{
+  top: 125px;
+  height: 344px;
+}
+
+.modal-dialog-body.modal-dialog-outbox-tab-body
+{
+  top: 115px;
+  height: 344px;
+}
+
+.mail-inbox-dialog-pane .row1,
+.mail-outbox-dialog-pane .row1{
+  margin: 20px 0 10px 0;
+}
+
+.mail-inbox-dialog-pane .mail-list,
+.mail-outbox-dialog-pane .mail-list {
+  margin: 0;
+  padding: 0;
+}
+
+.mail-inbox-dialog-pane .mail-list-entry,
+.mail-outbox-dialog-pane .mail-list-entry {
+  list-style-type: none;
+  height: 60px;
+}
+
+.mail-inbox-dialog-pane .mail-avatar-holder,
+.mail-outbox-dialog-pane .mail-avatar-holder {
+  float: left;
+  width: 82px;
+  height: 100%;
+}
+
+.mail-inbox-dialog-pane .read .mail-avatar-holder,
+.mail-outbox-dialog-pane .sent .mail-avatar-holder {
+  background:url("dialogs/backgrounds/background_mail_grey_short.png") no-repeat right center;
+}
+
+.mail-inbox-dialog-pane .unread .mail-avatar-holder {
+  background:url("dialogs/backgrounds/background_mail_blue_short.png") no-repeat right center;
+}
+
+.mail-inbox-dialog-pane .mail-content-holder,
+.mail-outbox-dialog-pane .mail-content-holder {
+  float: left;
+  width: 352px;
+  height: 100%;
+  margin: 0 0 0 4px;
+  cursor: pointer;
+}
+
+.mail-inbox-dialog-pane .mail-content-holder:active,
+.mail-outbox-dialog-pane .mail-content-holder:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.mail-inbox-dialog-pane .mail-player-name,
+.mail-outbox-dialog-pane .mail-player-name {
+  font-size: 0.8em;
+  color: rgb(256,256,256);
+  padding: 7px 0 0 10px;
+}
+
+.mail-inbox-dialog-pane .mail-subject,
+.mail-outbox-dialog-pane .mail-subject {
+  font-size: 0.6em;
+  color: rgb(256,256,256);
+  padding: 0 0 0 10px;
+  max-height: 20px;
+  overflow: hidden;
+}
+
+.mail-inbox-dialog-pane .read .mail-content-holder,
+.mail-outbox-dialog-pane .sent .mail-content-holder {
+  background:url("dialogs/backgrounds/background_mail_grey_large.png") no-repeat center center;
+}
+
+.mail-inbox-dialog-pane .unread .mail-content-holder {
+  background:url("dialogs/backgrounds/background_mail_blue_large.png") no-repeat center center;
+}
+
+.mail-inbox-dialog-pane .mail-date-holder,
+.mail-outbox-dialog-pane .mail-date-holder {
+  float: left;
+  width: 136px;
+  height: 100%;
+  margin: 0 0 0 4px;
+}
+
+.mail-inbox-dialog-pane .mail-date,
+.mail-outbox-dialog-pane .mail-date {
+  text-align: center;
+  font-size: 0.8em;
+  color: rgb(256,256,256);
+  padding: 3px 0 0 0;
+}
+
+.mail-inbox-dialog-pane .read .mail-date-holder,
+.mail-outbox-dialog-pane .sent .mail-date-holder {
+  background:url("dialogs/backgrounds/background_mail_grey_medium.png") no-repeat center center;
+}
+
+.mail-inbox-dialog-pane .unread .mail-date-holder {
+  background:url("dialogs/backgrounds/background_mail_blue_medium.png") no-repeat center center;
+}
+
+.mail-inbox-dialog-pane .mail-avatar-holder .mail-avatar-image,
+.mail-outbox-dialog-pane .mail-avatar-holder .mail-avatar-image {
+  width: 72px;
+  height: 72px;
+  margin: -11px 0 0 18px;
+}
+
+/* == NEW MAIL == */
+
+.alliance-ultimatum-button.send-mail-button
+{
+  font-size: 20px;
+  left: 4px;
+  position: relative;
+}
+
+.modal-dialog-body.modal-dialog-new-message-tab-body
+{
+  top: 115px;
+  height: 344px;
+  overflow: hidden;
+}
+
+.new-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.player-name-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: $main-font !important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+.new-mail-dialog-pane .send {
+  background:url("images/button_mail_send@2x~iPhone.png") no-repeat center center;
+}
+
+.new-mail-dialog-pane .send:hover {
+  background:url("images/button_mail_send_up@2x~iPhone.png") no-repeat center center;
+  cursor: pointer;
+}
+
+.new-mail-dialog-pane .player-name {
+  width: 374px;
+  height: 32px;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 1.2em;
+  color: rgb(91,91,91);
+  padding: 0 0 0 10px;
+}
+
+.player-subject-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 584px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: $main-font !important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+
+.new-mail-dialog-pane .player-subject {
+  background-size: 100% 100%;
+}
+
+.new-mail-dialog-pane .content {
+  width: 584px;
+  height: 244px;
+  font-family: $main-font !important;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  resize: none;
+  overflow: scroll;
+  margin-left: 13px;
+  margin-top: 4px;
+  line-height: 22px;
+}
+
+/* == READ MAIL == */
+
+.button-read {
+  color: rgb(256,256,256);
+  font-size: 25px;
+  text-align: center;
+  line-height: 58px;
+  margin: auto;
+}
+
+.read-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.read-mail-dialog-pane .content {
+  width: 576px;
+  height: 230px;
+  background:url("dialogs/backgrounds/background_mail_input_content.png") no-repeat center center;
+  background-size: 100% 100%;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  padding-left: 16px;
+  padding-top: 8px;
+  position: relative;
+  left: 14px;
+  overflow: scroll;
+  line-height: 22px;
+}
+
+.read-mail-dialog-pane .modal-dialog-heading {
+  float: none;
+  display: inline-block;
+}
+
+.read-mail-dialog-pane .player-name {
+  width: 388px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_sender.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+  float: left;
+}
+.read-mail-dialog-pane .date {
+  width: 184px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_date.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  line-height: 40px;
+  text-align: center;
+  position: relative;
+  left: 2px;
+  float: left;
+}
+
+.read-mail-dialog-pane .subject {
+  width: 572px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_subject.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+}

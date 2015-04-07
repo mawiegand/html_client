@@ -356,10 +356,10 @@ AWE.UI.Ember = (function(module) {
       }
 
       /* disable fast frog trade button on conversion, see
-       * html_client issue #69 */
+       * html_client issue #69 
       if(this.getPath('job.slot.building.underConversion')) {
         return false;
-      }
+      }*/
 
       if (this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && !this.get('disableFrogTrade')) {
         var costs        = this.slotCosts() || []; /*this.getPath('job.slot.building.costs');*/

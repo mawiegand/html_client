@@ -1,0 +1,523 @@
+/* == PROFILE INFO SELF == */
+
+.description-change-button
+{
+  position: relative;
+  left: 180px;
+  top: 17px;
+  line-height: 50px;
+  font-size: 14px;
+}
+
+.description-text-area/* input[type="text"] */{
+  position: relative;
+  top: 0px;
+  height: 100px;
+  font-size: 20px;
+  width: 588px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: $main-font !important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  background-color: rgb(255,255,255);
+  left: -20px;
+}
+
+.profile-tab-view
+{
+  position: relative;
+  top: 28px;
+  width: 640px;
+}
+
+.description {
+  color: rgb(112,92,48);
+  font-size: 1.0em;
+  padding: 0 20px 0 20px;
+  margin: 20px 0 0 0;
+  font-family: $main-font;
+}
+
+.profile-info-self-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+.profile-info-self-dialog-pane .row2 {
+  height: 70px;
+}
+
+.profile-info-self-dialog-pane .button {
+  width: 184px;
+  height: 48px;
+
+  color: rgb(256,256,256);
+  font-size: 2em;
+  text-align: center;
+  line-height: 45px;
+  margin: auto;
+}
+
+.character-details {
+  position: relative;
+  float: left;
+
+  width: 429px;
+}
+
+.profile-info-self-dialog-pane .rank {
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_wide.png' %>") no-repeat center center;
+}
+
+.profile-info-self-dialog-pane .rank:hover {
+  cursor: pointer;
+}
+
+.profile-info-self-dialog-pane .info {
+  background:url("<%= asset_path 'dialogs/buttons/button_orange_wide.png' %>") no-repeat center center;
+}
+
+.profile-info-self-dialog-pane .info:hover {
+  cursor: pointer;
+}
+
+.profile-info-self-dialog-pane .avatar {
+  width: 144px;
+  height: 152px;
+}
+
+.profile-info-self-dialog-pane .line {
+  padding: 0 20px 0 20px;
+  text-align: center;
+}
+
+.profile-info-self-dialog-pane .line1 {
+  color: rgb(112,92,48);
+  font-size: 1.3em;
+}
+
+.profile-info-self-dialog-pane .line2 {
+  color: rgb(53,118,178);
+  font-size: 2em;
+}
+
+.profile-info-self-dialog-pane .line1 div,
+.profile-info-self-dialog-pane .line2 div {
+  display: inline-block;
+  height: 65px;
+}
+
+.profile-info-self-dialog-pane .clubs-value,
+.profile-info-self-dialog-pane .guy-value,
+.profile-info-self-dialog-pane .thing-value,
+.profile-info-self-dialog-pane .thumb-up-value,
+.profile-info-self-dialog-pane .thumb-down-value {
+  display: inline-block;
+  line-height: 10px;
+  vertical-align: middle;
+}
+
+.profile-info-self-dialog-pane .thumb-up,
+.profile-info-self-dialog-pane .thumb-down {
+  margin: 0 20px 0 20px;
+}
+
+.profile-info-self-dialog-pane .clubs-icon {
+  width: 48px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'dialogs/specials/army_identifier.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .guy-icon {
+  width: 48px;
+  /*height: 56px;*/
+  background:url("<%= asset_path 'dialogs/specials/people_identifier.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thing-icon {
+  width: 64px;
+  /*height: 56px;*/
+  background:url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thumb-up-icon {
+  width: 40px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'dialogs/specials/thumbs_up_blue.png' %>") no-repeat center 2px;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thumb-down-icon {
+  width: 40px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'dialogs/specials/thumbs_down_blue.png' %>") no-repeat center 18px;
+  display: inline-block;
+}
+
+/* == PROFILE RANK SELF == */
+
+.xp {
+  background:url("<%= asset_path 'dialogs/items/normal/item_xp.png' %>") no-repeat left center;
+}
+
+.resource-icon-xp
+{
+  width: 32px;
+  height: 32px;
+}
+
+.profile-rank-self-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+.profile-rank-self-dialog-pane .row3 {
+  height: 48px;
+  margin: 20px 0 20px 0;
+ }
+
+.profile-rank-self-dialog-pane .button {
+  width: 184px;
+  height: 48px;
+
+  color: rgb(256,256,256);
+  font-size: 2em;
+  text-align: center;
+  line-height: 45px;
+  margin: auto;
+}
+
+.current-rank,
+.next-rank,
+.current-level,
+.next-level,
+.settlement-points {
+  padding: 0 20px 0 20px;
+  font-size: 0.8em;
+}
+
+.current-rank-title,
+.next-rank-title {
+  color: rgb(112,92,48);
+}
+
+.current-rank-value,
+.next-rank-value {
+  color: rgb(154,148,138);
+}
+
+.current-level-title,
+.next-level-title,
+.settlement-points-title {
+  color: rgb(112,92,48);
+  line-height: 2em;
+  vertical-align: top;
+}
+
+.current-level-value,
+.next-level-value,
+.settlement-points-value {
+  color: rgb(154,148,138);
+  line-height: 2em;
+  vertical-align: top;
+}
+
+.current-level div,
+.next-level div,
+.settlement-points div {
+  display: inline-block;
+}
+
+.rank-background {
+  background:url("<%= asset_path 'dialogs/progressbars/progress_domination_grey.png' %>") no-repeat center center;
+}
+
+.rank-bar {
+  width: 560px;
+  height: 48px;
+  background:url("<%= asset_path 'dialogs/progressbars/progress_domination_green.png' %>") no-repeat left center;
+  background-size: 80% 100%;
+  text-align: center;
+  margin:auto;
+}
+
+.progress-value {
+  color: rgb(256,256,256);
+  line-height: 1.9em;
+  font-size: 1.0em;
+}
+
+/* == PROFILE CUSTOMIZE SELF == */
+
+/*::-webkit-input-placeholder {
+   color: rgb(113,93,49);
+}
+
+:-moz-placeholder {
+   color: rgb(113,93,49);
+}
+
+::-moz-placeholder {  
+   color: rgb(113,93,49);
+}
+
+:-ms-input-placeholder {  
+   color: rgb(113,93,49);
+}*/
+
+
+
+.toggle-gender
+{
+  height: 112px;
+  width: 32px;
+  position: absolute;
+  right: 362px;
+  top: 88px;
+  cursor: pointer;
+}
+.toggle-on
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'dialogs/toggle/toggle_gender_on.png' %>") no-repeat left center;
+}
+.toggle-on:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+.toggle-off
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'dialogs/toggle/toggle_gender_off.png' %>") no-repeat left center;
+}
+.toggle-off:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+.female
+{
+  position: absolute;
+  left: 6px;
+  bottom: 14px;
+  height: 28px;
+  width: 20px;
+  background:url("<%= asset_path 'dialogs/specials/icon_female.png' %>") no-repeat left center;
+}
+.male
+{
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  height: 28px;
+  width: 24px;
+  background:url("<%= asset_path 'dialogs/specials/icon_male.png' %>") no-repeat left center;
+}
+
+.change-character-item
+{
+  display: inline-block;
+  height: 58px;
+  width: 310px;
+}
+
+.change-character-item-titel
+{
+  display: inline-block;
+  height: 60px;
+  width: 158px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
+  position: relative;
+  left: 10px;
+  bottom: 10px;
+}
+
+.change-character-item-button-left
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 12px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_short.png' %>") no-repeat left center;
+}
+
+.change-character-item-button-left:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.change-character-item-button-right
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 0px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_short.png' %>") no-repeat left center;
+}
+
+.change-character-item-button-right:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.change-character-item-button-label-left
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_arrow_single_left.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.change-character-item-button-label-right
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_arrow_single_right.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.rowcustomize .customavatar
+{
+  position: absolute;
+  left: 38px;
+  top: 30px;
+}
+
+.item-toad
+{
+  display: inline-block;
+  position: relative;
+  left: -4px;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  background:url("<%= asset_path 'dialogs/items/normal/item_toads_small.png' %>") no-repeat left center;
+}
+
+.item-price
+{
+  display: inline-block;
+  width: auto;
+  height: 20px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  line-height: 20px;
+  text-shadow:  1px  1px 1px rgb(112,94,62),
+                  1px -1px 1px rgb(112,94,62),
+                 -1px  1px 1px rgb(112,94,62),
+                 -1px -1px 1px rgb(112,94,62);
+}
+
+.name-change-button-gold-titel
+{
+  position: relative;
+  bottom: 5px;
+  width: 188px;
+  height: 20px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  line-height: 18px;
+  text-shadow:  1px  1px 1px rgb(112,94,62),
+                  1px -1px 1px rgb(112,94,62),
+                 -1px  1px 1px rgb(112,94,62),
+                 -1px -1px 1px rgb(112,94,62);
+}
+
+.name-change-button-gold
+{
+  position: absolute;
+  left: 374px;
+  top: 134px;
+  width: 180px;
+  height: 64px;
+  background:url("<%= asset_path 'dialogs/buttons/button_gold_big.png' %>") no-repeat left center;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  line-height: 38px;
+  cursor: pointer;
+}
+
+.name-change-button-gold:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.name-change-button
+{
+  position: absolute;
+  left: 306px;
+  top: 146px;
+  width: 308px;
+  height: 52px;
+  background:url("<%= asset_path 'dialogs/buttons/button_green_wide.png' %>") no-repeat left center;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  line-height: 48px;
+  cursor: pointer;
+}
+
+.name-change-button:hover
+{
+  background:url("<%= asset_path 'dialogs/buttons/button_green_wide.png' %>") no-repeat left center;
+}
+
+.profile-info-self-dialog-pane .rowcustomize
+{
+  height: 160px;
+}
+
+.profile-info-self-dialog-pane .rowcustomizesettings
+{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.row2 input[type="text"] {
+  position: absolute;
+  top: 90px;
+  right: 28px;
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: $main-font !important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  /*background-color: rgb(255,255,255);
+  background:url("<%= asset_path 'dialogs/backgrounds/background_input_big@2x~iphone.png' %>") no-repeat left center;*/
+}
+
+.character-info-container {
+  height: 410px;
+  width: 100%;
+  overflow: auto;
+  position: absolute;
+}

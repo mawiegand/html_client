@@ -301,7 +301,7 @@ AWE.Controller = (function(module) {
         }
         else
         {
-          var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
+          var dialog = AWE.UI.Ember.BuildingSelectionDialog.create({
             controller: this,
             slot: slot});
           WACKADOO.presentModalDialog(dialog);
@@ -1187,9 +1187,8 @@ AWE.Controller = (function(module) {
     };
 
     that.nextBuildingSlotToMark = function() {
-      //var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
-        var sequenceOfSlotIds = [-1, 21,19,14,15,25,26,9,31,13,8,10,16,24,30,27,32];
-
+      //Buildings:  [-1, Gatherer, Barracks, Small Huts, Tavern, Storage, Campfire];
+      var sequenceOfSlotIds = [-1, 26, 25, 14, 15, 31, 9, 19, 21, 8, 10, 30, 32];
       var usedSlots = that.view.getPath('settlement.usedBuildingSlots');
       var n = sequenceOfSlotIds.length;
 
@@ -1197,7 +1196,14 @@ AWE.Controller = (function(module) {
         return null;
       }
 
-      var slots = that.view.get('slots');
+      var slots = that.view.getPath('hashableSlots.collection');
+      if(slots)
+      {
+        slots.sort(function(a,b) {
+          return a.get('slot_num') - b.get('slot_num');
+        });
+      }
+
       if (slots === null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= usedSlots) {
         return null;
       }

@@ -13,54 +13,6 @@ var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {}; 
 
 AWE.UI.Ember = (function(module) {
-  
-  /** @class
-   * @name AWE.UI.Ember.SelectBuildingDialog */
-  module.SelectBuildingDialog = Ember.View.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
-    templateName: "settlement-dialog-select-building",
-    heading: AWE.I18n.lookupTranslation('settlement.buildings.select.heading'),
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    optionClicked: function(event) {
-      var slot = this.get('slot');
-      var building = event.view.getPath('building');
-      var type = event.view.getPath('building.type');
-
-      if (!building.requirementsMet())
-      {
-        if (event.view && typeof event.view.onInfoClicked !== "undefined")
-        {
-          event.view.onInfoClicked();
-        }
-        
-        return ; // do nothing, ignore click on greyed-out building.
-      }
-
-      this.get('controller').constructionOptionClicked(slot, building, type, event.view);
-      this.getPath('parentView').destroy();
-    }, 
-
-    resourceExchangePressed: function() {
-      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
-      WACKADOO.presentModalDialog(dialog);
-      return false;
-    },
-    
-    constructionOptions: function() {
-      var slot = this.get('slot');
-      var options = slot ? slot.constructionOptions() : [];
-      log ('OPTIONS', options);
-      var result = options.filter(function(building) {
-        log('BUILDING', building);
-        return !building.impossibleToBuildDueToMissingDivineSupporterStatus() && !building.impossibleToBuildDueToMaxRequirement();
-      });
-      return result && result.length > 0 ? result : null;
-    }.property('slot.building_id', 'slot.settlement'),  
-  });  
-  
   /** @class
    * @name AWE.UI.Ember.BuildingAnnotationView */
   module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
@@ -215,8 +167,8 @@ AWE.UI.Ember = (function(module) {
 
   });  
 
-module.SelectBuildingNewDialog = module.PopUpDialog.extend({
-    templateName: 'settlement-new-dialog-select-building',
+module.BuildingSelectionDialog = module.PopUpDialog.extend({
+    templateName: 'building-selection',
 
     open: function(){
       WACKADOO.presentModalDialog(this);
@@ -236,8 +188,50 @@ module.SelectBuildingNewDialog = module.PopUpDialog.extend({
     }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
-module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
+module.SelectBuildingNewView = Ember.View.extend({
     templateName: "settlement-new-view-select-building",
+
+    heading: AWE.I18n.lookupTranslation('settlement.buildings.select.heading'),
+  
+    cancelPressed: function() {
+      this.get('controller').unselectSlot();
+    },
+                      
+    optionClicked: function(event) {
+      var slot = this.get('slot');
+      var building = event.view.getPath('building');
+      var type = event.view.getPath('building.type');
+
+      if (!building.requirementsMet())
+      {
+        if (event.view && typeof event.view.onInfoClicked !== "undefined")
+        {
+          event.view.onInfoClicked();
+        }
+        
+        return ; // do nothing, ignore click on greyed-out building.
+      }
+
+      this.get('controller').constructionOptionClicked(slot, building, type, event.view);
+      this.getPath('parentView').destroy();
+    }, 
+
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
+    
+    constructionOptions: function() {
+      var slot = this.get('slot');
+      var options = slot ? slot.constructionOptions() : [];
+      log ('OPTIONS', options);
+      var result = options.filter(function(building) {
+        log('BUILDING', building);
+        return !building.impossibleToBuildDueToMissingDivineSupporterStatus() && !building.impossibleToBuildDueToMaxRequirement();
+      });
+      return result && result.length > 0 ? result : null;
+    }.property('slot.building_id', 'slot.settlement'),
      
   });  
 
@@ -361,59 +355,6 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
   module.ResourceCostView = module.GeneralResourceView.extend({
     templateName: 'building-cost-view',
   });
- 
-  /** @class
-   * @name AWE.UI.Ember.BuildingDetailsDialog */  
-  module.BuildingDetailsDialog = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingDetailsDialog# */ {
-    templateName: "settlement-dialog-building-details",
-  
-    sendingUpgradeBinding: 'controller.status.sendingUpgrade',
-    sendingDestroyBinding: 'controller.status.sendingDestroy',
-    sendingConvertBinding: 'controller.status.sendingConvert',
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    upgradeClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
-        slot: this.get('slot'),
-        controller: this.get('controller'),
-      });
-      WACKADOO.presentModalDialog(dialog);
-      //this.get('controller').constructionUpgradeClicked(this.get('slot'));
-    },         
-    
-    destroyClicked: function(event) {
-      this.get('controller').constructionDestroyClicked(this.get('slot'));
-    },         
-    
-    conversionClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
-        slot: this.get('slot'),
-        controller: this.get('controller'),
-        conversionView: true,
-      });
-      WACKADOO.presentModalDialog(dialog);
-      //this.get('controller').constructionConvertClicked(this.get('slot'));
-    },
-    
-    destroyClasses: function() {
-      return this.getPath('slot.building_id') && (this.getPath('slot.hashableJobs.collection').length == 0 ? 'destroy' : 'destroy disabled');
-    }.property('slot.hashableJobs.changedAt').cacheable(),
-
-    resourceExchangePressed: function() {
-      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
-      WACKADOO.presentModalDialog(dialog);
-      return false;
-    },
-
-    upgradeUIMarker: function() {
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return this.getPath('building.slot.uiMarker') && tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) && tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
-    }.property('building.slot.uiMarker'),
-  });
-  
   
   /** @class
    * @name AWE.UI.Ember.TrainableUnitButtonView */  

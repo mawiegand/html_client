@@ -63,7 +63,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         {
           sessionStorage.startupArguments = null;
         }
-        window.location.reload();
+        window.location.replace(AWE.Config.PORTAL_ROOT);
       }
     },
 
@@ -132,6 +132,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             announcement: announcement,
             okPressed:    function() {
               AWE.GS.TutorialStateManager.checkForNewQuests();
+              $('#layers').css('overflow', 'visible');
               this.destroy();
 
               self.get('presentScreenController').welcomeDialogClosed();
@@ -187,6 +188,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var beginner  = character && character.get('chat_beginner');
       var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
+	  openPane = false; // Android Hotfix
 
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
@@ -288,11 +290,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showStartupDialogs: function() {
 
-      if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
-        this.showAnnouncement();
+      if (AWE.GS.game.getPath('currentCharacter.beginner') === true) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+        this.showWelcomeDialog();
       }
       else {
-        this.showWelcomeDialog();
+        this.showAnnouncement();
       }
 
       if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
@@ -373,7 +375,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         Sample.setUserId(identifier);
 
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
         {
           Sample.sessionUpdate();  
           Sample.track('started', 'session');
@@ -517,8 +519,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
-
-
           this.get('presentScreenController').moveTo(node, true);
         }
       }
@@ -849,38 +849,50 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       /** Set the pisori installtoken, sessiontoken and platform
         * so that events don´t get tracked twice
         */
-      var startupArgs = this.get('startupArguments');
-      var platform = startupArgs['platform'];
+      var platform = args['platform'];
       
       Sample.setEndpoint("/psiori/event")
       Sample.setAppToken("fsRrapvL");
 
-      if (platform == Sample.PLATFORM_ANDROID)
+      // android+ condition ->Hotfix for android client bug
+      if (platform == Sample.PLATFORM_ANDROID || platform == 'android+')
       {
-          var sessionToken = startupArgs['session_token'];
-          var installToken = startupArgs['install_token'];
-          if (sessionToken != "undefined" && sessionToken != null)
+          var sessionToken = args['session_token'];
+          var installToken = args['install_token'];
+          if (sessionToken)
           {
-              Sampl.setSessionToken(sessionToken);
+              Sample.setSessionToken(sessionToken);
           }
-          if (installToken != "undefined" && installToken != null)
+          if (installToken)
           {
-              Sampl.setInstallToken(installToken);
+              Sample.setInstallToken(installToken);
           }
-          if (platform != "undefined" && platform != null)
+          if (platform)
           {
-              Sampl.setPlatform(platform);
+              Sample.setPlatform(Sample.PLATFORM_ANDROID);
           }
       }
 
       if (!args || !args.accessToken) {
-        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+        // android+ condition ->Hotfix for android client bug
+        if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
         {
             Sample.track('start_failed', 'session');
         }
 
 //      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
-        document.location.href = AWE.Config.PORTAL_ROOT;
+        if(navigator.userAgent.toLowerCase().indexOf('android') >= 0)
+        {
+          try {
+            AndroidDelegate.logout();
+          }
+          catch (err)
+          {}
+        }
+        else
+        {
+          document.location.href = AWE.Config.PORTAL_ROOT;
+        }
         return ;
       }
       else {
@@ -903,35 +915,29 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
       if (isAndroid) {
-        AWE.Settings.hudScale = 0.6;
+        AWE.Settings.hudScale = 0.5;
+        var styleSheets = document.styleSheets;
+      
+        // TODO: improve the code below. Does it have to be run for hudScale == 1?
+        //       can't it read the values for top and marginLeft from the CSS? 
+        //       The present code will OVERRIDE any change to the css, without the
+        //       developer noticing it.
+        for (n in styleSheets)
+        {
+          var theRules = styleSheets[n].cssRules;
+          for (m in theRules)
+          {
+            if (theRules[m].selectorText === ".scale-down") {
+              theRules[m].style.zoom = AWE.Settings.hudScale;
+            }
+            if (theRules[m].selectorText === '.topbar-info-box') {
+              theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
+              theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
+            }
+          }       
+        }
       } else {
         AWE.Settings.hudScale = 1;
-      }
-      var styleSheets = document.styleSheets;
-      
-      // TODO: improve the code below. Does it have to be run for hudScale == 1?
-      //       can't it read the values for top and marginLeft from the CSS? 
-      //       The present code will OVERRIDE any change to the css, without the
-      //       developer noticing it.
-      for (n in styleSheets)
-      {
-        var theRules = styleSheets[n].cssRules;
-        for (m in theRules)
-        {
-          if (theRules[m].selectorText === ".modal-dialog-pane-new" 
-            || theRules[m].selectorText === ".modal-dialog-pane" 
-            || theRules[m].selectorText === ".right-hud" 
-            || theRules[m].selectorText === ".settlement-map-button" 
-            || theRules[m].selectorText === ".topbar-info-box.settlement" 
-            || theRules[m].selectorText === ".shop-dialog-pane"
-            || theRules[m].selectorText === ".top-right-hud") {
-            theRules[m].style.zoom = AWE.Settings.hudScale;
-          }
-          if (theRules[m].selectorText === '.topbar-info-box') {
-            theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
-            theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
-          }
-        }       
       }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
@@ -970,7 +976,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         styleSheet.insertRule(".shop-dialog-pane { height: 500px; margin-top: 100px; overflow: scroll; }", styleSheet.rules.length);
       }*/
 
-      if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+      // android+ condition ->Hotfix for android client bug
+      if (Sample.getPlatform() != Sample.PLATFORM_ANDROID && Sample.getPlatform() != 'android+')
       {
          Sample.sessionStart();
          Sample.autoPing(30);

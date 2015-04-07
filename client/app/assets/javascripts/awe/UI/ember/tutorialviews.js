@@ -28,7 +28,8 @@ AWE.UI.Ember = (function(module) {
     },
     
     okPressed: function() {
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');          
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
+      $('#layers').css('overflow', 'visible');
       this.destroy();
     }
   });  
@@ -97,6 +98,7 @@ AWE.UI.Ember = (function(module) {
         this.redeemButtonPressed(); // remove the function later, if this proves to be good.
       }
       else {
+        $('#layers').css('overflow', 'visible');
         this.destroy();
       }
     },
@@ -130,8 +132,8 @@ AWE.UI.Ember = (function(module) {
         self.$(".quest-dialog-bg").delay(100).animate({
           height: '477px',
           width: '650px',
-          top: '166px',
-          left: '-325px',
+          marginTop: '38px',
+          marginLeft: '-325px',
           zoom: AWE.Settings.hudScale
         }, {  duration: 600,
               easing: 'easeOutElastic',
@@ -175,7 +177,10 @@ AWE.UI.Ember = (function(module) {
                   easing: 'easeOutBack',
                   complete: function() {
                     if (spinningAnimation) {
-                      self.set('spinningBackground', true);
+                      if(navigator.userAgent.toLowerCase().indexOf('android') < 0)
+                      {
+                        self.set('spinningBackground', true);
+                      }
                     }   
                   }
                 });
@@ -187,8 +192,8 @@ AWE.UI.Ember = (function(module) {
         self.$(".quest-dialog-bg").css({
           height: '477px',
           width: '650px',
-          top: '166px',
-          left: '-325px',
+          marginTop: '38px',
+          marginLeft: '-325px',
           zoom: AWE.Settings.hudScale
         })
             
@@ -214,8 +219,11 @@ AWE.UI.Ember = (function(module) {
           easing: 'easeOutBack',
           complete: function() {
             if (spinningAnimation) {
-              self.set('spinningBackground', true);
-            }   
+              if(navigator.userAgent.toLowerCase().indexOf('android') < 0)
+              {
+                self.set('spinningBackground', true);
+              }
+            }
           }
         });
         

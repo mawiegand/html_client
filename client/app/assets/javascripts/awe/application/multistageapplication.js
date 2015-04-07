@@ -829,6 +829,7 @@ AWE.Application = (function(module) {
         while (this.modalDialogs.length > 0) {
          this.modalDialogs[this.modalDialogs.length-1].destroy();
         }
+        $('#layers').css('overflow', 'visible');
       },
 
       modalDialogClosed: function(dialog) {
@@ -844,12 +845,13 @@ AWE.Application = (function(module) {
           return function(dialog) {            
             self.modalDialogClosed(dialog) };
         }(this));
-        if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialEnabled())
+        if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
           dialog.setCloseMarker(true);
         }
         this.modalDialogs.push(dialog);
         dialog.append();
+        $('#layers').css('overflow', 'hidden');
       },
 
       presentDomOverlay: function(dialog) {

@@ -1,22 +1,23 @@
 <script type="text/x-handlebars" data-template-name="quest-list-view">
-  <div class="modal-dialog-background"></div>
-  <div class="horizontal-center-helper">
-    <div class="modal-dialog-pane quest-list-view">
-      <div class="quest-list-header">
-        <h1>{{t tutorial.questList}}</h1>
-        <div class="advisor warrior sketched"></div>
-        <div class="advisor girl sketched"></div>
-        <div class="advisor chef sketched"></div>
-      </div>
-      <div class="quest-list-content">
-        <div class="quest-list-items">
-          {{#each questStates}}
-          {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
-          {{/each}}
+  <div class="modal-dialog-background" onClick="WACKADOO.closeAllModalDialogs()"></div>
+    <div class="horizontal-center-helper">
+      <div class="modal-dialog-pane quest-list-view scale-down">
+        <div class="quest-list-header">
+          <h1>{{t tutorial.questList}}</h1>
+          <div class="advisor warrior sketched"></div>
+          <div class="advisor girl sketched"></div>
+          <div class="advisor chef sketched"></div>
         </div>
-      </div>
+        <div class="quest-list-content">
+          <div class="quest-list-items">
+            {{#each questStates}}
+            {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+            {{/each}}
+          </div>
+        </div>
 
-      <div class="okButton" {{action "okPressed"}}></div>
+        <div class="okButton" {{action "okPressed"}}></div>
+      </div>
     </div>
   </div>
 </script>
@@ -205,7 +206,7 @@
 <script type="text/x-handlebars" data-template-name="tutorial-end-dialog">
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
-    <div class="modal-dialog-pane tutorial-end-dialog">
+    <div class="modal-dialog-pane tutorial-end-dialog scale-down">
       <div class="content clearfix">
         
         <h1>{{t tutorial.end.header}}</h1>

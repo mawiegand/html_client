@@ -30,14 +30,34 @@ AWE.UI.Ember = (function(module) {
 		settlement: null,
 		/** references the slot that is presently selected in the view. */
 		selectedSlot: null,
+
+    unlockedSlots: function() {
+      return this.getPath('settlement.building_slots_total') - 1;
+    }.property('settlement.building_slots_total'),
+
     /** reference to all building-slots of the base. May be null or empty. */
     slots: function() {
       var collection = this.getPath('hashableSlots.collection');
       log ('SORTING SLOTS')
-      return collection ? collection.sort(function(a,b) {
-        return a.get('slot_num') - b.get('slot_num');
-      }) : null;
-    }.property('hashableSlots.changedAt').cacheable(),
+      if(collection)
+      {
+        collection.sort(function(a,b) {
+          return a.get('slot_num') - b.get('slot_num');
+        });
+        if(this.get('unlockedSlots') !== -1 && AWE.GS.CharacterManager.getCurrentCharacter().has_limited_grid)
+        {
+          var filteredCollection = [];
+          filteredCollection[0] = collection[0]; //TODO: Remove wall slot
+          for(var i = 1; i <= this.get('unlockedSlots'); i++)
+          {
+            filteredCollection[i] = collection[AWE.Config.GRID_UNLOCK_ORDER[i-1]];
+          }
+          return filteredCollection;
+        }
+        return collection;
+      }
+      return null;
+    }.property('hashableSlots.changedAt', "unlockedSlots").cacheable(),
 
     /** true in case there are representations of the slots available. */
     haveSlotsBinding: Ember.Binding.bool('slots'),
@@ -84,6 +104,14 @@ AWE.UI.Ember = (function(module) {
     unselectSlot: function(){ 
       WACKADOO.presentScreenController.unselectSlot();
     },
+
+    didInsertElement: function() {
+      //For android, center on chief
+      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+        $(window).scrollTop($(window).height() / 1.25);
+        $(window).scrollLeft($(window).width() / 2.35);
+      }
+    }
 
   });
 

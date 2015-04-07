@@ -1,0 +1,53 @@
+/* == MOVE == */
+
+.move-button{
+  background:url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>") no-repeat center center;
+  width: 180px;
+  height: 52px;
+  color: #FFF;
+  text-align: center;
+  cursor: pointer;
+}
+
+.move-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.moving-dialog .footer-wrapper{
+  position: absolute;
+  bottom: 0;
+  text-align: right;
+  width: 100%;
+}
+
+.moving-dialog .description{
+  color: rgb(112,92,48);
+  padding: 0 20px 0 20px;
+  margin: 20px 0 0 3px;
+  font-family: "Montserrat";
+  font-weight: normal;
+  font-size: 23px;
+}
+
+.moving-dialog .button-wrapper{
+  position: absolute;
+  bottom: 56px;
+  right: 50px;
+}
+
+.moving-dialog input[type="text"] {
+  width: 355px!important;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: $main-font !important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+}
+
+.moving-dialog .input-wrapper{
+  position: absolute;
+  right: 50px;
+  bottom: 142px;
+}
