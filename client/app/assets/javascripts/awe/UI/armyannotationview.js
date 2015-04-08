@@ -172,18 +172,6 @@ AWE.UI = (function(module) {
           WACKADOO.presentModalDialog(dialog);
         }
       this.addChild(_foundButtonView);    
-      
-//      _retreatButtonView = AWE.UI.createButtonView();
-//      _retreatButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.retreat'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _retreatButtonView.setFrame(AWE.Geometry.createRect(128, 70, 48, 48));
-//      _retreatButtonView.onClick = function() {
-//        if (_retreatButtonView.enabled()) {
-//          that.onRetreatButtonClick(_army);
-//        }
-//      }
-//      this.addChild(_retreatButtonView);
 
       _battleInfoButtonView = AWE.UI.createButtonIconView();
       backgrounds = {

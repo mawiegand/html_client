@@ -190,38 +190,7 @@ AWE.UI = (function(module) {
         this.removeChild(_newArmyButtonView);
       }
 
-
-
-//      if (!battleButton && battleCheck) {  // ongoing battle -> attribute is missing in database ("mode")
-//        battleButton = AWE.UI.createButtonView();
-//        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//        battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
-//        battleButton.onClick = function() { that.onBattleButtonClick(); }
-//        this.addChild(battleButton);
-//      }
-//      else if (battleButton && !battleCheck) {
-//        this.removeChild(battleButton);
-//        battleButton = null;
-//      }
-//      if (battleButton) {
-//        battleButton.setVisible(my.baseView.selected());
-//      }
-
       this.updateButtonState();
-
-//      if (!isOwnLocation && !rightOfWayIcon) {
-//        rightOfWayIcon = AWE.UI.createImageView();
-//        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
-//        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
-//        rightOfWayIcon.setContentMode(module.setContentModeNone);
-//        this.addChild(rightOfWayIcon);
-//      }
-//      else if (isOwnLocation && rightOfWayIcon) {
-//        this.removeChild(rightOfWayIcon);
-//        rightOfWayIcon = null;
-//      }
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();

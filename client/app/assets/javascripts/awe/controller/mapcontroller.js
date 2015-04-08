@@ -141,19 +141,6 @@ AWE.Controller = function (module) {
       _stages[3].onClick = function () {
       };   // we generate our own clicks
 
-      
-
-      // layer for the controls buttons
-      /*
-      root.append('<canvas id="controls-canvas"></canvas>');
-      _canvas[4] = root.find('#controls-canvas')[0];
-      _stages[4] = new Stage(_canvas[4]);
-      _stages[4].onClick = function () {
-      };   // we generate our own clicks
-      */
-
-//      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
-
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
@@ -175,27 +162,6 @@ AWE.Controller = function (module) {
         zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
         $(zoomSlider.getContainer()).remove();
       });
-  
-      if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
-        controlsViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
-        controlsViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-        _stages[4].addChild(controlsViews.tempToggleButtonView.displayObject());
-      }
-
-      controlsViews.mapButtonsBackgroundView = AWE.UI.createImageView();
-      controlsViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
-      controlsViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
-      _stages[4].addChild(controlsViews.mapButtonsBackgroundView.displayObject());
-
-      controlsViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
-      controlsViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[4].addChild(controlsViews.mapTypeToggleButtonView.displayObject());
-
-
-      controlsViews.armyListButtonView = AWE.UI.createArmyListButtonView();
-      controlsViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[4].addChild(controlsViews.armyListButtonView.displayObject());
-*/
     };
     
 

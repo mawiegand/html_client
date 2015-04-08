@@ -134,24 +134,6 @@ AWE.UI = (function(module) {
         attackButton.setVisible(my.fortressView.selected());
       }
 
-//      if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
-//        battleButton = AWE.UI.createButtonView();
-//        battleButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.battle'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//        battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
-//        battleButton.onClick = function() { that.onBattleButtonClick(); }
-//        this.addChild(battleButton);
-//      }
-//      else if (battleButton && !0) {
-//        this.removeChild(battleButton);
-//        battleButton = null;
-//      }
-//      if (battleButton) {
-//        battleButton.setVisible(my.fortressView.selected());
-//      }
-//
-
       if (!_newArmyButtonView && isOwnLocation && my.region.location(0) != null && my.region.location(0).garrisonArmy() != null && !my.region.location(0).garrisonArmy().get('isFighting')) {
         _newArmyButtonView = AWE.UI.createButtonIconView();
         var backgrounds = {
