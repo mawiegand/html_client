@@ -161,7 +161,7 @@ AWE.Controller = function (module) {
         }
         zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
         $(zoomSlider.getContainer()).remove();
-      });
+      });*/
     };
     
 
