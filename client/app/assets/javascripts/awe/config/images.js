@@ -193,7 +193,8 @@ AWE.Config = (function(module) {
     "hud/resourcebars/fur/item"  :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_fur/resourcebar_fur_item.png',
     "hud/resourcebars/stone/item":   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_stone/resourcebar_stone_item.png',
     "hud/resourcebars/cash/item":   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_toads/resourcebar_toads_item.png',
-    "hud/resourcebars/wood/item" :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_wood/resourcebar_wood_item.png',      
+    "hud/resourcebars/wood/item" :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_wood/resourcebar_wood_item.png',
+          
     
     "hud/button/army/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/army_button/army_button.png',
     "hud/button/army_menu/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/army_menu_button/army_menu_button.png',

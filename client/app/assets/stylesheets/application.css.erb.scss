@@ -6698,20 +6698,6 @@ div.dom-quest-container div.tutorial-dialog {
   }
 }
 
-@media (min-width : 1023px) {
-  .dialog-reward-bg-leafs{
-    width: 0px;
-    height: 0px;
-    left: 0px;
-    top: 241px;
-    background-image: url('/client/assets/quest-dialog-bg.png');
-    background-size: 100% 100%;
-    position: absolute;
-    z-index: 259;
-  }
-  
-}
-
 .annotation-button
 {
   .icon
