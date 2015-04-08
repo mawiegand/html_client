@@ -1,0 +1,209 @@
+.startup-dialog {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+
+  cursor: default;
+  font-size: 16px;
+  position: fixed; 
+  margin-left: -431px;
+  margin-top: -325px;
+  width: 764px;
+  height: 576px;
+  background: url('/client/assets/quest-selection-bg.png') no-repeat center;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.startup-dialog .content {
+  margin: 50px 80px;
+  width: 610px;
+  height: 450px;
+  text-align: center;
+  position: absolute;
+}
+
+.startup-dialog .content,
+.startup-dialog .content h1,
+.startup-dialog .content h2 {
+  font-family: $main-font;
+  color: #725d3a;
+}
+
+.startup-dialog .content h1 {
+  margin-top: 0;
+  margin-bottom: 34px;
+  font-size: 2em;
+}
+
+.startup-dialog .content h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.startup-dialog .content p {
+  width: 90%;
+  margin: 0;
+  line-height: 1em;
+  color: #8d887f;
+}
+
+.startup-dialog .content .advice {
+  text-align: left;
+}
+
+.startup-dialog .content table {
+  width: 100%;
+  height: 82%;
+}
+
+.startup-dialog .content tr {
+  height: 50%;
+}
+
+.startup-dialog .content td {
+  height: 100%;
+  overflow: hidden;
+}
+
+.startup-dialog .content td.first,
+.startup-dialog .content td.third {
+  width: 60%;
+}
+
+.startup-dialog .content td.second,
+.startup-dialog .content td.fourth {
+  width: 40%;
+}
+
+.startup-dialog .content td .info-image {
+  width: 272px;
+  height: 152px;
+  margin-top: -10px;
+  margin-left: -20px;
+  margin-bottom: -25px;
+}
+
+.startup-dialog .content td.first .info-image {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-first.png' %>") center no-repeat;
+}
+
+.startup-dialog .content td.second .info-image {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-second.png' %>") center no-repeat;
+}
+
+.startup-dialog .content td.third .info-image {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-third.png' %>") center no-repeat;
+}
+
+.startup-dialog .content td.fourth .info-image {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-fourth.png' %>") center no-repeat;
+}
+
+.startup-dialog .arrow.first {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-arrow-first.png' %>") center no-repeat;
+  width: 80px;
+  height: 68px;
+  position: absolute;
+  margin-top: 198px;
+  margin-left: 350px;
+}
+
+.startup-dialog .arrow.second {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-arrow-second.png' %>") center no-repeat;
+  width: 92px;
+  height: 44px;
+  position: absolute;
+  margin-top: 288px;
+  margin-left: 334px;
+}
+
+.startup-dialog .arrow.third {
+  background: url("<%= asset_path 'dialogs/welcome-dialog/welcome-dialog-arrow-third.png' %>")center no-repeat;
+  width: 84px;
+  height: 56px;
+  position: absolute;
+  margin-top: 378px;
+  margin-left: 350px;
+}
+
+
+.startup-dialog-button{
+  position: absolute;
+  margin-top: 480px;
+  margin-left: 630px;
+  width: 172px;
+  height: 129px;
+  border: none;
+  box-shadow: none;
+  z-index: 25;
+  background-image: url('<%= asset_path("quest-dialog-button.png") %>');
+  background-size: 100%;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+
+  cursor: pointer;
+}
+
+.startup-dialog-button:hover{
+    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+    
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.startup-dialog-button:active{
+  
+  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  
+  transition: background 0s;
+}
+
+.welcome-dialog {
+  font-size: 16px;
+  position: fixed; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  width: 800px; 
+  max-height: 620px;
+  min-height: 300px;
+  background-color: #FFF;   
+  overflow-y: scroll; 
+}
+
+.welcome-dialog h2 {
+  margin-bottom: 0px;
+}
+
+.welcome-dialog img {
+  margin-top: -6px;
+  width: 670px;
+}
