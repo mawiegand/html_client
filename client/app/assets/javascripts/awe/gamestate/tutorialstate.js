@@ -930,13 +930,13 @@ AWE.GS = (function(module) {
     noFurtherUserInteractionNeeded: false,
 
     checkNoFurtherUserInteractionRequired: function() {
-
-      if (this.get('noFurtherUserInteractionNeeded')) {
-        return true;
-      }
-
       var self = this;
       var quest = this.get('quest');
+
+      /* exclude quests which require building upgrades, otherwise tutorial arrows won't be shown after canceling jobs */
+      if (this.get('noFurtherUserInteractionNeeded') && !(quest.reward_tests.building_tests || quest.reward_tests.construction_queue_tests)) {
+        return true;
+      }
 
       if (quest && quest.reward_tests) {
         if (quest.reward_tests.building_tests) {
