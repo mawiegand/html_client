@@ -39,7 +39,6 @@ AWE.Config = (function(module) {
     "map/tiles/desert512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert512.jpg',
     "map/tiles/swamp512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp512.jpg',
 
-/* === SETTLEMENTS === */
     "map/fortress/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresssmall.png',
     "map/fortress/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortressmiddle.png',
     "map/fortress/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresslarge.png',
