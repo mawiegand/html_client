@@ -209,7 +209,7 @@ AWE.UI.Ember = (function(module) {
 
 
     isToggleOn: function(){
-      return this.getPath("alliance.auto_join_disabled");
+      return !this.getPath("alliance.auto_join_disabled");
     }.property("alliance.auto_join_disabled"),
 
     processNewDescription: function() {
