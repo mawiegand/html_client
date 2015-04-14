@@ -79,12 +79,12 @@
 
 }
 
-.sorting.victories {
-	background-image: url("<%= asset_path 'dialogs/specials/army_identifier.png' %>");
+.sorting.resources {
+	background-image: url("<%= asset_path 'dialogs/specials/resources_identifier.png' %>");
 }
 
-.sorting.victories.active {
-	background-image: url("<%= asset_path 'dialogs/specials/army_identifier_active.png' %>");
+.sorting.resources.active {
+	background-image: url("<%= asset_path 'dialogs/specials/resources_identifier_active.png' %>");
 }
 
 .sorting.fortress {

@@ -14,8 +14,8 @@
               <td class="character background-textfield-grey-xl">
                 <a class="clickable" {{action "characterPressed"}}>{{this.character_name}}</a>
               </td>
-              {{#if view.sortedByVictories}}
-                <td class="value victories background-textfield-grey-s">{{this.victories}}</td>
+              {{#if view.sortedByResource}}
+                <td class="value victories background-textfield-grey-s">{{this.resource_score}}</td>
               {{/if}}
               {{#if view.sortedByFortress}}
                 <td class="value fortresses background-textfield-grey-s">{{this.num_fortress}}</td>
@@ -26,7 +26,7 @@
             </tr>
           {{/each}}
         {{else}}
-          </tr>
+          <tr>
             <td style="text-align:center;">
               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
             </td>
@@ -40,137 +40,33 @@
   {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
   <div class="ranking-table scrolling">
     <table>
-      <tr>
-        <th class="rank2">{{t ranking.rank}}</th>
-        <th class="alliance">{{t ranking.alliance}}</th>
-        <th {{bindAttr class="sortedByFortress :clickable :fortress"}} {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
-        <th {{bindAttr class="sortedByMembers :clickable :members"}} {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
-        <th {{bindAttr class="sortedByFortressMembers :clickable :region-members"}} {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
-        <th {{bindAttr class="sortedByOverall :clickable :overall2"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th {{bindAttr class="sortedByResource :clickable :resource2"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th {{bindAttr class="sortedByKills :clickable :kills2"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th class="artifacts">{{t ranking.artifacts}}</th>
-      </tr>
       {{#if allianceRankingEntries}}
         {{#each allianceRankingEntries}}
-          <tr {{bindAttr class="this.ownEntry:bold"}}>
-            <td class="number">{{this.rank}}</td>
-            <td><a {{action "alliancePressed"}}>{{this.alliance_tag}}</a></td>
-            <td class="number">{{this.num_fortress}}</td>
-            <td class="number">{{this.num_members}}</td>
-            <td class="number">{{this.regions_per_member}}</td>
-            <td class="number">{{this.overall_score}}</td>
-            <td class="number">{{this.resource_score}}</td>
-            <td class="number">{{this.kills}}</td>
-            <td class="number">{{this.artifacts}}</td>
+          <tr {{bindAttr class="this.ownEntry"}}>
+            <td class="rank background-textfield-grey-xs">{{this.rank}}</td>
+            <td class="character background-textfield-grey-xl">
+              <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}</a>
+            </td>
+            {{#if view.sortedByResource}}
+              <td class="value victories background-textfield-grey-s">{{this.resource_score}}</td>
+            {{/if}}
+            {{#if view.sortedByFortress}}
+              <td class="value fortresses background-textfield-grey-s">{{this.num_fortress}}</td>
+            {{/if}}
+            {{#if view.sortedByOverall}}
+              <td class="value population background-textfield-grey-s">{{this.overall_score}}</td>
+            {{/if}}
           </tr>
         {{/each}}
       {{else}}
-        </tr>
-          <td colspan="9" style="text-align:center;">
-            {{#if loading}}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-            {{else}}
-              {{t ranking.noAlliances}}
-            {{/if}}
+        <tr>
+          <td style="text-align:center;">
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           </td>
         </tr>
       {{/if}}
     </table>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="fortress-ranking-view">
-  <table class="ranking-table">
-    <tr>
-      <th class="rank2">{{t ranking.rank}}</th>
-      <th {{bindAttr class="sortedByName :clickable :fortress2"}} {{action "sortByName"}}>{{t ranking.region}}</th>
-      <th class="character">{{t ranking.owner}}</th>
-      <th {{bindAttr class="sortedByTaxRate :clickable :tax"}} {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
-      <th {{bindAttr class="sortedByIncome :clickable :income"}} {{action "sortByIncome"}}>{{t ranking.income}}</th>
-      <th {{bindAttr class="sortedByDefense :clickable :defense"}} {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
-    </tr>
-    {{#if fortressRankingEntries}}
-      {{#each fortressRankingEntries}}
-        <tr {{bindAttr class="this.ownEntry:bold"}}>
-          <td class="number">{{this.rank}}</td>
-          <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
-          <td><a class="clickable" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}{{/if}}</a></td>
-          <td class="number">{{formatAsPercent this.tax_rate}}</td>
-          <td class="number">{{formatNumber this.resource_production_score maxPlaces="0"}}</td>
-          <td class="number">{{formatAsPercent this.defense_bonus}}</td>
-        </tr>
-      {{/each}}
-      {{#each emptyFortressRankingEntries}}
-        <tr><td colspan="6"></td></tr>
-      {{/each}}
-      <tr>
-        <td colspan="6" style="text-align:center;">
-          {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
-        </td>
-      </tr>
-    {{else}}
-      {{#each emptyEntriesAheadOfSpinwheel}}
-        <tr><td colspan="6"></td></tr>
-      {{/each}}
-      </tr>
-      <td colspan="6" style="text-align:center;">
-        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-      </td>
-      </tr>
-      {{#each emptyEntriesAfterSpinwheel}}
-        <tr><td colspan="6"></td></tr>
-      {{/each}}
-    {{/if}}
-  </table>
-</script>
-
-
-<script type="text/x-handlebars" data-template-name="artifact-ranking-view">
-  <table class="ranking-table">
-    <tr>
-      <th {{bindAttr class="sortedByName :clickable :name"}} {{action "sortByName"}}>{{t ranking.type}}</th>
-      <th {{bindAttr class="sortedByOwner :clickable :owner"}} {{action "sortByOwner"}}>{{t ranking.owner}}</th>
-      <th {{bindAttr class="sortedByRegion :clickable :region"}} {{action "sortByRegion"}}>{{t ranking.region}}</th>
-      <th {{bindAttr class="sortedByCapture :clickable :capture"}} {{action "sortByCapture"}}>{{t ranking.captured}}</th>
-      <th {{bindAttr class="sortedByInitiation :clickable :initiation"}} {{action "sortByInitiation"}}>{{t ranking.initiated}}</th>
-    </tr>
-    {{#if artifactRankingEntries}}
-      {{#each artifactRankingEntries}}
-        <tr {{bindAttr class="this.ownEntry:bold"}}>
-          <td><a class="clickable" {{action "artifactPressed"}}>{{local this.name}}</a></td>
-          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}{{/if}}</a></td>
-          <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
-          <td class="datetime">{{#if this.last_captured_at}}{{formatDatetime this.last_captured_at}}{{/if}}</td>
-          <td class="datetime">{{#if this.initiated}}{{formatDatetime this.last_initiated_at}}{{/if}}</td>
-        </tr>
-      {{/each}}
-      {{#each emptyArtifactRankingEntries}}
-        <tr><td colspan="5"></td></tr>
-      {{/each}}
-      <tr>
-        <td colspan="5" style="text-align:center;">
-          {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
-        </td>
-      </tr>
-    {{else}}
-      {{#each emptyEntriesAheadOfSpinwheel}}
-        <tr><td colspan="5"></td></tr>
-      {{/each}}
-      </tr>
-      <td colspan="5" style="text-align:center;">
-        {{#if loading}}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-        {{else}}
-          {{t ranking.noArtifacts}}
-        {{/if}}
-      </td>
-      </tr>
-      {{#each emptyEntriesAfterSpinwheel}}
-        <tr><td colspan="5"></td></tr>
-      {{/each}}
-    {{/if}}
-  </table>
 </script>
 
 <script type="text/x-handlebars" data-template-name="ranking-navigation-view">
@@ -181,7 +77,7 @@
   {{/unless}}
 </div>
 <div class="section sort">
-  <div {{bindAttr class="sortedByVictories:active :sorting :victories"}} {{action "sortByVictories"}}></div>
+  <div {{bindAttr class="sortedByResource:active :sorting :resources"}} {{action "sortByResource"}}></div>
   <div {{bindAttr class="sortedByFortress:active :sorting :fortress"}} {{action "sortByFortress"}}></div>
   <div {{bindAttr class="sortedByOverall:active :sorting :population"}} {{action "sortByOverall"}}></div>
 </div>
