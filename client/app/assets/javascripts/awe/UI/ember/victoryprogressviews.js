@@ -16,6 +16,7 @@ AWE.UI.Ember = (function(module) {
 
   module.AllianceVictoryView = Ember.View.extend({
     templateName: 'alliance-victory-view',
+    classNames: ['victory-view', 'scrolling'],
     
     init: function() {
       this._super();
