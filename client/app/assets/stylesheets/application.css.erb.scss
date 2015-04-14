@@ -2024,7 +2024,7 @@ input[type=range]::-ms-fill-upper {
 }
 
 /** standard dialog buttons */
-.button, .icon-button {
+.icon-button {
   display: inline-block;
   min-height: 36px;
   padding: 4px 8px 4px 4px;
@@ -2049,11 +2049,6 @@ input[type=range]::-ms-fill-upper {
 
 .icon-button {
   padding: 4px 8px 4px 48px;
-}
-
-.icon-button:hover, .button:hover {
-  border: 2px solid #777;
-  margin: -2px;
 }
 
 h1.slot-tooltip {
@@ -2681,7 +2676,7 @@ h1.slot-tooltip {
   overflow: hidden;
 }
 
-loaddialog-positioner {
+.loaddialog-positioner {
   position: relative;
   top: 0px; left: 0px;
 }
@@ -5568,15 +5563,6 @@ a.trading-carts-speedup-button:hover {
   border-top: 1px solid #ccc;
 }
 
-.ranking-table {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0px auto 0px auto;
-  width: 800px;
-}
-
 .participant-table {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -5591,146 +5577,6 @@ a.trading-carts-speedup-button:hover {
   padding: 4px 4px 4px 4px;
   font-size: 14px;
   text-shadow: none;
-}
-
-.ranking-table th {
-  background-color: #787da8;  
-  color: #fff;
-  padding: 4px 4px 4px 4px;
-  font-size: 14px;
-  text-shadow: none;
-}
-
-.ranking-table th.clickable {
-  color: #ddf;
-}
-
-.ranking-table th.clickable:hover {
-  color: #333666;
-}
-
-.ranking-table th.sortOrder {
-  color: #333666;
-}
-
-.ranking-table tr:nth-child(even) {
-  background-color: rgba(160, 160, 192, 0.15);
-}
-
-.ranking-table td {
-  height: 20px;
-  font-size: 14px;
-  padding: 2px 4px 2px 4px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.ranking-table td.number {
-  padding: 2px 8px 2px 0px;
-}
-
-.ranking-table .rank {
-  width: 42px;
-}
-
-.ranking-table .character {
-  width: 148px;
-}
-
-.ranking-table .overall {
-  width: 58px;
-}
-
-.ranking-table .resource {
-  width: 88px;
-}
-
-.ranking-table .likes {
-  width: 64px;
-}
-
-.ranking-table .victories {
-  width: 42px;
-}
-
-.ranking-table .victory-ratio {
-  width: 104px;
-}
-
-.ranking-table .kills {
-  width: 106px;
-}
-
-.ranking-table .experience {
-  width: 74px;
-}
-
-.ranking-table .rank2 {
-  width: 48px;
-}
-
-.ranking-table .alliance {
-  width: 72px;
-}
-
-.ranking-table .fortress {
-  width: 80px;
-}
-
-.ranking-table .overall2 {
-  width: 76px;
-}
-
-.ranking-table .resource2 {
-  width: 98px;
-}
-
-.ranking-table .kills2 {
-  width: 112px;
-}
-
-.ranking-table .members {
-  width: 80px;
-}
-
-.ranking-table .region-members {
-  width: 78px;
-}
-
-.ranking-table .tax {
-  width: 84px;
-}
-
-.ranking-table .income {
-  width: 130px;
-}
-
-.ranking-table .defense {
-  width: 170px;
-}
-
-.ranking-table .artifacts {
-  width: 94px;
-}
-
-.ranking-table .artifact {
-  width: 94px;
-}
-
-.ranking-table .owner {
-  width: 170px;
-}
-
-.ranking-table .region {
-  width: 170px;
-}
-
-.ranking-table .capture {
-  width: 170px;
-}
-
-.ranking-table .initiation {
-  width: 170px;
 }
 
 .participant-table td {
@@ -6162,32 +6008,6 @@ div.dom-quest-container div.tutorial-dialog {
 #army-create-form .buttons, #army-change-form .buttons {
   margin-top: 24px;
   text-align: right;
-}
-
-#army-create-form .button {
-  border: solid 2px #F94;
-  margin: -2px;
-  font-weight: bold;
-  color: #F94;
-  padding-left: 20px;
-  padding-right: 20px;
-  float: none;
-  background-color: #FFF;  
-}
-
-#army-change-form .button {
-  border: solid 2px #777;
-  margin: -2px;
-  font-weight: bold;
-  color: #777;
-  padding-left: 20px;
-  padding-right: 20px;
-  float: none;
-}
-
-#army-create-form .button:hover, #army-change-form .button:hover {
-  border-width: 4px;
-  margin: -4px;
 }
 
 .army-list-view {
@@ -6706,14 +6526,8 @@ div.dom-quest-container div.tutorial-dialog {
   }
 }
 
-.annotation-button.red {}
+.annotation-button.red {
 
-.button_green_high
-{
-  cursor: pointer;
-  background:url("<%= asset_path 'dialogs/buttons/button_green_high.png' %>") no-repeat center center;
-  width: 184px;
-  height: 200px;
 }
 
 .item_speedup_building
@@ -6723,10 +6537,28 @@ div.dom-quest-container div.tutorial-dialog {
   background: url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>") no-repeat center center;
 }
 
+.disable-text-selection {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.button {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
 @import 'font_face';
 @import 'slots';
 @import 'units ';
 @import 'buildings';
+@import 'images';
 
 @import 'welcome_dialog';
 @import 'alliance_dialog';
@@ -6747,6 +6579,8 @@ div.dom-quest-container div.tutorial-dialog {
 @import 'upgrade_convert_dialog';
 @import 'profile_self_dialog';
 @import 'quest_dialogs';
+@import 'ranking_dialog';
+
 @import 'ptero';
 @import 'retentionegg';
 @import 'fire';

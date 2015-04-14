@@ -1,0 +1,112 @@
+.ranking-table {
+	width: 600px;
+	height: 275px;
+	margin-top: 10px;
+	table {
+		width: 98%;
+		margin-left: 10px;
+		tr {
+			td {
+				color: white;
+				line-height: 45px;
+				font-size: 24px;
+			}
+			.rank {
+				display: inline-block;
+				text-align: center;
+				margin-left: 10px
+			}
+			.character {
+				display: inline-block;
+				padding-left: 10px;
+				background-size: 100% 100%;
+				margin-left: 10px;
+				width: 356px;
+			}
+			.value {
+				display: inline-block;
+				text-align: center;
+				margin-left: 10px;
+				background-size: 100% 100%;
+				width: 132px;
+				float: right;
+			}
+		}
+		.own-entry {
+			color: black;
+		}
+		.activity-indicator-small {
+			position: relative;
+			top: 0;
+			left: 0;
+		}
+	}
+}
+
+.ranking-navigation {
+	width: 96%;
+	height: 72px;
+	margin-left: 10px;
+	.section {
+
+	}
+	.previous {
+		float: left;
+		width: 30%;
+		margin-top: 15px;
+	}
+	.sort {
+		float: left;
+		width: 40%;
+	}
+	.next {
+		float: right;
+		width: 30%;
+		margin-top: 15px;
+		.sorting-arrow {
+			float: right;
+		}
+	}
+}
+
+.sorting {
+	width: 78px;
+	height: 78px;
+	margin-left: 2px;
+	float: left;
+	background-position: center center;
+	background-repeat: no-repeat;
+
+}
+
+.sorting.victories {
+	background-image: url("<%= asset_path 'dialogs/specials/army_identifier.png' %>");
+}
+
+.sorting.victories.active {
+	background-image: url("<%= asset_path 'dialogs/specials/army_identifier_active.png' %>");
+}
+
+.sorting.fortress {
+	background-image: url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>");
+}
+
+.sorting.fortress.active {
+	background-image: url("<%= asset_path 'dialogs/specials/fortress_identifier_active.png' %>");
+}
+
+.sorting.population {
+	background-image: url("<%= asset_path 'dialogs/specials/people_identifier.png' %>");
+}
+
+.sorting.population.active {
+	background-image: url("<%= asset_path 'dialogs/specials/people_identifier_active.png' %>");
+}
+
+.sorting-arrow {
+	float: left;
+	color: white;
+	font-size: 38px;
+	text-align: center;
+	margin-right: 10px;
+}

@@ -9,32 +9,17 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-  module.RankingDialog = Ember.View.extend({
-    templateName: 'ranking-view',
-    
-    onClose:   null,
-    
+  module.RankingDialog = module.PopUpDialog.extend({
+    templateName: 'ranking-view',    
     sortOrder: null,
     
     init: function() {
       AWE.GS.RankingInfoManager.updateRankingInfo();
       this._super();
     },
-    
-    closePressed: function() {
-      $('#layers').css('overflow', 'visible');
-      this.destroy();
-    },
-    
-    destroy: function() {
-      if (this.onClose) {
-        this.onClose(this);
-      }
-      this._super();      
-    },
   });
 
-  module.RankingTabView = module.TabView.extend({
+  module.RankingTabView = module.TabViewNew.extend({
     
     init: function() {
      
@@ -43,26 +28,19 @@ AWE.UI.Ember = (function(module) {
           key:   "tab1",
           title: AWE.I18n.lookupTranslation('ranking.characters'), 
           view:  AWE.UI.Ember.CharacterRankingView.extend(),
+          buttonClass: "left-menu-button"
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         {
           key:   "tab2",
           title: AWE.I18n.lookupTranslation('ranking.alliances'), 
           view:  AWE.UI.Ember.AllianceRankingView.extend(),
+          buttonClass: "middle-menu-button"
         },
         {
           key:   "tab3",
-          title: AWE.I18n.lookupTranslation('ranking.fortresses'), 
-          view:  AWE.UI.Ember.FortressRankingView.extend(),
-        },
-        {
-          key:   "tab4",
-          title: AWE.I18n.lookupTranslation('ranking.artifacts'),
-          view:  AWE.UI.Ember.ArtifactRankingView.extend(),
-        },
-        {
-          key:   "tab5",
           title: AWE.I18n.lookupTranslation('ranking.victoryProgress'),
           view:  AWE.UI.Ember.VictoryProgressRankingView.extend(),
+          buttonClass: "right-menu-button"
         }
       ]);
       
@@ -86,28 +64,12 @@ AWE.UI.Ember = (function(module) {
       this.gotoPage(1);
     },
     
-    gotoSecondPage: function() {
-      this.gotoPage(2);
-    },
-    
-    gotoPreviousPreviousPage: function() {
-      this.gotoPage(this.get('currentPage') - 2);
-    },
-    
     gotoPreviousPage: function() {
       this.gotoPage(this.get('currentPage') - 1);
     },
     
     gotoNextPage: function() {
       this.gotoPage(this.get('currentPage') + 1);
-    },
-    
-    gotoNextNextPage: function() {
-      this.gotoPage(this.get('currentPage') + 2);
-    },
-    
-    gotoMaxPreviousPage: function() {
-      this.gotoPage(this.get('maxPage') - 1);
     },
     
     gotoMaxPage: function() {
@@ -136,12 +98,6 @@ AWE.UI.Ember = (function(module) {
       }     
       return false; // prevent default behavior
     },
-    
-    exchangePressed: function(evt) {
-      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
-      WACKADOO.presentModalDialog(dialog);
-      return false; // prevent default behavior
-    },
 
     alliancePressed: function(evt) {
       var entry = evt.context;
@@ -158,10 +114,8 @@ AWE.UI.Ember = (function(module) {
     templateName: 'character-ranking-view',
     
     init: function() {
-      if (AWE.GS.game.get('characterRanking') == null) {
-        this.set('sortOrder', 'overall');
-      }
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking();
+      this.set('sortOrder', 'victories');
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'victories');
       this._super();
     },
     
@@ -223,26 +177,6 @@ AWE.UI.Ember = (function(module) {
       this.set('sortOrder', 'overall');
     },
     
-    sortedByResource: function() {
-      return this.get('sortOrder') === 'resource' ? 'sortOrder' : '';
-    }.property('sortOrder').cacheable(),
-    
-    sortByResource: function() {
-      AWE.GS.game.set('characterRanking', null);
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'resource');
-      this.set('sortOrder', 'resource');
-    },
-    
-    sortedByLikes: function() {
-      return this.get('sortOrder') === 'likes' ? 'sortOrder' : '';
-    }.property('sortOrder').cacheable(),
-    
-    sortByLikes: function() {
-      AWE.GS.game.set('characterRanking', null);
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'likes');
-      this.set('sortOrder', 'likes');
-    },
-    
     sortedByVictories: function() {
       return this.get('sortOrder') === 'victories' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
@@ -253,14 +187,14 @@ AWE.UI.Ember = (function(module) {
       this.set('sortOrder', 'victories');
     },
     
-    sortedByVictoryRatio: function() {
-      return this.get('sortOrder') === 'victory_ratio' ? 'sortOrder' : '';
+    sortedByFortress: function() {
+      return this.get('sortOrder') === 'fortress' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
-    sortByVictoryRatio: function() {
+    sortByFortress: function() {
       AWE.GS.game.set('characterRanking', null);
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'victory_ratio');
-      this.set('sortOrder', 'victory_ratio');
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'fortress');
+      this.set('sortOrder', 'fortress');
     },
     
     sortedByKills: function() {
@@ -743,6 +677,7 @@ AWE.UI.Ember = (function(module) {
 
   module.RankingNavigationView = Ember.View.extend({
     templateName: 'ranking-navigation-view',
+    classNames: ['ranking-navigation'],
     
     previousPreviousPage: function() {
       return this.get('currentPage') - 2; 
@@ -768,45 +703,37 @@ AWE.UI.Ember = (function(module) {
     
     maxPage: null,
     
-    pageGreater1: function() {
-      return this.get('currentPage') > 1; 
+    isFirstPage: function() {
+      return this.get('currentPage') === 1; 
     }.property('currentPage').cacheable(),
     
-    pageGreater2: function() {
-      return this.get('currentPage') > 2; 
-    }.property('currentPage').cacheable(),
-    
-    pageGreater3: function() {
-      return this.get('currentPage') > 3; 
-    }.property('currentPage').cacheable(),
-    
-    pageGreater4: function() {
-      return this.get('currentPage') > 4; 
-    }.property('currentPage').cacheable(),
-    
-    pageGreater5: function() {
-      return this.get('currentPage') > 5; 
-    }.property('currentPage').cacheable(),
-    
-    pageLessMax1: function() {
-      return this.get('currentPage') < this.get('maxPage'); 
+    isLastPage: function() {
+      return this.get('currentPage') === this.get('maxPage'); 
     }.property('currentPage', 'maxPage').cacheable(),
-    
-    pageLessMax2: function() {
-      return this.get('currentPage') < this.get('maxPage') - 1; 
-    }.property('currentPage', 'maxPage').cacheable(),
-    
-    pageLessMax3: function() {
-      return this.get('currentPage') < this.get('maxPage') - 2; 
-    }.property('currentPage', 'maxPage').cacheable(),
-    
-    pageLessMax4: function() {
-      return this.get('currentPage') < this.get('maxPage') - 3; 
-    }.property('currentPage', 'maxPage').cacheable(),
-    
-    pageLessMax5: function() {
-      return this.get('currentPage') < this.get('maxPage') - 4; 
-    }.property('currentPage', 'maxPage').cacheable(),
+
+    sortByVictories: function() {
+      this.get("parentView").sortByVictories();
+    },
+
+    sortByFortress: function() {
+      this.get("parentView").sortByFortress();
+    },
+
+    sortByOverall: function() {
+      this.get("parentView").sortByOverall();
+    },
+
+    sortedByVictories: function() {
+      return this.getPath("parentView.sortedByVictories");
+    }.property("parentView.sortedByVictories"),
+
+    sortedByFortress: function() {
+      return this.getPath("parentView.sortedByFortress");
+    }.property("parentView.sortedByFortress"),
+
+    sortedByOverall: function() {
+      return this.getPath("parentView.sortedByOverall");
+    }.property("parentView.sortedByOverall"),
   });
   
   module.VictoryProgressRankingView = Ember.View.extend({
