@@ -50,7 +50,7 @@ AWE.UI.Ember = (function(module) {
       this.set('tabViews', [
         {
           key:   "tab1",
-          title: AWE.I18n.lookupTranslation('ranking.characters'), 
+          title: AWE.I18n.lookupTranslation('alliance.progress.dominion'), 
           view:  AWE.UI.Ember.AllianceVictoryProgressDominationView.extend({
             allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
           }),
@@ -58,7 +58,7 @@ AWE.UI.Ember = (function(module) {
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         {
           key:   "tab2",
-          title: AWE.I18n.lookupTranslation('ranking.alliances'), 
+          title: AWE.I18n.lookupTranslation('alliance.progress.artifact'), 
           view:  AWE.UI.Ember.AllianceVictoryProgressArtifactView.extend({
             allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
           }),

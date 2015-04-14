@@ -47,3 +47,19 @@
   width: 184px;
   height: 200px;
 }
+
+.progress-domination-green {
+	background-image: url("<%= asset_path 'dialogs/progressbars/progress_domination_green.png' %>");
+  background-position: center center;
+	background-repeat: no-repeat;
+  width: 560px;
+  height: 48px;
+}
+
+.progress-domination-grey {
+	background-image: url("<%= asset_path 'dialogs/progressbars/progress_domination_grey.png' %>");
+  background-position: center center;
+	background-repeat: no-repeat;
+  width: 560px;
+  height: 48px;
+}

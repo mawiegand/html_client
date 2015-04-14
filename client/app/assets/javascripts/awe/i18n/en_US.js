@@ -528,6 +528,8 @@ AWE.I18n.en_US = function(module) {
         victoryAfter:'Victory After',
         won: "Winner",
         days:'Days',
+        artifact: "Artifact",
+        dominion: "Dominion",
       },
 
       error:{

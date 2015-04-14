@@ -115,6 +115,39 @@
 	height: 295px;
 	width: 96%;
 	margin-left: 10px;
+	.progress-bar {
+		position: relative;
+		margin-top: 70px;
+		margin-bottom: 80px;
+		.marker {
+			position: absolute;
+			top: 0;
+			width: 100px;
+			height: 34px;
+			margin-top: -30px;
+			font-size: 10px;
+		}
+		.start {
+			border-left: 3px solid $font-brown;
+			margin-left: -1px;
+			padding-left: 3px;
+			left: 5px;
+		}
+		.fullfilled {
+			border-right: 3px solid $font-brown;
+			margin-right: -1px;
+			padding-right: 3px;
+			right: 25%;
+			text-align: right;
+		}
+		.held {
+			border-right: 3px solid $font-brown;
+			margin-right: -1px;
+			padding-right: 3px;
+			right: 5px;
+			text-align: right;
+		}
+	}
 }
 
 .victory-subtabs {
