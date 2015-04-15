@@ -536,6 +536,8 @@ AWE.I18n.de_DE = function(module) {
         victoryAfter: 'Sieg nach',
         won: "Gewonnen",
         days: 'Tagen',
+        artifact: "Artefakt",
+        dominion: "Herrschaft",
       },
 
       error: {

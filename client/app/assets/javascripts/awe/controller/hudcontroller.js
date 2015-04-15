@@ -538,7 +538,7 @@ AWE.Controller = (function(module) {
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
-      this.applicationController.presentModalDialog(dialog);      
+      WACKADOO.presentModalDialog(dialog);      
     };
         
     that.shouldMarkMapButton = function() {

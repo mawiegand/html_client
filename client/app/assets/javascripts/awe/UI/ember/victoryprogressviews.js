@@ -42,11 +42,39 @@ AWE.UI.Ember = (function(module) {
     alliance:     null,
     controller:   null,
   });
+
+  module.AllianceVictoryTabView = module.TabViewNew.extend({
+    classNames: ['victory-subtabs'],
+    init: function() {
+     
+      this.set('tabViews', [
+        {
+          key:   "tab1",
+          title: AWE.I18n.lookupTranslation('alliance.progress.dominion'), 
+          view:  AWE.UI.Ember.AllianceVictoryProgressDominationView.extend({
+            allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
+          }),
+          buttonClass: "left-menu-button-subtab"
+        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+        {
+          key:   "tab2",
+          title: AWE.I18n.lookupTranslation('alliance.progress.artifact'), 
+          view:  AWE.UI.Ember.AllianceVictoryProgressArtifactView.extend({
+            allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
+          }),
+          buttonClass: "right-menu-button-subtab"
+        },
+      ]);
+      
+      this._super();
+    },
+  });
   
   module.AllianceVictoryProgressView = Ember.View.extend({
     alliance:     null,
     controller:   null,
     victoryType:  null,
+    classNames: ['victory-view', 'scrolling'],
 
     leaderProgress: function() {
       var type = this.getPath('victoryType.symbolic_id');

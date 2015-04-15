@@ -3,35 +3,31 @@
     <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime victoryGainedAt}} durch einen {{local victoryType.name}} gewonnen.</p>
   {{/if}}
   <div class="alliance-victory">
-    {{view AWE.UI.Ember.AllianceVictoryProgressDominationView allianceBinding="alliance"}}
-  </div>
-  <div class="alliance-victory">
-    {{view AWE.UI.Ember.AllianceVictoryProgressArtifactView allianceBinding="alliance"}}
+    {{view AWE.UI.Ember.AllianceVictoryTabView allianceBinding="alliance"}}
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-domination-view">
   <div class="alliance-victory-progress-domination">
-    <h3>{{ local victoryType.name }}</h3>
     <p>{{ local victoryType.description }}</p>
     <p>{{t alliance.progress.requiredRegions}}: {{requiredRegions}} {{t general.of}} {{AWE.GS.game.roundInfo.regions_count}} ({{formatAsPercent requiredRegionsRatio}}), {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
   </div>
   
-  <div style="width:100%; height: 20px; position: relative; background: #eef; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
-    <div style="position:absolute; top: 0; left: 0; width: 100px; height: 50px; margin-top: -30px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
-      <div style="height: 30px; font-size: 14px;">{{t general.start}}</div>
-      <div style="font-size: 14px;">0</div>
+  <div class="progress-bar progress-domination-grey">
+    <div class="marker start">
+      <div>{{t general.start}}</div>
+      <div>0</div>
     </div>
-    <div style="position:absolute; top: 0; right: 25%; width: 100px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
-      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaFulfilled}}</div>
-      <div style="font-size: 14px; text-align: right;">{{requiredRegions}}</div>
+    <div class="marker fullfilled">
+      <div>{{t alliance.progress.criteriaFulfilled}}</div>
+      <div>{{requiredRegions}}</div>
     </div>
-    <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
-      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
+    <div class="marker held">
+      <div>{{t alliance.progress.criteriaHeld}}</div>
     {{#if leaderProgress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
+      <div>{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
     {{else}}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
+      <div>{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
     </div>
     {{#if alliance}}
@@ -61,26 +57,25 @@
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-artifact-view">
   <div class="alliance-victory-progress-artifacts">
-    <h3>{{ local victoryType.name }}</h3>
     <p>{{ local victoryType.description }}</p>
     <p>{{t alliance.progress.requiredArtifacts}}: {{requiredArtifacts}}, {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
   </div>
 
-  <div style="width:100%; height: 20px; position: relative; background: #eef; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
-    <div style="position:absolute; top: 0; left: 0; width: 100px; height: 50px; margin-top: -30px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
-      <div style="height: 30px; font-size: 14px;">{{t general.start}}</div>
-      <div style="font-size: 14px;">0</div>
+  <div class="progress-bar progress-domination-grey">
+    <div class="marker start">
+      <div>{{t general.start}}</div>
+      <div>0</div>
     </div>
-    <div style="position:absolute; top: 0; right: 25%; width: 100px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
-      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaFulfilled}}</div>
-      <div style="font-size: 14px; text-align: right;">{{requiredArtifacts}}</div>
+    <div class="marker fullfilled">
+      <div>{{t alliance.progress.criteriaFulfilled}}</div>
+      <div>{{requiredArtifacts}}</div>
     </div>
-    <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
-      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
+    <div class="marker held">
+      <div>{{t alliance.progress.criteriaHeld}}</div>
     {{#if leaderProgress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
+      <div>{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
     {{else}}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
+      <div>{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
     </div>
     {{#if alliance}}
