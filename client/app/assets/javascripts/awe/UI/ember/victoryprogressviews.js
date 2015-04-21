@@ -16,6 +16,8 @@ AWE.UI.Ember = (function(module) {
 
   module.AllianceVictoryView = Ember.View.extend({
     templateName: 'alliance-victory-view',
+    alliance_id: null,
+    alliance: null,
     
     init: function() {
       this._super();
@@ -27,10 +29,13 @@ AWE.UI.Ember = (function(module) {
     },
 
     allianceObserver: function() {
-      if (this.getPath('alliance.id') != null) {
-        AWE.GS.VictoryProgressManager.updateProgressOfAlliance(this.getPath('alliance.id'));
+      var self = this;
+      if (this.getPath('alliance_id') != null) {
+        AWE.GS.AllianceManager.updateAlliance(this.getPath('alliance_id'), null, function(alliance){
+          self.set('alliance', alliance);
+        });
       }
-    }.observes('alliance'),
+    }.observes('alliance_id'),
 
     victoryType: function() {
       var rules = AWE.GS.RulesManager.getRules();
@@ -46,13 +51,13 @@ AWE.UI.Ember = (function(module) {
   module.AllianceVictoryTabView = module.TabViewNew.extend({
     classNames: ['victory-subtabs'],
     init: function() {
-     
+      var self = this;
       this.set('tabViews', [
         {
           key:   "tab1",
           title: AWE.I18n.lookupTranslation('alliance.progress.dominion'), 
           view:  AWE.UI.Ember.AllianceVictoryProgressDominationView.extend({
-            allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
+            allianceBinding: "parentview.parentView.alliance"
           }),
           buttonClass: "left-menu-button-subtab"
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
@@ -60,7 +65,7 @@ AWE.UI.Ember = (function(module) {
           key:   "tab2",
           title: AWE.I18n.lookupTranslation('alliance.progress.artifact'), 
           view:  AWE.UI.Ember.AllianceVictoryProgressArtifactView.extend({
-            allianceBinding: this.getPath("parentView.parentView.parentView.alliance")
+            allianceBinding: "parentview.parentView.alliance"
           }),
           buttonClass: "right-menu-button-subtab"
         },
@@ -181,12 +186,23 @@ AWE.UI.Ember = (function(module) {
 
   module.AllianceVictoryProgressOtherAllianceView = Ember.View.extend({
     templateName: "alliance-victory-progress-other-alliance-view",
-
+    classNames: ["value"],
     nr: null,
 
     progress: function() {
       var type = this.getPath('parentView.victoryType.symbolic_id');
       var nr = this.get('nr');
+      if(nr === "own") {
+        if(!AWE.GS.AllianceManager.getAlliance(AWE.GS.CharacterManager.currentCharacter.alliance_id).victoryProgresses)
+        {
+          AWE.GS.VictoryProgressManager.updateProgressOfAlliance(AWE.GS.CharacterManager.currentCharacter.alliance_id, function(progress) {
+            return progress;
+          });
+        }
+        else {
+          return AWE.GS.AllianceManager.getAlliance(AWE.GS.CharacterManager.currentCharacter.alliance_id).victoryProgresses[this.getPath('parentView.victoryType.type_id')];
+        }
+      }
       if (AWE.GS.game.victoryProgressLeaders != null) {
         return AWE.GS.game.victoryProgressLeaders[type][nr];
       }
@@ -196,36 +212,36 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.game.victoryProgressLeaders', 'parentView.victoryType', 'nr').cacheable(),
 
     marginTop: function() {
-      return (this.getPath('progress.pos') - 1) * 12;
+      return (this.getPath('progress.pos') - 1) * 12 + 12;
     }.property('progress.pos').cacheable(),
     
     height: function() {
-      return this.getPath('progress.pos') * 12 + 1;
+      return this.getPath('progress.pos') * 12 + 12;
     }.property('progress.pos').cacheable(),
     
     position: function() {
       if (this.getPath('progress.fulfillmentRatio') < 1) {
-        return Math.floor(this.getPath('progress.fulfillmentRatio') * 75) + '%';
+        return Math.floor(this.getPath('progress.fulfillmentRatio') * 75) + 0.7 + '%';
       }
       else {
         return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';
       }
     }.property('progress', 'progress.fulfillmentRatio', 'progress.fulfillmentDurationRatio').cacheable(),
-    
+
     styleFulfilled1: function() {
-      return "position:absolute; top: 20px; right: " + this.get('position') + "; width: 200px; height: " + this.get('height') + "px; margin-top: 0; border-right: 1px solid #888; margin-right: -1px; text-align:right; font-size: 11px; color: #888;";
+      return "right: " + this.get('position') + "; height: " + this.get('height') + "px;";
     }.property('position', 'height').cacheable(),
     
     styleNotFulfilled1: function() {
-      return "position:absolute; top: 20px; left: " + this.get('position') + "; width: 200px; height: " + this.get('height') + "px; margin-top: 0; border-left: 1px solid #888; margin-left: -1px; font-size: 11px; color: #888;";
+      return "left: " + this.get('position') + "; height: " + this.get('height') + "px;";
     }.property('position', 'height').cacheable(),
     
     styleFulfilled2: function() {
-      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-right: 3px;";
+      return "margin-top: " + this.get('marginTop') + "px;";
     }.property('marginTop').cacheable(),
     
     styleNotFulfilled2: function() {
-      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-left: 3px;";
+      return "margin-top: " + this.get('marginTop') + "px;";
     }.property('marginTop').cacheable(),
   });
   
