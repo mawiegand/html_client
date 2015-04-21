@@ -374,6 +374,10 @@ AWE.UI.Ember = (function(module) {
   
   module.VictoryProgressRankingView = Ember.View.extend({
     templateName: 'victory-progress-ranking-view',
+
+    allianceId: function() {
+      return AWE.GS.game.currentCharacter.alliance_id;
+    }.property(),
   });
     
   return module;  

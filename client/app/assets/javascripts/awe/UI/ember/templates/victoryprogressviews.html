@@ -14,10 +14,6 @@
   </div>
   
   <div class="progress-bar progress-domination-grey">
-    <div class="marker start">
-      <div>{{t general.start}}</div>
-      <div>0</div>
-    </div>
     <div class="marker fullfilled">
       <div>{{t alliance.progress.criteriaFulfilled}}</div>
       <div>{{requiredRegions}}</div>
@@ -52,6 +48,7 @@
     {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView nr="first"}}
     {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView nr="second"}}
     {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView nr="third"}}
+
   </div>
 </script>
 
@@ -62,10 +59,6 @@
   </div>
 
   <div class="progress-bar progress-domination-grey">
-    <div class="marker start">
-      <div>{{t general.start}}</div>
-      <div>0</div>
-    </div>
     <div class="marker fullfilled">
       <div>{{t alliance.progress.criteriaFulfilled}}</div>
       <div>{{requiredArtifacts}}</div>
@@ -106,8 +99,8 @@
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-other-alliance-view">
   {{#if progress}}
     {{#if progress.fulfilled}}
-    <div {{bindAttr style="styleFulfilled1" }}>
-      <div {{bindAttr style="styleFulfilled2" }}>
+    <div {{bindAttr style="styleFulfilled1"}} class="fulfilled">
+      <div {{bindAttr style="styleFulfilled2"}}>
         {{#if progress.victory_gained }}
           {{progress.pos}}. {{progress.alliance_tag}} ({{t alliance.progress.won}})
         {{else}}
@@ -116,8 +109,8 @@
       </div>
     </div>
     {{else}}
-    <div {{bindAttr style="styleNotFulfilled1" }}>
-      <div {{bindAttr style="styleNotFulfilled2" }}>
+    <div {{bindAttr style="styleNotFulfilled1"}} class="notFulfilled">
+      <div {{bindAttr style="styleNotFulfilled2"}}>
         {{progress.pos}}. {{progress.alliance_tag}} ({{progress.fulfillment_count}})
       </div>
     </div>
