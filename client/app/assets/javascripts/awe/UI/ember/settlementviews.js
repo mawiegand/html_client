@@ -46,11 +46,17 @@ AWE.UI.Ember = (function(module) {
         });
         if(this.get('unlockedSlots') !== -1 && AWE.GS.CharacterManager.getCurrentCharacter().has_limited_grid)
         {
+          var unlockOrder = AWE.Config.GRID_UNLOCK_ORDER[this.getPath('settlement.type.symbolic_id')];
           var filteredCollection = [];
-          filteredCollection[0] = collection[0]; //TODO: Remove wall slot
-          for(var i = 1; i <= this.get('unlockedSlots'); i++)
+          var unlockedSlots = this.get('unlockedSlots');
+          if(this.getPath('settlement.type.symbolic_id') === "settlement_fortress")
           {
-            filteredCollection[i] = collection[AWE.Config.GRID_UNLOCK_ORDER[i-1]];
+            unlockedSlots++;
+          }
+          filteredCollection[0] = collection[0]; //TODO: Remove wall slot
+          for(var i = 1; i <= unlockedSlots; i++)
+          {
+            filteredCollection[i] = collection[unlockOrder[i-1]];
           }
           return filteredCollection;
         }
