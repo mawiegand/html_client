@@ -891,6 +891,31 @@ AWE.Controller = (function(module) {
       });
     };
 
+    that.standardAssignmentFinishPressed = function(assignment, callback) {
+      var action = AWE.Action.Assignment.createRedeemStandardAssignmentRewardAction(assignment.getId());
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.StandardAssignmentManager.updateStandardAssignment(assignment.getId(), null, function() {
+            if (callback) {
+              callback();
+            }
+          });
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+            message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+            okText:              AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+      });
+    };
+
     that.specialAssignmentStartPressed = function(assignment, callback) {
       try { //we need this to stop this function on errors
         var pool = AWE.GS.ResourcePoolManager.getResourcePool();
