@@ -79,6 +79,41 @@ AWE.Action.Assignment = (function(module) {
     return that;
 
   };
+
+  module.createRedeemStandardAssignmentRewardAction = function(standardAssignmentId, my) {
+
+    // private attributes and methods //////////////////////////////////////
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.standardAssignmentId = standardAssignmentId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        redeem_standard_assignment: {
+          standard_assignment_id:  my.standardAssignmentId,
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'assignment/redeem_standard_assignment_reward_actions';
+    };
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
+
+    that.postProcess = function(statusCode, xhr) {
+    };
+
+    return that;
+
+  };
   
   module.createStartSpecialAssignmentAction = function(typeId, my) {
 
