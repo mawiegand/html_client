@@ -94,7 +94,7 @@ AWE.Action.Assignment = (function(module) {
 
     that.getRequestBody = function() {
       return {
-        finish_standard_assignment: {
+        redeem_standard_assignment: {
           standard_assignment_id:  my.standardAssignmentId,
         }
       };

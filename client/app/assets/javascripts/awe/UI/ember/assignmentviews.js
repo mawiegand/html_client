@@ -261,6 +261,10 @@ AWE.UI.Ember = function(module) {
       }
       return rewardResult;
     }.property('assignmentType').cacheable(),
+
+    redeemRewards: function() {
+      WACKADOO.presentScreenController.standardAssignmentFinishPressed(this.get('assignment'));
+    }
   });
 
   /**
