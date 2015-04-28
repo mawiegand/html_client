@@ -219,11 +219,17 @@
         </div>
         <div class="cell-50 row-50">
         {{#if isActive }}
-              <div class="cell training-background-job assignment-progress" >
+        {{#if isFinished}}
+            <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
+              {{t settlement.assignment.collect}}
+            </div>
+            {{else}}
+            <div class="cell training-background-job assignment-progress" >
                     <div class="training-bar-job" {{bindAttr style="progressBarWidth"}}>
                       <div class="progress-value progress-value-assignment-progress">{{formatDuration timeRemaining}}</div>
                     </div>
                 </div>
+          {{/if}}
               {{#unless isHalved }}
                 {{#if halving }}
                 {{else}}

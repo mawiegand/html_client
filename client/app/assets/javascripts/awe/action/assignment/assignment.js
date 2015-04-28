@@ -184,6 +184,41 @@ AWE.Action.Assignment = (function(module) {
     return that;
 
   };
+
+  module.createRedeemSpecialAssignmentRewardAction = function(specialAssignmentId, my) {
+
+    // private attributes and methods //////////////////////////////////////
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.specialAssignmentId = specialAssignmentId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        redeem_standard_assignment: {
+          special_assignment_id:  my.specialAssignmentId,
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'assignment/redeem_special_assignment_reward_actions';
+    };
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
+
+    that.postProcess = function(statusCode, xhr) {
+    };
+
+    return that;
+
+  };
   
   return module;
   
