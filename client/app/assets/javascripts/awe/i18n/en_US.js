@@ -940,6 +940,7 @@ AWE.I18n.en_US = function(module) {
         noneAvailable: "There are no assignments currently available.",
         noneSpecialAvailable: "There is no special assignment currently available.",
         cancelText: "Ok",
+        collect: "Collect",
         error: {
           conflict: {
             header: "Error!",

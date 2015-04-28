@@ -75,6 +75,11 @@ AWE.UI.Ember = function(module) {
       return this.get('assignment') && this.getPath('assignment.halved_at') != null;
     }.property('assignment.halved_at').cacheable(),
 
+    isFinished: function() {
+      debugger
+      return this.get('assignment') && this.getPath('assignment.finished');
+    }.property('assignment.finished'),
+
     timer: null,
 
     collapsed: true,
@@ -261,6 +266,10 @@ AWE.UI.Ember = function(module) {
       }
       return rewardResult;
     }.property('assignmentType').cacheable(),
+
+    redeemRewards: function() {
+      WACKADOO.presentScreenController.standardAssignmentFinishPressed(this.get('assignment'));
+    }
   });
 
   /**

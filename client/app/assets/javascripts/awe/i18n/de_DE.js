@@ -964,6 +964,7 @@ AWE.I18n.de_DE = function(module) {
         noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
         noneSpecialAvailable: "Zur Zeit ist kein Spezialauftrag verfügbar.",
         cancelText: "Ok",
+        collect: "Abholen",
         error: {
           conflict: {
             header: "Fehler!",
