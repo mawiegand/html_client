@@ -198,7 +198,7 @@
 
 .alliance-diplomacy-container {
   margin-left: 15px;
-  pointer-events: none;
+  height: 358px;
 }
 
 .alliance-diplomacy-container h3 {
@@ -223,6 +223,8 @@
 .alliance-ultimatum, .alliance-war, .alliance-capitulation {
   display: block;
   float: left;
+  
+  pointer-events: none;
 }
 
 .public-information{
@@ -300,7 +302,6 @@
 
 .alliance-war .alliance-ultimatum-button {
   margin-top: -8px;
-  position: absolute;
 }
 
 .alliance-diplomacy-title {

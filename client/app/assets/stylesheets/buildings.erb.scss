@@ -619,6 +619,7 @@
 
 .construction-area.front {
   background: url('<%= asset_path("buildings/base/under_construction/front/under_construction_front.png") %>') no-repeat center center;
+  z-index: 3;
 }
 
 
