@@ -136,6 +136,9 @@ AWE.UI.Ember = (function(module) {
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
+      if(progression === 100) {
+
+      }
       return Math.ceil(progression * 100);
     }.property('assignment', 'timeRemaining').cacheable(),
 
@@ -149,19 +152,7 @@ AWE.UI.Ember = (function(module) {
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);
-     /* var endedAt = this.getPath('assignment.ended_at');
-      if (!endedAt) {
-        clearTimeout(this._timer);
-        return ;
-      }
-      var finish = Date.parseISODate(endedAt);
-      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
-      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
-      remaining = remaining < 0 ? 0 : remaining;
-      this.set('timeRemaining', remaining);
-      self = this;
-      this._timer = setTimeout(function(){ self.calcTimeRemaining(); }, 1000)*/
-    },//.observes('assignment.ended_at'),
+    },
 
     startTimer: function() {
       var timer = this.get('timer');
@@ -222,6 +213,10 @@ AWE.UI.Ember = (function(module) {
       return this.get('assignment') && this.getPath('assignment.halved_at') != null;
     }.property('assignment.halved_at'),
 
+    isFinished: function() {
+      return this.get('assignment') && this.getPath('assignment.finished');
+    }.property('assignment.finished'),
+
     currentAssignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentAssignmentTypes();
@@ -248,6 +243,10 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       this.get('controller').standardAssignmentSpeedupPressed(this.get('assignment'), function() {
       });
+    },
+
+    redeemRewards: function() {
+      WACKADOO.presentScreenController.standardAssignmentFinishPressed(this.get('assignment'));
     },
 
   });

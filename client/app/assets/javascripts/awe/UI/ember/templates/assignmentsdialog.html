@@ -58,6 +58,11 @@
     <div class="speedup-toad" {{action speedUp}}>2</div>
     {{/unless}}
   {{/if}}
+  {{#if isFinished}}
+    <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
+      {{t settlement.assignment.collect}}
+    </div>
+  {{/if}}
 </div>
 </script>
 
@@ -127,30 +132,36 @@
     <div class="cell-50 row-50">
 
     {{#if isActive }}
-          <div class="cell training-background-job assignment-progress" {{action "redeemRewards"}} >
-                <div class="training-bar-job" {{bindAttr style="progressBarWidth"}}>
-                  <div class="progress-value progress-value-assignment-progress">{{formatDuration timeRemaining}}</div>
-                </div>
-            </div>
-          {{#unless isHalved }}
-            {{#if halving }}
-            {{else}}
-              <div class="name-change-button-gold assignment-gold" {{action "speedupPressed"}}>
-                <div class="item-price">{{speedupCosts}}</div>
-                <div class="item-toad"></div>
-                <div class="name-change-button-gold-titel">{{t settlement.assignment.hurry}}</div>
-              </div>
-            {{/if}}
-          {{/unless }}
+      {{#if isFinished}}
+        <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
+          {{t settlement.assignment.collect}}
+        </div>
+      {{else}}
+        <div class="cell training-background-job assignment-progress" {{action "redeemRewards"}} >
+          <div class="training-bar-job" {{bindAttr style="progressBarWidth"}}>
+            <div class="progress-value progress-value-assignment-progress">{{formatDuration timeRemaining}}</div>
+          </div>
+        </div>
+      {{/if}}
+      {{#unless isHalved }}
+        {{#if halving }}
         {{else}}
-          {{#if starting }}
-          {{else}}
-            <div class="green-large-button assignment-start-button-pos" {{action "startPressed"}}>
-              <div class="white-large-text">{{t settlement.assignment.start}}</div>
-              <div class="white-normal-text">{{formatDuration assignmentType.duration}}</div>
-            </div>
-          {{/if}}
+          <div class="name-change-button-gold assignment-gold" {{action "speedupPressed"}}>
+            <div class="item-price">{{speedupCosts}}</div>
+            <div class="item-toad"></div>
+            <div class="name-change-button-gold-titel">{{t settlement.assignment.hurry}}</div>
+          </div>
         {{/if}}
+      {{/unless }}
+    {{else}}
+      {{#if starting }}
+      {{else}}
+        <div class="green-large-button assignment-start-button-pos" {{action "startPressed"}}>
+          <div class="white-large-text">{{t settlement.assignment.start}}</div>
+          <div class="white-normal-text">{{formatDuration assignmentType.duration}}</div>
+        </div>
+      {{/if}}
+    {{/if}}
     </div>
   </div>
 </script>

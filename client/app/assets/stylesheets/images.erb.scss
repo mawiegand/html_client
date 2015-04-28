@@ -48,6 +48,27 @@
   height: 200px;
 }
 
+.button-green-medium
+{
+  cursor: pointer;
+  background-image: url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 180px;
+  height: 52px;
+}
+
+.button-green-short
+{
+  cursor: pointer;
+  background-image: url("<%= asset_path 'dialogs/buttons/button_green_short.png' %>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 96px;
+  height: 76px;
+}
+
 .progress-domination-green {
 	background-image: url("<%= asset_path 'dialogs/progressbars/progress_domination_green.png' %>");
   background-position: center center;
