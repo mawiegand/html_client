@@ -4,7 +4,11 @@
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
       {{#if unlockedAssignments}}
-        <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}></div>
+        <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}>
+        {{#if timeUntillNextAssignment}}
+          <div class="assignment-timer count-indicator-background count-indicator-background-position">{{timeUntillNextAssignment}}</div>
+        {{/if}}
+        </div>
       {{/if}}
       {{#if unlockedTrade}}
         <div class="trade-hud-button trade-hud-button-position" {{action "tradeClicked"}}></div>
