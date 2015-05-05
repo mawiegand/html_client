@@ -127,7 +127,7 @@ module.ArmyInfoNewDialog = module.PopUpDialog.extend({
 
   settingsDialog: function() {
       var self = this;
-      var input = this.getPath('army.name')
+      var input = this.getPath('army.name');
       var arguments = {
         input: input,
         inputMaxLength: 18       
