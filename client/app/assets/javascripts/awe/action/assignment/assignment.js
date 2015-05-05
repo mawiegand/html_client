@@ -199,7 +199,7 @@ AWE.Action.Assignment = (function(module) {
 
     that.getRequestBody = function() {
       return {
-        redeem_standard_assignment: {
+        redeem_special_assignment: {
           special_assignment_id:  my.specialAssignmentId,
         }
       };
