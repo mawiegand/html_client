@@ -1535,6 +1535,7 @@ AWE.I18n.de_DE = function(module) {
           ultimatum: "Ultimatum",
           war: "Krieg",
           capitulation: "Kapitulation",
+          occupation: "Besetzung",
           end: "Endet",
         },
       },

@@ -660,6 +660,20 @@ AWE.UI.Ember = (function(module) {
       return capitulationRelations;
     }.property('alliance.diplomacySourceRelations'),
 
+    relationsAtOccupation: function() {
+      var self = this;
+      var occupationRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 4) {
+          occupationRelations.push(item);
+        }
+      });
+      return occupationRelations;
+    }.property('alliance.diplomacySourceRelations'),
+
   });
   
   module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
