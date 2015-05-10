@@ -1537,6 +1537,7 @@ AWE.I18n.de_DE = function(module) {
           capitulation: "Kapitulation",
           occupation: "Besetzung",
           end: "Endet",
+          giveUp: "Aufgeben",
         },
       },
       move:{

@@ -471,7 +471,12 @@ AWE.UI.Ember = (function(module) {
       var duration = this.get('ultimatumTime');
       var time = {}
       time.h = duration.h + "h ";
-      time.m = duration.m + "min";
+      time.m = duration.m + "min ";
+      if(duration.m <= 0) {
+        time.s = duration.s + "s";
+      } else {
+        time.s = "";
+      }
 
       if(duration.h <= 0) {
         time.h = "";
@@ -485,12 +490,24 @@ AWE.UI.Ember = (function(module) {
         }
       }
 
-      var timeString = time.h + time.m;
+      if(duration.m <= 0) {
+        time.m = "";
+      }
+
+      if(duration.m <= 0 && duration.s < 10) {
+        time.s = "0" + time.s;
+        if(duration.s < 0)
+        {
+          time.s = "";
+        }
+      }
+
+      var timeString = time.h + time.m + time.s;
       return timeString;
     }.property('ultimatumTime'),
 
     warGiveUp: function() {
-      if(this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "00min")
+      if(this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "")
       {
         return true;
       }
