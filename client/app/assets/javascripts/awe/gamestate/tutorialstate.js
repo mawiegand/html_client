@@ -74,7 +74,11 @@ AWE.GS = (function(module) {
         }
       });
       return newQuestStates;
-    }.property('quests.@each.status').cacheable(),    
+    }.property('quests.@each.status').cacheable(),
+
+    newQuestStatesCount: function() {
+      return this.get('newQuestStates').length;
+    }.property('quests.@each.status').cacheable(),
 
     // displayed quests, that aren't finished
     openQuestStates: function() {
@@ -1401,7 +1405,7 @@ AWE.GS = (function(module) {
         // only display first new quest, even if there are more. the other quest will be displayed later on.            
         var newQuestState = newQuestStates[0];
 
-        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog')) {
+        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog') && newQuestState.getPath('quest.tutorial')) {
           // log('---> showNextNewQuest: hide_start_dialog', false);
           if (WACKADOO.modalDialogOpen()) {
             // log('---> showNextNewQuest: delay start dialog');
