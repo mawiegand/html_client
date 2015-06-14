@@ -1303,12 +1303,14 @@ AWE.GS = (function(module) {
               // callback: dialog anzeigen mit reward
               questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
               // log('---> checkForRewards modalDialogOpen', WACKADOO.modalDialogOpen());
-              if (!WACKADOO.modalDialogOpen()) {
-                that.showQuestFinishedDialog(questState);
-              }
-              else {
-                delayedFinishedQuestState = questState;
-                // log('---> stop checking in checkForRewards, modal');
+              if(questState.getPath('quest.type') == 'epic' || questState.getPath('quest.type') == 'optional') {
+                if (!WACKADOO.modalDialogOpen()) {
+                  that.showQuestFinishedDialog(questState);
+                }
+                else {
+                  delayedFinishedQuestState = questState;
+                  // log('---> stop checking in checkForRewards, modal');
+                }
               }
             }
             else {
@@ -1357,12 +1359,14 @@ AWE.GS = (function(module) {
               // callback: dialog anzeigen mit reward
               openQuestState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
               // log('---> checkForRewards modalDialogOpen', WACKADOO.modalDialogOpen());
-              if (!WACKADOO.modalDialogOpen()) {
-                that.showQuestFinishedDialog(openQuestState);
-              }
-              else {
-                delayedFinishedQuestState = openQuestState;
-                // log('---> stop checking in checkForCustomTestRewards, modal');
+              if(openQuestState.getPath('quest.type') == 'epic' || openQuestState.getPath('quest.type') == 'optional') {
+                if (!WACKADOO.modalDialogOpen()) {
+                  that.showQuestFinishedDialog(openQuestState);
+                }
+                else {
+                  delayedFinishedQuestState = openQuestState;
+                  // log('---> stop checking in checkForCustomTestRewards, modal');
+                }
               }
             }
             else {
@@ -1404,8 +1408,7 @@ AWE.GS = (function(module) {
         
         // only display first new quest, even if there are more. the other quest will be displayed later on.            
         var newQuestState = newQuestStates[0];
-
-        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog') && newQuestState.getPath('quest.tutorial')) {
+        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog') && newQuestState.getPath('quest.type') == 'epic') {
           // log('---> showNextNewQuest: hide_start_dialog', false);
           if (WACKADOO.modalDialogOpen()) {
             // log('---> showNextNewQuest: delay start dialog');
