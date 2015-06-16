@@ -1042,6 +1042,7 @@ AWE.I18n.en_US = function(module) {
         noRankUpPossible:"No advancement possible at this time.",
         info:"Advancing your mundane rank will give you more settlement points.",
         experienceInfo:"You can acquire more experience by building and fighting.",
+        experienceProduction: "Experience Production",
         settlementPoints:"Settlement points",
         freeSettlementPoints: "Free Settlement Points",
         notUsed:"Unused",
