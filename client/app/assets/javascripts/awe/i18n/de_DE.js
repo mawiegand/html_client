@@ -191,7 +191,7 @@ AWE.I18n.de_DE = function(module) {
             "Kann man hier nicht mal seine Ruhe haben?",
             "Na, solange wir reden muss ich nicht kämpfen, oder?",
             "Hm, wann waren eigentlich die letzten Betriebsferien?",
-            "Hast Du schon unsere neue Uniformen gesehen? Sehen schick aus!",
+            "Hast Du schon unsere neuen Uniformen gesehen? Sehen schick aus!",
             "Bitte nicht dreckig machen, ich bin frisch gebadet!",
             "Heute bitte keine Kämpfe, ich hab Muskelkater.",
             "Ich hab heut keine Lust. Gar keine Lust.",
@@ -273,7 +273,7 @@ AWE.I18n.de_DE = function(module) {
           garrisonFighting: "Während die Garnison kämpft, kann keine neue Armee erstellt werden.",
           other: "Die Armee ist zu voll",
           new: "Die neue Armee ist zu voll",
-          message: "Reduziere sie um so viel Einheiten, dass sie unter der Höchstgrenze liegt!",
+          message: "Reduziere sie um so viele Einheiten, dass sie unter der Höchstgrenze liegt!",
         },
       },
       create: {
@@ -370,7 +370,7 @@ AWE.I18n.de_DE = function(module) {
           "Festungen können eingenommen werden, indem man einen Kampf um sie gewinnt",
           "Es ist nicht möglich, zwei Lagerstätten in einer Region zu gründen. Die Bevölkerung will abwechselungsreiche Ziele für den Wochenendbesuch!",
           "Ein Wirrkopf behauptet, die Erde sei rund, er hätte es selbst im Traum gesehen. Was für ein Schwachsinn, natürlich ist die Erde flach! Und hört an allen vier Seiten einfach auf!",
-          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist die Enzyklopädie oben links im Menü auf der Weltkarte.",
+          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sieh in der Enzyklopädie nach. Zu finden ist die Enzyklopädie oben links im Menü auf der Weltkarte.",
           "Ein bärtiger Greis teilt sein Wissen über die Wettervorhersagekunst: \"Abendrot - Gutwetterbot!\" - \"Außer, natürlich, vor schlechten Tagen,\" fügst Du abgeklärt hinzu.",
           "Angeblich soll im Westen vor kurzem eine Armee spurlos verschwunden und von der Welt verschluckt worden sein. Man sollte sich besser fernhalten.",
           "In den Festungen kann ein Steuersatz von 5 bis 15% Prozent von allen Siedlungen der Region erhoben werden. Dies ist ein Naturgesetz; Steuern über oder unter diesen Grenzen würden den Zorn der Götter heraufbeschwören und den Weltuntergang auslösen.",
@@ -416,7 +416,7 @@ AWE.I18n.de_DE = function(module) {
         cancel:         "Abbruch",
         battleInfo:     "Kampfinfo",
         messages:       "Mail",
-        stance:         "Stance",
+        stance:         "Haltung",
         reinforce:      "Verstärken",
         info:           "Info",
         enter:          "Betreten",
@@ -448,8 +448,8 @@ AWE.I18n.de_DE = function(module) {
       redeemAllianceReservationText: "Löse die Reservierung einer Allianz aus einer vergangenen Runde ein, indem Du ihr Kürzel und das geheime Reservierungspasswort eingibst.",
       leaveAllianceFailedHead: 'Verlassen der Allianz fehlgeschlagen',
       leave: "Verlassen",
-      name: "Allianz Name",
-      tag: "Allianz Tag",
+      name: "Allianzname",
+      tag: "Allianzkürzel",
       password: "Passwort",
 
       founded: 'Gründung',
@@ -494,17 +494,17 @@ AWE.I18n.de_DE = function(module) {
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
-        'Runde einzulösen, benötigst Du den Allianztag und ein Passwort.',
+        'Runde einzulösen, benötigst Du das Allianzkürzel und ein Passwort.',
       reservationDescriptionNew: 'Setze jetzt ein Passwort.',
       reservationDescriptionChange: 'Ändere das Passwort.',
       message: 'Nachricht des Tages',
       messageExplanation: 'Nur für Mitglieder sichtbar!',
       members: 'Mitglieder',
-      shoutBox: 'Shout Box',
+      shoutBox: 'Rundruf',
       shoutBoxExplanation: 'Alles was hier eingegeben wird, ist umgehend für alle anderen Mitglieder sichtbar.',
       changePassword: 'neues Passwort speichern',
       saveReservation: 'Reservierung speichern',
-      kickMember: 'kick',
+      kickMember: 'Rausschmeißen',
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
       bonus: 'Bonus',
@@ -519,8 +519,8 @@ AWE.I18n.de_DE = function(module) {
         content: "Eine Allianz stellt einer anderen ein Ultimatum. " +
                  "Nach Ablauf des Ultimatums beginnt der Krieg zwischen beiden Allianzen. " +
                  "Während des Kriegs können Allianzen anderen Allianzen Festungen abnehmen. " +
-                 "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem eine der beiden Seiten ihn aufgibt. " +
-                 "Nachdem ein Krieg beendet ist herrscht eine Zeit lang die Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
+                 "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem sich eine der beiden Seiten ergibt. " +
+                 "Nachdem ein Krieg beendet ist herrscht eine vorübergende Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
       },
       
       progress: {
@@ -536,23 +536,21 @@ AWE.I18n.de_DE = function(module) {
         victoryAfter: 'Sieg nach',
         won: "Gewonnen",
         days: 'Tagen',
-        artifact: "Artefakt",
-        dominion: "Herrschaft",
       },
 
       error: {
         blankPassword: "Ein leeres Passwort zu setzen ist nicht möglich.",
         specialChars: "Es sind nur Zahlen und Buchstaben erlaubt",
-        failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekannten Grund gescheitert.",
+        failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekanntem Grund gescheitert.",
         kickHeading: "Geht nicht!",
         kickMessage: "Dieses Mitglied kann nicht von Dir rausgeworfen werden.",
         leaveFailedClient: "Client Fehler: Allianz konnte nicht verlassen werden.",
         leaveFailed: "Allianz konnte nicht verlassen werden.",
-        invalidTag: "Gib einen gültigen Allianzkürzel ein.",
+        invalidTag: "Gib ein gültiges Allianzkürzel ein.",
         invalidPassword: "Gib die geheime Allianzlosung ein.",
         tagNotTaken: "Es gibt keine Allianz mit diesem Kürzel",
         wrongPassword: "Allianzkürzel und Passwort stimmen nicht überein.",
-        memberLimitReached: "Die maximale Anzahl Allianzmitglieder wurde bereits erreicht.",
+        memberLimitReached: "Die maximale Anzahl an Allianzmitgliedern wurde bereits erreicht.",
         unkownJoin: "Der Allianz beizutreten ist aus unbekanntem Grund fehlgeschlagen.",
         enterValidTag: "Gib ein Allianzkürzel mit 2 bis 5 Buchstaben ein. Es darf keine Sonderzeichen enthalten.",
         enterValidName: "Gib einen gültigen Allianznamen mit mindestens 2 Buchstaben ein.",
@@ -560,7 +558,7 @@ AWE.I18n.de_DE = function(module) {
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
         changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
-        changeDescriptionConflict: "Die Allianz Beschreibung konnte nicht geändert werden, weil sie zu lang ist.",
+        changeDescriptionConflict: "Die Allianzbeschreibung konnte nicht geändert werden, weil sie zu lang ist.",
         changeDescriptionError: "Die Allianzbeschreibung konnte aus unbekanntem Grund nicht geändert werden.",
       },
       success: {
@@ -752,7 +750,7 @@ AWE.I18n.de_DE = function(module) {
           nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
           nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
 
-          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
+          nameTaken: "Dieser Name wird schon benutzt oder wurde gemeldet. Bitte wähle einen anderen Namen.",
           changeNameCost: "Du hast nicht genug Kröten, um den Siedlungsnamen zu ändern.",
           changeNameError: "Der Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
         },
@@ -771,7 +769,7 @@ AWE.I18n.de_DE = function(module) {
         header: "Lagerstätte aufgeben",
         text: "Wenn Du knapp an Siedlungspunkten bist, kannst Du diese Lagerstätte aufgeben. Sie geht dann in den Besitz der Neandertaler über und ist anschließend für andere Spieler übernehmbar.",
         send: "Lagerstätte aufgeben!",
-        fighting: "Die Lagerstätte kann zur Zeit nicht aufgegeben werden, da die Garnisonsarmee am Kämpfen ist.",
+        fighting: "Die Lagerstätte kann zur Zeit nicht aufgegeben werden, da die Garnisonsarmee in einen Kampf verwickelt ist.",
       },
 
       buildings: {
@@ -813,7 +811,7 @@ AWE.I18n.de_DE = function(module) {
           cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
         },
         constructionQueueFull: {
-          start: "Sorry, aber die Bauschleife ist schon voll. Du kannst maximal ",
+          start: "Tut uns Leid, aber die Bauschleife ist schon voll. Du kannst maximal ",
           end: " Bauaufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
         constructionQueueNotEmpty: {
@@ -828,7 +826,7 @@ AWE.I18n.de_DE = function(module) {
         insufficentResources: "Mangel",
         finishing: "gleich fertig",
         beingBuilt: "Wird gerade gebaut.",
-        waitingToBeBuilt: "Wartet darauf, bis es an der Reihe ist.",
+        waitingToBeBuilt: "Wartet bis es an der Reihe ist.",
         cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
         requiredResources: 'Kosten',
         remaining: 'Fehlend',
@@ -845,7 +843,7 @@ AWE.I18n.de_DE = function(module) {
         hurryIndicator: "x2",
 
         queueFull: {
-          start: "Sorry, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
+          start: "Tut uns Leid, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
         hurry: "Halbieren",
@@ -871,7 +869,7 @@ AWE.I18n.de_DE = function(module) {
         distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
         resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesamtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
 
-        update: "Update",
+        update: "Aktivitäten",
         submit: "Senden",
         sendResources: "Rohstoffe versenden",
         cartsEnRoute: "Handelskarren unterwegs",
@@ -908,22 +906,22 @@ AWE.I18n.de_DE = function(module) {
       found: {
         confirmationHeader: "Hier eine Lagerstätte gründen?",
         confirmationFlavour: "Eine Siedlung in Ehren kann niemand verwehren. Harrharrharr.",
-        confirmationText: "Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Anführer aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur Verfügung.",
+        confirmationText: "Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Häuptling aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur Verfügung.",
         confirmation: "Gründen",
         errorHeader: "Lagerstätte kann nicht gegründet werden.",
         errorFlavour: "Grmpf.",
-        errorText: "Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen gegründet werden, in der sich noch keine andere Lagerstätte von Dir oder Dein Hauptdorf befindet.",
+        errorText: "Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen gegründet werden, in der sich noch keine andere Lagerstätte oder Siedlung von Dir befindet.",
         requirements: {
           text:"Außerdem müssen folgende Bedingungen erfüllt sein",
           req1: "Du hast einen freien Siedlungspunkt zur Verfügung,",
-          req2: "Deine Armee hat mindestens einen kleinen Anführer dabei und",
+          req2: "Deine Armee hat mindestens einen kleinen Häuptling dabei und",
           req3: "Deine Armee hat noch mindestens einen Aktionspunkt zur Verfügung.",
         },
       },
 
       artifact: {
         artifactInfo: "Artefakt Info",
-        artifactInitiation: "Artifact Initiation",
+        artifactInitiation: "Artefakt Einweihung",
         noArtifact: "Kein Artefakt vorhanden",
         costs: "Kosten",
         duration: "Dauer",
@@ -964,11 +962,10 @@ AWE.I18n.de_DE = function(module) {
         noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
         noneSpecialAvailable: "Zur Zeit ist kein Spezialauftrag verfügbar.",
         cancelText: "Ok",
-        collect: "Abholen",
         error: {
           conflict: {
             header: "Fehler!",
-            content: "Der Auftrag ist bereits gestartet. Warte, bis er fertig ist.",
+            content: "Der Auftrag wurde bereits gestartet. Warte, bis er fertig ist.",
           },
           prerequisites: {
             header: "Halt!",
@@ -991,7 +988,7 @@ AWE.I18n.de_DE = function(module) {
         combatBonusInfo: "Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Kampfbonus auf den Verteidigungswert aller Truppen, die auf der Seite dieser Festung kämpfen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.",
         combatBonusAbbreviation: "KB",
         recruitmentspeed: 'Rekrutierungsgeschw.',
-        buildingSpeed: "Baugeschwind.",
+        buildingSpeed: "Baugeschw.",
         buildingSpeedAbbreviation: "G",
         meleeTrainingSpeed: "Rekrutierunggeschwindigkeit von Nahkämpfern",
         meleeTrainingSpeedAbbreviation: "N",
@@ -1087,7 +1084,7 @@ AWE.I18n.de_DE = function(module) {
         localTime: "Lokale Rechneruhr",
         deviation: "Differenz",
         lagZero: "Perfekt!",
-        lagTolerable: "Diese Zeitdifferenz ist tolerabel.",
+        lagTolerable: "Diese Zeitdifferenz ist annehmbar.",
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
@@ -1159,7 +1156,7 @@ AWE.I18n.de_DE = function(module) {
 
         confirmReport: {
           heading: "Melden bestätigen",
-          message: "Willst Du wirklich die Character Beschreibung melden?",
+          message: "Willst Du wirklich die Charakterbeschreibung melden?",
           cancel: "Nein, doch nicht",
           ok: "Ja, wirklich.",
           success: "Meldung war erfolgreich",
@@ -1171,7 +1168,7 @@ AWE.I18n.de_DE = function(module) {
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
           nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
 
-          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
+          nameTaken: "Dieser Name wird schon benutzt oder wurde gemeldet. Bitte wähle einen anderen Namen.",
           changeNameCost: "Du hast nicht genug Kröten, um Deinen Namen zu ändern.",
           changeNameError: "Dein Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
           changeGenderCost: "Du hast nicht genug Kröten, um Dein Geschlecht zu ändern.",
@@ -1181,7 +1178,7 @@ AWE.I18n.de_DE = function(module) {
           changePasswordUnknown: "Dein Passwort konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
 
-          changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
+          changeDescriptionError: "Die Charakterbeschreibung konnte aus unbekanntem Grund nicht geändert werden.",
           
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {
@@ -1192,7 +1189,7 @@ AWE.I18n.de_DE = function(module) {
       },
       
       moving: {
-        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann die Hauptsiedlung einmalig umziehen.",
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann mit seiner Hauptsiedlung einmalig umziehen.",
         info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
         specificMovingCaption: "Gezieltes Umziehen",
         alreadyMoved: "Du bist bereits einmal umgezogen.",
@@ -1212,7 +1209,7 @@ AWE.I18n.de_DE = function(module) {
         movingNoTargetFoundHeading: "Region nicht gefunden",
         movingNoTargetFoundMessage: "Eine Region mit dem Namen scheint es nicht zu geben. Hast Du den Regionennamen richtig geschrieben?",
         movingNotFoundMessage: "In der Region ist bereits eine Siedlung von dir!",
-        movingForbiddenMessage: "Das Passwort ist verkehrt. Probier noch mal!",
+        movingForbiddenMessage: "Das Passwort ist verkehrt. Probier es noch mal!",
         movingConflictMessage: "Die Festung ist im Kampf oder wurde gerade erst erobert. Probier es später noch mal!",
         movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
@@ -1266,7 +1263,7 @@ AWE.I18n.de_DE = function(module) {
         },
         redeemError: {
           header:       "Achtung",
-          message:      "Du kannst die Quest nicht einlösen, weil aktuell nicht genug Platz für Deine Belohnung da ist. Versuch's später noch mal!",
+          message:      "Du kannst die Belohnung nicht einlösen, weil aktuell nicht genug Platz in Deinem Lager ist. Versuch's später noch mal!",
         },
         error:          "Leider falsch. Probier's gleich noch mal!",
       },
@@ -1281,8 +1278,8 @@ AWE.I18n.de_DE = function(module) {
       end: {
         header: "Tutorial erfolgreich beendet.",
         p1: "Glückwunsch Halbgott,  Du hast das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
-        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den Platinum-Account . Details dazu in der Fundgrube oben rechts.",
-        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten.",
+        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den Platinum-Account. Details dazu in der Fundgrube oben rechts.",
+        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenden Aufgaben begleiten.",
         p4: "Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und Deinen Einfluss, wie es Dir gefällt!",
         p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber beachte folgenden Tip: Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
         p6: "Viel Spaß in Wack-A-Doo und whack on!",
@@ -1317,7 +1314,7 @@ AWE.I18n.de_DE = function(module) {
       forward: "Weiterleiten",
       delete: "Löschen",
       archiving: "Archivieren",
-      newAllianceMail: "Neue Ally-Rundmail",
+      newAllianceMail: "Neue Allianz-Rundmail",
       noMessageSelected: "Keine Nachricht ausgewählt.",
       from: "Von",
       yourMessage: "deine Nachricht",
@@ -1326,7 +1323,7 @@ AWE.I18n.de_DE = function(module) {
     
     encyclopedia: {
       encyclopedia: 'Enzyklopädie',
-      selectCategory: 'Bitte wähle eine Kategorie und ein Thema aus.',
+      selectCategory: 'Bitte wähle ein Thema aus.',
       productionTime: "Produktionszeit",
       hitpoints: "Lebenspunkte",
       attack: "Angriff",
@@ -1341,12 +1338,12 @@ AWE.I18n.de_DE = function(module) {
       defenseAbbreviation: "Def",
       hitpointsAbbreviation: "HP",
       criticalDamageAbbreviation: "Crit",
-      garrison: "Garrison",
-      infantry: "Infantry",
-      artillery: "Artillery",
-      cavalery: "Cavalery",
-      specialUnits: "Special Units",
-      military: "Military",
+      garrison: "Garnison",
+      infantry: "Infanterie",
+      artillery: "Artillerie",
+      cavalery: "Kavallerie",
+      specialUnits: "Spezialeinheiten",
+      military: "Militär",
 
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",
@@ -1504,7 +1501,7 @@ AWE.I18n.de_DE = function(module) {
     menu: {
       manual: "Handbuch",
       logout: "Logout",
-      header: "Menu",
+      header: "Menü",
       reload: "Aktualisieren",
     },
 
@@ -1530,7 +1527,7 @@ AWE.I18n.de_DE = function(module) {
           members: "Mitglieder",
         },
         allianceDiplomacy: {
-          placeHolder: "Tag eingeben",
+          placeHolder: "Kürzel eingeben",
           issueUltimatum: "Ultimatum stellen",
           ultimatum: "Ultimatum",
           war: "Krieg",
@@ -1569,4 +1566,3 @@ AWE.I18n.de_DE = function(module) {
   return module;
   
 }(AWE.I18n.de_DE || {});
-
