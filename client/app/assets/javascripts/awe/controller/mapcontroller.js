@@ -2957,41 +2957,39 @@ AWE.Controller = function (module) {
 
       if (armyLocation) {
         // get all possible target locations
-        if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {           // if armyLocation is fortress
-          var regionLocations = armyRegion.locations();
+        var regionLocations = armyRegion.locations();
 
-          if (regionLocations) {
-            // add all location in same region
-            for (var i = 1; i < regionLocations.length; i++) {
-              targetLocations.push(regionLocations[i]);
-            }
+        if (regionLocations) {
+          // add all location in same region
+          if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] !== 'fortress') {
+            targetLocations.push(regionLocations[0])
           }
+          for (var i = 1; i < regionLocations.length; i++) {
+            targetLocations.push(regionLocations[i]);
+          }
+        }
 
-          if (armyRegion.node()) {
-            // add fortresses in bordering regions
-            var neighbourNodes = armyRegion.node().getNeighbourLeaves();
-            for (var i = 0; i < neighbourNodes.length; i++) {
-              var region = neighbourNodes[i].region();
-              if (region) {
-                var location = region.location(0);
-                if (location) {
-                  targetLocations.push(location);
-                }
-                else {
-                  AWE.Map.Manager.fetchLocationsForRegion(region);
-                }
+        if (armyRegion.node()) {
+          // add fortresses in bordering regions
+          var neighbourNodes = armyRegion.node().getNeighbourLeaves();
+          for (var i = 0; i < neighbourNodes.length; i++) {
+            var region = neighbourNodes[i].region();
+            if (region) {
+              var location = region.location(0);
+              if (location) {
+                targetLocations.push(location);
               }
               else {
-                AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
+                AWE.Map.Manager.fetchLocationsForRegion(region);
               }
             }
-          }
-          else {
-            AWE.Map.Manager.fetchSingleNodeById(armyRegion.nodeId());
+            else {
+              AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
+            }
           }
         }
         else {
-          targetLocations.push(armyLocation.region().location(0));
+          AWE.Map.Manager.fetchSingleNodeById(armyRegion.nodeId());
         }
       }
       else {
