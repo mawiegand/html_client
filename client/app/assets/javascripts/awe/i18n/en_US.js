@@ -1514,7 +1514,9 @@ AWE.I18n.en_US = function(module) {
           ultimatum: "Ultimatum",
           war: "War",
           capitulation: "Capitulation",
+          occupation: "Occupation",
           end: "End",
+          giveUp: "Give up",
         },
       },
       move:{
