@@ -2961,11 +2961,10 @@ AWE.Controller = function (module) {
 
         if (regionLocations) {
           // add all location in same region
-          if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] !== 'fortress') {
-            targetLocations.push(regionLocations[0])
-          }
-          for (var i = 1; i < regionLocations.length; i++) {
-            targetLocations.push(regionLocations[i]);
+          for (var i = 0; i < regionLocations.length; i++) {
+            if (armyLocation !== regionLocations[i]) {
+              targetLocations.push(regionLocations[i]);
+            }
           }
         }
 
