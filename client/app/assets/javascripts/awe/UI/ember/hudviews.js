@@ -196,11 +196,11 @@ module.RightHUDView = Ember.View.extend({
     return unreadMessages > 0 ? unreadMessages : false;
   }.property('character.inbox.unread_messages_count').cacheable(),
 
-  getNotClosedQuest: function(){
-    var numberOfQuests = this.getPath('tutorialState.notClosedQuestStateCount');
+  getNewQuest: function(){
+    var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');
     if (numberOfQuests === undefined) return false;
     return numberOfQuests > 0 ? numberOfQuests : false;
-  }.property('tutorialState.notClosedQuestStateCount').cacheable(),
+  }.property('tutorialState.newQuestStatesCount').cacheable(),
 
   mailClicked: function(){
     this.get('controller').mailButtonClicked();
