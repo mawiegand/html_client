@@ -409,6 +409,18 @@
          -o-animation: camp_fire .5s steps(5) infinite;
             animation: camp_fire .5s steps(5) infinite;
   }
+
+
+  .building_tavern.building-image {
+    -webkit-animation: anim_tavern .5s steps(5) infinite;
+       -moz-animation: anim_tavern .5s steps(5) infinite;
+        -ms-animation: anim_tavern .5s steps(5) infinite;
+         -o-animation: anim_tavern .5s steps(5) infinite;
+            animation: anim_tavern .5s steps(5) infinite;
+  }
+
+
+
   .level {
     perspective: 1000px;
     width: 46px;
@@ -980,6 +992,34 @@
 }
 
 @keyframes camp_fire {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+
+/* ==== Tavern Animations ==== */
+
+@-webkit-keyframes anim_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-moz-keyframes anim_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-ms-keyframes anim_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-o-keyframes anim_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@keyframes anim_tavern {
    from { background-position: 0px 0px; }
      to { background-position: -800px 0px; }
 }

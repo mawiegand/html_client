@@ -672,6 +672,7 @@ AWE.Controller = (function(module) {
     /*Added from controller start*/
     that.messageView = null;
     that.updateMessageCenter = function() {
+
       var view = that.messageView;
 
       if (view) {
