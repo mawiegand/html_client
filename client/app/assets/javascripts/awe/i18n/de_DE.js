@@ -122,25 +122,9 @@ AWE.I18n.de_DE = function(module) {
 
       list: {
         header: "Armeeübersicht",
-        flavor: "Ha, alle meine Armeen auf einen Blick: Die erfahrensten kampferprobtesten Armeen oben auf und die Frischlinge hinten an. Los jetzt, auf in den Kampf!",
+        armies: "Armeen",
+        settlements: "Siedlungen",
         none:   "Du besitzt derzeit keine Armeen.",
-        table: {
-          name:     "Name",
-          region:   "Region",
-          rank:     "Rang",
-          ap:       "AP",
-          status:   "Status",
-          size:     "Größe",
-          max_size: "Maximum",
-          info:     "Info",
-        },
-
-        status: {
-          neutral:   "Neutral",
-          moving:    "Bewegend",
-          fighting:  "Kämpfend",
-          defending: "Verteidigend",
-        },
       },
 
       details: {

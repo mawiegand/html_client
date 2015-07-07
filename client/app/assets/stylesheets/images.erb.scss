@@ -1,86 +1,85 @@
+@mixin image-background() {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
+}
+
 .background-textfield-grey-xs {
 	background-image: url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_xs.png' %>");
-	background-repeat: no-repeat;
-	background-position: center center;
+  @include image-background();
 	width: 52px;
 	height: 44px;
 }
 
 .background-textfield-grey-s {
 	background-image: url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_s.png' %>");
-	background-repeat: no-repeat;
-	background-position: center center;
+	@include image-background();
 	width: 116px;
 	height: 44px;
 }
 
 .background-textfield-grey-m {
 	background-image: url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_m.png' %>");
-	background-repeat: no-repeat;
-	background-position: center center;
+	@include image-background();
 	width: 212px;
 	height: 44px;
 }
 
 .background-textfield-grey-xl {
 	background-image: url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_xl.png' %>");
-	background-repeat: no-repeat;
-	background-position: center center;
+	@include image-background();
 	width: 492px;
 	height: 44px;
 }
 
 .button-blue-short {
 	background-image: url("<%= asset_path 'dialogs/buttons/button_blue_short.png' %>");
-	background-position: center center;
-	background-repeat: no-repeat;
+	@include image-background();
 	width: 72px;
 	height: 52px;
 }
 
 .button-green-high
 {
-  cursor: pointer;
   background-image: url("<%= asset_path 'dialogs/buttons/button_green_high.png' %>");
-  background-position: center center;
-	background-repeat: no-repeat;
+  @include image-background();
   width: 184px;
   height: 200px;
 }
 
 .button-green-medium
 {
-  cursor: pointer;
   background-image: url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>");
-  background-position: center center;
-  background-repeat: no-repeat;
+  @include image-background();
   width: 180px;
   height: 52px;
 }
 
 .button-green-short
 {
-  cursor: pointer;
   background-image: url("<%= asset_path 'dialogs/buttons/button_green_short.png' %>");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 100%;
+  @include image-background();
   width: 96px;
   height: 76px;
 }
 
 .progress-domination-green {
 	background-image: url("<%= asset_path 'dialogs/progressbars/progress_domination_green.png' %>");
-  background-position: center center;
-	background-repeat: no-repeat;
+  @include image-background();
   width: 560px;
   height: 48px;
 }
 
 .progress-domination-grey {
 	background-image: url("<%= asset_path 'dialogs/progressbars/progress_domination_grey.png' %>");
-  background-position: center center;
-	background-repeat: no-repeat;
+  @include image-background();
   width: 560px;
   height: 48px;
+}
+
+.army-fist {
+  background-image: url("<%= asset_path 'dialogs/specials/army_fist.png' %>");
+  @include image-background();
+  width: 32px;
+  height: 32px;
 }

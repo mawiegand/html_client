@@ -1,0 +1,64 @@
+<script type="text/x-handlebars" data-template-name="army-list-dialog">
+  <h1 class="modal-dialog-heading">{{t army.list.header}}</h1>
+  <div class="modal-dialog-body change-army-dialog-pane scrolling">
+    {{view AWE.UI.Ember.ArmyListTabView }}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-list-view">
+  {{#if armies}}
+      <table class="army-list-table">
+        {{#each armies}}
+          {{view AWE.UI.Ember.ArmyListItem armyBinding="this"}}
+        {{/each}}
+      </table>
+  {{else}}
+    <h2>{{t army.list.none}}</h2>
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-list-view">
+  {{#if settlements}}
+    <table class="settlement-list-table">
+      {{#each settlements}}
+        {{view AWE.UI.Ember.SettlementListItem settlementBinding="this"}}
+      {{/each}}
+    </table>
+  {{else}}
+    <h2>{{t army.list.settlement.none}}</h2>
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-list-item">
+  <tr {{action "infoPressed"}}>
+    <td class="army-image">
+      <div {{bindAttr class="army.armyCategory"}}>
+      </div>
+    </td>
+    <td class="name">
+      <div class="background-textfield-grey-m">
+        {{army.name}}
+      </div>
+    </td>
+    <td class="strength">
+      <div class="background-textfield-grey-s">
+        <div class="army-fist"></div>
+        {{army.strength}}
+      </div>
+    </td>
+  </tr>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-list-item">
+  <tr {{action "infoPressed"}}>
+    <td class="settlement-image">
+      <div {{bindAttr class="army.armyCategory"}}>
+      </div>
+    </td>
+    <td class="name">
+      <div class="background-textfield-grey-m">
+        {{army.name}}
+      </div>
+    </td>
+  </tr>
+</script>

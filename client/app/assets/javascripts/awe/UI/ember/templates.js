@@ -10,13 +10,15 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
 
   module.templates = module.templates || [];
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armychangecreateviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armylistviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armyviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentsdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/startupdialogs.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/artifactviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliancediplomacydialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/victoryprogressviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/trainingqueueviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armyviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/basescreen.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/outpostscreen.html');
@@ -46,7 +48,6 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterprogressdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialsettle.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armychangecreateviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliance-view.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/buildingupgrade.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/taxesscreen.html');

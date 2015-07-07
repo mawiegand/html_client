@@ -297,17 +297,6 @@
   background:url("<%= asset_path 'dialogs/buttons/button_gold.png' %>") no-repeat center center;
 }
 
-.background-textfield-grey-m{
-  background:url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_m.png' %>") no-repeat center center;
-  width: 212px;
-  height: 44px;
-}
-.background-textfield-grey-s{
-  background:url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_s.png' %>") no-repeat center center;
-  width: 116px;
-  height: 44px;
-}
-
 .background-textfield-grey-m.background-textfield-trade-action-m{
   width: 226px;
   height: 44px;

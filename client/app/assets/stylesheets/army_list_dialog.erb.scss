@@ -1,0 +1,47 @@
+.army-list-view {
+  table {
+    margin: 10px auto;
+    tr {
+      cursor: pointer;
+      td {
+        &.army-image {
+          div {
+            width: 52px;
+            height: 44px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            &.infantry {
+              background-image: url("<%= asset_path 'dialogs/specials/troups_clubman.png' %>");
+            }
+            &.artillery {
+              background-image: url("<%= asset_path 'dialogs/specials/troups_amazone.png' %>");
+            }
+            &.cavalry {
+              background-image: url("<%= asset_path 'dialogs/specials/troups_chef.png' %>");
+            }
+          }
+        }
+        &.name {
+          width: 340px;
+          padding: 0 16px;
+          div {
+            width: 95%;
+            padding-left: 5%;
+            line-height: 44px;
+          }
+        }
+        &.strength {
+          div {
+            padding: 6px;
+            box-sizing: border-box;
+            div {
+              display: inline-block;
+              float: left;
+              margin-right: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
