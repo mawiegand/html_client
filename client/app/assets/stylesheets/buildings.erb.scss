@@ -398,7 +398,13 @@
   background-position: 0 0;
   background-repeat: no-repeat;
   z-index: 2;
+
+  .sleeping{
+    
+  }
 }
+
+
 
 .small-building {
   pointer-events:none;
@@ -494,6 +500,10 @@
 /*Tavern*/
 .building_tavern.building-image {
   background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
+
+  &.idle{
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_inactive.png") %>');
+  }
 }
 
 /*Storeage*/

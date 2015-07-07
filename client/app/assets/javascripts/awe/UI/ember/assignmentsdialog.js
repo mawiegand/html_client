@@ -70,7 +70,23 @@ AWE.UI.Ember = (function(module) {
     classNames: ['assignments-tab', "assignments-dialog-pane"],
 
     init: function() {
+
+
       this._super();
+
+      console.log("super");
+      if(AWE.GS.game.get('currentCharacter').assignment_level <= 1 )
+      {
+        // show the sleepy image
+
+      }
+      else
+      {
+        // show the cooking chicken
+
+      }
+
+
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
 //      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
@@ -128,8 +144,24 @@ AWE.UI.Ember = (function(module) {
     }.property("percent"),
 
     isInProgress: function(){
-      return this.get("percent") > 0 && this.get("percent") < 100;
+
+      progress = this.get("percent") > 0 && this.get("percent") < 100;
+
+      if(progress)
+      {
+
+      }
+      else
+      {
+
+      }
+
+      return progress;
     }.property("percent"),
+
+
+    
+
 
     percent: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
@@ -147,6 +179,10 @@ AWE.UI.Ember = (function(module) {
       if (!endedAt) {
         return ;
       }
+
+
+
+
       var finish = Date.parseISODate(endedAt);
       var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;

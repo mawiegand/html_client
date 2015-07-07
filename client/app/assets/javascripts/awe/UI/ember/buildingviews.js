@@ -56,10 +56,31 @@ AWE.UI.Ember = (function(module) {
       {
         var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
         var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
-        return "size" + imageLevel;
       }
       return false;
     }.property("building", 'level'),
+
+
+    idle:function(){
+
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        if(buildingId == "building_tavern")
+        {
+            if(AWE.GS.game.get('currentCharacter').assignment_level > 1)
+            {
+              return true;
+            }
+            else
+            {
+              return false;
+            }
+        }
+
+        return false;
+
+
+    }.property("building"),
+
 
     size1: function() {
       var level = this.get('level');
@@ -247,6 +268,12 @@ AWE.UI.Ember = (function(module) {
       if (!finishedAt) {
         return ;
       }
+
+      var buildingId  = this.getPath('slot.buildingId');
+
+
+
+
       var finish = Date.parseISODate(finishedAt);
       var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
