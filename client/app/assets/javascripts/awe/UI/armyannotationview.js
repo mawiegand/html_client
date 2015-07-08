@@ -256,6 +256,13 @@ AWE.UI = (function(module) {
       _cavalryInfoView.setTextAlign("right");
       _cavalryInfoView.setIconImage("map/icon/army/cavalry");
       armyInfoContainer.addChild(_cavalryInfoView);
+
+      _littleChiefInfoView = AWE.UI.createLabelView();
+      _littleChiefInfoView.initWithControllerAndLabel(controller);
+      _littleChiefInfoView.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      _littleChiefInfoView.setTextAlign("right");
+      _littleChiefInfoView.setIconImage("map/icon/rank");
+      armyInfoContainer.addChild(_littleChiefInfoView);
             
       if (!frame) {
         my.frame.size.width = 192;
@@ -416,6 +423,7 @@ AWE.UI = (function(module) {
       _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
       _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
       _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
+      _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
       
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
