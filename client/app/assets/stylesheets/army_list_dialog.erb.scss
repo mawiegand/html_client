@@ -45,3 +45,39 @@
     }
   }
 }
+
+.settlement-list-view {
+  table {
+    margin: 10px auto;
+    tr {
+      cursor: pointer;
+      td {
+        &.settlement-image {
+          div {
+            width: 52px;
+            height: 44px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            &.settlement_home_base {
+              background-image: url("<%= asset_path 'dialogs/specials/settlement_list_settlement.png' %>");
+            }
+            &.settlement_fortress {
+              background-image: url("<%= asset_path 'dialogs/specials/settlement_list_fortress.png' %>");
+            }
+            &.settlement_outpost {
+              background-image: url("<%= asset_path 'dialogs/specials/settlement_list_outpost.png' %>");
+            }
+          }
+        }
+        &.name {
+          width: 340px;
+          padding: 0 16px;
+          div {
+            padding-left: 5%;
+            line-height: 44px;
+          }
+        }
+      }
+    }
+  }
+}

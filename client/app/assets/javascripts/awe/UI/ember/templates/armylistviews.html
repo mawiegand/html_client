@@ -20,8 +20,8 @@
 <script type="text/x-handlebars" data-template-name="settlement-list-view">
   {{#if settlements}}
     <table class="settlement-list-table">
-      {{#each settlements}}
-        {{view AWE.UI.Ember.SettlementListItem settlementBinding="this"}}
+      {{#each settlement in settlements}}
+        {{view AWE.UI.Ember.SettlementListItem settlementBinding="settlement"}}
       {{/each}}
     </table>
   {{else}}
@@ -52,12 +52,12 @@
 <script type="text/x-handlebars" data-template-name="settlement-list-item">
   <tr {{action "infoPressed"}}>
     <td class="settlement-image">
-      <div {{bindAttr class="army.armyCategory"}}>
+      <div {{bindAttr class="settlement.type.symbolic_id"}}>
       </div>
     </td>
     <td class="name">
-      <div class="background-textfield-grey-m">
-        {{army.name}}
+      <div class="background-textfield-grey-xl">
+        {{settlement.name}}
       </div>
     </td>
   </tr>

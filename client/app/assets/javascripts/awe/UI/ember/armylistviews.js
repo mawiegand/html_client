@@ -76,18 +76,18 @@ AWE.UI.Ember = (function(module) {
 
   module.SettlementListView = Ember.View.extend({
     templateName: "settlement-list-view",
-
-    init: function() {
-      
-    },
+    classNames: ["settlement-list-view"],
 
     settlements: function() {
       var settlementsHash = AWE.GS.SettlementManager.getOwnSettlements();    
 
       var settlementArray = [];
 
-      for (var key in settlementsHash) {
-          settlementArray.push(settlementsHash[key]);
+      for(var key in settlementsHash) {
+        if (settlementsHash.hasOwnProperty(key)) {
+          var settlement = settlementsHash[key]
+          settlementArray.push(settlement);
+        }
       }
       return settlementArray;
     }.property()
@@ -113,7 +113,7 @@ AWE.UI.Ember = (function(module) {
   });
 
   module.SettlementListItem = Ember.View.extend({
-    templateName: "army-list-item",
+    templateName: "settlement-list-item",
     settlement: null,
 
     infoPressed: function() {
@@ -121,10 +121,10 @@ AWE.UI.Ember = (function(module) {
       if (!settlement) {
         return ;
       }
-
       var mapController = WACKADOO.activateMapController(true);
       WACKADOO.closeAllModalDialogs();
-      mapController.centerLocation(settlement);
+      mapController.centerSettlement(settlement);
+      mapController.setSelectedSettlement(settlement);
 
       return false; // prevent default behavior
     }
