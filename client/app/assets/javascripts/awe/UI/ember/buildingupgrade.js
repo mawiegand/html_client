@@ -284,12 +284,13 @@ AWE.UI.Ember = (function(module) {
     classNames: ['building-details-unlock'],
     classBinding: "smallTemplate",
     building: null,
+    startLevel: 0,
     targetLevel: 1,
     smallTemplate: false,
     conversion: false,
 
     currentBuildingCapacity: function() {
-      var capacity = this.get("building").getCapacityForLevel(this.get("building.level"));
+      var capacity = this.get("building").getCapacityForLevel(this.get("startLevel"));
       if(capacity)
       {
         return capacity;
@@ -318,7 +319,7 @@ AWE.UI.Ember = (function(module) {
           return false;
         }
       });
-      return {capacity: capacity};
+      return capacity;
     }.property("currentBuildingCapacity"),
 
     targetBuildingSingleCapacity: function() {
@@ -333,42 +334,61 @@ AWE.UI.Ember = (function(module) {
           return false;
         }
       });
-      return {capacity: capacity};
+      return capacity;
     }.property("targetBuildingCapacity"),
 
     capacityDelta: function() {
       return this.get('targetBuildingSingleCapacity') - this.get('currentBuildingSingleCapacity');
     }.property('currentBuildingSingleCapacity', 'targetBuildingSingleCapacity'),
 
-    buildingSingleCapacityAdd: function() {
-
-    }.property('buildingSingleCapacity'),
-
-    buildingPopulation: function() {
-      var population = this.get("building").getPopulationForLevel(this.get("level"));
+    currentBuildingPopulation: function() {
+      var population = this.get("building").getPopulationForLevel(this.get("startLevel"));
       if(population)
       {
         return population;
       }
       return false;
-    }.property("building", "level"),
+    }.property("building", "startLevel"),
 
-    buildingProductionBoni: function() {
-      var boni = this.get("building").getProductionBoniForLevel(this.get("level"));
-      if(boni.length > 0)
+    targetBuildingPopulation: function() {
+      var population = this.get("building").getPopulationForLevel(this.get("targetLevel"));
+      if(population)
       {
-        return boni;
+        return population;
       }
       return false;
-    }.property("building", "level"),
+    }.property("building", "targetLevel"),
+
+    populationDelta: function() {
+      return this.get('targetBuildingPopulation') - this.get('currentBuildingPopulation');
+    }.property("currentBuildingPopulation", "targetBuildingPopulation"),
+
+    commandPointsDelta: function() {
+      return this.getPath('building.commandPointsNextLevel') - this.getPath('building.commandPoints');
+    }.property("building.commandPoints", "building.commandPointsNextLevel"),
+
 
     buildingMilitarySpeedupQueues: function() {
       var returnQueues = [];
-      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
-      queues.forEach(function(queue) {
+      var targetQueues = this.get("building").calculateSpeedupQueues(this.get("targetLevel"));
+      var currentQueues = this.get("building").calculateSpeedupQueues(this.get("startLevel"));
+      currentQueues.forEach(function(queue) {
+        var correspondingTarget = null;
+        targetQueues.forEach(function(targetQueue) {
+          if(queue.queueType.id === targetQueue.queueType.id)
+          {
+            correspondingTarget = targetQueue;
+            return;
+          }
+        });
+        
+        var delta = correspondingTarget.speedup - queue.speedup;
         if(queue.queueType.symbolic_id !== "queue_buildings")
         {
-          returnQueues.push(queue);
+          returnQueues.push({
+            queue: queue,
+            delta: delta
+          });
         }
       });
       if(returnQueues.length > 0)
@@ -376,11 +396,11 @@ AWE.UI.Ember = (function(module) {
         return returnQueues;
       }
       return false;
-    }.property("building", "level"),
+    }.property("building", "startLevel", "targetLevel"),
 
-    buildingConstructionSpeedupQueue: function() {
+    currentBuildingConstructionSpeedupQueue: function() {
       var returnQueue;
-      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
+      var queues = this.get("building").calculateSpeedupQueues(this.get("startLevel"));
       queues.forEach(function(queue) {
         if(queue.queueType.symbolic_id === "queue_buildings")
         {
@@ -392,7 +412,28 @@ AWE.UI.Ember = (function(module) {
         return returnQueue;
       }
       return false;
-    }.property("building", "level"),
+    }.property("building", "startLevel"),
+
+    targetBuildingConstructionSpeedupQueue: function() {
+      var returnQueue;
+      var queues = this.get("building").calculateSpeedupQueues(this.get("targetLevel"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id === "queue_buildings")
+        {
+          returnQueue = queue;
+        }
+      });
+      if(returnQueue)
+      {
+        return returnQueue;
+      }
+      return false;
+    }.property("building", "targetLevel"),
+
+    buildingSpeedDelta: function() {
+      debugger
+      return this.getPath('targetBuildingConstructionSpeedupQueue.speedup') - this.getPath('currentBuildingConstructionSpeedupQueue.speedup');
+    }.property("targetBuildingConstructionSpeedupQueue", "currentBuildingConstructionSpeedupQueue"),
 
     buildingTradeCarts: function() {
       var carts = this.get("building").calcTradingCarts(this.get("level"));

@@ -167,6 +167,12 @@
   background: url("<%= asset_path 'dialogs/items/normal/item_storage.png' %>") no-repeat center center;
 }
 
+.item.small.capacity {
+  width: 32px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_storage.png' %>") no-repeat center center;
+}
+
 .item.resource_stone.xs {
   width: 16px;
   height: 12px;
@@ -335,6 +341,9 @@
       width: 425px;
       height: 132px;
       float: left;
+      font-size: 24px;
+      margin-top: 15px;
+
       display: inline-block;
       -webkit-column-count:2;
       -moz-column-count:2;
@@ -353,6 +362,11 @@
         padding: 0;
         li {
           width: 100%;
+          margin-bottom: 5px;
+          .item {
+            float: left;
+            margin-right: 10px;
+          }
         }
       }
     }
