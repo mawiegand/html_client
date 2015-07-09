@@ -198,30 +198,71 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, -20, 20, 20));
       this.addChild(_rankImageView);
       
-      infoContainer = AWE.UI.createMultiLineContainer();
-      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,120,0));
+      infoContainer = AWE.UI.createMultiColumnContainer();
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,0,0));
       this.addChild(infoContainer);
+
+      generalInfoContainer = AWE.UI.createMultiLineContainer();
+      generalInfoContainer.initWithController(controller, AWE.Geometry.createRect(0,0,60,0));
+      infoContainer.addChild(generalInfoContainer);
+
+      armyInfoContainer = AWE.UI.createMultiLineContainer();
+      armyInfoContainer.initWithController(controller, AWE.Geometry.createRect(0,0,60,0));
+      infoContainer.addChild(armyInfoContainer);
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
       _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
-      //_infoText1View.setIconImage("map/icon/owner");
-      infoContainer.addChild(_infoText1View);
+      generalInfoContainer.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
       _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText2View.setTextAlign("left");
       _infoText2View.setIconImage("map/icon/fist");
-      infoContainer.addChild(_infoText2View);
+      generalInfoContainer.addChild(_infoText2View);
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
       _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText3View.setTextAlign("left");
       _infoText3View.setIconImage("map/icon/owner");
-       infoContainer.addChild(_infoText3View);
+      generalInfoContainer.addChild(_infoText3View);
+
+      emptyLine = AWE.UI.createLabelView();
+      emptyLine.initWithControllerAndLabel(controller);
+      emptyLine.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      emptyLine.setTextAlign("right");
+      armyInfoContainer.addChild(emptyLine);
+
+      _infantryInfoView = AWE.UI.createLabelView();
+      _infantryInfoView.initWithControllerAndLabel(controller);
+      _infantryInfoView.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      _infantryInfoView.setTextAlign("right");
+      _infantryInfoView.setIconImage("map/icon/army/infantry");
+      armyInfoContainer.addChild(_infantryInfoView);
+
+      _artilleryInfoView = AWE.UI.createLabelView();
+      _artilleryInfoView.initWithControllerAndLabel(controller);
+      _artilleryInfoView.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      _artilleryInfoView.setTextAlign("right");
+      _artilleryInfoView.setIconImage("map/icon/army/artillery");
+      armyInfoContainer.addChild(_artilleryInfoView);
+
+      _cavalryInfoView = AWE.UI.createLabelView();
+      _cavalryInfoView.initWithControllerAndLabel(controller);
+      _cavalryInfoView.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      _cavalryInfoView.setTextAlign("right");
+      _cavalryInfoView.setIconImage("map/icon/army/cavalry");
+      armyInfoContainer.addChild(_cavalryInfoView);
+
+      _littleChiefInfoView = AWE.UI.createLabelView();
+      _littleChiefInfoView.initWithControllerAndLabel(controller);
+      _littleChiefInfoView.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+      _littleChiefInfoView.setTextAlign("right");
+      _littleChiefInfoView.setIconImage("map/icon/rank");
+      armyInfoContainer.addChild(_littleChiefInfoView);
             
       if (!frame) {
         my.frame.size.width = 192;
@@ -378,6 +419,11 @@ AWE.UI = (function(module) {
       _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
       _infoText2View.setText(_army.get('strength'));
       _infoText3View.setText(_army.get('size_present'));
+
+      _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
+      _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
+      _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
+      _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
       
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
