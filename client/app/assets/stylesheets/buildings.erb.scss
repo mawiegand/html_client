@@ -473,6 +473,7 @@
 
 /*Cief Cottage*/
 .building_chief_cottage.building-image {
+  top: -16%;
   background-image: url('<%= asset_path("buildings/base/building_chief_cottage/building_chief_cottage_small.png") %>');
 }
 
@@ -549,6 +550,7 @@
 
 /*Copper Smelter*/
 .building_copper_smelter.building-image {
+  top: -19%;
   background-image: url('<%= asset_path("buildings/base/building_copper_smelter/building_copper_smelter_small.png") %>');
 }
 
