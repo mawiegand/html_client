@@ -121,27 +121,10 @@ AWE.I18n.en_US = function(module) {
       newArmy:"New Army",
 
       list: {
-        header: "Armies overview",
-        flavor: "Ha, all my armies at a glance! Experienced ones at the top and new ones at the bottom. Now lets get to it!",
-        none:   "You don't currently have any armies.",
-
-        table: {
-          name:     "Name",
-          region:   "Region",
-          status:   "Status",
-          rank:     "Rank",
-          ap:       "AP",
-          size:     "Size",
-          max_size: "Maxmimum",
-          info:     "Info",
-        },
-
-        status: {
-          neutral:   "neutral",
-          moving:    "moving",
-          fighting:  "fighting",
-          defending: "defending",
-        },
+        header: "Overview",
+        armies: "Armys",
+        settlements: "Settlements",
+        none:   "You have no armies.",
       },
 
       details:{

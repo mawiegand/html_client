@@ -8,21 +8,3 @@
 //= require jquery_ujs
 
 //= require plugins
-
-//var AWE = window.AWE || {};
-//AWE.Settings = AWE.Settings || {};
-//
-//var my_args = {}
-//
-//try {
-//  my_args = JSON.parse(window.name);
-//}
-//catch (e1) {
-//  try {
-//    my_args = JSON.parse(fbArgs);
-//  }
-//  catch (e2) {
-//  }
-//}
-//
-//AWE.Settings.lang = my_args.locale ? my_args.locale.substr(0, 2) : 'en';
