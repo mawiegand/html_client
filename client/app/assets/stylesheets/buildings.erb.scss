@@ -25,6 +25,12 @@
   background-size: 200%;
 }
 
+/*Special Gatherer*/
+.building_trade_center.big-building {
+  background-image: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_big.png") %>');
+  background-size: 200%;
+}
+
 /*Barracks*/
 .building_barracks.big-building,
 .building_infantry_tower.big-building {
@@ -184,6 +190,12 @@
 
 /*Special Gatherer*/
 .building_special_gatherer.big-building.silhouette {
+  background-image: url('<%= asset_path("buildings/silhouettes/building_special_gatherer_big_silhouette.png") %>');
+  background-size: 200%
+}
+
+/*Trade Center*/
+.building_trade_center.big-building.silhouette {
   background-image: url('<%= asset_path("buildings/silhouettes/building_special_gatherer_big_silhouette.png") %>');
   background-size: 200%
 }
@@ -474,6 +486,10 @@
   background-image: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>');
 }
 
+/*Trade Center*/
+.building_trade_center.building-image {
+  background-image: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>');
+}
 
 /*Barracks*/
 .building_barracks.building-image,
@@ -698,6 +714,9 @@
   background: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>') no-repeat center center;
 }
 .building-option-image.building_special_gatherer {
+  background: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>') no-repeat center center;
+}
+.building-option-image.building_trade_center {
   background: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>') no-repeat center center;
 }
 .building-option-image.building_cottage  {
@@ -960,6 +979,13 @@
 .building_special_gatherer.building-image.size0 .small-fire,
 .building_special_gatherer.building-image.size1 .small-fire,
 .building_special_gatherer.building-image.size2 .small-fire {
+  top: 74px;
+  left:77px;
+}
+
+.building_trade_center.building-image.size0 .small-fire,
+.building_trade_center.building-image.size1 .small-fire,
+.building_trade_center.building-image.size2 .small-fire {
   top: 74px;
   left:77px;
 }
