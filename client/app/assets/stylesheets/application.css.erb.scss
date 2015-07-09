@@ -2063,6 +2063,7 @@ h1.slot-tooltip {
 .building-slot-tooltip-wrapper {
   font-size:14px;
   min-width: 300px;
+  z-index: 1000;
 }
 
 
@@ -4476,13 +4477,13 @@ table .datetime {
 .base-picture .mouse-over {
   position: fixed;
   display: block;
-  z-index:10;
+  z-index: 60;
   padding: 16px;
   border-radius: 11px;
   margin-top: -20px;
   margin-left: 30px;
   pointer-events: none;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.8);
   color: white;
   text-shadow: none;
 }
