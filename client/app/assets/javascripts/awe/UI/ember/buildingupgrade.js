@@ -107,9 +107,181 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+  module.UpgradeUnlockDialog = module.PopUpDialog.extend({
+    templateName: 'upgrade-unlock-dialog',
+  });
+
   module.BuildingDetailsView = Ember.View.extend({
     templateName: 'building-details-view',
     classNames: ['building-details'],
+    classBinding: "smallTemplate",
+    building: null,
+    level: 1,
+    smallTemplate: false,
+    conversion: false,
+
+    buildingProductions: function() {
+      if(this.get("buildingResourceProductions") || this.get("buildingExperienceProductions"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingResourceProductions", "buildingExperienceProduction"),
+
+    buildingResourceProductions: function() {
+      var productions = this.get("building").getProductionsForLevel(this.get("level"));
+      if(productions.length > 0)
+      {
+        return productions;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingExperienceProductions: function() {
+      var productions = this.get("building").getExperienceProductionForLevel(this.get("level"));
+      return productions;
+    }.property("building", "level"),
+
+    buildingCapacity: function() {
+      var capacity = this.get("building").getCapacityForLevel(this.get("level"));
+      if(capacity)
+      {
+        return capacity;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingSingleCapacity: function() {
+      var capacity = 0;
+      this.get('buildingCapacity').forEach(function(cap) {
+        if(capacity === 0)
+        {
+          capacity = cap.capacity;
+        }
+        if(cap.capacity !== capacity)
+        {
+          return false;
+        }
+      });
+      return {capacity: capacity};
+    }.property("building", "level"),
+
+    buildingPopulation: function() {
+      var population = this.get("building").getPopulationForLevel(this.get("level"));
+      if(population)
+      {
+        return population;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingProductionBoni: function() {
+      var boni = this.get("building").getProductionBoniForLevel(this.get("level"));
+      if(boni.length > 0)
+      {
+        return boni;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingMilitarySpeedupQueues: function() {
+      var returnQueues = [];
+      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id !== "queue_buildings")
+        {
+          returnQueues.push(queue);
+        }
+      });
+      if(returnQueues.length > 0)
+      {
+        return returnQueues;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingConstructionSpeedupQueue: function() {
+      var returnQueue;
+      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id === "queue_buildings")
+        {
+          returnQueue = queue;
+        }
+      });
+      if(returnQueue)
+      {
+        return returnQueue;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingTradeCarts: function() {
+      var carts = this.get("building").calcTradingCarts(this.get("level"));
+      return carts;
+    }.property("building", "level"),
+
+    buildingGarrisonBonus: function() {
+      var bonus = this.get('building').getGarrisonBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingArmyBonus: function() {
+      var bonus = this.get('building').getArmyBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingDefenseBonus: function() {
+      var bonus = 100 * this.get('building').getDefenseBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    containsMilitaryInfo: function() {
+      if(this.get("buildingMilitarySpeedupQueues") || this.get("buildingGarrisonBonus") || this.get("buildingArmyBonus") || this.get("buildingDefenseBonus"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingMilitarySpeedupQueues", "buildingGarrisonBonus", "buildingArmyBonus", "buildingDefenseBonus"),
+
+    containsEconomyInfo: function() {
+      if(this.get("buildingProductions") || this.get("buildingCapacity") || this.get("buildingConstructionSpeedupQueue") || this.get("buildingProductionBoni"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingProductions", "buildingProductionBoni", "buildingConstructionSpeedupQueue", "buildingCapacity"),
+
+
+    isSingleMilitaryRow: function() {
+      if(this.get("containsMilitaryInfo"))
+      {
+        if(this.get("containsEconomyInfo"))
+        {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }.property("containsEconomyInfo", "containsMilitaryInfo"),
+
+    isSingleEconomyRow: function() {
+      if(this.get("containsEconomyInfo"))
+      {
+        if(this.get("containsMilitaryInfo"))
+        {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }.property("containsEconomyInfo", "containsMilitaryInfo"),
+
+  });
+
+  module.BuildingDetailsNewView = Ember.View.extend({
+    templateName: 'building-details-new-view',
+    classNames: ['building-details-new'],
     classBinding: "smallTemplate",
     building: null,
     level: 1,
