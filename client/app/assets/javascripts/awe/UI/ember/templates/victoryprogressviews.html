@@ -7,7 +7,7 @@
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-domination-view">
   <div class="alliance-victory-progress-domination">
     {{#if AWE.GS.game.roundInfo.victoryGained}}
-      <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime victoryGainedAt}} durch einen {{local victoryType.name}} gewonnen.</p>
+      <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime AWE.GS.game.roundInfo.victoryGainedAt}} durch einen {{local AWE.GS.game.roundInfo.victoryType.name}} gewonnen.</p>
     {{/if}}
     <p>{{ local victoryType.description }}</p>
     <p>{{t alliance.progress.requiredRegions}}: {{requiredRegions}} {{t general.of}} {{AWE.GS.game.roundInfo.regions_count}} ({{formatAsPercent requiredRegionsRatio}}), {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
@@ -55,7 +55,7 @@
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-artifact-view">
   <div class="alliance-victory-progress-artifacts">
     {{#if AWE.GS.game.roundInfo.victoryGained}}
-      <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime victoryGainedAt}} durch einen {{local victoryType.name}} gewonnen.</p>
+      <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime AWE.GS.game.roundInfo.victoryGainedAt}} durch einen {{local AWE.GS.game.roundInfo.victoryType.name}} gewonnen.</p>
     {{/if}}
     <p>{{ local victoryType.description }}</p>
     <p>{{t alliance.progress.requiredArtifacts}}: {{requiredArtifacts}}, {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
