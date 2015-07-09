@@ -72,11 +72,22 @@ AWE.UI.Ember = (function(module) {
     },
     
     conversionClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
-        slot: this.get('slot'),
-        controller: this.get('controller'),
-        conversionView: true,
-      });
+      if(AWE.Config.BuildingSettings.newUpgradeForBuilding(this.getPath('slot.building.buildingType.symbolic_id')))
+      {
+        var dialog = AWE.UI.Ember.UpgradeUnlockDialog.create({
+          slot: this.get('slot'),
+          controller: this.get('controller'),
+          conversionView: true,
+        });
+      }
+      else 
+      {
+        var dialog = AWE.UI.Ember.UpgradeView.create({
+          slot: this.get('slot'),
+          controller: this.get('controller'),
+          conversionView: true,
+        });
+      }
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionConvertClicked(this.get('slot'));
     },

@@ -23,7 +23,7 @@
       newUpgrade: false
     },
     building_barracks: {
-      newUpgrade: false
+      newUpgrade: true
     },
     building_cottage: {
       newUpgrade: false
@@ -35,7 +35,7 @@
       newUpgrade: false
     },
     building_campfire: {
-      newUpgrade: false
+      newUpgrade: true
     },
     building_quarry: {
       newUpgrade: false
@@ -44,7 +44,7 @@
       newUpgrade: false
     },
     building_training_cave: {
-      newUpgrade: true
+      newUpgrade: false
     },
     building_artifact_stand: {
       newUpgrade: false
@@ -60,6 +60,15 @@
     },
     building_alliance_hall: {
       newUpgrade: false
+    },
+    building_barracks_2: {
+      newUpgrade: true
+    },
+    building_firing_range_2: {
+      newUpgrade: true
+    },
+    building_stud_2: {
+      newUpgrade: true
     },
     building_cottage_2: {
       newUpgrade: false
@@ -77,7 +86,7 @@
       newUpgrade: true
     },
     building_command_post: {
-      newUpgrade: true
+      newUpgrade: false
     },
     building_furrier_2: {
       newUpgrade: false
@@ -86,7 +95,7 @@
       newUpgrade: false
     },
     building_haunt: {
-      newUpgrade: false
+      newUpgrade: true
     },
     building_field_camp: {
       newUpgrade: false

@@ -134,13 +134,18 @@
     <div class="top-section">
       <div {{bindAttr class="selectedBuildingClass selectedBuildingImageLevel :big-building :buildingUpgradeImage"}}>
         <div class="level">
-          Level {{currentLevel}} <span class="green">+1</span>
+          {{#if conversionView}}
+            Level {{currentLevel}} <span class="red">-{{levelDelta}}</span></br>
+            => Bronzezeit
+          {{else}}
+            Level {{currentLevel}} <span class="green">+1</span>
+          {{/if}}
         </div>
       </div>
       {{#if conversionView}}
-        {{view AWE.UI.Ember.BuildingDetailsUnlockView buildingBinding="building.converted" levelBinding="selectedLevel" smallTemplateBinding="smallDetailTemplate" conversionBinding="conversionView"}}
+        {{view AWE.UI.Ember.BuildingDetailsUnlockView startBuildingBinding="building" endBuildingBinding="building.converted" startLevelBinding="currentLevel" targetLevelBinding="selectedLevel"}}
       {{else}}
-        {{view AWE.UI.Ember.BuildingDetailsUnlockView buildingBinding="building" startLevelBinding="currentLevel" targetLevelBinding="selectedLevel" smallTemplateBinding="smallDetailTemplate"}}
+        {{view AWE.UI.Ember.BuildingDetailsUnlockView startBuildingBinding="building" endBuildingBinding="building" startLevelBinding="currentLevel" targetLevelBinding="selectedLevel"}}
       {{/if}}
     </div>
     <div class="bottom-section">

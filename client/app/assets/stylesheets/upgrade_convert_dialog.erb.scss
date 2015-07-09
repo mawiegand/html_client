@@ -321,12 +321,15 @@
   .green {
     color: #66BD10;
   }
+  .red {
+    color: #C13011;
+  }
   .top-section {
     width: 100%;
     display: inline-block;
     .buildingUpgradeImage {
       width: 200px;
-      height: 200px;
+      height: 140px;
       background-repeat: no-repeat;
       float: left;
       display: inline-block;
@@ -334,7 +337,7 @@
       .level {
         position: absolute;
         left: 20px;
-        bottom: 0;
+        top: 140px;
       }
     }
     .building-details-unlock {
