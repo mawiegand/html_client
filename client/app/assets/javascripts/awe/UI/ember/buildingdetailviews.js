@@ -48,7 +48,7 @@ AWE.UI.Ember = (function(module) {
     }.property('building.hashableJobs.collection.length').cacheable(),
     
     upgradeClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
+      var dialog = AWE.UI.Ember.UpgradeUnlockDialog.create({
         slot: this.get('slot'),
         controller: this.get('controller')
       });

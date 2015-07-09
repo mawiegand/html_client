@@ -107,7 +107,7 @@ AWE.UI.Ember = (function(module) {
 
   });
 
-  module.UpgradeUnlockDialog = module.PopUpDialog.extend({
+  module.UpgradeUnlockDialog = module.UpgradeView.extend({
     templateName: 'upgrade-unlock-dialog',
   });
 
@@ -279,49 +279,36 @@ AWE.UI.Ember = (function(module) {
 
   });
 
-  module.BuildingDetailsNewView = Ember.View.extend({
-    templateName: 'building-details-new-view',
-    classNames: ['building-details-new'],
+  module.BuildingDetailsUnlockView = Ember.View.extend({
+    templateName: 'building-details-unlock-view',
+    classNames: ['building-details-unlock'],
     classBinding: "smallTemplate",
     building: null,
-    level: 1,
+    targetLevel: 1,
     smallTemplate: false,
     conversion: false,
 
-    buildingProductions: function() {
-      if(this.get("buildingResourceProductions") || this.get("buildingExperienceProductions"))
-      {
-        return true;
-      }
-      return false;
-    }.property("buildingResourceProductions", "buildingExperienceProduction"),
-
-    buildingResourceProductions: function() {
-      var productions = this.get("building").getProductionsForLevel(this.get("level"));
-      if(productions.length > 0)
-      {
-        return productions;
-      }
-      return false;
-    }.property("building", "level"),
-
-    buildingExperienceProductions: function() {
-      var productions = this.get("building").getExperienceProductionForLevel(this.get("level"));
-      return productions;
-    }.property("building", "level"),
-
-    buildingCapacity: function() {
-      var capacity = this.get("building").getCapacityForLevel(this.get("level"));
+    currentBuildingCapacity: function() {
+      var capacity = this.get("building").getCapacityForLevel(this.get("building.level"));
       if(capacity)
       {
         return capacity;
       }
       return false;
-    }.property("building", "level"),
+    }.property("building", "building.level"),
 
-    buildingSingleCapacity: function() {
+    targetBuildingCapacity: function() {
+      var capacity = this.get("building").getCapacityForLevel(this.get("targetLevel"));
+      if(capacity)
+      {
+        return capacity;
+      }
+      return false;
+    }.property("building", "targetLevel"),
+
+    currentBuildingSingleCapacity: function() {
       var capacity = 0;
-      this.get('buildingCapacity').forEach(function(cap) {
+      this.get('currentBuildingCapacity').forEach(function(cap) {
         if(capacity === 0)
         {
           capacity = cap.capacity;
@@ -332,7 +319,30 @@ AWE.UI.Ember = (function(module) {
         }
       });
       return {capacity: capacity};
-    }.property("building", "level"),
+    }.property("currentBuildingCapacity"),
+
+    targetBuildingSingleCapacity: function() {
+      var capacity = 0;
+      this.get('targetBuildingCapacity').forEach(function(cap) {
+        if(capacity === 0)
+        {
+          capacity = cap.capacity;
+        }
+        if(cap.capacity !== capacity)
+        {
+          return false;
+        }
+      });
+      return {capacity: capacity};
+    }.property("targetBuildingCapacity"),
+
+    capacityDelta: function() {
+      return this.get('targetBuildingSingleCapacity') - this.get('currentBuildingSingleCapacity');
+    }.property('currentBuildingSingleCapacity', 'targetBuildingSingleCapacity'),
+
+    buildingSingleCapacityAdd: function() {
+
+    }.property('buildingSingleCapacity'),
 
     buildingPopulation: function() {
       var population = this.get("building").getPopulationForLevel(this.get("level"));
@@ -403,47 +413,6 @@ AWE.UI.Ember = (function(module) {
       var bonus = 100 * this.get('building').getDefenseBonusForLevel(this.get('level'));
       return bonus;
     }.property("building", "level"),
-
-    containsMilitaryInfo: function() {
-      if(this.get("buildingMilitarySpeedupQueues") || this.get("buildingGarrisonBonus") || this.get("buildingArmyBonus") || this.get("buildingDefenseBonus"))
-      {
-        return true;
-      }
-      return false;
-    }.property("buildingMilitarySpeedupQueues", "buildingGarrisonBonus", "buildingArmyBonus", "buildingDefenseBonus"),
-
-    containsEconomyInfo: function() {
-      if(this.get("buildingProductions") || this.get("buildingCapacity") || this.get("buildingConstructionSpeedupQueue") || this.get("buildingProductionBoni"))
-      {
-        return true;
-      }
-      return false;
-    }.property("buildingProductions", "buildingProductionBoni", "buildingConstructionSpeedupQueue", "buildingCapacity"),
-
-
-    isSingleMilitaryRow: function() {
-      if(this.get("containsMilitaryInfo"))
-      {
-        if(this.get("containsEconomyInfo"))
-        {
-          return false;
-        }
-        return true;
-      }
-      return false;
-    }.property("containsEconomyInfo", "containsMilitaryInfo"),
-
-    isSingleEconomyRow: function() {
-      if(this.get("containsEconomyInfo"))
-      {
-        if(this.get("containsMilitaryInfo"))
-        {
-          return false;
-        }
-        return true;
-      }
-      return false;
-    }.property("containsEconomyInfo", "containsMilitaryInfo"),
 
   });
 
