@@ -423,7 +423,14 @@ AWE.UI = (function(module) {
       _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
       _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
       _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
-      _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
+      if(_army.details.unit_little_chief !== null)
+      {
+        _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
+      }
+      else
+      {
+        _littleChiefInfoView.setText(0);
+      }
       
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
