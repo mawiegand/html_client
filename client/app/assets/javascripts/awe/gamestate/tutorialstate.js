@@ -1472,7 +1472,7 @@ AWE.GS = (function(module) {
       
       if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true &&
           questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
-        var dialog = AWE.UI.Ember.QuestDialog.create({
+        var dialog = AWE.UI.Ember.QuestInfoDialog.create({
           questState: questState,
           modeStart: true,
           popupAnimations: true,
@@ -1494,17 +1494,12 @@ AWE.GS = (function(module) {
         that.updateTutorialState();
       }
     };
-    
-    that.showQuestInfoDialog = function(quest) {
-      
-      
 
-      // log('---> showQuestInfoDialog');
-      
+    that.showQuestInfoDialog = function(quest) {
       var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest.id);
       var applaud = questState.get('finished') && !questState.get('rewardDisplayed');
           
-      var infoDialog = AWE.UI.Ember.QuestDialog.create({
+      var infoDialog = AWE.UI.Ember.QuestInfoDialog.create({
         modeExisting: true,
         questState: questState,
         spinningAnimation: applaud,
@@ -1528,7 +1523,7 @@ AWE.GS = (function(module) {
       
       var applaud = questState.get('finished') && !questState.get('rewardDisplayed');
 
-      var dialog = AWE.UI.Ember.QuestDialog.create({
+      var dialog = AWE.UI.Ember.QuestInfoDialog.create({
         modeEnd: true,
         questState: questState,
         spinningAnimation: applaud,

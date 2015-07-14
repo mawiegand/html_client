@@ -45,18 +45,8 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="quest-view">
-      <h3>
-        {{#if finished}}
-          {{t tutorial.quest.end.task}} {{local quest.task}}
-        {{else}}
-          {{#if modeStart}}
-            {{t tutorial.quest.start.task}} {{local quest.task}}
-          {{else}}
-            {{t tutorial.quest.info.task}} {{local quest.task}}
-          {{/if}}
-        {{/if}}
-      </h3>
+<script type="text/x-handlebars" data-template-name="quest-text-view">
+      <p>{{local quest.task}}</p>
       {{#if finished}}
         {{#if quest.reward_text}}Tipp: {{local quest.reward_text}} {{/if}}
       {{else}}
@@ -83,7 +73,7 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="quest-dialog">
+<script type="text/x-handlebars" data-template-name="quest-info-dialog">
   <div class="modal-dialog-background">
     {{#if spinningBackground}}
       <div class="horizontal-center-helper">
@@ -92,113 +82,111 @@
     {{/if}}
   </div>
   <div class="horizontal-center-helper">  
-    <div class="quest-dialog-bg">
-      <div class="quest-dialog-content">
-        {{#if finished}}
-          <div class="quest-scip-button" {{action "redeemLaterButtonPressed" }}></div>
-        {{/if}}
-        <div class="quest-dialog-text">
-          {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
+    <div class="quest-info-dialog-bg">
+      <div class="quest-info-dialog-content">
+        <div class="quest-info-dialog-text">
+          <h3>{{local quest.name}}</h3>
+          {{view AWE.UI.Ember.QuestTextView questBinding="quest" questStateBinding="questState"}}
         </div>
-        <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>     
+        <div {{bindAttr class="quest.advisor"}} id="quest-dialog-advisor"></div>     
         {{#if quest.rewards}}
-          <div class="quest-dialog-reward">
-            <ul class="quest-dialog-rewards-items">      
-            {{#if finished}}
-              {{#if quest.rewards.resource_rewards}}
-                {{#each quest.rewards.resource_rewards}}
-                  <li class="quest-reward-item">
-                    <div class="quest-reward-item-image finished">
-                       <div class="quest-reward-item-icon">
-                          <span class="quest-resource-icon {{unbound this.resource}} finished">&nbsp;</span>
-                       </div>
-                    </div>
-                    <div class="quest-reward-item-number finished">{{this.amount}}</div>
-                  </li>
-                {{/each}}
-              {{/if}}
-              {{#if quest.rewards.unit_rewards}}
-                {{#each quest.rewards.unit_rewards}}
-                  <li class="quest-reward-item">
-                    <div class="quest-reward-item-image finished">
-                       <div class="quest-reward-item-icon">
-                      <span class="unit-icon {{unbound this.unit}} finished">&nbsp;</span>
-                   </div>
-                    </div>
-                    <div class="quest-reward-item-number finished">{{this.amount}}</div>
-                  </li>
-                {{/each}}
-              {{/if}}
-              {{#if quest.rewards.experience_reward}}
-                <li class="quest-reward-item">
-                  <div class="quest-reward-item-image finished">
-                     <div class="quest-reward-item-icon">
-                    <span class="xp-icon finished">&nbsp;</span>
-                  </div>
-               </div>
-                  <div class="quest-reward-item-number finished">{{quest.rewards.experience_reward}}</div>
-                </li>
-              {{/if}}
-            {{else}}
-              {{#if quest.rewards.resource_rewards}}
-                {{#each quest.rewards.resource_rewards}}
-                  <li class="quest-reward-item">
-                    <div class="quest-reward-item-image">
-                       <div class="quest-reward-item-icon">
-                      <span class="quest-resource-icon {{unbound this.resource}}">&nbsp;</span>
-                   </div>
-                    </div>
-                    <div class="quest-reward-item-number">{{this.amount}}</div>
-                  </li>
-                {{/each}}
-              {{/if}}
-              {{#if quest.rewards.unit_rewards}}
-                {{#each quest.rewards.unit_rewards}}
-                  <li class="quest-reward-item">
-                    <div class="quest-reward-item-image">
-                       <div class="quest-reward-item-icon">
-                      <span class="unit-xl-icon">&nbsp;</span>
-                   </div>
-                    </div>
-                    <div class="quest-reward-item-number">{{this.amount}}</div>
-                  </li>
-                {{/each}}
-              {{/if}}
-              {{#if quest.rewards.experience_reward}}
-                <li class="quest-reward-item">
-                  <div class="quest-reward-item-image">
-                     <div class="quest-reward-item-icon">
-                    <span class="xp-icon finished">&nbsp;</span>
-                 </div>
-                  </div>
-                  <div class="quest-reward-item-number">{{quest.rewards.experience_reward}}</div>
-                </li>
-              {{/if}}
-            {{/if}}
-            </ul>
-          </div>
+          {{view AWE.UI.Ember.QuestRewardsView questBinding="quest"}}
         {{/if}}
+
+        {{view AWE.UI.Ember.SubquestListView epicBinding="quest"}}
 
         <div class="quest-dialog-button" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           {{/if}}
         </div>
-
       </div>
     </div>
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="quest-unit-rewards-view">
-  {{#each units }}
-    {{view AWE.UI.Ember.QuestUnitRewardView unitBinding="this"}}
-  {{/each}}
+<script type="text/x-handlebars" data-template-name="quest-rewards-view">
+  <div class="quest-info-dialog-rewards">
+    <ul class="quest-info-dialog-rewards-items">      
+      {{#if quest.rewards.resource_rewards}}
+        {{#each quest.rewards.resource_rewards}}
+          <li class="quest-reward-item">
+            <div {{bindAttr class=":quest-reward-item-image resource"}}></div>
+            <div class="quest-reward-item-number">+{{this.amount}}</div>
+          </li>
+        {{/each}}
+      {{/if}}
+      {{#if quest.rewards.unit_rewards}}
+        {{#each quest.rewards.unit_rewards}}
+          <li class="quest-reward-item">
+            <div {{bindAttr class=":quest-reward-item-image unit"}}></div>
+            <div class="quest-reward-item-number">+{{this.amount}}</div>
+          </li>
+        {{/each}}
+      {{/if}}
+      {{#if quest.rewards.experience_reward}}
+        <li class="quest-reward-item">
+          <div class="quest-reward-item-image xp-icon"></div>
+          <div class="quest-reward-item-number">+{{quest.rewards.experience_reward}}</div>
+        </li>
+      {{/if}}
+    </ul>
+  </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="quest-unit-reward-view">
-  <div>
-    <div class="quest-reward-name">{{unitName}}</div>
-    <div class="quest-reward-amount">{{unit.amount}}</div>
+<script type="text/x-handlebars" data-template-name="subquest-list-view">
+  <div class="subquest-list">
+    {{#if twoColumnLayout}}
+      <div class="two-col-layout">
+        <div class="left">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.0"}}
+        </div>
+        <div {{bindAttr class=":quest_arrow_right_brown"}}></div>
+        <div class="right">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.1"}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if threeColumnLayout}}
+      <div class="three-col-layout">
+        <div class="first">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.0"}}
+        </div>
+        <div {{bindAttr class=":quest_arrow_right_brown_short_cracked :arrow subQuestStates[0].finished:finished"}}></div>
+        <div class="second">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.1"}}
+        </div>
+        <div {{bindAttr class=":quest_arrow_right_brown_short :arrow"}}></div>
+        <div class="third">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.2"}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if fourColumnLayout}}
+      <div class="four-col-layout">
+        <div class="first">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.0"}}
+        </div>
+        <div {{bindAttr class=":quest_arrow_right_brown"}}></div>
+        <div class="second">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.1"}}
+        </div>
+        <div class="third">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.2"}}
+        </div>
+        <div class="fourth">
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.3"}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="subquest-item-view">
+  <div class="sub-wrapper">
+    <div class="description">{{local questState.quest.task}}</div>
+    <div class="paper-background">
+      <div {{bindAttr class=":sub-image finished"}}></div>
+    </div>
   </div>
 </script>
