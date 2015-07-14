@@ -183,10 +183,16 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="subquest-item-view">
-  <div class="sub-wrapper">
-    <div class="description">{{local questState.quest.task}}</div>
-    <div class="paper-background">
-      <div {{bindAttr class=":sub-image finished"}}></div>
-    </div>
-  </div>
+  <table class="sub-wrapper">
+    <tr class="description">
+      <td>{{local questState.quest.task}}</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="paper-background">
+          <div {{bindAttr class=":sub-image finished"}}></div>
+        </div>
+      </td>
+    </tr>
+  </table>
 </script>

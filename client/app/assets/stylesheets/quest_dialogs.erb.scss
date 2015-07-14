@@ -609,11 +609,29 @@ div.dom-quest-container div.tutorial-dialog {
     }
 
     .subquest-list {
+      width: 100%;
+      text-align: center;
+      display: inline-block;
+      &>div {
+        display: inline-block;
+      }
+      .description {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        height: 70px;
+        td {
+          vertical-align: middle;
+        }
+      }
+      .arrow {
+          margin-top: 100px;
+      }
       .two-col-layout {
         .description {
-          padding: 0;
-          margin: 0;
-          width: 216px;
+          td {
+            width: 216px;
+          }
         }
         .left {
           display: inline-block;
@@ -639,13 +657,10 @@ div.dom-quest-container div.tutorial-dialog {
           float: left;
           display: inline-block;
         }
-        .arrow {
-          margin-bottom: 35px;
-        }
         .description {
-          padding: 0;
-          margin: 0;
-          width: 148px;
+          td {
+            width: 156px;
+          }
         }
         .first {
           .paper-background {
@@ -674,9 +689,9 @@ div.dom-quest-container div.tutorial-dialog {
       }
       .four-col-layout {
         .description {
-          padding: 0;
-          margin: 0;
-          width: 148px;
+          td {
+            width: 128px;
+          }
         }
         .first {
           display: inline-block;
