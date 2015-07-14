@@ -36,6 +36,8 @@ AWE.UI.Ember = (function(module) {
     }
   };
 
+
+
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
   module.BuildingView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingView# */ {
@@ -61,25 +63,19 @@ AWE.UI.Ember = (function(module) {
     }.property("building", 'level'),
 
 
-    idle:function(){
-
+    active:function(){
         var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+
+
         if(buildingId == "building_tavern")
         {
-            if(AWE.GS.game.get('currentCharacter').assignment_level > 1)
-            {
-              return true;
-            }
-            else
-            {
-              return false;
-            }
+          return this.getPath('building.active');
         }
 
         return false;
 
+    }.property("building.active"),
 
-    }.property("building"),
 
 
     size1: function() {
@@ -279,6 +275,7 @@ AWE.UI.Ember = (function(module) {
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);
+
     },
     
     startTimer: function() {

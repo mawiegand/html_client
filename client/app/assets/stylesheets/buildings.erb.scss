@@ -399,15 +399,13 @@
   background-repeat: no-repeat;
   z-index: 2;
 
-  .sleeping{
-    
-  }
 }
 
 
 
 .small-building {
   pointer-events:none;
+
   .building_campfire.building-image {
     -webkit-animation: camp_fire .5s steps(5) infinite;
        -moz-animation: camp_fire .5s steps(5) infinite;
@@ -417,13 +415,15 @@
   }
 
 
-  .building_tavern.building-image {
+  .building_tavern.building-image.active {
     -webkit-animation: anim_tavern .5s steps(5) infinite;
        -moz-animation: anim_tavern .5s steps(5) infinite;
         -ms-animation: anim_tavern .5s steps(5) infinite;
          -o-animation: anim_tavern .5s steps(5) infinite;
             animation: anim_tavern .5s steps(5) infinite;
   }
+
+
 
 
 
@@ -494,16 +494,27 @@
 
 /*Cottage*/
 .building_cottage.building-image {
-  background-image: url('<%= asset_path("buildings/base/building_cottage/building_cottage_small.png") %>');
+  background-image: url('<%= asset_path("buildings/base/building_cottage/building_cottage_inactive.png") %>');
 }
 
 /*Tavern*/
 .building_tavern.building-image {
-  background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
 
-  &.idle{
     background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_inactive.png") %>');
+
+  .sleeping{
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_zzzz.png") %>');
+    width: 100px;
+    height: 100px;
   }
+
+  &.active{
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
+  }
+}
+
+.building_tavern.building-image-active{
+  background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
 }
 
 /*Storeage*/
@@ -706,6 +717,9 @@
 }
 .building-option-image.building_tavern {
   background: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>') no-repeat center center;
+}
+.building-option-image.building_tavern_inactive {
+  background: url('<%= asset_path("buildings/base/building_tavern/building_tavern_inactive.png") %>') no-repeat center center;
 }
 .building-option-image.building_special_gatherer {
   background: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>') no-repeat center center;
@@ -923,6 +937,10 @@
   background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
   cursor: pointer;
 }
+
+
+
+
 
 /* ==== Small Fire Positions === */
 .building_chief_cottage.building-image.size0 .small-fire,

@@ -168,9 +168,18 @@ AWE.UI.Ember = (function(module) {
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
+
+
       if(progression === 100) {
 
       }
+      else if(progression === 1)
+      {
+
+
+      }
+
+
       return Math.ceil(progression * 100);
     }.property('assignment', 'timeRemaining').cacheable(),
 
@@ -187,6 +196,19 @@ AWE.UI.Ember = (function(module) {
       var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
+
+      if(remaining >=2)
+      {
+          // not idle
+          this.setPath('building.active',true);
+      }
+      else if(remaining < 2)
+      {
+          // idle
+          this.setPath('building.active',false)
+      }
+
+
       this.set('timeRemaining', remaining);
     },
 
@@ -211,6 +233,7 @@ AWE.UI.Ember = (function(module) {
     },
 
     startTimerOnBecommingActive: function() { 
+      console.log("update started oolala");
       AWE.GS.CharacterManager.updateCurrentCharacter();
       var active = this.get('isActive');
       if (active && this.get('timer')) {

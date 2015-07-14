@@ -38,12 +38,13 @@
       </div>
     {{/if}}
   {{/if}}
-  <div {{bindAttr class="size type idle :building-image"}}>
-    
-    {{#if idle}}
-      <div class="sleeping">
+  <div {{bindAttr class="size active type :building-image"}}>
+
+    {{#if active}}
+    {{else}}
+     <div class="sleeping"></div>
     {{/if}}
-    
+
     {{#if hasFire}}
       <div class="small-fire"></div>
     {{/if}}
