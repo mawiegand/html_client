@@ -520,7 +520,6 @@ div.dom-quest-container div.tutorial-dialog {
 
     .quest-info-dialog-text {
       width: 440px;
-      margin-top: 25px;
       font-family: $main-font;
 
       text-align: left;
@@ -530,7 +529,7 @@ div.dom-quest-container div.tutorial-dialog {
 
       h3 {
         font-family: $main-font;
-        font-size : 1.5em;
+        font-size : 2em;
         text-shadow: none;
         color: $markup-color;
         font-weight: 0;
@@ -560,8 +559,6 @@ div.dom-quest-container div.tutorial-dialog {
 
     .quest-info-dialog-rewards {
       width: 480px;
-      margin-left: 16px;
-      margin-top: 10px;
 
       text-align: center;
 
@@ -600,7 +597,7 @@ div.dom-quest-container div.tutorial-dialog {
           .quest-reward-item-number{
             font-family: $main-font;
             color: $font-brown;
-            font-size: 26px;
+            font-size: 1.5em;
 
             text-align: center;
           }
@@ -610,6 +607,7 @@ div.dom-quest-container div.tutorial-dialog {
 
     .subquest-list {
       width: 100%;
+      margin-top: 25px;
       text-align: center;
       display: inline-block;
       font-family: $main-font;
@@ -623,15 +621,20 @@ div.dom-quest-container div.tutorial-dialog {
         height: 70px;
         td {
           vertical-align: middle;
+          p {
+            margin: 0;
+            text-align: center;
+          }
         }
       }
       .progress {
+        font-size: 1.5em;
         &.finished {
           color: $main-green;
         }
       }
       .arrow {
-          margin-top: 100px;
+          margin-top: 130px;
       }
       .two-col-layout {
         &>div {
@@ -639,7 +642,7 @@ div.dom-quest-container div.tutorial-dialog {
           display: inline-block;
         }
         .description {
-          td {
+          td p{
             width: 216px;
           }
         }
@@ -672,7 +675,7 @@ div.dom-quest-container div.tutorial-dialog {
           display: inline-block;
         }
         .description {
-          td {
+          td p{
             width: 156px;
           }
         }
@@ -711,10 +714,11 @@ div.dom-quest-container div.tutorial-dialog {
         &>div {
           float: left;
           display: inline-block;
+          margin-right: -9px;
         }
         .description {
-          td {
-            width: 128px;
+          td p{
+            width: 100px;
           }
         }
         .first {
@@ -730,6 +734,7 @@ div.dom-quest-container div.tutorial-dialog {
         }
         .second {
           display: inline-block;
+          margin-top: 40px;
           .paper-background {
             background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_s_1.png' %>");
             @include image-background();
@@ -750,8 +755,9 @@ div.dom-quest-container div.tutorial-dialog {
             vertical-align: middle;
           }
         }
-        .four {
+        .fourth {
           display: inline-block;
+          margin-top: 40px;
           .paper-background {
             background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_s_1.png' %>");
             @include image-background();

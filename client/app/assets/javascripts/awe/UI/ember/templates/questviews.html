@@ -179,15 +179,29 @@
         <div class="first">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.0"}}
         </div>
-        <div {{bindAttr class=":quest_arrow_right_brown"}}></div>
+        {{#if subQuestStates.0.finished}}
+          <div {{bindAttr class=":quest_arrow_down_right_green :arrow"}}></div>
+        {{else}}
+          <div {{bindAttr class=":quest_arrow_down_right_brown :arrow"}}></div>
+        {{/if}}
         <div class="second">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.1"}}
         </div>
+        {{#if subQuestStates.1.finished}}
+          <div {{bindAttr class=":quest_arrow_up_right_green :arrow"}}></div>
+        {{else}}
+          <div {{bindAttr class=":quest_arrow_up_right_brown :arrow"}}></div>
+        {{/if}}
         <div class="third">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.2"}}
         </div>
+        {{#if subQuestStates.2.finished}}
+          <div {{bindAttr class=":quest_arrow_down_right_green :arrow"}}></div>
+        {{else}}
+          <div {{bindAttr class=":quest_arrow_down_right_brown :arrow"}}></div>
+        {{/if}}
         <div class="fourth">
-          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.2"}}
+          {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.3"}}
         </div>
       </div>
     {{/if}}
@@ -197,7 +211,9 @@
 <script type="text/x-handlebars" data-template-name="subquest-item-view">
   <table class="sub-wrapper">
     <tr class="description">
-      <td>{{local questState.quest.task}}</td>
+      <td>
+      <p>{{local questState.quest.task}}</p>
+      </td>
     </tr>
     <tr>
       <td>
