@@ -220,12 +220,15 @@ AWE.UI.Ember = (function(module) {
     get_max_end_time:function  () {
       assignments = AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments');
 
-      var max_end_time = 0;
+      var max_end_time = new Date();
       for(i=0;i<assignments.collection.length;i++)
       {
         if(assignments.collection[i].ended_at != null)
         {
-          if(assignments.collection[i].ended_at> max_end_time)
+
+          endtime = new Date(assignments.collection[i].ended_at);
+
+          if(endtime.getTime()> max_end_time)
           {
              max_end_time = assignments.collection[i].ended_at;
           }
