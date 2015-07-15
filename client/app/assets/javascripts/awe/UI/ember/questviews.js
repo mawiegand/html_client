@@ -15,6 +15,14 @@ AWE.UI.Ember = (function(module) {
     tutorialState: null,
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
+
+    epicQuests: function() {
+      var epics = this.get('questStates').filter(function(state){
+        return state.getPath('quest.type') === "epic" && state.getPath('quest.tutorial') === false;
+      });
+
+      return epics;
+    }.property('questStates'),
     
     redeemButtonPressed: function(questState) {
       questState.set('redeeming', true);
@@ -221,6 +229,10 @@ AWE.UI.Ember = (function(module) {
     finished: function() {
       return this.getPath('questState.status') >= AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status').cacheable(),
+
+    progress: function() {
+      return this.getPath('questState.progress')[0];
+    }.property('questState')
   });
 
 

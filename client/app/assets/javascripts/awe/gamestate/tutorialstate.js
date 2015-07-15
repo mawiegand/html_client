@@ -265,6 +265,23 @@ AWE.GS = (function(module) {
       }
       return AWE.GS.TutorialManager.getTutorial().quest(questId);      
     }.property('quest_id').cacheable(),
+
+    progress: function() {
+      var self = this;
+      var quest = this.get('quest');
+      var progress = [];
+
+      if (quest && quest.reward_tests) {
+        if (quest.reward_tests.building_tests) {
+          for (var i = 0; i < quest.reward_tests.building_tests.length; i++) {
+            var building_test = quest.reward_tests.building_tests[i];
+            progress.push(self.checkBuildingProgress(building_test));
+          }
+        }
+      }
+
+      return progress;
+    }.property("quest"),
     
     questNr: function() {
       var questId = this.get('quest_id');
@@ -551,6 +568,55 @@ AWE.GS = (function(module) {
             
       // log('---> building count', checkCount, buildingTest.min_count);
       return checkCount >= buildingTest.min_count;
+    },
+
+    checkBuildingProgress: function(buildingTest)
+    {
+      if (buildingTest.min_level == null || buildingTest.min_count == null) {
+        log('ERROR in AWE.GS.QuestState.checkBuildings: buildingTest.min_level or buildingTest.min_count missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+
+      var ownSettlements = AWE.GS.SettlementManager.getOwnSettlements();
+      var checkCount = 0;
+      var minLevel = 0;
+
+      AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
+        var slots = settlement.slots();
+        
+        AWE.Ext.applyFunctionToElements(slots, function(slot) {
+          var level = slot.get('level');
+          var buildingId = slot.get('building_id');
+          // log('-----> ', level, buildingId);
+          if (buildingId != null) {
+            var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
+            if (buildingSymbolicId === buildingTest.building && level != null) {
+              if(level > minLevel)
+              {
+                minLevel = level;
+              }
+              if(level >= buildingTest.min_level)
+              {
+                checkCount++;
+              }
+            }
+          }
+        });
+      });
+
+      if(buildingTest.min_count > 1)
+      {
+        return {
+          goal: buildingTest.min_count,
+          progress: checkCount
+        };
+      }
+      else {
+        return {
+          goal: buildingTest.min_level,
+          progress: minLevel
+        };
+      }
     },
 
     checkSettlements: function(settlementTest) {

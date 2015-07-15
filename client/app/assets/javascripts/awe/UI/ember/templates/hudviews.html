@@ -33,11 +33,13 @@
   		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
       {{/if}}
   	</div>
+    {{#unless inTutorial}}
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
   	  {{#if getNewQuest}}
   		<div class="count-indicator-background count-indicator-background-position">{{getNewQuest}}</div>
   	  {{/if}}
   	</div>
+    {{/unless}}
   </div>
 </script>
 

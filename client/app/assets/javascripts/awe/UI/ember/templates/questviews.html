@@ -10,7 +10,7 @@
         </div>
         <div class="quest-list-content">
           <div class="quest-list-items">
-            {{#each questStates}}
+            {{#each epicQuests}}
             {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
             {{/each}}
           </div>
@@ -152,11 +152,19 @@
         <div class="first">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.0"}}
         </div>
-        <div {{bindAttr class=":quest_arrow_right_brown_short_cracked :arrow subQuestStates[0].finished:finished"}}></div>
+        {{#if subQuestStates.0.finished}}
+          <div {{bindAttr class=":quest_arrow_right_green_short_cracked :arrow"}}></div>
+        {{else}}
+          <div {{bindAttr class=":quest_arrow_right_brown_short_cracked :arrow"}}></div>
+        {{/if}}
         <div class="second">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.1"}}
         </div>
-        <div {{bindAttr class=":quest_arrow_right_brown_short :arrow"}}></div>
+        {{#if subQuestStates.1.finished}}
+          <div {{bindAttr class=":quest_arrow_right_green_short :arrow"}}></div>
+        {{else}}
+          <div {{bindAttr class=":quest_arrow_right_brown_short :arrow"}}></div>
+        {{/if}}
         <div class="third">
           {{view AWE.UI.Ember.SubquestItemView questStateBinding="subQuestStates.2"}}
         </div>
@@ -190,9 +198,16 @@
     <tr>
       <td>
         <div class="paper-background">
-          <div {{bindAttr class=":sub-image finished"}}></div>
+          <div {{bindAttr class=":sub-image questState.quest.symbolic_id finished"}}></div>
         </div>
       </td>
+    </tr>
+    <tr {{bindAttr class=":progress finished"}}>
+      {{#if finished}}
+        <td>{{progress.goal}}/{{progress.goal}}</td>
+      {{else}}
+        <td>{{progress.progress}}/{{progress.goal}}</td>
+      {{/if}}
     </tr>
   </table>
 </script>

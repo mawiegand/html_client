@@ -140,7 +140,11 @@ module.LeftHUDView = Ember.View.extend({
     }
     return false;
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
-  
+
+  inTutorial: function() {
+    return AWE.GS.TutorialManager.tutorialState.tutorial_finished;
+  }.property('AWE.GS.TutorialManager.tutorialState.tutorial_finished'),
+
   isUiMarkerEnabled: function() {
     return this.get('uiMarkerEnabled');
   }.property('uiMarkerEnabled'),

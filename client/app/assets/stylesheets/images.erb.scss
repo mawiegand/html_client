@@ -107,6 +107,22 @@
   display: inline-block;
 }
 
+.quest_arrow_right_green_short {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green_short.png' %>");
+  @include image-background();
+  width: 80px;
+  height: 76px;
+  display: inline-block;
+}
+
+.quest_arrow_right_green_short_cracked {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green_short_cracked.png' %>");
+  @include image-background();
+  width: 76px;
+  height: 76px;
+  display: inline-block;
+}
+
 .quest_paper_l_left {
   background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_l_left.png' %>");
   @include image-background();

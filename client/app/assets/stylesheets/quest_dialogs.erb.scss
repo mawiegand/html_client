@@ -612,6 +612,7 @@ div.dom-quest-container div.tutorial-dialog {
       width: 100%;
       text-align: center;
       display: inline-block;
+      font-family: $main-font;
       &>div {
         display: inline-block;
       }
@@ -622,6 +623,11 @@ div.dom-quest-container div.tutorial-dialog {
         height: 70px;
         td {
           vertical-align: middle;
+        }
+      }
+      .progress {
+        &.finished {
+          color: $main-green;
         }
       }
       .arrow {
@@ -640,6 +646,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 216px;
             height: 156px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .right {
@@ -649,6 +657,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 216px;
             height: 156px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
       }
@@ -668,6 +678,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 148px;
             height: 148px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .second {
@@ -676,6 +688,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 156px;
             height: 156px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .third {
@@ -684,6 +698,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 148px;
             height: 148px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
       }
@@ -700,6 +716,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 128px;
             height: 128px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .second {
@@ -709,6 +727,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 124px;
             height: 124px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .third {
@@ -718,6 +738,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 124px;
             height: 130px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
         .four {
@@ -727,6 +749,8 @@ div.dom-quest-container div.tutorial-dialog {
             @include image-background();
             width: 124px;
             height: 124px;
+            display: table-cell;
+            vertical-align: middle;
           }
         }
       }
@@ -759,6 +783,61 @@ div.dom-quest-container div.tutorial-dialog {
         transition: background 0s;
       }
     }
+  }
+}
+
+.sub-image {
+  background-size: 100%;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  &.quest_build_chiefcottagelvl4 {
+    background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl4_grey.png") %>');
+    &.finished {
+      background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl4.png") %>');
+    }
+  }
+  &.quest_build_quarry {
+    background-image: url('<%= asset_path("quests/grey/quest_build_quarry_grey.png") %>');
+    &.finished {
+      background-image: url('<%= asset_path("quests/quest_build_quarry.png") %>');
+    }
+  }
+  &.quest_build_logger {
+    background-image: url('<%= asset_path("quests/grey/quest_build_logger_grey.png") %>');
+    &.finished {
+      background-image: url('<%= asset_path("quests/quest_build_logger.png") %>');
+    }
+  }
+}
+
+/* ======= */
+
+.quest-dialog-button{
+  position: absolute;
+  width: 172px;
+  height: 129px;
+
+  top: 95%;
+  left: 88%;
+
+  border: none;
+  box-shadow: none;
+  z-index: 25;
+  background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button.png") %>');
+  background-size: 100%;
+
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+  &:hover {
+    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active.png") %>');
+  }
+  &:active {
+    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active2.png") %>');
+    transition: background 0s;
   }
 }
 
