@@ -247,7 +247,7 @@ AWE.UI.Ember = (function(module) {
 
     isActiveProgress: function() {
       return this.get('assignment') && this.getPath('assignment.ended_at') != null;
-    }.property('assignment.ended_at').cacheable(),
+    }.property('assignment.ended_at'),
 
     isHalved: function() {
       return this.get('assignment') && this.getPath('assignment.halved_at') != null;

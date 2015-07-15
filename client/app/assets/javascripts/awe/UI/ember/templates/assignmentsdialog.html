@@ -49,19 +49,20 @@
   <div class="assigment-item-wrapper" {{action "openDialog"}}>
     <div {{bindAttr class="assignmentType :assignment_icon isActive"}}></div>
   </div>        
-  {{#if isActiveProgress}}
-    <div class="progress">
-      <div class="progress-bar" {{bindAttr style="barWidth"}}></div>
-      <div class="progress-text">{{percent}}%</div>
-    </div>
-    {{#unless isHalved}}
-    <div class="speedup-toad" {{action speedUp}}>2</div>
-    {{/unless}}
-  {{/if}}
   {{#if isFinished}}
     <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
       {{t settlement.assignment.collect}}
     </div>
+  {{else}}
+    {{#if isActiveProgress}}
+      <div class="progress">
+        <div class="progress-bar" {{bindAttr style="barWidth"}}></div>
+        <div class="progress-text">{{percent}}%</div>
+      </div>
+      {{#unless isHalved}}
+      <div class="speedup-toad" {{action speedUp}}>2</div>
+      {{/unless}}
+    {{/if}}
   {{/if}}
 </div>
 </script>
