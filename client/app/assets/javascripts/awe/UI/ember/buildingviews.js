@@ -60,8 +60,10 @@ AWE.UI.Ember = (function(module) {
     tavern_check_idle:function(){
       
 
-      if(AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id != "building_tavern")
-          return;
+      if(this.getPath("building.buildingId") && AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id != "building_tavern")
+      {
+        return;
+      } 
 
 
       if(this.getPath('building.endTime') == 0)
@@ -78,34 +80,44 @@ AWE.UI.Ember = (function(module) {
           }
         }
         this.setPath('building.endTime',max_end_time);
+        this.calculate_tavern_remaining_time(this.getPath('building.endTime'));
       }
 
       if(this.getPath('building.endTime') != 0)
       {
           self = this;
 
-              clearInterval(this.get('timer'));
-              this.set('timer',setInterval(function(){
-                  var finish = Date.parseISODate(self.getPath('building.endTime'));
-                  var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
-                  var remaining = (finish.getTime() - now.getTime()) / 1000.0;
-                  remaining = remaining < 0 ? 0 : remaining;
-
-                  if(remaining >=2)
-                  {
-                      // not idle
-                      self.setPath('building.active',true);
-                  }
-                  else if(remaining < 2)
-                  {
-                      // idle
-                      self.setPath('building.active',false);
-                      clearInterval(self.get('timer'));
-                  }
-              },1000));
+          clearInterval(this.get('timer'));
+          this.set('timer',setInterval(function(){
+            self.calculate_tavern_remaining_time(self.getPath('building.endTime'));
+          },1000));
       }
 
     }.observes("building.endTime"),
+
+
+    calculate_tavern_remaining_time:function(max_end_time)
+    {
+        if(max_end_time === undefined)
+          return;
+
+        var finish = Date.parseISODate(max_end_time);
+        var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+        var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+        remaining = remaining < 0 ? 0 : remaining;
+
+        if(remaining >=2)
+        {
+           // not idle
+           this.setPath('building.active',true);
+        }
+        else if(remaining < 2)
+        {
+           // idle
+           this.setPath('building.active',false);
+           clearInterval(this.get('timer'));
+        }
+    },
 
 
     size: function() {
@@ -113,6 +125,7 @@ AWE.UI.Ember = (function(module) {
       {
         var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
         var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
+        return "size"+imageLevel;
       }
       return false;
     }.property("building", 'level'),
