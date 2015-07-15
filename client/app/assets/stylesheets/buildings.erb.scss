@@ -441,7 +441,13 @@
             animation: anim_tavern .5s steps(5) infinite;
   }
 
-
+  .building_copper_smelter.building-image{
+    -webkit-animation: anim_copper_smelter .5s steps(5) infinite;
+       -moz-animation: anim_copper_smelter .5s steps(5) infinite;
+        -ms-animation: anim_copper_smelter .5s steps(5) infinite;
+         -o-animation: anim_copper_smelter .5s steps(5) infinite;
+            animation: anim_copper_smelter .5s steps(5) infinite;
+  }
 
 
 
@@ -1113,5 +1119,32 @@
 @keyframes anim_sleeping_tavern {
    from { background-position: 0px 0px; }
      to { background-position: -304px 0px; }
+}
+
+/* ==== Copper Smelter Animations ==== */
+
+@-webkit-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-moz-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-ms-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-o-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
 }
 
