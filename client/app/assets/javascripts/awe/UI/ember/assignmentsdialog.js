@@ -225,7 +225,10 @@ AWE.UI.Ember = (function(module) {
       {
         if(assignments.collection[i].ended_at != null)
         {
-          max_end_time = assignments.collection[i].ended_at;
+          if(assignments.collection[i].ended_at> max_end_time)
+          {
+             max_end_time = assignments.collection[i].ended_at;
+          }
         }
       }
       this.setPath('building.endTime',max_end_time);
