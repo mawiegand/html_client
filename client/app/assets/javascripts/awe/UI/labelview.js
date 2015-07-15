@@ -81,7 +81,11 @@ AWE.UI = (function(module) {
         rectX = my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth - 2 * _padding;
         _labelText.x = my.frame.size.width - _padding;
         _labelText.y = my.frame.size.height / 2;
-        if (_labelIcon) _labelIcon.setOrigin(AWE.Geometry.createPoint(my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth - _padding, my.frame.size.height / 2- 10));
+        if (_labelIcon)
+        {
+          _labelText.x = my.frame.size.width - 10 - iconWidth - _padding;
+          _labelIcon.setOrigin(AWE.Geometry.createPoint(my.frame.size.width - iconWidth - _padding, my.frame.size.height / 2- 10));
+        }      
       }
       else {
         rectX = 0;

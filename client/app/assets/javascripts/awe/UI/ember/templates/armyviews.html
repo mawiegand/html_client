@@ -188,56 +188,6 @@
       </table>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-list-view">
-
-  <div class="modal-dialog-background z-layer-3"></div>
-  <div class="horizontal-center-helper">
-    <div class="modal-dialog-pane z-layer-4 army-list-view scale-down" id="army-list-dialog">
-    <div class="advisor tiny warrior"></div>
-
-      <a class="close clickable" {{action "closeClicked"}}></a>
-      <h1>{{t army.list.header}}</h1>
-      <p class="citation">{{t army.list.flavor}}</p>
-      {{#if armies}}
-      <table class="army-list-table head">
-        <tr>
-          <th class="army-view">&nbsp;</th>
-          <th class="name">{{t army.list.table.name}}</th>
-          <th class="region">{{t army.list.table.region}}</th>
-          <th class="rank">{{t army.list.table.rank}}</th>
-          <th class="ap">{{t army.list.table.ap}}</th>
-          <th class="status">{{t army.list.table.status}}</th>
-          <th class="size">{{t army.list.table.size}}/{{t army.list.table.max_size}}</th>
-          <th class="info">&nbsp;</th>
-        </tr>
-      </table>
-      <div class="army-list-table-wrapper">
-        <table class="army-list-table">
-          {{#each armies}}
-            {{view AWE.UI.Ember.ArmyListItem armyBinding="this"}}
-          {{/each}}
-        </table>
-      </div>
-      {{else}}
-      <h2>{{t army.list.none}}</h2>
-      {{/if}}
-    </div>
-  </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="army-list-item">
-  <tr>
-    <td class="army-view">{{view AWE.UI.Ember.ArmyView armyBinding="army"}}</td>
-    <td class="name"><a class="clickable" {{action "namePressed"}}>{{army.name}}</a></td>
-    <td class="region"><a class="clickable" {{action "regionPressed"}}>{{regionName}}</a></td>
-    <td class="rank">{{army.rankToDisplay}}</td>
-    <td class="ap">{{army.ap_present}}/{{army.ap_max}}</td>
-    <td class="status">{{armyStatus}}</td>
-    <td class="size">{{army.size_present}}/{{army.size_max}}</td>
-    <td class="info"><a class="clickable" {{action "infoPressed"}}>{{t army.list.table.info}}</a></td>
-  </tr>
-</script>
-
 <script type="text/x-handlebars" data-template-name="military-new-info-dialog">
   <h1 class="modal-dialog-heading">{{t encyclopedia.military}}</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">

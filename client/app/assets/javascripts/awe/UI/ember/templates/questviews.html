@@ -1,0 +1,204 @@
+<script type="text/x-handlebars" data-template-name="quest-list-view">
+  <div class="modal-dialog-background" onClick="WACKADOO.closeAllModalDialogs()"></div>
+    <div class="horizontal-center-helper">
+      <div class="modal-dialog-pane quest-list-view scale-down">
+        <div class="quest-list-header">
+          <h1>{{t tutorial.questList}}</h1>
+          <div class="advisor warrior sketched"></div>
+          <div class="advisor girl sketched"></div>
+          <div class="advisor chef sketched"></div>
+        </div>
+        <div class="quest-list-content">
+          <div class="quest-list-items">
+            {{#each questStates}}
+            {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="okButton" {{action "okPressed"}}></div>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="quest-list-entry-view">
+    <div class="" {{action "showQuestInfoPressed" }}>
+        <div class="quest-list-item-name">
+          {{local questState.questName}}
+        </div>
+        {{#if finished}}
+        <div class="quest-list-item-status-finished"> </div>
+        {{else}}
+        <div class="quest-list-item-status-open"> </div>
+        {{/if}}
+        <div class="quest-list-item-reward">
+            {{#if questState.finished}}
+              {{#if questState.redeeming}}
+                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+
+              {{/if}}
+            {{/if}}
+        </div>
+       </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="quest-view">
+      <h3>
+        {{#if finished}}
+          {{t tutorial.quest.end.task}} {{local quest.task}}
+        {{else}}
+          {{#if modeStart}}
+            {{t tutorial.quest.start.task}} {{local quest.task}}
+          {{else}}
+            {{t tutorial.quest.info.task}} {{local quest.task}}
+          {{/if}}
+        {{/if}}
+      </h3>
+      {{#if finished}}
+        {{#if quest.reward_text}}Tipp: {{local quest.reward_text}} {{/if}}
+      {{else}}
+        {{#if newArmyQuest}}<div class="description-image-army"></div>{{/if}}}
+        {{#if toSettlementQuest}}<div class="description-image-settlement"></div>{{/if}}}
+        {{#if attackQuest}}<div class="description-image-attack"></div>{{/if}}}
+      {{/if}}
+
+      {{#if quest.reward_tests.textbox_test }}
+        {{#unless finished}}
+          <div>
+            {{view Ember.TextField class="quest-answer-field" placeholder="answer" type="text" valueBinding="answerText"}}
+            {{#if checking}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{else}}
+              <div class="simple-button" {{action "checkQuestAnswerPressed"}} >{{t tutorial.answerQuestLink }}</div>
+            {{/if}}
+          </div>
+          {{#if error}}
+            <p>{{t tutorial.quest.error}}</p>
+          {{/if}} 
+        {{/unless}}
+      {{/if}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="quest-dialog">
+  <div class="modal-dialog-background">
+    {{#if spinningBackground}}
+      <div class="horizontal-center-helper">
+        <div class="modal-dialog-spinning-background"></div>
+      </div>
+    {{/if}}
+  </div>
+  <div class="horizontal-center-helper">  
+    <div class="quest-dialog-bg">
+      <div class="quest-dialog-content">
+        {{#if finished}}
+          <div class="quest-scip-button" {{action "redeemLaterButtonPressed" }}></div>
+        {{/if}}
+        <div class="quest-dialog-text">
+          {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
+        </div>
+        <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>     
+        {{#if quest.rewards}}
+          <div class="quest-dialog-reward">
+            <ul class="quest-dialog-rewards-items">      
+            {{#if finished}}
+              {{#if quest.rewards.resource_rewards}}
+                {{#each quest.rewards.resource_rewards}}
+                  <li class="quest-reward-item">
+                    <div class="quest-reward-item-image finished">
+                       <div class="quest-reward-item-icon">
+                          <span class="quest-resource-icon {{unbound this.resource}} finished">&nbsp;</span>
+                       </div>
+                    </div>
+                    <div class="quest-reward-item-number finished">{{this.amount}}</div>
+                  </li>
+                {{/each}}
+              {{/if}}
+              {{#if quest.rewards.unit_rewards}}
+                {{#each quest.rewards.unit_rewards}}
+                  <li class="quest-reward-item">
+                    <div class="quest-reward-item-image finished">
+                       <div class="quest-reward-item-icon">
+                      <span class="unit-icon {{unbound this.unit}} finished">&nbsp;</span>
+                   </div>
+                    </div>
+                    <div class="quest-reward-item-number finished">{{this.amount}}</div>
+                  </li>
+                {{/each}}
+              {{/if}}
+              {{#if quest.rewards.experience_reward}}
+                <li class="quest-reward-item">
+                  <div class="quest-reward-item-image finished">
+                     <div class="quest-reward-item-icon">
+                    <span class="xp-icon finished">&nbsp;</span>
+                  </div>
+               </div>
+                  <div class="quest-reward-item-number finished">{{quest.rewards.experience_reward}}</div>
+                </li>
+              {{/if}}
+            {{else}}
+              {{#if quest.rewards.resource_rewards}}
+                {{#each quest.rewards.resource_rewards}}
+                  <li class="quest-reward-item">
+                    <div class="quest-reward-item-image">
+                       <div class="quest-reward-item-icon">
+                      <span class="quest-resource-icon {{unbound this.resource}}">&nbsp;</span>
+                   </div>
+                    </div>
+                    <div class="quest-reward-item-number">{{this.amount}}</div>
+                  </li>
+                {{/each}}
+              {{/if}}
+              {{#if quest.rewards.unit_rewards}}
+                {{#each quest.rewards.unit_rewards}}
+                  <li class="quest-reward-item">
+                    <div class="quest-reward-item-image">
+                       <div class="quest-reward-item-icon">
+                      <span class="unit-xl-icon">&nbsp;</span>
+                   </div>
+                    </div>
+                    <div class="quest-reward-item-number">{{this.amount}}</div>
+                  </li>
+                {{/each}}
+              {{/if}}
+              {{#if quest.rewards.experience_reward}}
+                <li class="quest-reward-item">
+                  <div class="quest-reward-item-image">
+                     <div class="quest-reward-item-icon">
+                    <span class="xp-icon finished">&nbsp;</span>
+                 </div>
+                  </div>
+                  <div class="quest-reward-item-number">{{quest.rewards.experience_reward}}</div>
+                </li>
+              {{/if}}
+            {{/if}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <div class="quest-dialog-button" {{action "okPressed"}}>
+          {{#if redeeming}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-unit-rewards-view">
+  {{#each units }}
+    {{view AWE.UI.Ember.QuestUnitRewardView unitBinding="this"}}
+  {{/each}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-unit-reward-view">
+  <div>
+    <div class="quest-reward-name">{{unitName}}</div>
+    <div class="quest-reward-amount">{{unit.amount}}</div>
+  </div>
+</script>
