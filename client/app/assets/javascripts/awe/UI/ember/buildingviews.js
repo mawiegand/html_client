@@ -65,24 +65,36 @@ AWE.UI.Ember = (function(module) {
         return;
       } 
 
-
+      // when the page is refreshed
       if(this.getPath('building.endTime') == 0)
       {
-        // maybe the page is reloaded
         assignments = AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments');
 
-        var max_end_time = 0;
+        var max_end_time = null;
+        var converted_end_time = new Date();
+
+
         for(i=0;i<assignments.collection.length;i++)
         {
           if(assignments.collection[i].ended_at != null)
           {
-            max_end_time = assignments.collection[i].ended_at;
+            assignmentEndTime = new Date(assignments.collection[i].ended_at);
+
+            if(assignmentEndTime.getTime()>converted_end_time.getTime())
+            {
+              max_end_time = assignments.collection[i].ended_at;
+              converted_end_time = assignmentEndTime;
+            }
           }
         }
         this.setPath('building.endTime',max_end_time);
         this.calculate_tavern_remaining_time(this.getPath('building.endTime'));
       }
 
+
+      // when the assignments dialog closes only this condition runs.
+      // other on page refresh both the upper and this condition work
+      // if any assignment is in progress.
       if(this.getPath('building.endTime') != 0)
       {
           self = this;
@@ -98,7 +110,7 @@ AWE.UI.Ember = (function(module) {
 
     calculate_tavern_remaining_time:function(max_end_time)
     {
-        if(max_end_time === undefined)
+        if(max_end_time === undefined || max_end_time == null)
           return;
 
         var finish = Date.parseISODate(max_end_time);
