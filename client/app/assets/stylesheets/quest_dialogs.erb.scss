@@ -77,87 +77,51 @@
 
   box-shadow: none;
   border-radius: 0px;
-}
+  .quest-list-content{
+    position: relative;
+    width: 80%;
+    height: 310px;
+    left: 8%;
+    overflow-y: scroll;
+    .quest-list {
+      width: 50%;
+      display: inline-block;
+      .quest-list-header {
+        position: relative;
+        width: 80%;
+        height: 20%;
+        top: 6%;
+        left: 8%;
 
-
-.quest-list-header{
-  position: relative;
-  width: 80%;
-  height: 20%;
-  top: 6%;
-  left: 8%;
-
-  padding: 20px 10px 4px 10px;
-  font-weight: bold;
-}
-
-.quest-list-header h1{
-  font-family: 'Freckle Face', cursive;
-  color: #643a13;
-}
-
-.quest-list-header .advisor.sketched {
-  width: 120px;
-  height: 120px;
-  position: absolute;
-  float: right;
-}
-
-.quest-list-header .advisor.warrior.sketched {
-  top: 10%;
-  right: 0%;
-}
-
-.quest-list-header .advisor.chef.sketched {
-  top: 5%;
-  right: 35%;
-}
-
-.quest-list-header .advisor.girl.sketched {
-  top: 6%;
-  right: 18%;
-}
-
-
-.quest-list-content{
-  position: relative;
-  width: 80%;
-  height: 310px;
-  left: 8%;
-  top: 30px;
-  overflow-y: scroll;
-}
-
-.quest-list-items{
-  position: absolute;
-  width: 100%;
-}
-
-.quest-list-item {
-  margin: 10px 0;
-  cursor: pointer;
-  height: 48px;
-  width: 100%;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.quest-list-item:active {
-  opacity: 0.7;
-  filter: alpha(opacity=70);
-}
-
-.quest-list-item.girl {
-   background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-girl.png") %>');
-}
-
-.quest-list-item.chef {
-  background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');
-}
-
-.quest-list-item.warrior {
-  background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-warrior.png") %>');
+        padding: 20px 10px 4px 10px;
+        font-weight: bold;
+        h1 {
+          font-family: 'Freckle Face', cursive;
+          color: #643a13;
+        }
+      }
+      .quest-list-items{
+        width: 100%;
+        .quest-list-item {
+          margin: 10px 0;
+          cursor: pointer;
+          height: 48px;
+          width: 100%;
+          background-size: 100%;
+          background-repeat: no-repeat;
+          background-position: center;
+          &:active {
+            opacity: 0.7;
+            filter: alpha(opacity=70);
+          }
+        }
+      }
+    }
+    .quest-details {
+      width: 50%;
+      display: inline-block;
+    }
+  }
 }
 
 .quest-list-item-name {
