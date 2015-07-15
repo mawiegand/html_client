@@ -49,9 +49,64 @@ AWE.UI.Ember = (function(module) {
 
     classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
+    timer : null,
+
     levelClassName: function() {
       return "level"+this.get('level');
     }.property('level').cacheable(),
+
+
+    // for tavern to check if an assignment is in progress or not.
+    tavern_check_idle:function(){
+      
+
+      if(AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id != "building_tavern")
+          return;
+
+
+      if(this.getPath('building.endTime') == 0)
+      {
+        // maybe the page is reloaded
+        assignments = AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments');
+
+        var max_end_time = 0;
+        for(i=0;i<assignments.collection.length;i++)
+        {
+          if(assignments.collection[i].ended_at != null)
+          {
+            max_end_time = assignments.collection[i].ended_at;
+          }
+        }
+        this.setPath('building.endTime',max_end_time);
+      }
+
+      if(this.getPath('building.endTime') != 0)
+      {
+          self = this;
+
+              clearInterval(this.get('timer'));
+              this.set('timer',setInterval(function(){
+                  var finish = Date.parseISODate(self.getPath('building.endTime'));
+                  var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+                  var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+                  remaining = remaining < 0 ? 0 : remaining;
+
+                  if(remaining >=2)
+                  {
+                      // not idle
+                      self.setPath('building.active',true);
+                  }
+                  else if(remaining < 2)
+                  {
+                      // idle
+                      self.setPath('building.active',false);
+                      clearInterval(self.get('timer'));
+                  }
+              },1000));
+      }
+
+    }.observes("building.endTime"),
+
 
     size: function() {
       if(this.get("building"))
@@ -64,8 +119,10 @@ AWE.UI.Ember = (function(module) {
 
 
     active:function(){
-        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
 
+      
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        
 
         if(buildingId == "building_tavern")
         {
