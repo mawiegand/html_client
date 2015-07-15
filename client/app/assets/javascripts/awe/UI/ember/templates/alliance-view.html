@@ -24,6 +24,11 @@
             {{/if}}
             {{#if isAllianceLeader}}
             <div class="alliance-management">
+                {{view Ember.TextField class="alliance-character-invite-inputfield" type="text" valueBinding="characterInviteName"}}
+                <div class="alliance-character-invite-button" {{action "sendAllianceCharacterInvite"}}>
+                    {{t dialogs.alliance.invite}}
+                </div>
+
                 <div class="alliance-slogan">
                     <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
                     {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 

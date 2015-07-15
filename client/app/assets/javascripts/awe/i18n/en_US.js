@@ -563,6 +563,15 @@ AWE.I18n.en_US = function(module) {
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
+      confirmAllianceCharacterInvite: {
+        heading: "Confirm Invitation",
+        message: "Do you really want to send an invitation to {0}?",
+        cancel: "Not right now.",
+        ok: "Yes.",
+        success: "Invitation successfully sent.",
+        characterNotFound: "{0} not found.",
+        error: "Something went wrong with the application.",
+      },
       confirmApplication: {
         heading: "Confirm application",
         message: "Do you really want to apply to this alliance?",
@@ -1481,6 +1490,7 @@ AWE.I18n.en_US = function(module) {
         info: "Info",
         members: "Members",
         diplomacy: "Diplomacy",
+        invite: "Invite",
         apply: "Apply",
 
         allianceInfo: {
