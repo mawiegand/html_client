@@ -206,6 +206,7 @@ AWE.UI.Ember = (function(module) {
     }.property('epic.subquests'),
 
     subCount: function() {
+      return 4;
       return this.getPath('subQuestStates').length;
     }.property('subQuestStates'),
 

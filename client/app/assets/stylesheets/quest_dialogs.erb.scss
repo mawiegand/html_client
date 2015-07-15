@@ -634,12 +634,16 @@ div.dom-quest-container div.tutorial-dialog {
           margin-top: 100px;
       }
       .two-col-layout {
+        &>div {
+          float: left;
+          display: inline-block;
+        }
         .description {
           td {
             width: 216px;
           }
         }
-        .left {
+        .left-section {
           display: inline-block;
           .paper-background {
             background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_l_left.png' %>");
@@ -650,7 +654,7 @@ div.dom-quest-container div.tutorial-dialog {
             vertical-align: middle;
           }
         }
-        .right {
+        .right-section {
           display: inline-block;
           .paper-background {
             background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_l_right.png' %>");
@@ -704,6 +708,10 @@ div.dom-quest-container div.tutorial-dialog {
         }
       }
       .four-col-layout {
+        &>div {
+          float: left;
+          display: inline-block;
+        }
         .description {
           td {
             width: 128px;

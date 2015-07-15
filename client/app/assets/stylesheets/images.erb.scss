@@ -107,6 +107,14 @@
   display: inline-block;
 }
 
+.quest_arrow_right_green {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green.png' %>");
+  @include image-background();
+  width: 100px;
+  height: 72px;
+  display: inline-block;
+}
+
 .quest_arrow_right_green_short {
   background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green_short.png' %>");
   @include image-background();
