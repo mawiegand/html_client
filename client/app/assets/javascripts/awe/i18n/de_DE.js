@@ -1327,7 +1327,7 @@ AWE.I18n.de_DE = function(module) {
       infantry: "Infanterie",
       artillery: "Artillerie",
       cavalery: "Kavallerie",
-      specialUnits: "Spezialeinheiten",
+      specialUnits: "Spezial",
       military: "Militär",
 
       commandPointsAbbreviation: "KP",
