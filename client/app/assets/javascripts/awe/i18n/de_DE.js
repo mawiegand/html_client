@@ -577,6 +577,15 @@ AWE.I18n.de_DE = function(module) {
         success: "Bewerbung war erfolgreich",
         error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
+      confirmAllianceCharacterInvite: {
+        heading: "Einladung bestätigen",
+        message: "Willst Du die Einladung an {0} wirklich abschicken?",
+        cancel: "Nein",
+        ok: "Ja",
+        success: "Versenden der Einladung war erfolgreich",
+        characterNotFound: "{0} wurde nicht gefunden.",
+        error: "Die Einladung wurde aus unbekanntem Grund nicht verschickt.",
+      },
       confirmDiplomacyRelation: {
         heading: "Änderung der Diplomatie bestätigen",
         message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
@@ -1501,9 +1510,12 @@ AWE.I18n.de_DE = function(module) {
         info: "Info",
         members: "Mitglieder",
         diplomacy: "Diplomatie",
+        invite: "Einladen",
         apply: "Bewerben",
 
         allianceInfo: {
+          invite: "Einladung:",
+          allianceCharacterInvitePlaceholder: "Character Name",
           slogan: "Losung:",
           autoJoin: "Aufnahme:"
         },

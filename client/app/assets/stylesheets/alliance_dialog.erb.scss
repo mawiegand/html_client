@@ -1,6 +1,8 @@
 .alliance-container {
   position: absolute;
   top: 120px;
+  height: 350px;
+  overflow-y: scroll;
 }
 
 .alliance-container h3 {
@@ -46,6 +48,56 @@
   font-family: 'Montserrat' sans-serif;
   font-size: 0.5em;
   word-wrap: break-word;
+}
+
+.alliance-character-invite {
+  margin-top: 12px;
+  display: block;
+  float: left;
+
+  height: 70px;
+}
+
+.alliance-character-invite-first {
+  width: 240px;
+  float: left;
+  clear: both;
+}
+
+.alliance-character-invite-second {
+  float: right;
+  width: 120px;
+}
+
+.alliance-character-invite-inputfield {
+  width: 220px;
+  height: 26px;
+  border: none;
+  font-family: $main-font;
+  color: rgb(95, 95, 95);
+  font-size: 0.7em;
+  pointer-events: all;
+}
+
+.alliance-character-invite-button {
+  padding: 12px 0 0 5px;
+  width: 100px;
+  height: 52px;
+  font-size: 0.6em;
+  color: white;
+  background: url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>") no-repeat left top;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.alliance-character-invite-button:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.alliance-character-invite-button {
+  margin-top: -8px;
 }
 
 .alliance-slogan, .alliance-accept {
