@@ -141,6 +141,10 @@ AWE.UI.Ember = (function(module) {
     invitationLinkPressed: function() {
     },
 
+    allianceCharacterInvitePlaceholder: function(){
+      return AWE.I18n.lookupTranslation('dialogs.alliance.allianceInfo.allianceCharacterInvitePlaceholder');
+    }.property(),
+
     sendAllianceCharacterInvite: function() {
       var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
         classNames: ['confirmation-dialog'],

@@ -1494,6 +1494,8 @@ AWE.I18n.en_US = function(module) {
         apply: "Apply",
 
         allianceInfo: {
+          invite: "Invitation:",
+          allianceCharacterInvitePlaceholder: "Character Name",
           slogan: "Slogan",
           autoJoin: "AutoJoin"
         },
