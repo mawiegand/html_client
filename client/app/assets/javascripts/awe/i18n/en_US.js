@@ -1186,7 +1186,7 @@ AWE.I18n.en_US = function(module) {
       finished:"Finished",
       reward:"Reward",
       rewardLink:"Claim",
-      redeemNow:"Claim reward now",
+      redeemNow:"Redeem",
       redeemLater:"Claim reward later",
       showQuestLink:"Show",
       answerQuestLink:"Answer",

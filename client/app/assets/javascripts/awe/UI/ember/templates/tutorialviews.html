@@ -2,17 +2,25 @@
   <div class="modal-dialog-background" onClick="WACKADOO.closeAllModalDialogs()"></div>
     <div class="horizontal-center-helper">
       <div class="modal-dialog-pane quest-list-view scale-down">
-        <div class="quest-list-header">
+        <div class="title">
           <h1>{{t tutorial.questList}}</h1>
-          <div class="advisor warrior sketched"></div>
-          <div class="advisor girl sketched"></div>
-          <div class="advisor chef sketched"></div>
         </div>
-        <div class="quest-list-content">
-          <div class="quest-list-items">
+        <div class="content">
+          <div class="quest-list scrolling">
             {{#each questStates}}
-            {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+              {{view AWE.UI.Ember.QuestListItemView questStateBinding="this" class="quest-list-item" }}
             {{/each}}
+          </div>
+          <div class="quest-detail scrolling">
+            {{#if tutorialState.isSelectedQuestEpic}}
+                {{view AWE.UI.Ember.QuestListItemViewDetailEpic questStateBinding="tutorialState.selected_quest_state" class="quest-content-epic" questBinding="tutorialState.selected_quest_state.quest"}}
+            {{else}}
+              {{#if tutorialState.isSelectedQuestPlain}}
+                {{view AWE.UI.Ember.QuestListItemViewDetailQuest questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor"}}
+              {{else}}
+                {{view AWE.UI.Ember.QuestListItemViewDetailOverview questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor"}}
+              {{/if}}
+            {{/if}}
           </div>
         </div>
 
@@ -23,25 +31,89 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="quest-list-entry-view">
-    <div class="" {{action "showQuestInfoPressed" }}>
-        <div class="quest-list-item-name">
-          {{local questState.questName}}
-        </div>
-        {{#if finished}}
-        <div class="quest-list-item-status-finished"> </div>
-        {{else}}
-        <div class="quest-list-item-status-open"> </div>
-        {{/if}}
-        <div class="quest-list-item-reward">
-            {{#if questState.finished}}
-              {{#if questState.redeeming}}
-                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+<script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-overview">
+  <div class="">
+      Overview Game
+  </div>
+</script>
 
-              {{/if}}
-            {{/if}}
-        </div>
-       </div>
+<script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic"> 
+  <div id="quest-dialog-advisor-task">
+    {{local quest.flavour}}
+  </div>
+  <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div> 
+  {{#if quest.rewards}}
+    <div class="quest-dialog-reward">
+      <ul class="quest-dialog-rewards-items">      
+        {{#if quest.rewards.resource_rewards}}
+          {{#each quest.rewards.resource_rewards}}
+            <li class="quest-reward-item">
+              <div class="quest-reward-item-image">
+                 <div class="quest-reward-item-icon">
+                <span class="quest-resource-icon {{unbound this.resource}}">&nbsp;</span>
+             </div>
+              </div>
+              <div class="quest-reward-item-number">{{this.amount}}</div>
+            </li>
+          {{/each}}
+        {{/if}}
+        {{#if quest.rewards.unit_rewards}}
+          {{#each quest.rewards.unit_rewards}}
+            <li class="quest-reward-item">
+              <div class="quest-reward-item-image">
+                 <div class="quest-reward-item-icon">
+                <span class="unit-xl-icon">&nbsp;</span>
+             </div>
+              </div>
+              <div class="quest-reward-item-number">{{this.amount}}</div>
+            </li>
+          {{/each}}
+        {{/if}}
+        {{#if quest.rewards.experience_reward}}
+          <li class="quest-reward-item">
+            <div class="quest-reward-item-image">
+               <div class="quest-reward-item-icon">
+              <span class="xp-icon finished">&nbsp;</span>
+           </div>
+            </div>
+            <div class="quest-reward-item-number">{{quest.rewards.experience_reward}}</div>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+  {{/if}}
+
+  {{#if finished}}
+   <div class="redeemButton" {{action "redeemButtonPressed" }}>
+     {{#if redeeming}}
+       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+     {{else}}
+        <span>{{t tutorial.redeemNow}}</span>
+     {{/if}}
+   </div>
+  {{/if}}
+  
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-quest">
+  <div class="">
+      Quest Info
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-list-item-view">
+    <div {{action "showQuestInfoPressed" }}>
+      <div {{bindAttr class="advisor"}}></div>  
+
+      <div class="name">
+        {{local questState.questName}}
+      </div>
+      {{#if finished}}
+        <div class="finished"> </div>
+      {{else}}
+        <div class="open"> </div>
+      {{/if}}
+     </div>
 </script>
 
 

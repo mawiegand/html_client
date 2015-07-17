@@ -6313,9 +6313,10 @@ div.dom-quest-container div.tutorial-dialog {
 
 .unit-xl-icon {
   display: inline-block;
-  width: 92px;
-  height: 92px;
+  width: 100%;
+  height: 100%;
   background: url('/client/assets/icons/unit_default-xl.png');
+  background-size: 100%;
 }
 
 .isActiv{
@@ -6366,21 +6367,7 @@ div.dom-quest-container div.tutorial-dialog {
 }
 
 @media (max-width : 800px) {
-  .quest-dialog-text h1, .quest-dialog-text h3{
-    font-size: 13px;
-    font-family: 'Freckle Face', 'cursive';
-    text-shadow: none;
-    color: #dcdcbf;
-    font-weight: 0;
-    margin: 0;
-  }
-
-  .quest-dialog-text h3{
-    margin-top: 20px;
-    font-size : 12px;
-  }
-
-  p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
+  p.citation.clearfix{
     font-family: 'Asap', 'sans-serif';
     text-align: left;
     text-shadow: none;

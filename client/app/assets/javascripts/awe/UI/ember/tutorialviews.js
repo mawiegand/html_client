@@ -16,15 +16,23 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
+    initialize: function() {
+      this.tutorialState.set('selected_quest_state', null);
+    },
+    
     redeemButtonPressed: function(questState) {
       questState.set('redeeming', true);
       AWE.GS.TutorialStateManager.redeemRewards(questState, null, function() {
         questState.set('redeeming', false);
+        this.tutorialState.set('selected_quest_state', null);
       });
     },
     
-    showQuestInfoPressed: function(quest) {
-      AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
+    showQuestInfoPressed: function(questState) {
+      //var quest = questState.get('quest');
+      // types found in xml: epic, epic_optional, sub, optional
+      this.tutorialState.set('selected_quest_state', questState);
+      //AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
     
     okPressed: function() {
@@ -34,27 +42,92 @@ AWE.UI.Ember = (function(module) {
     }
   });  
   
-  module.QuestListEntryView = Ember.View.extend({
-    templateName: 'quest-list-entry-view',
+  module.QuestListItemView = Ember.View.extend({
+    templateName: 'quest-list-item-view',
     
     questState: null,
 
-  
     redeemButtonPressed: function() {
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
   
     showQuestInfoPressed: function() {
-      this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
+      this.get('parentView').showQuestInfoPressed(this.getPath('questState'));
     },
-  
+
+   
     
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),   
+    
+    epic: function()
+    {
+      return this.getPath('questState.questIsEpic');
+    }.property('questState.questIsEpic').cacheable(),
+    
+    optional: function()
+    {
+      return !this.getPath('questState.questIsEpic');
+    }.property('questState.questIsEpic').cacheable(),
+    
+    tutorial: function()
+    {
+      return this.getPath('questState.quest').tutorial;
+    }.property('questState.quest.tutorial').cacheable(),
+    
+    advisor: function() {
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+      }
+      else {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+      }
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    classNameBindings: ['finished', 'epic', 'optional', 'tutorial'], 
+  });  
+  
+  module.QuestListItemViewDetailOverview = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-overview',
+    questState: null,    
     classNameBindings: ['finished'],
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),        
+  }); 
+  
+  module.QuestListItemViewDetailEpic = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-epic',
+    questStateBinding: 'tutorialState.selected_quest_state',
+    classNameBindings: ['finished'],
+    
+    redeemButtonPressed: function() {
+      this.get('parentView').redeemButtonPressed(this.get('questState'));
+    },
+    
+    advisor: function() {
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-end';
+      }
+      else {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-start';
+      }
+    }.property('questState.quest.advisor', 'finished').cacheable(),
     
     finished: function() {
       return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status'),        
-  });  
+  }); 
+  
+  module.QuestListItemViewDetailQuest = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-quest',
+    questState: null,    
+    classNameBindings: ['finished'],
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),        
+  }); 
   
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
@@ -116,7 +189,7 @@ AWE.UI.Ember = (function(module) {
       
     /** runs the popup animations */
     didInsertElement: function() {
-      
+      return;
       // Display full animations for a Reward Dialog that hasn't been displayed before.
       
       var popupAnimations = this.get('popupAnimations');

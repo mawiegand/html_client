@@ -203,6 +203,8 @@ AWE.UI.Ember = (function(module) {
     okPressed:     function() { this.destroy(); },
     cancelPressed: null,
 
+    onClose: null,
+
     showModal: function() {
       WACKADOO.presentModalDialog(this);
     },

@@ -52,12 +52,31 @@ AWE.GS = (function(module) {
     character_id: null,
     tutorial: null,
     rules: null,
+    selected_quest_state: null,
+
     
     init: function(spec) {
       this._super(spec);      
       this.set('tutorial', AWE.GS.TutorialManager.getTutorial());
     },
+
+    selected_quest_type: function(){
+      return this.get('selected_quest_state').get('quest').type;
+    }.property('selected_quest_state').cacheable(),
+        
+    isSelectedQuestEpic: function() {
+      if(this.get('selected_quest_state'))
+        return this.get('selected_quest_state').get('quest').type === "epic";
+      else
+        return false;
+    }.property('selected_quest_state').cacheable(),
     
+    isSelectedQuestPlain: function() {
+      if(this.get('selected_quest_state'))
+        return this.get('selected_quest_state').get('quest').type !== "epic";
+      else
+        return false;
+    }.property('selected_quest_state').cacheable(),
     
     // TODO --> nach nr sortieren
         
@@ -70,7 +89,7 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') === module.QUEST_STATUS_NEW && questState.get('quest') && !questState.getPath('quest.hide_start_dialog')) {
           // log('---> recalc newQuestStates: quest', questState.getId(), questState.get('status'), questState.get('updated_at'), questState.get('created_at'));
-          newQuestStates.push(questState);
+            newQuestStates.push(questState);
         }
       });
       return newQuestStates;
@@ -102,7 +121,8 @@ AWE.GS = (function(module) {
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED && questState.get('quest') && (questState.getPath('quest.rewards') || questState.get('status') < module.QUEST_STATUS_FINISHED)) {
-          notClosedQuestStates.push(questState);
+          if(questState.get('questIsEpic') == true)
+            notClosedQuestStates.push(questState);
         }
       });
       return notClosedQuestStates;
@@ -252,7 +272,7 @@ AWE.GS = (function(module) {
     status: null,
     displayed_at: null,
     finished_at: null,
-    closed_at: null,
+    closed_at: null,  
     
     tutorialState: function() {
       return module.TutorialStateManager.getTutorialState();
@@ -275,6 +295,19 @@ AWE.GS = (function(module) {
     }.property('quest_id').cacheable(),
     
     questNameBinding: 'quest.name',
+    
+    questIsEpic: function()
+    {
+      var questId = this.get('quest_id');
+      if (questId === undefined || questId === null) {
+        return false;
+      }
+      var quest = AWE.GS.TutorialManager.getTutorial().quest(questId);
+      if (quest !== undefined && quest !== null) 
+        if(quest.type == "epic")
+          return true;
+      return false;
+    }.property('quest_id').cacheable(),
     
     statusString: function() {
       switch (this.get('status')) {
