@@ -69,6 +69,9 @@
   width: 60px;
   height: 48px;
   margin-top: 20px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_stone_big.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_wood{
@@ -76,6 +79,9 @@
   width: 64px;
   height: 48px;
   margin-top: 20px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_wood_big.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_fur{
@@ -83,18 +89,27 @@
   width: 60px;
   height: 68px;
   margin-top: 10px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_fur_big.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_barroombrawl{
   background:url("<%= asset_path 'dialogs/items/grey/item_warrior_grey.png' %>") no-repeat right bottom;;
   width: 88px;
   height: 92px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_warrior.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_raid{
   background:url("<%= asset_path 'dialogs/items/grey/item_clubman_grey.png' %>") no-repeat right bottom;;
   width: 88px;
   height: 92px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_clubman.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_mushrooms{
@@ -102,12 +117,18 @@
   width: 60px;
   height: 64px;
   margin-top: 20px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_wood_toad.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_hunt{
   background:url("<%= asset_path 'dialogs/items/grey/item_dinosaur_grey.png' %>") no-repeat right bottom;
   width: 88px;
   height: 92px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_dinosaur.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_fishing{
@@ -115,6 +136,9 @@
   width: 68px;
   height: 56px;
   margin-top: 20px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_stone_toad.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_caravan{
@@ -122,6 +146,9 @@
   width: 88px;
   height: 56px;
   margin-top: 20px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_stonecart.png' %>") no-repeat center center;
+  }
 }
 
 .assignments-dialog-pane .assignment_expedition{
@@ -129,66 +156,29 @@
   width: 68px;
   height: 64px;
   margin-top: 15px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_clubs.png' %>") no-repeat center center;
+  }
 }
 
-.assignments-dialog-pane .assignment_stone.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_stone_big.png' %>") no-repeat center center;
-  width: 60px;
-  height: 48px;
-}
-
-.assignments-dialog-pane .assignment_wood.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_wood_big.png' %>") no-repeat center center;
-  width: 64px;
-  height: 48px;
-}
-
-.assignments-dialog-pane .assignment_fur.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_fur_big.png' %>") no-repeat center center;
-  width: 60px;
-  height: 68px;
-}
-
-.assignments-dialog-pane .assignment_barroombrawl.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_warrior.png' %>") no-repeat right bottom;;
+.assignments-dialog-pane .assignment_construction{
+  background:url("<%= asset_path 'dialogs/items/grey/item_small_huts_grey.png' %>") no-repeat center center;
   width: 88px;
-  height: 92px;
-}
-
-.assignments-dialog-pane .assignment_raid.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_clubman.png' %>") no-repeat right bottom;;
-  width: 88px;
-  height: 92px;
-}
-
-.assignments-dialog-pane .assignment_mushrooms.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_wood_toad.png' %>") no-repeat center center;
-  width: 60px;
   height: 64px;
+  margin-top: 15px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_small_huts.png' %>") no-repeat center center;
+  }
 }
 
-.assignments-dialog-pane .assignment_hunt.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_dinosaur.png' %>") no-repeat right bottom;
+.assignments-dialog-pane .assignment_training{
+  background:url("<%= asset_path 'dialogs/items/grey/item_training_cave_grey.png' %>") no-repeat center center;
   width: 88px;
-  height: 92px;
-}
-
-.assignments-dialog-pane .assignment_fishing.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_stone_toad.png' %>") no-repeat center center;
-  width: 68px;
-  height: 56px;
-}
-
-.assignments-dialog-pane .assignment_caravan.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_stonecart.png' %>") no-repeat center center;
-  width: 88px;
-  height: 56px;
-}
-
-.assignments-dialog-pane .assignment_expedition.is-active{
-  background:url("<%= asset_path 'dialogs/items/normal/item_clubs.png' %>") no-repeat center center;;
-  width: 68px;
   height: 64px;
+  margin-top: 15px;
+  &.is-active {
+    background: url("<%= asset_path 'dialogs/items/normal/item_training_cave.png' %>") no-repeat center center;
+  }
 }
 
 
@@ -376,6 +366,15 @@
 {
   text-align: center;
   position: relative;
+}
+
+.assignments-dialog-info {
+  .assignments-construction-bonus-icon {
+    .assignments-count-text {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
 }
 
 .modal-dialog-body.modal-dialog-assignments-info{

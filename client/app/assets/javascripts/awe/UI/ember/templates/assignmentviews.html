@@ -109,6 +109,9 @@
           {{#each unitRewards}}
             <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
           {{/each}}
+          {{#each constructionBonusRewards}}
+            <span class="building-speedup-icon">&nbsp;</span> {{bonus}} {{t general.for}} {{duration}} &nbsp;
+          {{/each}}
           {{#if assignmentType.rewards.experience_reward }}
             <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
           {{/if }}

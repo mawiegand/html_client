@@ -92,9 +92,15 @@
         {{/each}}
         {{#each unit in unitRewards}}
           <div class="assignments-unit-info-icon"> 
-                {{view AWE.UI.Ember.ArmyUnitSmallInfoButtonView unitTypeBinding="unit"}}
-                <div class="assignments-count-text">{{unit.amount}}</div>
-            </div>
+            {{view AWE.UI.Ember.ArmyUnitSmallInfoButtonView unitTypeBinding="unit"}}
+            <div class="assignments-count-text">{{unit.amount}}</div>
+          </div>
+        {{/each}}
+        {{#each bonus in constructionBonusRewards}}
+          <div class="assignments-construction-bonus-icon"> 
+            <div class="item speedup-building-icon"></div>
+            <div class="assignments-count-text">{{bonus.bonus}}% {{t general.for}} {{bonus.duration}}h</div>
+          </div>
         {{/each}}
         {{#if isXPReward}}
           <div class="assignments-unit-info-icon"> 
