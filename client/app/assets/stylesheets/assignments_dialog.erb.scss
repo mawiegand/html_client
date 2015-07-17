@@ -5,7 +5,11 @@
   margin: 30px 0 0 20px;
 }
 
-.assignments-dialog-pane .row2{
+.assignments-dialog-pane {
+  height: 327px;
+}
+
+.assignments-dialog-pane .row{
   width: 593px;
   margin: 28px 0 0 36px;
 }
@@ -42,7 +46,7 @@
   height: 48px;
   position: absolute;
   top: 77px;
-  right: -34px;
+  right: -44px;
   background-image: url("<%= asset_path 'dialogs/items/normal/item_toads.png' %>");
   background-repeat: no-repeat;
   background-position: 0 0;
@@ -61,7 +65,7 @@
 }
 
 .assignments-dialog-pane .assignment_stone{
-  background:url("<%= asset_path 'dialogs/items/grey/item_stone_big_grey.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/items/grey/item_stone_grey.png' %>") no-repeat center center;
   width: 60px;
   height: 48px;
   margin-top: 20px;
@@ -281,8 +285,10 @@
   line-height: 54px;
 }
 
-.assignments-dialog-pane .cell-20{
+.assignments-dialog-pane .cell{
   float:left;
+  width: 25%;
+  height: 144px;
 }
 /*Assignments info dialog*/
 

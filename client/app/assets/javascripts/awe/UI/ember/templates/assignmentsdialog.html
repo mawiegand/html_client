@@ -4,39 +4,12 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="assignments-tab">
-  <div class="row row2">
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_stone"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_wood"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_fur"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_barroombrawl"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_raid"}}
-    </div>
-  </div>
-  <div class="row row3">
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_mushrooms"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_hunt"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_fishing"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_caravan"}}
-    </div>
-    <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" buildingBinding="building" assignmentType="assignment_expedition"}}
-    </div>
+  <div class="row">
+    {{#each assignments}}
+      <div class="cell">
+        {{view AWE.UI.Ember.AssignmentItemView controllerBinding="view.controller" buildingBinding="view.building" assignmentType=this.symbolic_id}}
+      </div>
+    {{/each}}
   </div>
 </script>
 
