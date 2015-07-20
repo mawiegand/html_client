@@ -29,8 +29,13 @@ AWE.GS = (function(module) {
   module.Building = Ember.Object.extend( /** @lends AWE.GS.Building# */ {
 		typename: 'Building',
 
+    // used for the tavern animation.
+    active: false,
+    endTime : 0,
+
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
 		hashableJobsBinding: "slot.hashableJobs",
+
 
 		/** the name of the building from the game rules. */
 		nameBinding: 'buildingType.name',

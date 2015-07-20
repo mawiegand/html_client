@@ -121,7 +121,7 @@ AWE.GS = (function(module) {
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED && questState.get('quest') && (questState.getPath('quest.rewards') || questState.get('status') < module.QUEST_STATUS_FINISHED)) {
-          if(questState.get('questIsEpic') == true)
+          if(questState.get('questIsEpic') == true || questState.get('questIsOptional') == true)
             notClosedQuestStates.push(questState);
         }
       });
@@ -274,6 +274,9 @@ AWE.GS = (function(module) {
     finished_at: null,
     closed_at: null,  
     
+    actual: 0,
+    threshold: 1,
+    
     tutorialState: function() {
       return module.TutorialStateManager.getTutorialState();
     }.property('quest_id'),
@@ -309,6 +312,19 @@ AWE.GS = (function(module) {
       return false;
     }.property('quest_id').cacheable(),
     
+    questIsOptional: function()
+    {
+      var questId = this.get('quest_id');
+      if (questId === undefined || questId === null) {
+        return false;
+      }
+      var quest = AWE.GS.TutorialManager.getTutorial().quest(questId);
+      if (quest !== undefined && quest !== null) 
+        if(quest.type == "optional")
+          return true;
+      return false;
+    }.property('quest_id').cacheable(),
+    
     statusString: function() {
       switch (this.get('status')) {
         case module.QUEST_STATUS_NEW:
@@ -331,15 +347,98 @@ AWE.GS = (function(module) {
     }.property('reward_displayed_at').cacheable(),
     
     checkForRewards: function() {
-      
       var self = this;
-      
-      // log('---> check questState for rewards');
-      
-      // quest ausm tutorial holen
       var quest = this.get('quest');
-      // alle checks des tutorialquests durchlaufen
-      // log('---> quest', quest, quest.reward_tests);
+
+      var number_of_tests = 0;
+      if (quest && quest.reward_tests) 
+      {
+          number_of_tests += (quest.reward_tests.resource_production_tests) ? quest.reward_tests.resource_production_tests.length : 0;
+          number_of_tests += (quest.reward_tests.building_tests) ? quest.reward_tests.building_tests.length : 0;
+          number_of_tests += (quest.reward_tests.settlement_tests) ? quest.reward_tests.settlement_tests.length : 0;
+          number_of_tests += (quest.reward_tests.army_tests) ? quest.reward_tests.army_tests.length : 0;          
+          number_of_tests += (quest.reward_tests.construction_queue_tests) ? quest.reward_tests.construction_queue_tests.length : 0;            
+          number_of_tests += (quest.reward_tests.training_queue_tests) ? quest.reward_tests.training_queue_tests.length : 0;                      
+          number_of_tests += (quest.reward_tests.movement_test) ? quest.reward_tests.movement_test.length : 0;   
+          number_of_tests += (quest.reward_tests.alliance_test) ? quest.reward_tests.alliance_test.length : 0;   
+          number_of_tests += (quest.reward_tests.alliance_members_test) ? quest.reward_tests.alliance_members_test.length : 0;             
+          number_of_tests += (quest.reward_tests.standard_assignment_test) ? quest.reward_tests.standard_assignment_test.length : 0;             
+          number_of_tests += (quest.reward_tests.kill_test) ? quest.reward_tests.kill_test.length : 0;   
+          number_of_tests += (quest.reward_tests.battle_test) ? quest.reward_tests.battle_test.length : 0;   
+          number_of_tests += (quest.reward_tests.army_experience_test) ? quest.reward_tests.army_experience_test.length : 0;             
+          number_of_tests += (quest.reward_tests.score_test) ? quest.reward_tests.score_test.length : 0;   
+          number_of_tests += (quest.reward_tests.settlement_production_test) ? quest.reward_tests.settlement_production_test.length : 0;   
+          number_of_tests += (quest.reward_tests.building_speed_test) ? quest.reward_tests.building_speed_test.length : 0;   
+      }
+      
+      if(number_of_tests > 0)
+      {
+        // only continue if there are tests to be tested
+        // two cases: 
+        // 1. if number_of_tests > 1 then we count each group test success with number_of_tests
+        // 2. else we can have also level checks -> (actual level/to reach level) and (actual count/to reach count)
+        this.set('actual', 0);
+        this.set('threshold', 1);
+        
+        if(number_of_tests > 1)
+        {
+          var number_of_tests_successed = 0;
+          
+          if (quest.reward_tests.resource_production_tests)
+            quest.reward_tests.resource_production_tests.forEach(function(e,i,a){self.checkResourceProduction(e) ? true : number_of_tests_successed++;});
+          if (quest.reward_tests.building_tests)
+            quest.reward_tests.building_tests.forEach(function(e,i,a){self.checkBuildings(e) ? true : number_of_tests_successed++;});
+            //etc
+          this.set('threshold', number_of_tests);
+          
+          debugger;
+        }
+        else
+        {
+          var self = this;
+          if (quest.reward_tests.resource_production_tests)
+            this.checkResourceProduction(quest.reward_tests.resource_production_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });          
+          if (quest.reward_tests.building_tests)
+            this.checkBuildings(quest.reward_tests.building_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });
+          if (quest.reward_tests.settlement_tests)
+            this.checkSettlements(quest.reward_tests.settlement_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });          
+          if (quest.reward_tests.army_tests)
+            this.checkArmies(quest.reward_tests.army_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                    
+          if (quest.reward_tests.construction_queue_tests)
+            this.checkConstructionQueues(quest.reward_tests.construction_queue_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                              
+          if (quest.reward_tests.training_queue_tests)
+            this.checkTrainingQueues(quest.reward_tests.training_queue_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                        
+          if (quest.reward_tests.movement_test)
+            this.checkMovement(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                  
+          if (quest.reward_tests.alliance_test)
+            this.checkAlliance(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                            
+          if (quest.reward_tests.alliance_members_test)
+            this.checkAllianceMembers(quest.reward_tests.alliance_members_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                                      
+          if (quest.reward_tests.standard_assignment_test)
+            this.checkStandardAssignment(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });
+          if (quest.reward_tests.kill_test)
+            this.checkKills(quest.reward_tests.kill_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });          
+          if (quest.reward_tests.battle_test)
+            this.checkBattle(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                    
+          if (quest.reward_tests.army_experience_test)
+            this.checkArmyExperience(quest.reward_tests.army_experience_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                              
+          if (quest.reward_tests.score_test)
+            this.checkScore(quest.reward_tests.score_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                        
+          if (quest.reward_tests.settlement_production_test)
+            this.checkSettlementProduction(quest.reward_tests.settlement_production_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                  
+          if (quest.reward_tests.building_speed_test)
+            this.checkBuildingSpeed(quest.reward_tests.building_speed_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                            
+        }
+      }
+    
+    
+    
+      
+      
+      
+      
+      
+      
       
       // check all reward tests. if anyone fails, return false.
       if (quest && quest.reward_tests) {
@@ -429,7 +528,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.movement_test) {
           // log('---> movement_test', quest.reward_tests.movement_test);
         
-          if (!self.checkMovement(quest.reward_tests.movement_test)) {
+          if (!self.checkMovement(/*quest.reward_tests.movement_test*/)) {
             // log('---> movement_test failed');
             return false;              
           }
@@ -438,7 +537,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.alliance_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
 
-          if (!self.checkAlliance(quest.reward_tests.alliance_test)) {
+          if (!self.checkAlliance(/*quest.reward_tests.alliance_test*/)) {
             // log('---> alliance_test failed');
             return false;
           }
@@ -456,7 +555,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.standard_assignment_test) {
 //          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
 
-          if (!self.checkStandardAssignment(quest.reward_tests.standard_assignment_test)) {
+          if (!self.checkStandardAssignment(/*quest.reward_tests.standard_assignment_test*/)) {
 //            log('---> standard_assignment_test failed');
             return false;
           }
@@ -474,7 +573,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.battle_test) {
           // log('---> battle_test', quest.reward_tests.battle_test);
 
-          if (!self.checkBattle(quest.reward_tests.battle_test)) {
+          if (!self.checkBattle(/*quest.reward_tests.battle_test*/)) {
             // log('---> battle_test failed');
             return false;
           }
@@ -538,27 +637,69 @@ AWE.GS = (function(module) {
     },
     
 
-    checkResourceProduction: function(test) {
+    checkResourceProduction: function(test, callback) {
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
-      
       if (test.minimum == null) {
         log('ERROR in AWE.GS.QuestState.checkResourceProduction: minimum missing in quest id ' + this.get('quest_id'));
         return false;
       }
-
-      return pool && (pool.get(test.resource + '_production_rate') || 0) >= test.minimum;
+      var actual = pool && (pool.get(test.resource + '_production_rate') || 0);
+      if(callback)
+        callback(actual, test.minimum);
+      return actual >= test.minimum;
     },
     
-    checkBuildings: function(buildingTest) {
-      // log('---> checkBuildings', buildingTest);
-      
+    checkBuildings: function(buildingTest, callback) {
       if (buildingTest.min_level == null || buildingTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkBuildings: buildingTest.min_level or buildingTest.min_count missing in quest id ' + this.get('quest_id'));
         return false;
       }
         
       var ownSettlements = AWE.GS.SettlementManager.getOwnSettlements();
-      // log('---> ownSettlements', ownSettlements);
+      if(buildingTest.min_count <= 1)
+      {
+        var currentLevel = 0;
+        AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
+          AWE.Ext.applyFunctionToElements(settlement.slots(), function(slot) {
+            var level = slot.get('level');
+            var buildingId = slot.get('building_id');
+            if (buildingId != null) {
+              var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
+              if (buildingSymbolicId === buildingTest.building && level != null)
+              {
+                currentLevel = Math.max(currentLevel, level)
+              }  
+            }
+          });
+        });
+        if(callback)
+          callback(currentLevel, buildingTest.min_level);
+        return (currentLevel >= buildingTest.min_level);
+      }
+      else
+      {
+        var currentFullfilledSlots = 0;
+        AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
+          AWE.Ext.applyFunctionToElements(settlement.slots(), function(slot) {
+            var level = slot.get('level');
+            var buildingId = slot.get('building_id');
+            if (buildingId != null) {
+              var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
+              if (buildingId != null && level != null && buildingSymbolicId === buildingTest.building)
+                if(level >= buildingTest.min_level)
+                {
+                  currentFullfilledSlots++;
+                }
+                  
+            }
+          });
+        });
+        if(callback)
+          callback(currentFullfilledSlots, buildingTest.min_count);
+        return (currentFullfilledSlots >= buildingTest.min_count);
+      }
+
+/*
       var checkCount = 0;
 
       AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
@@ -583,26 +724,28 @@ AWE.GS = (function(module) {
       });
             
       // log('---> building count', checkCount, buildingTest.min_count);
-      return checkCount >= buildingTest.min_count;
+      
+      // TODO: see iOS Version QuestUtils: we have two cases not only one
+      if(callback)
+        callback(checkCount, buildingTest.min_count);
+      
+      return checkCount >= buildingTest.min_count;*/
     },
 
-    checkSettlements: function(settlementTest) {
-      // log('---> checkSettlements', settlementTest);
-
+    checkSettlements: function(settlementTest, callback) {
       if (settlementTest.min_count == null || settlementTest.type == null) {
         log('ERROR in AWE.GS.QuestState.checkSettlements: settlementTest.min_count or settlementTest.type missing in quest id ' + this.get('quest_id'));
         return false;
       }
-
       var settlementType = AWE.GS.RulesManager.getRules().getSettlementTypeWithSymbolicId(settlementTest.type);
-        
-      // log('---> settlements', AWE.GS.SettlementManager.getOwnSettlementsOfType(settlementType.id), settlementTest.min_count, settlementTest.type, settlementType);
-      return AWE.Util.hashCount(AWE.GS.SettlementManager.getOwnSettlementsOfType(settlementType.id)) >= settlementTest.min_count
+      var actual = AWE.Util.hashCount(AWE.GS.SettlementManager.getOwnSettlementsOfType(settlementType.id));
+      var threshold = settlementTest.min_count;
+      if(callback)
+        callback(actual, threshold);
+      return actual >= threshold;
     },
         
-    checkArmies: function(armyTest) {
-      // log('---> checkArmies', armyTest);
-      
+    checkArmies: function(armyTest, callback) {
       if (armyTest.min_count == null || armyTest.type == null) {
         log('ERROR in AWE.GS.QuestState.checkArmies: armyTest.min_count or armyTest.type missing in quest id ' + this.get('quest_id'));
         return false;
@@ -624,46 +767,36 @@ AWE.GS = (function(module) {
           }
         }
       }
-      // log('---> units', unitCount, armyTest.min_count);
+      if(callback)
+        callback(unitCount, armyTest.min_count);
       return unitCount >= armyTest.min_count;
     },
 
-    checkConstructionQueues: function(queueTest) {
-      // log('---> checkConstructionQueues', queueTest);
-      
+    checkConstructionQueues: function(queueTest, callback) {
       if (queueTest.min_count == null || queueTest.min_level == null) {
         log('ERROR in AWE.GS.QuestState.checkConstructionQueues: queueTest.min_level or queueTest.min_level missing in quest id ' + this.get('quest_id'));
         return false;
       }
         
       var ownSettlements = AWE.GS.SettlementManager.getOwnSettlements();
-      // log('---> ownSettlements', ownSettlements);
       var checkCount = 0;
 
       AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
         var queues = settlement.queues();
-        // log('---> queues', queues);
-        
         AWE.Ext.applyFunctionToElements(queues, function(queue) {
           if (queue) {
-            // log('---> queue', queue);
             var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.get('id')) || [];
-            // log('---> jobs', jobs);
-          
             AWE.Ext.applyFunctionToElements(jobs, function(job) {
               if (job) {
-                // log('---> job', job);
                 var jobType = job.get('job_type'); // CONSTRUCTION_JOB_TYPE_CREATE
                 var level = job.get('level_after'); // CONSTRUCTION_JOB_TYPE_CREATE
                 var buildingId = job.get('building_id');
-                // log('-----> ', jobType, buildingId);
                 if (buildingId != null && jobType != null) {
                   var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
                   if (buildingSymbolicId === queueTest.building &&
                       (jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE || jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE) &&
                       level != null && level >= queueTest.min_level) {
                     checkCount++;
-                    // log('-----> job min_count test ok', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
                   }
                   else {
                     // log('-----> job min_count test failed', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
@@ -695,13 +828,12 @@ AWE.GS = (function(module) {
         });
       });
 
-      // log('---> job count', checkCount, queueTest.min_level, queueTest.min_count);
+      if(callback)
+        callback(checkCount, queueTest.min_count);
       return checkCount >= queueTest.min_count;
     },
 
-    checkTrainingQueues: function(queueTest) {
-      // log('---> checkTrainingQueues', queueTest);
-      
+    checkTrainingQueues: function(queueTest, callback) {
       if (queueTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkTrainingQueues: queueTest.min_count missing in quest id ' + this.get('quest_id'));
         return false;
@@ -742,32 +874,43 @@ AWE.GS = (function(module) {
         });
       });
             
-      // log('---> job count', checkCount, queueTest.min_count);
+      if(callback)
+        callback(checkCount, queueTest.min_count);
       return checkCount >= queueTest.min_count;
     },
     
-    checkMovement: function() {
+    checkMovement: function(callback) {
       // log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       // log('---> checkcheckMovement', armies);
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_MOVING) {
-              return true;
+            if(callback)
+              callback(1, 1);
+            return true;
           }
         }
       }
+      if(callback)
+        callback(0, 1);      
       return false;
     },
 
-    checkAlliance: function() {
+    checkAlliance: function(callback) {
       // log('---> checkAlliance');
-      return AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
+      var allianceSet = AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
+      if(callback)
+      {
+        if(allianceSet)
+          callback(1, 1);
+        else
+          callback(0, 1);
+      }
+      return allianceSet;
     },
 
-    checkAllianceMembers: function(allianceMembersTest) {
-      // log('---> checkAllianceMembers', allianceMembersTest);
-
+    checkAllianceMembers: function(allianceMembersTest, callback) {
       if (allianceMembersTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkAllianceMembers: allianceMembersTest.min_count missing in quest id ' + this.get('quest_id'));
         return false;
@@ -777,20 +920,25 @@ AWE.GS = (function(module) {
       if (allianceId) {
         var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
         if (alliance) {
-          return alliance.get('members_count') >= allianceMembersTest.min_count;
+          var ret = alliance.get('members_count') >= allianceMembersTest.min_count;
+          if(callback)
+            callback(alliance.get('members_count'), allianceMembersTest.min_count);
+          
+          return ret;
         }
       }
 
       return false;
     },
 
-    checkStandardAssignment: function() {
-//      log('---> checkStandardAssignment');
+    checkStandardAssignment: function(callback) {
       var assignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments');
 
       if (assignments != null) {
         for (var id in assignments) {
           if (assignments.hasOwnProperty(id) && assignments[id] && assignments[id].get('isActive')) {
+            if(callback)
+              callback(1,1);
             return true;
           }
         }
@@ -831,7 +979,7 @@ AWE.GS = (function(module) {
       return false;      
     },
 
-    checkKills: function(killTest) {
+    checkKills: function(killTest, callback) {
       var minUnits = killTest.min_units;
       // log('---> checkKills with min_units', minUnits);
       
@@ -840,17 +988,19 @@ AWE.GS = (function(module) {
         return false;
       }
       // log('---> checkKills with min_units', minUnits, AWE.GS.game.getPath('currentCharacter.kills'));
-        
+      if(callback)
+        callback((AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills')) || 0, minUnits);
       return AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills') >= minUnits;
     },
 
-    checkBattle: function() {
+    checkBattle: function(callback) {
       // log('---> checkBattle');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_FIGHTING) {
+            if(callback)
+              callback(1,1);
             return true;
           }
         }
@@ -858,9 +1008,8 @@ AWE.GS = (function(module) {
       return false;
     },
 
-    checkArmyExperience: function(armyExperienceTest) {
+    checkArmyExperience: function(armyExperienceTest, callback) {
       var minExp = armyExperienceTest.min_experience;
-      
       if (minExp == null) {
         log('ERROR in AWE.GS.QuestState.checkArmyExperience: armyExperienceTest.min_experience missing in quest id ' + this.get('quest_id'));
         return false;
@@ -871,26 +1020,31 @@ AWE.GS = (function(module) {
       
       if (armies != null) {
         for (var id in armies) {
-          if (armies.hasOwnProperty(id) && armies[id].get('exp') !== null && armies[id].get('exp') >= minExp) {
-            return true;
+          if (armies.hasOwnProperty(id) && armies[id].get('exp') !== null) {
+            if(callback)
+              callback(armies[id].get('exp'), minExp);
+            if(armies[id].get('exp') >= minExp)
+              return true;
           }
         }
       }
       return false;
     },
 
-    checkScore: function(scoreTest) {
+    checkScore: function(scoreTest, callback) {
       var minPopulation = scoreTest.min_population;
       
       if (minPopulation == null) {
         log('ERROR in AWE.GS.QuestState.testScore: scoreTest.min_population missing in quest id ' + this.get('quest_id'));
         return false;
       }
-        
+      
+      if(callback)
+        callback((AWE.GS.game.getPath('currentCharacter.score') != null && AWE.GS.game.getPath('currentCharacter.score')) || 0, minPopulation);
       return AWE.GS.game.getPath('currentCharacter.score') != null && AWE.GS.game.getPath('currentCharacter.score') >= minPopulation;
     },
 
-    checkSettlementProduction: function(settlementProductionTest) {
+    checkSettlementProduction: function(settlementProductionTest, callback) {
       var minResources = settlementProductionTest.min_resources;
       
       if (minResources == null) {
@@ -918,6 +1072,8 @@ AWE.GS = (function(module) {
           });
         }
         
+        if(callback)
+          callback(resources, minResources);
         if (resources >= minResources) {
           check = true;
         }
@@ -926,7 +1082,7 @@ AWE.GS = (function(module) {
       return check;
     },
    
-    checkBuildingSpeed: function(speedTest) {
+    checkBuildingSpeed: function(speedTest, callback) {
       
       if (speedTest.min_speed == null) {
         log('ERROR in AWE.GS.QuestState.checkBuildingSpeed: queueTest.min_speed missing in quest id ' + this.get('quest_id'));
@@ -940,6 +1096,8 @@ AWE.GS = (function(module) {
           var queues = ownSettlements[sid].queues();
           
           for (var i = 0; i < queues.length; i++) {
+            if(callback)
+              callback(queues[i].get('speed'), speedTest.min_speed);
             if (queues[i].get('speed') >= speedTest.min_speed) {
               return true;
             }
@@ -1336,7 +1494,7 @@ AWE.GS = (function(module) {
               // callback: dialog anzeigen mit reward
               questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
               // log('---> checkForRewards modalDialogOpen', WACKADOO.modalDialogOpen());
-              if(questState.getPath('quest.type') == 'epic' || questState.getPath('quest.type') == 'optional') {
+              if(questState.getPath('quest.type') == 'epic') {
                 if (!WACKADOO.modalDialogOpen()) {
                   that.showQuestFinishedDialog(questState);
                 }

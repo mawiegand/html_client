@@ -95,6 +95,7 @@
   .quest-list{
     position: relative;
     width: 45%;
+    height: 100%;
     float:left;
   }
   
@@ -139,19 +140,8 @@
   }
 }
 
-/* === Layout Quest List === */
-
-
-
-
-
-
-
-/* === --------------------------------- === */
-
+/* ===  Quest List === */
 .quest-list{
-  
-
 
   .epic{
     background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');
@@ -165,193 +155,110 @@
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
-  }
+  } 
+}
+
+/* ===  Quest List Item === */
+.quest-list-item {
+  margin: 10px 0;
+  cursor: pointer;
+  height: 48px;
   
-  .quest-list-item {
-    margin: 10px 0;
-    cursor: pointer;
-    height: 48px;
+  .name {
+    position: relative;
+    margin-left: 2%;
+    display: inline-block;
+
+    font-family: 'Freckle Face', cursive;
+    color: #fdf6d4;
+    text-shadow: none;
+    font-size: 25px;
+    line-height: 2em;
+    width: 216px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .actual_threshold {
+    position: relative;
+    display: inline-block;
+    font-family: 'Freckle Face', cursive;
+    color: #fdf6d4;
+    text-shadow: none;
+    font-size: 20px;
+    line-height: 2.5em;
+    width: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .advisor{
+    width: 40px;
+    height: 40px;
+    float: left;
+    margin-left: 4px;
+    margin-top: 4px;
+    background-size: 100% 100%;
+    /*background: url('<%= asset_path("units/unit_warrior-tiny.png") %>');
     
-    .name {
-      position: relative;
-      margin-left: 2%;
-      display: inline-block;
-
-      font-family: 'Freckle Face', cursive;
-      color: #fdf6d4;
-      text-shadow: none;
-      font-size: 25px;
-      line-height: 2em;
-    }
-  
-
-
-    .advisor{
-      width: 40px;
-      height: 40px;
-      float: left;
-      margin-left: 4px;
-      margin-top: 4px;
-      background-size: 100% 100%;
-      /*background: url('<%= asset_path("units/unit_warrior-tiny.png") %>');
-      
-      background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');*/
-      .girl {
-         background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-girl.png") %>');
-      }
-
-      .chef {
-        background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');
-      }
-
-      .warrior {
-        background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-warrior.png") %>');
-      }
-    }
-  
-    .finished{
-      width: 27px;
-      height: 26px;
-      position: relative;
-      top: 5px;
-      right: 5px;  
-      float: right;
-      background-image: url('<%= asset_path("dialogs/quest-list/quest-finished-icon.png") %>');
-      background-size: 100% 100%;
+    background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');*/
+    .girl {
+       background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-girl.png") %>');
     }
 
-    .open{
+    .chef {
+      background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');
+    }
 
+    .warrior {
+      background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-warrior.png") %>');
     }
   }
 
-  .quest-list-item:active {
-    opacity: 0.7;
-    filter: alpha(opacity=70);
+  .finished{
+    width: 27px;
+    height: 26px;
+    position: relative;
+    top: 5px;
+    right: 5px;  
+    float: right;
+    background-image: url('<%= asset_path("dialogs/quest-list/quest-finished-icon.png") %>');
+    background-size: 100% 100%;
+  }
+
+  .open{
+
   }
 }
 
-
-
-
-/*
-.quest-list-item.girl {
-   background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-girl.png") %>');
+.quest-list-item:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70);
 }
 
-.quest-list-item.chef {
-  background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');
+/* ===  Sub Quest List === */
+.quest-subquests{  
+   
+   margin-left: 15px;
+ 
+   .quest-list-item{
+   
+     background-size: 115% 100%;
+     background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-warrior.png") %>');
+    
+     .name {
+       font-size: 22px;
+       line-height: 2.2em;
+     }
+     
+     .actual_threshold {
+       
+     }
+   }
 }
 
-.quest-list-item.warrior {
-  background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-warrior.png") %>');
-}
-
-.quest-list-item-name {
-  //width: 74%;
-  position: relative;
-  margin-left: 4%;
-  display: inline-block;
-
-  font-family: 'Freckle Face', cursive;
-  color: #fdf6d4;
-  text-shadow: none;
-  font-size: 25px;
-  line-height: 2em;
-}*/
-
-/* === Epic Quest List === *//*
-.quest-list-item-epic{
-  width: 40px;
-  height: 40px;
-  float: left;
-  margin-left: 8px;
-  margin-top: 4px;
-  background: url('<%= asset_path("units/unit_warrior-tiny.png") %>');
-  background-size: 100% 100%;
-}
-
-.quest-list-item-reward {
-  text-align: center;
-  width: 80px;
-  display: inline-block;
-}
-
-.quest-list-item-status-finished{
-  width: 27px;
-  height: 26px;
-  position: relative;
-  top: 5px;
-  right: 5px;  
-  float: right;
-  background-image: url('<%= asset_path("dialogs/quest-list/quest-finished-icon.png") %>');
-  background-size: 100% 100%;
-}
-
-.quest-list-item-status-open{
-
-}*/
-/*.quest-list-view .okButton{
-  position: absolute;
-
-  width: 172px;
-  height: 129px;
-
-  background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button.png") %>');
-  background-size: 100%;
-  -webkit-transition: background-image 0.3s;
-  -moz-transition: background-image 0.3s;
-  -ms-transition: background-image 0.3s;
-  -o-transition: background-image 0.3s;
-  transition: background-image 0.3s;
-
-  -webkit-user-select: none; /* Chrome/Safari */
-//  -moz-user-select: none; /* Firefox */
-//  -ms-user-select: none; /* IE10+ */
-/*  -o-user-select: none;
-  user-select: none;
-
-  bottom: -30px;
-  right: -30px;
-}
-
-.quest-list-view .okButton:hover{
-    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active.png") %>');
-}
-
-.quest-list-view .okButton:active{
-
-  background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active2.png") %>');
-
-  transition: background 0s;
-}
-*/
-/*
-@media (max-width : 800px) {
-  .quest-dialog-text h1, .quest-dialog-text h3{
-    font-size: 13px;
-    font-family: 'Freckle Face', 'cursive';
-    text-shadow: none;
-    color: #dcdcbf;
-    font-weight: 0;
-    margin: 0;
-  }
-
-  .quest-dialog-text h3{
-    margin-top: 20px;
-    font-size : 12px;
-  }
-
-  .quest-dialog-text p, .quest-dialog-text{
-    font-family: 'Asap', 'sans-serif';
-    text-align: left;
-    text-shadow: none;
-    color: #dcdcbf;
-    line-height: 1.15;
-    font-size: 11px;
-    margin: 4px 0;
-  }
-}*/
 
 @media (max-width : 960px){
   .quest-list-view {
@@ -362,6 +269,112 @@
 
 
 .quest-detail {
+
+  .quest-content{
+    
+    .task-top{
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #555;
+    }
+    
+    .task-middle{
+      font-style: italic;
+    }
+    
+    .task-bottom{
+      font-style: italic;
+    }
+  }
+  
+  .overview{
+    
+    .center{
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;      
+    }
+    
+    .advisor{
+      width: 66px; height: 66px;
+      background-size: 100% 100%;
+    }
+    
+    .item{
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #555;
+      
+      width: 100%;
+      margin-left: 10%;
+      height: 40px;
+      display: flex;
+      
+      .left{
+        justify-content: flex-end;
+      }
+      
+      .right{
+        margin-left: 15%;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .xp-icon {
+      display: inline-block;
+      width: 36px; height: 36px;
+      background-image: url("<%= asset_path 'icons/xp_middle.png' %>") no-repeat center center;
+      background-size: 100% 100%;
+    }
+    
+    .population {
+      display: inline-block;
+      width: 36px; height: 36px;
+      background:url("<%= asset_path 'dialogs/items/normal/item_population.png' %>") no-repeat center center;
+      background-size: 100% 100%;      
+    }
+    
+    .capacity {
+      display: inline-block;
+      width: 36px; height: 36px;      
+      background: url("<%= asset_path 'dialogs/items/normal/item_storage.png' %>") no-repeat center center;
+      background-size: 100% 100%;           
+    }
+    
+    .fortress {
+      display: inline-block;      
+      width: 36px; height: 36px;      
+      background:url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>") no-repeat center center;
+      background-size: 100% 100%;  
+    }
+    
+    .outpost {
+      display: inline-block;      
+      width: 36px; height: 36px;      
+      background:url("<%= asset_path 'dialogs/specials/settlement_list_outpost.png' %>") no-repeat center center;
+      background-size: 100% 100%;  
+    }
+    
+    .settlement_points{
+      display: inline-block;      
+      width: 36px; height: 36px;      
+      background:url("<%= asset_path 'dialogs/specials/settlement_list_settlement.png' %>") no-repeat center center;
+      background-size: 100% 100%;
+    }
+    
+    .victories{
+      display: inline-block;      
+      width: 36px; height: 36px;      
+      background:url("<%= asset_path 'dialogs/specials/army_identifier.png' %>") no-repeat center center;
+      background-size: 100% 100%;
+    }
+  }
 
   .redeemButton{
     position: relative;

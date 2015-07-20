@@ -36,6 +36,8 @@ AWE.UI.Ember = (function(module) {
     }
   };
 
+
+
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
   module.BuildingView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingView# */ {
@@ -47,19 +49,116 @@ AWE.UI.Ember = (function(module) {
 
     classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
+    timer : null,
+
     levelClassName: function() {
       return "level"+this.get('level');
     }.property('level').cacheable(),
+
+
+    // for tavern to check if an assignment is in progress or not.
+    tavern_check_idle:function(){
+      
+
+      if(this.getPath("building.buildingId") && AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id != "building_tavern")
+      {
+        return;
+      } 
+
+      // when the page is refreshed
+      if(this.getPath('building.endTime') == 0)
+      {
+        assignments = AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments');
+
+        var max_end_time = null;
+        var converted_end_time = new Date();
+
+
+        for(i=0;i<assignments.collection.length;i++)
+        {
+          if(assignments.collection[i].ended_at != null)
+          {
+            assignmentEndTime = new Date(assignments.collection[i].ended_at);
+
+            if(assignmentEndTime.getTime()>converted_end_time.getTime())
+            {
+              max_end_time = assignments.collection[i].ended_at;
+              converted_end_time = assignmentEndTime;
+            }
+          }
+        }
+        this.setPath('building.endTime',max_end_time);
+        this.calculate_tavern_remaining_time(this.getPath('building.endTime'));
+      }
+
+
+      // when the assignments dialog closes only this condition runs.
+      // other on page refresh both the upper and this condition work
+      // if any assignment is in progress.
+      if(this.getPath('building.endTime') != 0)
+      {
+          self = this;
+
+          clearInterval(this.get('timer'));
+          this.set('timer',setInterval(function(){
+            self.calculate_tavern_remaining_time(self.getPath('building.endTime'));
+          },1000));
+      }
+
+    }.observes("building.endTime"),
+
+
+    calculate_tavern_remaining_time:function(max_end_time)
+    {
+        if(max_end_time === undefined || max_end_time == null)
+          return;
+
+        var finish = Date.parseISODate(max_end_time);
+        var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+        var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+        remaining = remaining < 0 ? 0 : remaining;
+
+        if(remaining >=2)
+        {
+           // not idle
+           this.setPath('building.active',true);
+        }
+        else if(remaining < 2)
+        {
+           // idle
+           this.setPath('building.active',false);
+           clearInterval(this.get('timer'));
+        }
+    },
+
 
     size: function() {
       if(this.get("building"))
       {
         var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
         var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
-        return "size" + imageLevel;
+        return "size"+imageLevel;
       }
       return false;
     }.property("building", 'level'),
+
+
+    active:function(){
+
+      
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        
+
+        if(buildingId == "building_tavern")
+        {
+          return this.getPath('building.active');
+        }
+
+        return false;
+
+    }.property("building.active"),
+
+
 
     size1: function() {
       var level = this.get('level');
@@ -247,11 +346,18 @@ AWE.UI.Ember = (function(module) {
       if (!finishedAt) {
         return ;
       }
+
+      var buildingId  = this.getPath('slot.buildingId');
+
+
+
+
       var finish = Date.parseISODate(finishedAt);
       var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);
+
     },
     
     startTimer: function() {
