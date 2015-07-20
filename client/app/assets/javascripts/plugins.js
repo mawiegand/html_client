@@ -48,3 +48,11 @@ Math.getRandomOfTwo = function(x, y) {
     return y;
   }
 };
+
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
