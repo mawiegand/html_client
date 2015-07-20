@@ -135,11 +135,22 @@
       <div {{bindAttr class="selectedBuildingClass selectedBuildingImageLevel :big-building :buildingUpgradeImage"}}>
         <div class="level">
           {{#if conversionView}}
-            Level {{currentLevel}} <span class="red">-{{levelDelta}}</span></br>
-            => Bronzezeit
+            Level {{currentLevel}} <span class="red">-{{levelDelta}}</span> => Bronzezeit
           {{else}}
-            Level {{currentLevel}} <span class="green">+1</span>
+            Level {{currentLevel}} <span class="green">+{{levelDelta}}</span>
           {{/if}}
+        </div>
+        <div class="controlls">
+          {{#unless isMinimumSelected}}
+            {{#unless conversionView}}
+              <span class="change-level left" {{action "decreaseStepsFurther"}}></span>
+            {{/unless}}
+          {{/unless}}
+          {{#unless isMaximumSelected}}
+            {{#unless conversionView}}
+              <span class="change-level right" {{action "increaseStepsFurther"}}></span>
+            {{/unless}}
+          {{/unless}}
         </div>
       </div>
       {{#if conversionView}}
@@ -149,6 +160,14 @@
       {{/if}}
     </div>
     <div class="bottom-section">
+      <div class="unlocking-buildings">
+        {{#if unlockingBuildings}}
+          <div class="unlocking">Freischalten</div>
+          {{#each unlockingBuildings}}
+            <div {{bindAttr class="this.symbolic_id :building-image"}}></div>
+          {{/each}}
+        {{/if}}
+      </div>
       <div class="upgrade-button" {{action "upgradePressed"}}>
         <div class="cell-header">
           <h3 class="button-title">
