@@ -188,7 +188,7 @@
     text-shadow: none;
     font-size: 20px;
     line-height: 2.5em;
-    width: 40px;
+    //width: 40px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -280,6 +280,20 @@
       color: #555;
     }
     
+
+    .advisor{
+      
+    }
+    
+    .sketched{
+      position:absolute;
+      width: 90px;
+      height: 90px;      
+      background-size: 100%;
+      top:0px;
+      right:0px;
+    }
+    
     .task-middle{
       font-style: italic;
     }
@@ -287,6 +301,12 @@
     .task-bottom{
       font-style: italic;
     }
+  }
+  
+  .quest-dialog-advisor-task{
+    margin-top: 20px;
+    width: 200px;
+    margin-left: 15px;
   }
   
   .overview{
@@ -421,6 +441,7 @@
   }
   
 }
+
 
 
 /*=== Tutorial End Dialog ===*/
@@ -669,13 +690,18 @@ div.dom-quest-container div.tutorial-dialog {
   width: 0px;
   margin-top: 0;
   margin-left: 0;
-
-  background-image: url("<%= asset_path('dialogs/quest-dialog/quest-dialog-bg-middle.png') %>");
-  background-color: none;
-  border: none;
-  background-size: 100% 100%;
-
+  background-image: url('<%= asset_path("dialogs/quest-list/quest-selection-bg.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: 100%;
   z-index: 260;
+}
+
+@media (max-width : 960px){
+  .quest-dialog-bg {
+    zoom: 0.7 !important;
+  }
 }
 
 .quest-dialog-content{
@@ -691,9 +717,201 @@ div.dom-quest-container div.tutorial-dialog {
   -o-user-select: none;
   user-select: none;
 
-  margin: 70px 0 0 65px;
+  margin: 40px 0 0 65px;
 
   cursor: default;
+  
+  
+  .finished_quest_container{
+    float:left;
+    width: 50%;
+    
+    .header{
+      text-align: left;
+      font-size: 22px;
+      font-family: $main-font;
+      color: #563E22;
+    }
+    
+    .advisor{
+      width: 90px;
+      height: 90px;
+      background-size: 100% 100%;
+    }
+    
+    .flavour_text{
+      text-align: left;
+      font-size: 17px;
+      font-family: $main-font;
+      color: #563E22;
+    }
+    
+    .haufen{
+      width: 260px;
+      height: 220px;
+      background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-haufen.png") %>');
+      background-size: 100%;
+    }
+    
+    .redeemButton{
+      position: relative;
+
+      width: 180px;
+      height: 53px;
+
+      background-image: url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      -webkit-transition: background-image 0.3s;
+      -moz-transition: background-image 0.3s;
+      -ms-transition: background-image 0.3s;
+      -o-transition: background-image 0.3s;
+      transition: background-image 0.3s;
+
+      -webkit-user-select: none; /* Chrome/Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* IE10+ */
+      -o-user-select: none;
+      user-select: none;
+
+      top: -50px;
+      left: 40px;
+      text-align: center;
+    
+      span{
+        font-family: $main-font;
+        color: #fdf6d4;
+        text-shadow: none;
+        font-size: 20px;
+        line-height: 2.5em;  
+      }
+    }
+  
+    .redeemButton:hover{
+      cursor: pointer;
+    }
+
+    .redeemButton:active{
+      background-image: url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>');
+      transition: background 0s;
+    }
+    
+    .quest-dialog-reward{
+      position: relative;
+      top: -70px;
+    }
+
+    .quest-reward-item-number{
+
+    }
+  }
+  
+  .seperator{
+    height: 110%;
+    width: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #C2AC92;
+  }
+  
+  .next_quest_container{
+    position: absolute;
+    float:right;  
+    width: 50%;
+    left: 265px;
+    top: 0px;
+    
+    .header{
+      text-align: center;
+      font-size: 22px;
+      font-family: $main-font;
+      color: #563E22;
+    }
+     
+    .advisor{
+      width: 90px;
+      height: 90px;
+      background-size: 100% 100%;
+      right: 0px;
+      position: absolute;
+      top: 26px;
+    }
+    
+    .task_text{
+      text-align: left;
+      font-size: 17px;
+      font-family: $main-font;
+      color: #563E22;
+      width: 160px;
+      height: 90px;
+    }
+    
+    .quest-subquests{
+      margin-left: 0px;
+      margin-top: -30px;
+        
+      .quest-list-item{
+          
+        .advisor{
+          position: relative;
+          width:38px;
+          height:38px;        
+          top: 0px;
+        }
+        
+        .name{
+          font-family: $main-font;
+          font-size: 16px;
+          line-height: 2.8em;  
+          width: 66%;
+        }
+      }
+    }
+  }
+}
+
+.nextButton{
+  position: absolute;
+
+  width: 180px;
+  height: 53px;
+
+  background-image: url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+
+  
+  right: -40px;
+  top: 380px;
+  text-align: center;
+
+  span{
+    font-family: $main-font;
+    color: #fdf6d4;
+    text-shadow: none;
+    font-size: 20px;
+    line-height: 2.5em;  
+  }
+}
+
+.nextButton:hover{
+  cursor: pointer;
+}
+
+.nextButton:active{
+  background-image: url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>');
+  transition: background 0s;
 }
 
 .quest-scip-button{
@@ -763,13 +981,13 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   line-height: 1.15;
   font-size: 94%;
 }
-#quest-dialog-advisor-task{
+/*#quest-dialog-advisor-task{
   margin-top: 20px;
   width: 200px;
   margin-left: 15px;
-}
+}*/
 
-#quest-dialog-advisor{
+/*#quest-dialog-advisor{
   width: 120px;
   height: 120px;
 
@@ -779,35 +997,9 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   background-size: 100% 100%;
 
   opacity: 1;
-}
+}*/
 
-.quest-dialog-reward{
-  background-image: url('<%= asset_path("dialogs/quest-dialog/dialog-textfield1.png") %>');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  margin-left: 15px;
-  margin-top: 10px;
-}
 
-.quest-dialog-rewards-items {
-  overflow: visible;
-  list-style-type: none;
-  display: inline-block;
-
-  margin: 0;
-  margin-top: 10px;
-  margin-left: 10px;
-  padding: 0;
-}
-
-.quest-reward-item {
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  display: inline-block;
-
-  margin-right: 10px;
-}
 
 .quest-dialog-button{
   position: absolute;
@@ -860,18 +1052,36 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   background-image: url('<%= asset_path("icons/fur-xl.png") %>');
 }
 
+.quest-dialog-reward{
+
+}
+
+.quest-dialog-rewards-items {
+
+}
+
+.quest-reward-item {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  display: inline-block;
+
+  margin-right: 14px;
+}
+
 .quest-reward-item-number{
   display: block;
-  font-family: 'Freckle Face', 'cursive';
+  font-family: $main-font;
   text-shadow: none;
-  color: #dcdcbf;
-  font-size: 24px;
+  color: #563E22;
+  font-size: 18px;
   position: relative;
-  top: -14px;
+  top: -8px;
   text-align: right;
   z-index: 200;
   overflow: hidden;
   opacity: 1;
+  width:120%;
 }
 
 .quest-reward-item-number:before{

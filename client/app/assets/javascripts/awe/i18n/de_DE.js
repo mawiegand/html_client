@@ -1223,7 +1223,9 @@ AWE.I18n.de_DE = function(module) {
       showQuestLink:    "Anzeigen",
       answerQuestLink:  "Absenden",
       correctAnswered:  "Frage richtig beantwortet",
-
+      questFinished:    "Quest abgeschlossen",
+      goOn:             "Weiter gehts",
+            
       task: {
         info: {
           header:       "",

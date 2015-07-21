@@ -82,12 +82,11 @@ AWE.GS = (function(module) {
         
     // new, not displayed quests
     newQuestStates: function() {
-      // log('---> recalc newQuestStates');
       var questStates = this.getPath('quests.content');   // hier
       // log('---> recalc newQuestStates: all quest', questStates);
       var newQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') === module.QUEST_STATUS_NEW && questState.get('quest') && !questState.getPath('quest.hide_start_dialog')) {
+        if (questState && questState.get('status') === module.QUEST_STATUS_NEW && questState.get('quest') /*&& !questState.getPath('quest.hide_start_dialog')*/) {
           // log('---> recalc newQuestStates: quest', questState.getId(), questState.get('status'), questState.get('updated_at'), questState.get('created_at'));
             newQuestStates.push(questState);
         }
@@ -409,17 +408,17 @@ AWE.GS = (function(module) {
           if (quest.reward_tests.training_queue_tests)
             this.checkTrainingQueues(quest.reward_tests.training_queue_tests[0], function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                        
           if (quest.reward_tests.movement_test)
-            this.checkMovement(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                  
+            this.checkMovement(quest.reward_tests.movement_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                  
           if (quest.reward_tests.alliance_test)
-            this.checkAlliance(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                            
+            this.checkAlliance(quest.reward_tests.alliance_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                            
           if (quest.reward_tests.alliance_members_test)
             this.checkAllianceMembers(quest.reward_tests.alliance_members_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                                                                      
           if (quest.reward_tests.standard_assignment_test)
-            this.checkStandardAssignment(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });
+            this.checkStandardAssignment(quest.reward_tests.standard_assignment_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });
           if (quest.reward_tests.kill_test)
             this.checkKills(quest.reward_tests.kill_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });          
           if (quest.reward_tests.battle_test)
-            this.checkBattle(function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                    
+            this.checkBattle(quest.reward_tests.battle_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                    
           if (quest.reward_tests.army_experience_test)
             this.checkArmyExperience(quest.reward_tests.army_experience_test, function(actual, threshold){ self.set('actual', actual); self.set('threshold', threshold); });                              
           if (quest.reward_tests.score_test)
@@ -528,7 +527,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.movement_test) {
           // log('---> movement_test', quest.reward_tests.movement_test);
         
-          if (!self.checkMovement(/*quest.reward_tests.movement_test*/)) {
+          if (!self.checkMovement(quest.reward_tests.movement_test)) {
             // log('---> movement_test failed');
             return false;              
           }
@@ -537,7 +536,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.alliance_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
 
-          if (!self.checkAlliance(/*quest.reward_tests.alliance_test*/)) {
+          if (!self.checkAlliance(quest.reward_tests.alliance_test)) {
             // log('---> alliance_test failed');
             return false;
           }
@@ -555,7 +554,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.standard_assignment_test) {
 //          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
 
-          if (!self.checkStandardAssignment(/*quest.reward_tests.standard_assignment_test*/)) {
+          if (!self.checkStandardAssignment(quest.reward_tests.standard_assignment_test)) {
 //            log('---> standard_assignment_test failed');
             return false;
           }
@@ -573,7 +572,7 @@ AWE.GS = (function(module) {
         if (quest.reward_tests.battle_test) {
           // log('---> battle_test', quest.reward_tests.battle_test);
 
-          if (!self.checkBattle(/*quest.reward_tests.battle_test*/)) {
+          if (!self.checkBattle(quest.reward_tests.battle_test)) {
             // log('---> battle_test failed');
             return false;
           }
@@ -879,7 +878,7 @@ AWE.GS = (function(module) {
       return checkCount >= queueTest.min_count;
     },
     
-    checkMovement: function(callback) {
+    checkMovement: function(test, callback) {
       // log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       // log('---> checkcheckMovement', armies);
@@ -897,7 +896,7 @@ AWE.GS = (function(module) {
       return false;
     },
 
-    checkAlliance: function(callback) {
+    checkAlliance: function(test, callback) {
       // log('---> checkAlliance');
       var allianceSet = AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
       if(callback)
@@ -931,7 +930,7 @@ AWE.GS = (function(module) {
       return false;
     },
 
-    checkStandardAssignment: function(callback) {
+    checkStandardAssignment: function(test, callback) {
       var assignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments');
 
       if (assignments != null) {
@@ -993,7 +992,7 @@ AWE.GS = (function(module) {
       return AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills') >= minUnits;
     },
 
-    checkBattle: function(callback) {
+    checkBattle: function(test, callback) {
       // log('---> checkBattle');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       if (armies != null) {
@@ -1365,6 +1364,7 @@ AWE.GS = (function(module) {
     var delayedFinishedQuestState = null;
     var delayedStartQuestState = null;
 
+    var currentDialog = null;
     // protected attributes and methods ////////////////////////////////////
 
     my = my || {};
@@ -1439,31 +1439,81 @@ AWE.GS = (function(module) {
     }
 
     that.triggerTutorialChecks = function() {
-      
       if (!that.tutorialEnabled()) return;
       // log('---> triggerTutorialChecks');
       
-      if (!WACKADOO.modalDialogOpen() &&
-          lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
+      if (lastRewardsCheck.getTime() + 3000 < new Date().getTime()) {
         lastRewardsCheck = new Date();
-        // log('---> triggerTutorialChecks: start checking');
         
-        if (delayedFinishedQuestState) {
-          // show finished dialog
-          // log('---> triggerTutorialChecks: show delayed finished dialog');
+        if(!WACKADOO.modalDialogOpen())
+        {
+          var success = false;
+          // check fo finished quests
+          var openQuestStates = that.tutorialState.get('openQuestStates');
+          AWE.Ext.applyFunction(openQuestStates, function(questState) {
+            if(success == false)
+            {
+              if (questState.checkForRewards()) {
+                var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
+                questCheckAction.send(function(status) {
+                  if (status === AWE.Net.OK || status === AWE.Net.CREATED) { 
+                    if(questState.getPath('quest.type') == 'epic') {
+                      that.setQuestDisplayed(questState);
+                      //questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+                      that.showQuestDialog(questState, null);
+                      success = true;
+                    }
+                  }
+                });
+              }
+            }
+          });
+        
+          // otherwise check for standalone new quests
+          if(success == false)
+          {
+            var newQuestStates = that.tutorialState.get('newQuestStates');
+            //var openQuestStates = that.tutorialState.get('closedQuestStates');
+            AWE.Ext.applyFunction(newQuestStates, function(questState) {
+              if(success == false)
+              {
+                if(questState.getPath('quest.type') == 'epic') {
+                  //questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+                  that.setQuestDisplayed(questState);
+                  that.showQuestDialog(null, questState);
+                  success = true;
+                }
+              }
+            });
+          }
+        }
+        else{
+          if(that.currentDialog != null)
+          {
+            that.currentDialog.checkForNextQuest();
+          }
+        }
+        // HACKED:
+        /*
+          var closedQuestStates = that.tutorialState.get('closedQuestStates');
+          var finishedQuest = closedQuestStates[0];
+          var nextQuest = closedQuestStates[11];        
+          //that.showQuestDialog(finishedQuest, nextQuest);
+          that.showQuestDialog(finishedQuest, null);        
+        */
+        // HACKED END
+        
+        /*if (delayedFinishedQuestState) {
           that.showQuestFinishedDialog(delayedFinishedQuestState);
           delayedFinishedQuestState = null;
         }
         else if (delayedStartQuestState) {
-          // show start dialog
-          // log('---> triggerTutorialChecks: show delayed start dialog');
           that.showQuestStartDialog(delayedStartQuestState);
           delayedStartQuestState = null;
         }
         else {
-          // log('---> triggerTutorialChecks: check for rewards');
           that.checkForRewards();
-        }
+        }*/
       }
       
       if (that.tutorialState.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
@@ -1552,7 +1602,9 @@ AWE.GS = (function(module) {
               // log('---> checkForRewards modalDialogOpen', WACKADOO.modalDialogOpen());
               if(openQuestState.getPath('quest.type') == 'epic' || openQuestState.getPath('quest.type') == 'optional') {
                 if (!WACKADOO.modalDialogOpen()) {
-                  that.showQuestFinishedDialog(openQuestState);
+                  //that.showQuestFinishedDialog(openQuestState);
+                  that.setQuestDisplayed(openQuestState);
+                  that.showQuestDialog(openQuestState);
                 }
                 else {
                   delayedFinishedQuestState = openQuestState;
@@ -1685,7 +1737,7 @@ AWE.GS = (function(module) {
         that.updateTutorialState();
       }
     };
-    
+    /*
     that.showQuestInfoDialog = function(quest) {
       
       
@@ -1709,7 +1761,78 @@ AWE.GS = (function(module) {
       if (applaud) {
         this.setQuestRewardDisplayed(questState);
       }
+    }*/
+    
+    that.showQuestDialog = function(finishedQuestState, nextQuestState) {
+      if (!that.tutorialEnabled()) return;
+      var applaud = finishedQuestState && finishedQuestState.get('finished') && !finishedQuestState.get('rewardDisplayed');
+
+      var dialog = AWE.UI.Ember.QuestDialog.create({
+        modeEnd: true,
+        finishedQuestState: finishedQuestState,
+        nextQuestState: nextQuestState,
+        spinningAnimation: applaud,
+        popupAnimations: applaud,
+        
+        checkForNextQuest: function () {
+          //debugger;
+          if(this.get('nextQuestState'))
+          {
+            
+          }
+          else
+          {
+            var newQuestStates = that.tutorialState.get('newQuestStates');
+            if(newQuestStates && newQuestStates.length > 0){
+              this.set('nextQuestState', newQuestStates[0]);
+              that.setQuestDisplayed(this.get('nextQuestState'));
+              //this.get('nextQuestState').set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+            }  
+          }
+        },
+        
+        okPressed: function() {
+          //that.checkForNewQuests();
+          this._super();
+        },     
+
+        willDestroyElement: function() {
+          that.currentDialog = null;
+          if (finishedQuestState && finishedQuestState.getPath('quest.tutorial_end_quest') && !AWE.GS.TutorialStateManager.getTutorialState().get('tutorial_completed')) {
+            try {
+              AndroidDelegate.tutorialCompleted();
+            } catch (err) {
+            }
+            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {debugger}, function() {
+              var dialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
+                message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
+              });
+              WACKADOO.presentModalDialog(dialog);
+            });
+            AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+              var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+              WACKADOO.presentModalDialog(dialog);
+            });
+          }
+        },
+      });      
+      that.currentDialog = dialog;
+    
+      WACKADOO.presentModalDialog(dialog);
+      
+      if (applaud) {
+        this.setQuestRewardDisplayed(finishedQuestState);
+        if(nextQuestState)
+          this.setQuestRewardDisplayed(nextQuestState);
+      }
     }
+    
+    
+    
+    
+    
+    
     
     that.showQuestFinishedDialog = function(questState) {
       
