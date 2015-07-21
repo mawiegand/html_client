@@ -1,3 +1,4 @@
+
 var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
@@ -113,6 +114,14 @@ AWE.UI.Ember = (function(module) {
     levelDelta: function() {
       return this.get('selectedLevel') - this.get('currentLevel');
     }.property('selectedLevel', 'currentLevel'),
+
+    unlockingBuildings: function() {
+      return this.getPath('slot.building').getUnlockedBuildingsForLevel(this.get('selectedLevel'));
+    }.property('slot.building.unlockedBuildings', 'selectedLevel'),
+
+    unlockingUnits: function() {
+      return this.getPath('slot.building').getUnlockedUnitsForLevel(this.get('selectedLevel'));
+    }.property('slot.building.unlockedUnits', 'selectedLevel')
   });
 
   module.BuildingDetailsView = Ember.View.extend({
