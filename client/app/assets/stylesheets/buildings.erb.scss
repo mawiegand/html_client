@@ -427,11 +427,11 @@
   }
   .building_tavern.building-image .sleeping
   {
-    -webkit-animation: anim_sleeping_tavern .5s steps(4) infinite;
-       -moz-animation: anim_sleeping_tavern .5s steps(4) infinite;
-        -ms-animation: anim_sleeping_tavern .5s steps(4) infinite;
-         -o-animation: anim_sleeping_tavern .5s steps(4) infinite;
-            animation: anim_sleeping_tavern .5s steps(4) infinite;
+    -webkit-animation: anim_sleeping_tavern 1s steps(4) infinite;
+       -moz-animation: anim_sleeping_tavern 1s steps(4) infinite;
+        -ms-animation: anim_sleeping_tavern 1s steps(4) infinite;
+         -o-animation: anim_sleeping_tavern 1s steps(4) infinite;
+            animation: anim_sleeping_tavern 1s steps(4) infinite;
   }
   .building_tavern.building-image.active {
     -webkit-animation: anim_tavern .5s steps(5) infinite;
