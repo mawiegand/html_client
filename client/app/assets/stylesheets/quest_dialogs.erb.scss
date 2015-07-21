@@ -889,6 +889,52 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   animation:spin 6s linear infinite;
 }
 
+
+/*=== Cave Painting Dialog ===*/
+
+
+.cave_background
+{
+    background-image: url('<%= asset_path("cavepainting/cavepainting_background.jpg") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: auto;
+
+  position: fixed; 
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index:256;
+
+  box-shadow: none;
+  border-radius: 0px;
+
+  .cave_background_carving
+  {
+    background-image: url('<%= asset_path("cavepainting/carving_all_empty.png") %>');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: 100%;
+
+    position: absolute; 
+    width: 95%;
+    height: 95%;
+    top:30px;
+    left:20px;
+    z-index:257;
+
+    box-shadow: none;
+    border-radius: 0px;
+  }
+
+
+}
+
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @-ms-keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

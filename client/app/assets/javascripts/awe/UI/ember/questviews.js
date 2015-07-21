@@ -56,6 +56,8 @@ AWE.UI.Ember = (function(module) {
     }.property('questState.status'),        
   });  
   
+
+
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
@@ -322,6 +324,10 @@ AWE.UI.Ember = (function(module) {
   module.QuestUnitRewardsView = Ember.View.extend({
     templateName: 'quest-unit-rewards-view',
     units: null,
+  });
+
+  module.CavePainting = Ember.View.extend({
+    templateName: 'quest-cave-painting-view',
   });
 
   return module;

@@ -503,7 +503,7 @@ AWE.Controller = (function(module) {
             });
             that.applicationController.presentModalDialog(info);
           }
-          else if (errorCode == AWE.Net.BAD_REQUEST) {
+          else if (errorCode == AWE.Net.BAD_RE) {
             var info = AWE.UI.Ember.InfoDialog.create({
               heading: AWE.I18n.lookupTranslation('shop.fbPaymentError.header'),
               message: AWE.I18n.lookupTranslation('shop.fbPaymentError.message'),
@@ -589,6 +589,7 @@ AWE.Controller = (function(module) {
     that.questsButtonClicked = function() {
       WACKADOO.showQuestListDialog(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     };
+
     
     that.recruitButtonClicked = function() {
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({

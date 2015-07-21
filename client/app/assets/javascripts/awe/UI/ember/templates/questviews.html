@@ -37,7 +37,6 @@
             {{#if questState.finished}}
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-
               {{/if}}
             {{/if}}
         </div>
@@ -201,4 +200,14 @@
     <div class="quest-reward-name">{{unitName}}</div>
     <div class="quest-reward-amount">{{unit.amount}}</div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-cave-painting-view">
+    
+      <div class="cave_background scale-down">
+        <div class="cave_background_carving">
+
+        </div>
+      </div>
+
 </script>
