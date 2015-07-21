@@ -185,7 +185,7 @@ AWE.UI.Ember = (function(module) {
     subquestStates: function(){
       var indices = this.getPath('questState.quest.subquests');
       var array = new Array();
-      if(indices.length > 0)
+      if(indices && indices.length > 0)
       {
         for(var i = 0; i < indices.length; i++)
         {
@@ -202,12 +202,7 @@ AWE.UI.Ember = (function(module) {
     }.property('questState.quest.subquests'),
     
     advisor: function() {
-      if (this.get('finished')) {
-        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-end';
-      }
-      else {
-        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-start';
-      }
+      return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
     }.property('questState.quest.advisor', 'finished').cacheable(),
     
     finished: function() {
@@ -249,6 +244,10 @@ AWE.UI.Ember = (function(module) {
   module.QuestListItemViewDetailQuest = Ember.View.extend({
     templateName: 'quest-list-item-view-detail-quest',
     
+    redeemButtonPressed: function() {
+      this.get('parentView').redeemButtonPressed(this.get('questState'));
+    },
+    
     actual: function() {
       return this.getPath('questState.actual');
     }.property('questState.actual'), 
@@ -258,12 +257,7 @@ AWE.UI.Ember = (function(module) {
     }.property('questState.threshold'), 
     
     advisor: function() {
-      if (this.get('finished')) {
-        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-end';
-      }
-      else {
-        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-start';
-      }
+      return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
     }.property('questState.quest.advisor', 'finished').cacheable(),
     
     finished: function() {
@@ -273,19 +267,23 @@ AWE.UI.Ember = (function(module) {
     classNameBindings: ['finished'],      
   }); 
   
+
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
-    questBinding: 'questState.quest',
-    questState: null,
+    questBinding: 'finishedQuestState.quest',
+    questState: 'finishedQuestState',
+    nextQuestBinding: 'nextQuestState.quest',
+    nextState: 'nextState',
     redeeming: false,
+    redeemed_successfully: false,
     spinningBackground: false,
     popupAnimations: false,
     spinningAnimation: false,
-
+        
     finished: function() {
-      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
-    }.property('questState.status'),        
+      return this.getPath('finishedQuestState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
       this.destroy();
@@ -298,39 +296,56 @@ AWE.UI.Ember = (function(module) {
       var that = this;
       this.set('redeeming', true);
       
-      AWE.GS.TutorialStateManager.redeemRewards(this.get('questState'), function() {
-        that.destroy();
+      AWE.GS.TutorialStateManager.redeemRewards(this.get('finishedQuestState'), function() {
+        that.set('redeemed_successfully', true);
+        that.set('redeeming', false);
       }, function() {
+        that.set('redeemed_successfully', false);
         that.set('redeeming', false);
       });
     },
-
-    okPressed: function() {
-      var hasRewards = this.getPath('quest.rewards');
-      var isFinished = this.get('finished');
-      
-      log('QUEST STATUS', hasRewards, isFinished, this.get('quest'), this.get('questState'), this.getPath('questState.status'));
-      
-      if (hasRewards && isFinished) {
-        this.redeemButtonPressed(); // remove the function later, if this proves to be good.
-      }
-      else {
-        $('#layers').css('overflow', 'visible');
-        this.destroy();
-      }
-    },
+    redeemButtonVisible: function(){
+      if(this.get('finishedQuestState') != null)
+        if(this.get('redeemed_successfully') == false)
+          return true;
+      return false;
+    }.property('finishedQuestState', 'nextQuestState', 'redeemed_successfully'),
+    
+    nextButtonVisible: function(){
+      if(this.get('finishedQuestState') == null)
+        return true;
+      if(this.get('redeemed_successfully') == true)
+        return true;      
+      return false;
+    }.property('finishedQuestState', 'nextQuestState', 'redeemed_successfully'),
     
     advisor: function() {
-      if (this.get('finished')) {
-        return 'advisor ' + this.getPath('quest.advisor') + '-quest-end';
-      }
-      else {
-        return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
-      }
+      return 'advisor ' + this.getPath('quest.advisor') + ' sketched';
     }.property('quest.advisor', 'finished').cacheable(),
 
-  
-      
+    nextAdvisor: function() {
+      return 'advisor ' + this.getPath('nextQuest.advisor') + ' sketched';
+    }.property('nextQuest.advisor').cacheable(),
+    
+    nextSubquestStates: function(){
+      var indices = this.getPath('nextQuestState.quest.subquests');
+      var array = new Array();
+      if(indices && indices.length > 0)
+      {
+        for(var i = 0; i < indices.length; i++)
+        {
+          var quest_id = indices[i];
+          var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest_id);
+          array.push(questState);
+        }
+        return array;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('nextQuestState.quest.subquests'),
+    
     /** runs the popup animations */
     didInsertElement: function() {
       // Display full animations for a Reward Dialog that hasn't been displayed before.

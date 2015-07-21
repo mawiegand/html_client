@@ -1200,7 +1200,9 @@ AWE.I18n.en_US = function(module) {
       showQuestLink:"Show",
       answerQuestLink:"Answer",
       correctAnswered:"Correct!",
-
+      questFinished: "Quest finished",
+      goOn:             "Go on",
+      
       task:{
         info:{
           header:"Task:",
@@ -1240,7 +1242,7 @@ AWE.I18n.en_US = function(module) {
 
         error:"Oops - that's not right. Bad luck! Try again later.",
       },
-
+      
       questStart:{
         header:"New Quest started",
       },
