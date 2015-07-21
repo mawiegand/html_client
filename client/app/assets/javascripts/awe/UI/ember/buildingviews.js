@@ -143,6 +143,33 @@ AWE.UI.Ember = (function(module) {
     }.property("building", 'level'),
 
 
+    chief_cottage_flag:function(){
+        return true;
+      if(this.get("building"))
+      {
+         if(AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id == 'building_chief_cottage')
+         {
+            return true;
+         }
+      }
+
+      return false;
+    }.property('building'),
+
+    haunt_flag:function(){
+        return true;
+      if(this.get("building"))
+      {
+         if(AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id == 'building_haunt')
+         {
+            return true;
+         }
+      }
+
+      return false;
+    }.property('building'),
+
+
     active:function(){
 
       
