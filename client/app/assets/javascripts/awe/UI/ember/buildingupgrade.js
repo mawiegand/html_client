@@ -117,7 +117,11 @@ AWE.UI.Ember = (function(module) {
 
     unlockingBuildings: function() {
       return this.getPath('slot.building').getUnlockedBuildingsForLevel(this.get('selectedLevel'));
-    }.property('slot.building.unlocckedBuildings', 'selectedLevel')
+    }.property('slot.building.unlockedBuildings', 'selectedLevel'),
+
+    unlockingUnits: function() {
+      return this.getPath('slot.building').getUnlockedUnitsForLevel(this.get('selectedLevel'));
+    }.property('slot.building.unlockedUnits', 'selectedLevel')
   });
 
   module.BuildingDetailsView = Ember.View.extend({

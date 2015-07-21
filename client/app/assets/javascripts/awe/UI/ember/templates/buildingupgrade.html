@@ -162,9 +162,17 @@
     <div class="bottom-section">
       <div class="unlocking-buildings">
         {{#if unlockingBuildings}}
-          <div class="unlocking">Freischalten</div>
+          <div class="unlocking">Unlocking</div>
           {{#each unlockingBuildings}}
             <div {{bindAttr class="this.symbolic_id :building-image"}}></div>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div class="unlocking-units">
+        {{#if unlockingUnits}}
+          <div class="unlocking">Unlocking</div>
+          {{#each unlockingUnits}}
+            <div {{bindAttr class="this.db_field :cell-icon-big"}}></div>
           {{/each}}
         {{/if}}
       </div>
