@@ -160,22 +160,22 @@
       {{/if}}
     </div>
     <div class="bottom-section">
-      <div class="unlocking-buildings">
-        {{#if unlockingBuildings}}
+      {{#if unlockingBuildings}}
+        <div class="unlocking-buildings">
           <div class="unlocking">Unlocking</div>
           {{#each unlockingBuildings}}
             <div {{bindAttr class="this.symbolic_id :building-image"}}></div>
           {{/each}}
-        {{/if}}
-      </div>
-      <div class="unlocking-units">
-        {{#if unlockingUnits}}
+        </div>
+      {{/if}}
+      {{#if unlockingUnits}}
+        <div class="unlocking-units">
           <div class="unlocking">Unlocking</div>
           {{#each unlockingUnits}}
             <div {{bindAttr class="this.db_field :cell-icon-big"}}></div>
           {{/each}}
-        {{/if}}
-      </div>
+        </div>
+      {{/if}}
       <div class="upgrade-button" {{action "upgradePressed"}}>
         <div class="cell-header">
           <h3 class="button-title">
