@@ -121,6 +121,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       });
     },
 
+    showEpicQuestDialog: function(questState){
+      var dialog = AWE.UI.Ember.QuestEpicView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      this.presentModalDialog(dialog);
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
+      });      
+    },
+
     showAnnouncement: function() {
       var self = this;
 
