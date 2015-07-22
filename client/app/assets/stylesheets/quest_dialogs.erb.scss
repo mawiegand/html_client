@@ -304,7 +304,8 @@
   }
   
   .quest-dialog-advisor-task{
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 40px;
     width: 240px;
     margin-left: 15px;
   }
@@ -842,13 +843,13 @@ div.dom-quest-container div.tutorial-dialog {
       font-size: 17px;
       font-family: $main-font;
       color: #563E22;
-      width: 160px;
+      width: 200px;
       height: 90px;
+      margin-bottom: 40px;
     }
     
     .quest-subquests{
       margin-left: 0px;
-      margin-top: -30px;
         
       .quest-list-item{
           

@@ -86,6 +86,15 @@
     {{local quest.task}}
   </div>
   <div {{bindAttr class="advisor"}}></div> 
+  
+  {{#if subquestStates}}
+    <div class="quest-subquests">
+      {{#each subquestStates}}
+        {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
+      {{/each}}
+    </div>
+  {{/if}}
+  
   {{#if quest.rewards}}
     <div class="quest-dialog-reward">
       <ul class="quest-dialog-rewards-items">      
@@ -124,14 +133,6 @@
           </li>
         {{/if}}
       </ul>
-    </div>
-  {{/if}}
-
-  {{#if subquestStates}}
-    <div class="quest-subquests">
-      {{#each subquestStates}}
-        {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
-      {{/each}}
     </div>
   {{/if}}
 
@@ -153,6 +154,25 @@
     {{local quest.task}}
   </div>
   <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div> 
+  
+  {{#if finished}} 
+    <div class="task-top">
+      {{local quest.name}} &#10004;
+    </div>    
+  {{else}}
+    <div class="task-top">
+      {{local quest.name}} {{questState.actual}}/{{questState.threshold}}
+    </div>  
+  {{/if}}
+  
+  <div class="task-middle">
+    
+  </div>
+  
+  <div class="task-bottom">
+    {{local quest.description}}
+  </div>
+  
   {{#if quest.rewards}}
     <div class="quest-dialog-reward">
       <ul class="quest-dialog-rewards-items">      
@@ -198,23 +218,7 @@
   <br>
   <br>
   
-  {{#if finished}} 
-    <div class="task-top">
-      {{local quest.name}} &#10004;
-    </div>    
-  {{else}}
-    <div class="task-top">
-      {{local quest.name}} {{questState.actual}}/{{questState.threshold}}
-    </div>  
-  {{/if}}
   
-  <div class="task-middle">
-    
-  </div>
-  
-  <div class="task-bottom">
-    {{local quest.description}}
-  </div>
   
   {{#if finished}}
    <div class="redeemButton" {{action "redeemButtonPressed" }}>
@@ -414,6 +418,14 @@
             <div class="task_text">{{local nextQuest.task}}</div>
             <div {{bindAttr class="nextAdvisor"}}></div>         
             
+            {{#if nextSubquestStates}}
+              <div class="quest-subquests">
+                {{#each nextSubquestStates}}
+                  {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
+                {{/each}}
+              </div>
+            {{/if}}
+            
             {{#if nextQuest.rewards}}
               <div class="quest-dialog-reward">
                 <ul class="quest-dialog-rewards-items">      
@@ -489,15 +501,7 @@
                 </ul>
               </div>
             {{/if}}
-              
-            {{#if nextSubquestStates}}
-              <div class="quest-subquests">
-                {{#each nextSubquestStates}}
-                  {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
-                {{/each}}
-              </div>
-            {{/if}}
-            
+                      
           </div>
         {{/if}}
 
