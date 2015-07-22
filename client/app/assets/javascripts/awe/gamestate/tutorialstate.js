@@ -1822,9 +1822,10 @@ AWE.GS = (function(module) {
       WACKADOO.presentModalDialog(dialog);
       
       if (applaud) {
-        this.setQuestRewardDisplayed(finishedQuestState);
-        if(nextQuestState)
-          this.setQuestRewardDisplayed(nextQuestState);
+        if(finishedQuestState)
+          this.setQuestRewardDisplayed(finishedQuestState);
+        //if(nextQuestState)
+        //  this.setQuestRewardDisplayed(nextQuestState);
       }
     }
     
