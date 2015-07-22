@@ -988,7 +988,10 @@ AWE.GS = (function(module) {
       }
       // log('---> checkKills with min_units', minUnits, AWE.GS.game.getPath('currentCharacter.kills'));
       if(callback)
-        callback((AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills')) || 0, minUnits);
+      {
+        var killed = (AWE.GS.game.getPath('currentCharacter.kills') != null) ? AWE.GS.game.getPath('currentCharacter.kills') : 0;   
+        callback(killed, minUnits);
+      }
       return AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills') >= minUnits;
     },
 
@@ -1775,7 +1778,6 @@ AWE.GS = (function(module) {
         popupAnimations: applaud,
         
         checkForNextQuest: function () {
-          //debugger;
           if(this.get('nextQuestState'))
           {
             
@@ -1803,7 +1805,7 @@ AWE.GS = (function(module) {
               AndroidDelegate.tutorialCompleted();
             } catch (err) {
             }
-            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {debugger}, function() {
+            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {}, function() {
               var dialog = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
                 message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
