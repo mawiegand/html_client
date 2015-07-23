@@ -39,7 +39,7 @@ AWE.UI = (function(module) {
       if (!my.buyCashImageView) {
         my.buyCashImageView = AWE.UI.createImageView();
         my.buyCashImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/button/plus_button"));
-        my.buyCashImageView.setFrame(AWE.Geometry.createRect(160, 7, 28, 28));
+        my.buyCashImageView.setFrame(AWE.Geometry.createRect(150, 0, 28, 28));
         my.buyCashImageView.onClick = function() { 
           if (that.enabled()) {            
             //my.controller.buyCreditsClicked();

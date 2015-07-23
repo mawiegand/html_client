@@ -100,6 +100,7 @@ AWE.UI = (function(module) {
         else if (_resourceName === "cash")
         {
           my.resourceImageView.setFrame(AWE.Geometry.createRect(18, 0, 42, 42));
+          my.amountProgressView.setShowProgress(false);
         }
         else if (_resourceName === "wood")
         {

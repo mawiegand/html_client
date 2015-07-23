@@ -221,6 +221,8 @@ AWE.Config = (function(module) {
     "hud/profile/namelabel/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_label_background/avatar_label_background.png',
     "hud/profile/ranklabel/rankicon"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/icon_rank/icon_rank.png',
     
+    "hud/icon/trophy"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_trophy/icon_trophy.png',
+    
     "hud/profile/alliance/button"  : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_button/alliance_button.png',
     "hud/profile/alliance/icon"    : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_flag/alliance_flag.png',
     
