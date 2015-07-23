@@ -410,10 +410,14 @@
   background-position: 0 0;
   background-repeat: no-repeat;
   z-index: 2;
+
 }
+
+
 
 .small-building {
   pointer-events:none;
+
   .building_campfire.building-image {
     -webkit-animation: camp_fire .5s steps(5) infinite;
        -moz-animation: camp_fire .5s steps(5) infinite;
@@ -421,14 +425,52 @@
          -o-animation: camp_fire .5s steps(5) infinite;
             animation: camp_fire .5s steps(5) infinite;
   }
-
-
-  .building_tavern.building-image {
+  .building_tavern.building-image .sleeping
+  {
+    -webkit-animation: anim_sleeping_tavern 1s steps(4) infinite;
+       -moz-animation: anim_sleeping_tavern 1s steps(4) infinite;
+        -ms-animation: anim_sleeping_tavern 1s steps(4) infinite;
+         -o-animation: anim_sleeping_tavern 1s steps(4) infinite;
+            animation: anim_sleeping_tavern 1s steps(4) infinite;
+  }
+  .building_chief_cottage.building-image .chief_cottage_flag
+  {
+    -webkit-animation: anim_chief_cottage_flag 1.1s steps(6) infinite;
+       -moz-animation: anim_chief_cottage_flag 1.1s steps(6) infinite;
+        -ms-animation: anim_chief_cottage_flag 1.1s steps(6) infinite;
+         -o-animation: anim_chief_cottage_flag 1.1s steps(6) infinite;
+            animation: anim_chief_cottage_flag 1.1s steps(6) infinite;
+  }
+  .building_tavern.building-image.active {
     -webkit-animation: anim_tavern .5s steps(5) infinite;
        -moz-animation: anim_tavern .5s steps(5) infinite;
         -ms-animation: anim_tavern .5s steps(5) infinite;
          -o-animation: anim_tavern .5s steps(5) infinite;
             animation: anim_tavern .5s steps(5) infinite;
+  }
+
+  .building_copper_smelter.building-image{
+    -webkit-animation: anim_copper_smelter .5s steps(5) infinite;
+       -moz-animation: anim_copper_smelter .5s steps(5) infinite;
+        -ms-animation: anim_copper_smelter .5s steps(5) infinite;
+         -o-animation: anim_copper_smelter .5s steps(5) infinite;
+            animation: anim_copper_smelter .5s steps(5) infinite;
+  }
+  .building_copper_smelter.building-image{
+    -webkit-animation: anim_copper_smelter .5s steps(5) infinite;
+       -moz-animation: anim_copper_smelter .5s steps(5) infinite;
+        -ms-animation: anim_copper_smelter .5s steps(5) infinite;
+         -o-animation: anim_copper_smelter .5s steps(5) infinite;
+            animation: anim_copper_smelter .5s steps(5) infinite;
+  }
+
+
+  .building_haunt.building-image .haunt_flag{
+    -webkit-animation: anim_haunt_flag 1.2s steps(6) infinite;
+       -moz-animation: anim_haunt_flag 1.2s steps(6) infinite;
+        -ms-animation: anim_haunt_flag 1.2s steps(6) infinite;
+         -o-animation: anim_haunt_flag 1.2s steps(6) infinite;
+            animation: anim_haunt_flag 1.2s steps(6) infinite;    
   }
 
 
@@ -471,10 +513,20 @@
   }
 }
 
-/*Cief Cottage*/
+/*Chief Cottage*/
 .building_chief_cottage.building-image {
   top: -16%;
   background-image: url('<%= asset_path("buildings/base/building_chief_cottage/building_chief_cottage_small.png") %>');
+
+  .chief_cottage_flag{
+    background-image: url('<%= asset_path("buildings/base/building_chief_cottage/building_chief_cottage_flag_anim.png") %>');
+    width: 32px;
+    height: 72px;
+    position: absolute;
+    top: 24px;
+    left: 12px;
+  }
+
 }
 
 /*Gatherer*/
@@ -510,6 +562,23 @@
 
 /*Tavern*/
 .building_tavern.building-image {
+
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_inactive.png") %>');
+
+  .sleeping{
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_zzzz.png") %>');
+    width: 76px;
+    height: 44px;
+    position: absolute;
+    right: 15px;
+  }
+
+  &.active{
+    background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
+  }
+}
+
+.building_tavern.building-image-active{
   background-image: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>');
 }
 
@@ -617,6 +686,17 @@
 /*Haunt*/
 .building_haunt.building-image {
   background-image: url('<%= asset_path("buildings/base/building_haunt/building_haunt_small.png") %>');
+
+
+  .haunt_flag{
+    background-image: url('<%= asset_path("buildings/base/building_haunt/haunt_flag_anim.png") %>');
+    width: 32px;
+    height: 40px;
+    position: absolute;
+    left: 64px;
+    top: 28px;
+  }
+
 }
 
 /*Field Camp*/
@@ -714,6 +794,9 @@
 }
 .building-option-image.building_tavern {
   background: url('<%= asset_path("buildings/base/building_tavern/building_tavern_small.png") %>') no-repeat center center;
+}
+.building-option-image.building_tavern_inactive {
+  background: url('<%= asset_path("buildings/base/building_tavern/building_tavern_inactive.png") %>') no-repeat center center;
 }
 .building-option-image.building_special_gatherer {
   background: url('<%= asset_path("buildings/base/building_special_gatherer/building_special_gatherer_small.png") %>') no-repeat center center;
@@ -935,6 +1018,10 @@
   cursor: pointer;
 }
 
+
+
+
+
 /* ==== Small Fire Positions === */
 .building_chief_cottage.building-image.size0 .small-fire,
 .building_fortress_fortification.building-image.size0 .small-fire {
@@ -1051,4 +1138,115 @@
    from { background-position: 0px 0px; }
      to { background-position: -800px 0px; }
 }
+
+/* ==== Tavern Sleeping Animations ==== */
+
+@-webkit-keyframes anim_sleeping_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -304px 0px; }
+}
+
+@-moz-keyframes anim_sleeping_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -304px 0px; }
+}
+
+@-ms-keyframes anim_sleeping_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -304px 0px; }
+}
+
+@-o-keyframes anim_sleeping_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -304px 0px; }
+}
+
+@keyframes anim_sleeping_tavern {
+   from { background-position: 0px 0px; }
+     to { background-position: -304px 0px; }
+}
+
+/* ==== Copper Smelter Animations ==== */
+
+@-webkit-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-moz-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-ms-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@-o-keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+@keyframes anim_copper_smelter {
+   from { background-position: 0px 0px; }
+     to { background-position: -800px 0px; }
+}
+
+
+/* ==== Chief cottage flag Animations ==== */
+
+@-webkit-keyframes anim_chief_cottage_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-moz-keyframes anim_chief_cottage_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-ms-keyframes anim_chief_cottage_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-o-keyframes anim_chief_cottage_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@keyframes anim_chief_cottage_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+/* ==== Anim Haunt Flag ==== */
+
+@-webkit-keyframes anim_haunt_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-moz-keyframes anim_haunt_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-ms-keyframes anim_haunt_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@-o-keyframes anim_haunt_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+@keyframes anim_haunt_flag {
+   from { background-position: 0px 0px; }
+     to { background-position: -192px 0px; }
+}
+
+
 

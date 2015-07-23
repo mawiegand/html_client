@@ -95,7 +95,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          AWE.GS.TutorialStateManager.checkForNewQuests();
+          //AWE.GS.TutorialStateManager.checkForNewQuests();
+          AWE.GS.TutorialStateManager.lastRewardsCheck = new Date();
           this.destroy();
 
           self.get('presentScreenController').welcomeDialogClosed();
@@ -113,10 +114,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
       });
+      dialog.initialize();
       this.presentModalDialog(dialog);
       AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
         // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
       });
+    },
+
+    showEpicQuestDialog: function(questState){
+      var dialog = AWE.UI.Ember.QuestEpicView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      this.presentModalDialog(dialog);
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
+      });      
     },
 
     showAnnouncement: function() {

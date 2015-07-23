@@ -442,7 +442,7 @@ AWE.UI = (function(module) {
 	      }
 	      else if (_node.region()) {   // terrain available, select appropriate tile
 	        if (_node.region().terrainId() == 1) {
-	          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/lake"+size);      
 	        }
 	        else if (_node.region().terrainId() == 2) {
 	          newImage = AWE.UI.ImageCache.getImage("map/tiles/mountains"+size);      

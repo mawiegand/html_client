@@ -29,8 +29,13 @@ AWE.GS = (function(module) {
   module.Building = Ember.Object.extend( /** @lends AWE.GS.Building# */ {
 		typename: 'Building',
 
+    // used for the tavern animation.
+    active: false,
+    endTime : 0,
+
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
 		hashableJobsBinding: "slot.hashableJobs",
+
 
 		/** the name of the building from the game rules. */
 		nameBinding: 'buildingType.name',
@@ -174,6 +179,94 @@ AWE.GS = (function(module) {
       var experienceProduction = this.getPath('buildingType.experience_production');
       level = level || 0;
       return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
+    },
+
+    updateUnlockedBuildings: function(callback) {
+      var self = this;
+      var rules = AWE.GS.RulesManager.getRules();
+      var unlockedBuildings = [];
+      for(var i = 0; i <= 20; i++)
+      {
+        var unlocksForLevel = [];
+        for(var j = 0; j < rules.building_types.length; j++)
+        {
+          var inspectedBuilding = rules.building_types[j]
+          var reqGroups = inspectedBuilding.requirementGroups || [];
+          reqGroups.forEach(function(group){
+            group.forEach(function(requirement){
+              if(requirement.id === self.getPath('buildingType.id'))
+              {
+                if(i === requirement.min_level)
+                {
+                  unlocksForLevel.push(inspectedBuilding);
+                }
+              }
+            });
+          });
+        }
+        unlockedBuildings.push(unlocksForLevel);
+      }
+      this.set('unlockedBuildings', unlockedBuildings);
+    },
+
+    getUnlockedBuildings: function() {
+      if(this.get('unlockedBuildings'))
+      {
+        return this.get('unlockedBuildings');
+      }
+      else
+      {
+        this.updateUnlockedBuildings();
+        return this.get('unlockedBuildings');
+      }
+    },
+
+    getUnlockedBuildingsForLevel: function(level) {
+      return this.getUnlockedBuildings()[level];
+    },
+
+    updateUnlockedUnits: function(callback) {
+      var self = this;
+      var rules = AWE.GS.RulesManager.getRules();
+      var unlockedUnits = [];
+      for(var i = 0; i <= 20; i++)
+      {
+        var unlocksForLevel = [];
+        for(var j = 0; j < rules.unit_types.length; j++)
+        {
+          var inspectedUnit = rules.unit_types[j]
+          var reqGroups = inspectedUnit.requirementGroups || [];
+          reqGroups.forEach(function(group){
+            group.forEach(function(requirement){
+              if(requirement.id === self.getPath('buildingType.id'))
+              {
+                if(i === requirement.min_level)
+                {
+                  unlocksForLevel.push(inspectedUnit);
+                }
+              }
+            });
+          });
+        }
+        unlockedUnits.push(unlocksForLevel);
+      }
+      this.set('unlockedUnits', unlockedUnits);
+    },
+
+    getUnlockedUnits: function() {
+      if(this.get('unlockedUnits'))
+      {
+        return this.get('unlockedUnits');
+      }
+      else
+      {
+        this.updateUnlockedUnits();
+        return this.get('unlockedUnits');
+      }
+    },
+
+    getUnlockedUnitsForLevel: function(level) {
+      return this.getUnlockedUnits()[level];
     },
 
     isMilitaryBuilding: function() {

@@ -4,7 +4,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-info-tab">
-  <div class="alliance-container">
+  <div class="alliance-container scrolling">
 
     {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
 
@@ -24,6 +24,18 @@
             {{/if}}
             {{#if isAllianceLeader}}
             <div class="alliance-management">
+                <div class="alliance-character-invite">
+                    <h4>{{t dialogs.alliance.allianceInfo.invite}}</h4>
+                    <div class="alliance-character-invite-first alliance-character-invite-input">
+                        {{view Ember.TextField class="alliance-character-invite-inputfield" type="text" placeholderBinding="allianceCharacterInvitePlaceholder" valueBinding="characterInviteName"}}
+                    </div>
+                    <div class="alliance-character-invite-second">
+                        <div class="alliance-character-invite-button" {{action "sendAllianceCharacterInvite"}}>
+                            {{t dialogs.alliance.invite}}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="alliance-slogan">
                     <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
                     {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 
@@ -49,6 +61,7 @@
         </div>
         {{/if}}
     </div>
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-member">

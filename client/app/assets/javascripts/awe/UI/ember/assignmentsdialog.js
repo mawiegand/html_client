@@ -15,6 +15,8 @@ AWE.UI.Ember = (function(module) {
 
     assignmentType: null,
 
+    assignment_in_progress : false,
+
     init: function() {
       this._super();
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
@@ -71,7 +73,10 @@ AWE.UI.Ember = (function(module) {
 
     init: function() {
       this._super();
+
+
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+
 //      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
@@ -128,7 +133,10 @@ AWE.UI.Ember = (function(module) {
     }.property("percent"),
 
     isInProgress: function(){
-      return this.get("percent") > 0 && this.get("percent") < 100;
+
+      progress = this.get("percent") > 0 && this.get("percent") < 100;
+
+      return progress;
     }.property("percent"),
 
     percent: function() {
@@ -136,9 +144,8 @@ AWE.UI.Ember = (function(module) {
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
-      if(progression === 100) {
 
-      }
+
       return Math.ceil(progression * 100);
     }.property('assignment', 'timeRemaining').cacheable(),
 
@@ -147,14 +154,28 @@ AWE.UI.Ember = (function(module) {
       if (!endedAt) {
         return ;
       }
+
       var finish = Date.parseISODate(endedAt);
       var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
+
+      if(remaining >=2)
+      {
+          // not idle
+          this.setPath('building.active',true);
+      }
+      else if(remaining < 2)
+      {
+          // idle
+          this.setPath('building.active',false);
+      }
+
       this.set('timeRemaining', remaining);
     },
 
     startTimer: function() {
+
       var timer = this.get('timer');
       if (!timer) {
         timer = setInterval((function(self) {
@@ -188,7 +209,34 @@ AWE.UI.Ember = (function(module) {
     },
 
     willDestroyElement: function() {
+      this.get_max_end_time();
       this.stopTimer();
+    },
+
+
+      // save the maximum time till which the assignment is working, if it is working
+      // this is used to show the cooking chicken until the assigment is in progress
+      // in the settlement
+    get_max_end_time:function  () {
+      assignments = AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments');
+
+      var max_end_time = null;
+      var converted_end_time = new Date();
+
+      for(i=0;i<assignments.collection.length;i++)
+        {
+          if(assignments.collection[i].ended_at != null)
+          {
+            assignmentEndTime = new Date(assignments.collection[i].ended_at);
+
+            if(assignmentEndTime.getTime()>converted_end_time.getTime())
+            {
+              max_end_time = assignments.collection[i].ended_at;
+              converted_end_time = assignmentEndTime;
+            }
+          }
+        }
+      this.setPath('building.endTime',max_end_time);
     },
 
     isActive: function() {

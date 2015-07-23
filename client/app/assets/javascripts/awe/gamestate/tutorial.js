@@ -45,6 +45,17 @@ AWE.GS = (function(module) {
       }
       return null;
     },
+    
+    questWithId: function(id) {
+      quests = this.get('quests');
+      for (var i = 0; i < quests.length; i++) {
+        var quest = quests[i];
+        if (quest != null && quest['id'] === id) {
+          return quest;
+        }
+      }
+      return null;
+    },
   });     
 
     
