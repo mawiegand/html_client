@@ -778,6 +778,10 @@ AWE.I18n.en_US = function(module) {
           end:"here right now. The following conditions haven't been met: ",
           cancelText:['Aargh!', 'Grmpf!', 'Hgnnhgn.', 'Oh well.'],
         },
+        requirementsNotMet:{
+          heading: "Requirements not met",
+          text: "You don't fulfil requirements for building or upgrading this building!",
+        },
         constructionQueueFull:{
           start:"Sorry, but your construction queue is currently full. You can only have a maximum of ",
           end:" construction orders in the queue. Please wait until something else is finished.",

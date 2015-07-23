@@ -390,12 +390,24 @@ AWE.Controller = (function(module) {
             });
           }
           else {
-            log(status, "ERROR: The server did not accept the construction command.");
-            var dialog = AWE.UI.Ember.InfoDialog.create({
-              heading:             AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
-              message:             AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
-              okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
-            });          
+            var dialog = null;
+
+            if (status == AWE.Net.CONFLICT) {
+              log(status, "ERROR: The server did not accept the construction command. Requirements not met.");
+              dialog = AWE.UI.Ember.InfoDialog.create({
+                heading:             AWE.I18n.lookupTranslation('settlement.buildings.requirementsNotMet.heading'),
+                message:             AWE.I18n.lookupTranslation('settlement.buildings.requirementsNotMet.text'),
+                okText:              AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              });
+            }
+            else {
+              log(status, "ERROR: The server did not accept the construction command.");
+              dialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('server.error.failedAction.heading'),
+                message: AWE.I18n.lookupTranslation('server.error.failedAction.unknown'),
+                okText: AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              });
+            }
             WACKADOO.presentModalDialog(dialog);
             switch (jobType) {
               case AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE:

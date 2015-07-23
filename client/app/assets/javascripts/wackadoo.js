@@ -102,6 +102,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           this.destroy();
 
           self.get('presentScreenController').welcomeDialogClosed();
+		  
+	      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+	        $(window).scrollTop($(window).height() / 1.25);
+	        $(window).scrollLeft($(window).width() / 2.35);
+	      }
         },
       });
       this.presentModalDialog(dialog);
@@ -154,6 +159,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               self.get('presentScreenController').welcomeDialogClosed();
               //self.get('extrasController').startRandomPterodactylus(60, 90);
               self.get('extrasController').enableAutoPterodactylus();
+			  
+		      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+		        $(window).scrollTop($(window).height() / 1.25);
+		        $(window).scrollLeft($(window).width() / 2.35);
+		      }
             },
           });
           self.presentModalDialog(dialog);
@@ -930,7 +940,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
-      if (true) {
+      if (isAndroid) {
         AWE.Settings.hudScale = 0.5;
         var styleSheets = document.styleSheets;
       
@@ -952,9 +962,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
             }
             if(theRules[m].selectorText === '.quest-list-view.scale-down' || theRules[m].selectorText === '.quest-epic-view.scale-down') {
-              debugger
               theRules[m].style.zoom = 0.35; //HACK
             }
+            
+      			if (theRules[m].selectorText === '.jm_chat-content') {
+      			  theRules[m].style.height = '175px';
+      			}
           }       
         }
       } else {

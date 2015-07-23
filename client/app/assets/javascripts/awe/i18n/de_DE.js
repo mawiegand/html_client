@@ -803,6 +803,10 @@ AWE.I18n.de_DE = function(module) {
           end: "bauen. Die folgenden Vorrausetzungen sind nicht erfüllt",
           cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
         },
+        requirementsNotMet:{
+          heading: "Vorrausetzungen nicht erfüllt",
+          text: "Du erfüllst die Vorraussetzungen nicht, um dieses Gebäude zu bauen!",
+        },
         constructionQueueFull: {
           start: "Tut uns Leid, aber die Bauschleife ist schon voll. Du kannst maximal ",
           end: " Bauaufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
