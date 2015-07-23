@@ -65,7 +65,7 @@ AWE.UI = (function(module) {
         my.amountProgressView.initWithControllerColorsAndFrame(
           my.controller, 
           { topColor: my.colors.topColor, bottomColor: my.colors.bottomColor },
-          AWE.Geometry.createRect(50, 10, 114, 25)
+          AWE.Geometry.createRect(50, 10, 104, 25)
         );
         my.container.addChild(my.amountProgressView.displayObject());     
         my.amountProgressView.onClick = function() { 
