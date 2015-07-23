@@ -230,6 +230,10 @@ module.TopRightHUDView = Ember.View.extend({
     this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
   },
   
+  isInAlliance: function() {
+    return this.getPath("character.alliance_id") !== null;
+  }.property("character.alliance_id").cacheable(),
+  
 });
 return module;
 

@@ -42,9 +42,11 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">
-  <div class="top-right-hud scale-down" id="top-right-dom-hud">
-    <div class="alliance-hud-button" {{action "allianceClicked"}}>
-      <div class="alliance-hud-icon"></div>
+  {{#if isInAlliance}}
+    <div class="top-right-hud scale-down" id="top-right-dom-hud">
+      <div class="alliance-hud-button" {{action "allianceClicked"}}>
+        <div class="alliance-hud-icon"></div>
+      </div>
     </div>
-  </div>
+  {{/if}}
 </script>
