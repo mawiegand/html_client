@@ -117,6 +117,7 @@ AWE.UI = (function(module) {
         _allianceLabelView.setFont("18px hvd_comic_serif_proregular");
         _allianceLabelView.setColor('rgba(67, 102, 124, 1)');
         _allianceLabelView.setTextAlign('left');
+        _allianceLabelView.setShadow(new Shadow("#000000", 1, 1, 0));
         this.addChild(_allianceLabelView);
       }
       
@@ -132,6 +133,7 @@ AWE.UI = (function(module) {
         _nameLabelButton.setFrame(AWE.Geometry.createRect(130, 38, 176, 48));
         _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         _nameLabelButton.setTextAlign('left');
+        _nameLabelButton.setShadow(new Shadow("#000000", 1, 1, 0));
         this.addChild(_nameLabelButton);
       }
       

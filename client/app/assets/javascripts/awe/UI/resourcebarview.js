@@ -19,11 +19,10 @@ AWE.UI = (function(module) {
     var _topColor = null;
     var _bottomColor = null;
     var _progressShape = null;
-    var _amountText = null;
-    var _amountTextShadow = null;
+    var _amountText = null;    
     var _barWidth = 0;
     var _barHeight = 0;
-    var _cornerRadius = 10;
+    //var _cornerRadius = 10;
     
     // protected attributes and methods //////////////////////////////////////
 
@@ -44,7 +43,7 @@ AWE.UI = (function(module) {
     };
         
     that.initWithControllerColorsAndFrame = function(controller, colors, frame) {
-      frame = frame || AWE.Geometry.createRect(0, 0, 140, startImage.height);
+      frame = frame || AWE.Geometry.createRect(0, 0, 114, startImage.height);
       
       my.container = new Container();
       
@@ -62,37 +61,28 @@ AWE.UI = (function(module) {
           _backgroundBitmap.view.onClick(evt);
         }
       };
-      _backgroundBitmap.image = AWE.UI.ImageCache.getImage("hud/resourcebars/empty");
+      _backgroundBitmap.image = AWE.UI.ImageCache.getImage("hud/resourcebars/background");
       
       my.container.addChild(_backgroundBitmap);
       
-      _progressShape = new Shape();
-      
+      _progressShape = new Shape();      
       _progressShape.onClick = function() { 
         if (that.onClick) {
           that.onClick() 
         }
-      }        
-      
-      my.container.addChild(_progressShape);
+      }              
+      my.container.addChild(_progressShape);            
       
       _amountText = new Text("", "16px hvd_comic_serif_proregular", "#fff");
-      _amountText.textAlign = "left";
+      _amountText.textAlign = "center";
       _amountText.textBaseline = "middle";
-      _amountText.x = 20;
+      _amountText.shadow = new Shadow("#000000", 2, 2, 0);
+      //_amountText.outline = 1;
+      _amountText.x = _barWidth / 2;
       _amountText.y = _barHeight / 2;
       _amountText.view = that;
       _amountText.onClick = function() { if (that.onClick) that.onClick(); }      
       
-      _amountTextShadow = new Text("", "17px hvd_comic_serif_proregular", "#000");
-      _amountTextShadow.textAlign = "left";
-      _amountTextShadow.textBaseline = "middle";
-      _amountTextShadow.x = 20;
-      _amountTextShadow.y = _barHeight / 2;
-      _amountTextShadow.view = that;
-      _amountTextShadow.onClick = function() { if (that.onClick) that.onClick(); }
-      
-      my.container.addChild(_amountTextShadow);          
       my.container.addChild(_amountText);
       
       my.container.x = my.frame.origin.x;
@@ -105,7 +95,6 @@ AWE.UI = (function(module) {
     
     that.setAmountWithCapacity = function(amount, capacity) {
       _amountText.text = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      _amountTextShadow.text = _amountText.text;
       var progress = amount / capacity;
       my.progressAmountPercent = progress || 0;
       if (my.progressAmountPercent < 0) my.progressAmountPercent = 0;
@@ -120,9 +109,12 @@ AWE.UI = (function(module) {
         
         if (my.progressAmountPercent > 0)
         {
-          _progressShape.graphics
+          /*_progressShape.graphics
             .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, 0, _barHeight)
-            .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);
+            .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);*/
+          _progressShape.graphics
+            .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, _barWidth, 0)
+            .drawRect(1, 1, (_barWidth - 2) * my.progressAmountPercent, _barHeight - 2);                      
         }
       }
     }     
@@ -135,7 +127,17 @@ AWE.UI = (function(module) {
     that.displayObject = function() 
     {
       return my.container;
-    }        
+    }
+    
+    my.drawStrokedText = function(text, x, y) {
+      var ctx = my.controller.getStages()[1].stage.canvas.getContext("2d");
+      ctx.font = "80px Sans-serif"
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 8;
+      ctx.strokeText(text, x, y);
+      ctx.fillStyle = 'white';
+      ctx.fillText(text, x, y);
+    }
     
     return that;
     

@@ -928,8 +928,9 @@ AWE.Controller = (function(module) {
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 
-          { topColor: "#89B1D0", bottomColor: "#425460" });
-        HUDViews.stoneView.setFrame(AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+          //{ topColor: "#89B1D0", bottomColor: "#425460" });
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.stoneView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject()); 
 
@@ -950,7 +951,8 @@ AWE.Controller = (function(module) {
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerResourceNameColorsAndFrame(that, "wood", 
-          { topColor: "#D7CC98", bottomColor: "#806322" },
+          //{ topColor: "#D7CC98", bottomColor: "#806322" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.woodView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
@@ -972,7 +974,8 @@ AWE.Controller = (function(module) {
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerResourceNameColorsAndFrame(that, "fur", 
-          { topColor: "#A45341", bottomColor: "#521103" },
+          //{ topColor: "#A45341", bottomColor: "#521103" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.furView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject());
@@ -993,7 +996,8 @@ AWE.Controller = (function(module) {
         xOffset += resourceViewWidth + spacingX - 5;                
         HUDViews.toadsView = AWE.UI.createResourceCashBubbleView();
         HUDViews.toadsView.initWithControllerColorsAndFrame(that,
-          { topColor: "#94BE57", bottomColor: "#658434" },
+          //{ topColor: "#94BE57", bottomColor: "#658434" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.toadsView.onClick = function(){};//cashDetailsHandler;
         _resourceStage.addChild(HUDViews.toadsView.displayObject());

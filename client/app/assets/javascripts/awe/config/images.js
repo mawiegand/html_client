@@ -188,7 +188,8 @@ AWE.Config = (function(module) {
     "hud/bubble/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',
     "hud/bubble/pressed":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',
     
-    "hud/resourcebars/empty"     :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_empty.png',
+    "hud/resourcebars/empty"          :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_empty.png',
+    "hud/resourcebars/background"     :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_background.png',
     
     "hud/resourcebars/fur/item"  :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_fur/resourcebar_fur_item.png',
     "hud/resourcebars/stone/item":   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_stone/resourcebar_stone_item.png',

@@ -304,6 +304,15 @@ h3 {
   cursor: pointer;  
 }
 
+.outlined {  
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=45);
+  text-shadow:
+      1px  1px 0 #000,
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+     -1px  1px 0 #000,       
+}
+
 #layers {
  /* overflow: hidden;*/
   position: absolute;
@@ -411,7 +420,7 @@ canvas{
 }
 
 .topbar-info-box.settlement {
-  background: url("<%= asset_path 'hud/topbar/topbar.png' %>") no-repeat;
+  //background: url("<%= asset_path 'hud/topbar/topbar.png' %>") no-repeat;
   text-align: center;
   margin-left: -170px;
   top: 90px;
