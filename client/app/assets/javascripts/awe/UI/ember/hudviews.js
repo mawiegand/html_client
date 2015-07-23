@@ -97,7 +97,14 @@ module.LeftHUDView = Ember.View.extend({
       var duration = (endTime - now)/1000;
       if(duration < 60 && duration > 0)
       {
-        this.set('timeUntillNextAssignment', Math.floor(duration));
+        if(duration < 10)
+        {
+          this.set('timeUntillNextAssignment', "0" + Math.floor(duration));
+        }
+        else
+        {
+          this.set('timeUntillNextAssignment', Math.floor(duration));
+        }
         return
       }
       this.set('timeUntillNextAssignment', null);
