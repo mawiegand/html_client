@@ -89,7 +89,7 @@ AWE.UI = (function(module) {
         
         if (!_levelButton) {
           _levelButton = AWE.UI.createProfileLevelView();
-          _levelButton.initWithControllerAndFrame(my.controller, AWE.Geometry.createRect(15, 10, 110, 110));
+          _levelButton.initWithControllerAndFrame(my.controller, AWE.Geometry.createRect(15, 5, 116, 116));
           _levelButton.onClick = function() {
             //my.controller.avatarLevelClicked();
           };
@@ -113,7 +113,7 @@ AWE.UI = (function(module) {
       if (!_allianceLabelView) {
         _allianceLabelView = AWE.UI.createLabelView();        
         _allianceLabelView.initWithControllerAndLabel(my.controller, '');
-        _allianceLabelView.setFrame(AWE.Geometry.createRect(128, 18, 176, 48));
+        _allianceLabelView.setFrame(AWE.Geometry.createRect(132, 18, 176, 48));
         _allianceLabelView.setFont("20px hvd_comic_serif_proregular");
         _allianceLabelView.setColor('rgba(67, 102, 124, 1)');
         _allianceLabelView.setTextAlign('left');
@@ -130,7 +130,7 @@ AWE.UI = (function(module) {
       if (!_nameLabelButton) {
         _nameLabelButton = AWE.UI.createLabelView();
         _nameLabelButton.initWithControllerAndLabel(my.controller, '');
-        _nameLabelButton.setFrame(AWE.Geometry.createRect(130, 42, 176, 48));
+        _nameLabelButton.setFrame(AWE.Geometry.createRect(134, 42, 176, 48));
         _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         _nameLabelButton.setTextAlign('left');
         _nameLabelButton.setShadow(new Shadow("#000000", 1, 1, 0));
@@ -140,7 +140,8 @@ AWE.UI = (function(module) {
       if (!_rankingButtonView) {
         _rankingButtonView = AWE.UI.createButtonView();
         _rankingButtonView.initWithControllerTextAndImage(my.controller, '0', AWE.UI.ImageCache.getImage("hud/profile/namelabel/background"));
-        _rankingButtonView.setFrame(AWE.Geometry.createRect(98, 80, 120, 32));
+        _rankingButtonView.setFrame(AWE.Geometry.createRect(104, 80, 120, 32));
+        _rankingButtonView.setShadow(new Shadow("#000000", 1, 1, 0));
         _rankingButtonView.setFont("20px hvd_comic_serif_proregular");
         this.addChildAt(_rankingButtonView, 0);
       }  
@@ -152,7 +153,7 @@ AWE.UI = (function(module) {
       if (!_rankingImageView) {
         _rankingImageView = AWE.UI.createImageView();
         _rankingImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/icon/trophy"));
-        _rankingImageView.setFrame(AWE.Geometry.createRect(200, 80, 32, 32));
+        _rankingImageView.setFrame(AWE.Geometry.createRect(205, 80, 32, 32));
         this.addChild(_rankingImageView);        
       }
       

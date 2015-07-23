@@ -256,6 +256,15 @@ AWE.UI = (function(module) {
       that.updateView ();
     }
     
+    that.setShadow = function(shadow) {
+      _labelText.shadow = shadow;
+      that.setNeedsLayout();
+    }
+    
+    that.shadow = function() {
+      return _labelText.shadow;
+    }
+    
     that.onClick = function() {
       log('button on click');
       if (that.enabled()) {
