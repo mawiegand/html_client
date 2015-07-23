@@ -63,9 +63,9 @@
              <div class="two_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="arrow_0 quest_arrow_right_green"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="arrow_0 quest_arrow_right_brown"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>         
              </div>
@@ -75,15 +75,15 @@
              <div class="three_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="arrow_0 quest_arrow_right_green_short"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="arrow_0 quest_arrow_right_brown_short"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>
                {{#if subquestStatesAt1Finished}}
-                 <div class="arrow_1 finished"></div>
+                 <div class="arrow_1 quest_arrow_right_green_short_cracked"></div>
                {{else}}
-                 <div class="arrow_1"></div>
+                 <div class="arrow_1 quest_arrow_right_brown_short_cracked"></div>
                {{/if}}
                 <div class="third">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt2"}}</div>
              </div>
@@ -93,21 +93,21 @@
              <div class="four_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="arrow_0 quest_arrow_down_right_green"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="arrow_0 quest_arrow_down_right_brown"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>
                {{#if subquestStatesAt1Finished}}
-                 <div class="arrow_1 finished"></div>
+                 <div class="arrow_1 quest_arrow_up_right_green"></div>
                {{else}}
-                 <div class="arrow_1"></div>
+                 <div class="arrow_1 quest_arrow_up_right_brown"></div>
                {{/if}}
                 <div class="third">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt2"}}</div>
                 {{#if subquestStatesAt2Finished}}
-                  <div class="arrow_2 finished"></div>
+                  <div class="arrow_2 quest_arrow_down_right_green"></div>
                 {{else}}
-                  <div class="arrow_2"></div>
+                  <div class="arrow_2 quest_arrow_down_right_brown"></div>
                 {{/if}}
                 <div class="fourth">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt3"}}</div         
              </div>           
@@ -131,8 +131,8 @@
         {{local questState.quest.task}}
       </div>
             
-      <div class="epic_background">
-        <div {{bindAttr class="advisor"}}></div>         
+      <div class="sub-background">
+        <div {{bindAttr class=":sub-image questState.quest.symbolic_id finished"}}></div>         
       </div>
 
       <div {{bindAttr class="epic_actual_threshold"}}>
@@ -170,7 +170,7 @@
 
         {{#if tutorialState.isSelectedQuestEpic}}
           <div class="epic-quest-button-info" {{action "showEpicQuestDialog"}}>
-            <image class="icon"></image>
+            <div class="icon"></div>
           </div>
         {{/if}}
         
