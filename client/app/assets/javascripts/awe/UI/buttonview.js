@@ -267,7 +267,7 @@ AWE.UI = (function(module) {
     
     that.onClick = function() {
       log('button on click');
-      if (that.enabled()) {
+      if (that.enabled() && (typeof my.controller.buttonClicked === 'function')) {
         my.controller.buttonClicked(that);
       }
     };

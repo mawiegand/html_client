@@ -231,7 +231,7 @@
   
 </script>
 
-<script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic"> 
+<script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic">
   <div class="quest-dialog-advisor-task">
     {{local quest.task}}
   </div>
@@ -295,11 +295,9 @@
      {{/if}}
    </div>
   {{/if}}
-  
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-quest">
-
   <div class="quest-dialog-advisor-task">
     {{local quest.task}}
   </div>
@@ -379,7 +377,6 @@
      {{/if}}
    </div>
   {{/if}}
-  
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view">
@@ -450,7 +447,7 @@
 
 
 <script type="text/x-handlebars" data-template-name="quest-dialog">
-  <div class="modal-dialog-background">
+  <div class="modal-dialog-background" onClick="WACKADOO.closeAllModalDialogs()">
     {{#if spinningBackground}}
       <div class="horizontal-center-helper">
         <div class="modal-dialog-spinning-background"></div>
