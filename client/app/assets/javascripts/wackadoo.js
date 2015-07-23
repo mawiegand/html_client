@@ -930,7 +930,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
-      if (isAndroid) {
+      if (true) {
         AWE.Settings.hudScale = 0.5;
         var styleSheets = document.styleSheets;
       
@@ -944,14 +944,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           for (m in theRules)
           {
             if (theRules[m].selectorText === ".scale-down") {
+              debugger
               theRules[m].style.zoom = AWE.Settings.hudScale;
             }
             if (theRules[m].selectorText === '.topbar-info-box') {
               theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
               theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
             }
-            if(theRules[m].selectorText === '.quest-list-view') {
-              theRules[m].style.zoom = AWE.Settings.hudScale * 0.5;
+            if(theRules[m].selectorText === '.quest-list-view.scale-down' || theRules[m].selectorText === '.quest-epic-view.scale-down') {
+              debugger
+              theRules[m].style.zoom = 0.35; //HACK
             }
           }       
         }
