@@ -168,24 +168,12 @@ AWE.UI.Ember = (function(module) {
             return true;
          }
       }
-
       return false;
     }.property('building'),
 
 
     active:function(){
-
-      
-        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
-        
-
-        if(buildingId == "building_tavern")
-        {
-          return this.getPath('building.active');
-        }
-
-        return false;
-
+      return this.getPath('building.active');
     }.property("building.active"),
 
 
@@ -238,8 +226,12 @@ AWE.UI.Ember = (function(module) {
     }.property('level').cacheable(),
 
     hasFire: function() {
-      var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
-      return AWE.Config.BuildingImageLibrary.hasFire(buildingId);
+      if(this.getPath("building.buildingId"))
+      {
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        return AWE.Config.BuildingImageLibrary.hasFire(buildingId);
+      }
+      return false;
     }.property('level', 'building.buildingId'),
   });
   
