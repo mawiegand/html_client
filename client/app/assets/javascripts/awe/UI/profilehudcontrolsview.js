@@ -67,7 +67,7 @@ AWE.UI = (function(module) {
         profileDiv.style.position = 'fixed';
         profileDiv.style.top   = 10+'px';
         profileDiv.style.left  = 10+'px';
-        profileDiv.style.width = 235+'px';
+        profileDiv.style.width = 270+'px';
         profileDiv.style.height = 120+'px';
         profileDiv.style.zoom = AWE.Settings.hudScale;
         profileDiv.style.cursor = 'pointer';
@@ -113,7 +113,7 @@ AWE.UI = (function(module) {
       if (!_allianceLabelView) {
         _allianceLabelView = AWE.UI.createLabelView();        
         _allianceLabelView.initWithControllerAndLabel(my.controller, '');
-        _allianceLabelView.setFrame(AWE.Geometry.createRect(132, 18, 176, 48));
+        _allianceLabelView.setFrame(AWE.Geometry.createRect(132, 18, 190, 48));
         _allianceLabelView.setFont("20px hvd_comic_serif_proregular");
         _allianceLabelView.setColor('rgba(67, 102, 124, 1)');
         _allianceLabelView.setTextAlign('left');
@@ -130,7 +130,7 @@ AWE.UI = (function(module) {
       if (!_nameLabelButton) {
         _nameLabelButton = AWE.UI.createLabelView();
         _nameLabelButton.initWithControllerAndLabel(my.controller, '');
-        _nameLabelButton.setFrame(AWE.Geometry.createRect(134, 42, 176, 48));
+        _nameLabelButton.setFrame(AWE.Geometry.createRect(134, 42, 190, 48));
         _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         _nameLabelButton.setTextAlign('left');
         _nameLabelButton.setShadow(new Shadow("#000000", 1, 1, 0));
