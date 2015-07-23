@@ -998,8 +998,8 @@ AWE.Controller = (function(module) {
         HUDViews.toadsView.initWithControllerColorsAndFrame(that,
           //{ topColor: "#94BE57", bottomColor: "#658434" },
           { topColor: "#fecb00", bottomColor: "#ff8b00" },
-          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.toadsView.onClick = function(){};//cashDetailsHandler;
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));        
+        HUDViews.toadsView.onClick = function(){};
         _resourceStage.addChild(HUDViews.toadsView.displayObject());
 
         //add div for click start

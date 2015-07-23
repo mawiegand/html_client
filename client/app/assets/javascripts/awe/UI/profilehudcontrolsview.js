@@ -113,8 +113,8 @@ AWE.UI = (function(module) {
       if (!_allianceLabelView) {
         _allianceLabelView = AWE.UI.createLabelView();        
         _allianceLabelView.initWithControllerAndLabel(my.controller, '');
-        _allianceLabelView.setFrame(AWE.Geometry.createRect(130, 12, 176, 48));
-        _allianceLabelView.setFont("18px hvd_comic_serif_proregular");
+        _allianceLabelView.setFrame(AWE.Geometry.createRect(128, 18, 176, 48));
+        _allianceLabelView.setFont("20px hvd_comic_serif_proregular");
         _allianceLabelView.setColor('rgba(67, 102, 124, 1)');
         _allianceLabelView.setTextAlign('left');
         _allianceLabelView.setShadow(new Shadow("#000000", 1, 1, 0));
@@ -130,7 +130,7 @@ AWE.UI = (function(module) {
       if (!_nameLabelButton) {
         _nameLabelButton = AWE.UI.createLabelView();
         _nameLabelButton.initWithControllerAndLabel(my.controller, '');
-        _nameLabelButton.setFrame(AWE.Geometry.createRect(130, 38, 176, 48));
+        _nameLabelButton.setFrame(AWE.Geometry.createRect(130, 42, 176, 48));
         _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         _nameLabelButton.setTextAlign('left');
         _nameLabelButton.setShadow(new Shadow("#000000", 1, 1, 0));
@@ -141,7 +141,7 @@ AWE.UI = (function(module) {
         _rankingButtonView = AWE.UI.createButtonView();
         _rankingButtonView.initWithControllerTextAndImage(my.controller, '0', AWE.UI.ImageCache.getImage("hud/profile/namelabel/background"));
         _rankingButtonView.setFrame(AWE.Geometry.createRect(98, 80, 120, 32));
-        _rankingButtonView.setFont("18px hvd_comic_serif_proregular");
+        _rankingButtonView.setFont("20px hvd_comic_serif_proregular");
         this.addChildAt(_rankingButtonView, 0);
       }  
       
@@ -151,8 +151,8 @@ AWE.UI = (function(module) {
       
       if (!_rankingImageView) {
         _rankingImageView = AWE.UI.createImageView();
-        _rankingImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/profile/ranklabel/rankicon"));
-        _rankingImageView.setFrame(AWE.Geometry.createRect(185, 80, 32, 32));
+        _rankingImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/icon/trophy"));
+        _rankingImageView.setFrame(AWE.Geometry.createRect(200, 80, 32, 32));
         this.addChild(_rankingImageView);        
       }
       
