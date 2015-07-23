@@ -315,6 +315,7 @@ AWE.UI.Ember = (function(module) {
         {
           var quest_id = indices[i];
           var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest_id);
+          questState.checkForRewards();
           array.push(questState);
         }
         return array;
