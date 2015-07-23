@@ -348,7 +348,7 @@ AWE.GS = (function(module) {
     checkForRewards: function() {
       var self = this;
       var quest = this.get('quest');
-
+      //debugger;
       var number_of_tests = 0;
       if (quest && quest.reward_tests) 
       {
@@ -358,16 +358,16 @@ AWE.GS = (function(module) {
           number_of_tests += (quest.reward_tests.army_tests) ? quest.reward_tests.army_tests.length : 0;          
           number_of_tests += (quest.reward_tests.construction_queue_tests) ? quest.reward_tests.construction_queue_tests.length : 0;            
           number_of_tests += (quest.reward_tests.training_queue_tests) ? quest.reward_tests.training_queue_tests.length : 0;                      
-          number_of_tests += (quest.reward_tests.movement_test) ? quest.reward_tests.movement_test.length : 0;   
-          number_of_tests += (quest.reward_tests.alliance_test) ? quest.reward_tests.alliance_test.length : 0;   
-          number_of_tests += (quest.reward_tests.alliance_members_test) ? quest.reward_tests.alliance_members_test.length : 0;             
-          number_of_tests += (quest.reward_tests.standard_assignment_test) ? quest.reward_tests.standard_assignment_test.length : 0;             
-          number_of_tests += (quest.reward_tests.kill_test) ? quest.reward_tests.kill_test.length : 0;   
-          number_of_tests += (quest.reward_tests.battle_test) ? quest.reward_tests.battle_test.length : 0;   
-          number_of_tests += (quest.reward_tests.army_experience_test) ? quest.reward_tests.army_experience_test.length : 0;             
-          number_of_tests += (quest.reward_tests.score_test) ? quest.reward_tests.score_test.length : 0;   
-          number_of_tests += (quest.reward_tests.settlement_production_test) ? quest.reward_tests.settlement_production_test.length : 0;   
-          number_of_tests += (quest.reward_tests.building_speed_test) ? quest.reward_tests.building_speed_test.length : 0;   
+          number_of_tests += (quest.reward_tests.movement_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.alliance_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.alliance_members_test) ? 1 : 0;             
+          number_of_tests += (quest.reward_tests.standard_assignment_test) ? 1 : 0;             
+          number_of_tests += (quest.reward_tests.kill_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.battle_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.army_experience_test) ? 1 : 0;             
+          number_of_tests += (quest.reward_tests.score_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.settlement_production_test) ? 1 : 0;   
+          number_of_tests += (quest.reward_tests.building_speed_test) ? 1 : 0;   
       }
       
       if(number_of_tests > 0)
@@ -897,7 +897,6 @@ AWE.GS = (function(module) {
     },
 
     checkAlliance: function(test, callback) {
-      // log('---> checkAlliance');
       var allianceSet = AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
       if(callback)
       {
@@ -1389,6 +1388,7 @@ AWE.GS = (function(module) {
   
     that = module.createEntityManager(my);
     
+    that.allowedToShowDialog = false;
     that.tutorialState = null;
   
     that.getTutorialState = function() {
@@ -1444,6 +1444,9 @@ AWE.GS = (function(module) {
     that.triggerTutorialChecks = function() {
       if (!that.tutorialEnabled()) return;
       // log('---> triggerTutorialChecks');
+      
+      if(that.allowedToShowDialog == false)
+        return;
       
       if (lastRewardsCheck.getTime() + 3000 < new Date().getTime()) {
         lastRewardsCheck = new Date();

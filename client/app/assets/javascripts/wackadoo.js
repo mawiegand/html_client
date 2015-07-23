@@ -92,10 +92,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showWelcomeDialog: function() {
       var self = this;
-
+      
+      AWE.GS.TutorialStateManager.allowedToShowDialog = false;        
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
           //AWE.GS.TutorialStateManager.checkForNewQuests();
+          AWE.GS.TutorialStateManager.allowedToShowDialog = true;  
           AWE.GS.TutorialStateManager.lastRewardsCheck = new Date();
           this.destroy();
 
@@ -134,6 +136,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showAnnouncement: function() {
       var self = this;
 
+      AWE.GS.TutorialStateManager.allowedToShowDialog = false;
       /*
       var dialog = AWE.UI.Ember.TutorialEndDialog.create();
       self.presentModalDialog(dialog); */
@@ -143,6 +146,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
             okPressed:    function() {
+              AWE.GS.TutorialStateManager.allowedToShowDialog = true;              
               AWE.GS.TutorialStateManager.checkForNewQuests();
               $('#layers').css('overflow', 'visible');
               this.destroy();
