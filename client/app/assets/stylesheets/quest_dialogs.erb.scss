@@ -93,6 +93,7 @@
       width: 160px;
       height: 160px;
       background-size: 100%;
+      background-repeat: no-repeat;
     }
   }
   
@@ -344,10 +345,6 @@
       }
       
       .arrow_0{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         left: 380px;
         top: 380px;
@@ -381,10 +378,6 @@
       }
       
       .arrow_0{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         left: 250px;
         top: 380px;
@@ -399,10 +392,6 @@
       }
       
       .arrow_1{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         right: 245px;
         top: 380px;
@@ -440,14 +429,9 @@
       }
       
       .arrow_0{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         left: 250px;
         top: 440px;
-        transform: rotate(45deg);
       }
       
       .second {
@@ -459,14 +443,9 @@
       }
       
       .arrow_1{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         left: 480px;
         top: 430px;
-        transform: rotate(-45deg);
       }
       
       .third {
@@ -478,14 +457,9 @@
       }
       
       .arrow_2{
-        background-image: url('<%= asset_path("ui/arrow/tutorial_arrow_right.png") %>');
-        background-size: 100%;
-        width: 60px;
-        height: 60px;
         position: absolute;
         right: 240px;
         top: 430px;
-        transform: rotate(45deg);
       }
       
       .fourth {
@@ -497,6 +471,39 @@
       }
       
     }
+  }
+
+  .okButton {
+    position: absolute;
+
+    width: 172px;
+    height: 129px;
+
+    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button.png") %>');
+    background-size: 100%;
+    -webkit-transition: background-image 0.3s;
+    -moz-transition: background-image 0.3s;
+    -ms-transition: background-image 0.3s;
+    -o-transition: background-image 0.3s;
+    transition: background-image 0.3s;
+
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    -o-user-select: none;
+    user-select: none;
+
+    bottom: -30px;
+    right: -30px;
+  }
+
+  .okButton:hover{
+    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active.png") %>');
+  }
+
+  .okButton:active{
+    background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-button-active2.png") %>');
+    transition: background 0s;
   }
 }
 
@@ -565,7 +572,7 @@
     width: 70px;
     top: 35px;
     right: 65px;
-    img{
+    .icon {
       position:absolute;
       top:0;
       left:0;
@@ -681,9 +688,7 @@
     margin-left: 4px;
     margin-top: 4px;
     background-size: 100% 100%;
-    /*background: url('<%= asset_path("units/unit_warrior-tiny.png") %>');
-    
-    background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-chef.png") %>');*/
+    background-repeat: no-repeat;
     .girl {
        background-image: url('<%= asset_path("dialogs/quest-list/quest-list-bg-name-girl.png") %>');
     }

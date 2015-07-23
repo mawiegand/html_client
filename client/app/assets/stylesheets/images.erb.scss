@@ -83,3 +83,132 @@
   width: 32px;
   height: 32px;
 }
+
+/* === QUEST === */
+.quest_arrow_right_brown {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_brown.png' %>");
+  @include image-background();
+  width: 100px;
+  height: 72px;
+}
+
+.quest_arrow_right_brown_short {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_brown_short.png' %>");
+  @include image-background();
+  width: 80px;
+  height: 76px;
+  display: inline-block;
+}
+
+.quest_arrow_right_brown_short_cracked {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_brown_short_cracked.png' %>");
+  @include image-background();
+  width: 76px;
+  height: 76px;
+  display: inline-block;
+}
+
+.quest_arrow_right_green {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green.png' %>");
+  @include image-background();
+  width: 100px;
+  height: 72px;
+  display: inline-block;
+}
+
+.quest_arrow_right_green_short {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green_short.png' %>");
+  @include image-background();
+  width: 80px;
+  height: 76px;
+  display: inline-block;
+}
+
+.quest_arrow_right_green_short_cracked {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_right_green_short_cracked.png' %>");
+  @include image-background();
+  width: 76px;
+  height: 76px;
+  display: inline-block;
+}
+
+.quest_arrow_up_right_brown {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_up_right_brown.png' %>");
+  @include image-background();
+  width: 52px;
+  height: 52px;
+  display: inline-block;
+}
+
+.quest_arrow_down_right_brown {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_down_right_brown.png' %>");
+  @include image-background();
+  width: 52px;
+  height: 52px;
+  display: inline-block;
+}
+
+.quest_arrow_up_right_green {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_up_right_green.png' %>");
+  @include image-background();
+  width: 52px;
+  height: 52px;
+  display: inline-block;
+}
+
+.quest_arrow_down_right_green {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_arrow_down_right_green.png' %>");
+  @include image-background();
+  width: 52px;
+  height: 52px;
+  display: inline-block;
+}
+
+.quest_paper_l_left {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_l_left.png' %>");
+  @include image-background();
+  width: 216px;
+  height: 156px;
+}
+
+.quest_paper_l_right {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_l_right.png' %>");
+  @include image-background();
+  width: 216px;
+  height: 156px;
+}
+
+.quest_paper_m_0 {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_m_0.png' %>");
+  @include image-background();
+  width: 148px;
+  height: 148px;
+}
+
+.quest_paper_m_1 {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_m_1.png' %>");
+  @include image-background();
+  width: 156px;
+  height: 156px;
+}
+
+.quest_paper_s_0 {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_s_0.png' %>");
+  @include image-background();
+  width: 128px;
+  height: 128px;
+}
+
+.quest_paper_s_1 {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_s_1.png' %>");
+  @include image-background();
+  width: 124px;
+  height: 124px;
+}
+
+.quest_paper_s_2 {
+  background-image: url("<%= asset_path 'dialogs/quest-dialog/quest_paper_s_2.png' %>");
+  @include image-background();
+  width: 124px;
+  height: 130px;
+}

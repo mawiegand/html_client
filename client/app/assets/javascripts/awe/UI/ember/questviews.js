@@ -68,7 +68,7 @@ AWE.UI.Ember = (function(module) {
     }.property('subquestStates').cacheable(),
   
     subquestStatesAt3: function() {
-      return this.get('subquestStates')[3];
+      return this.get('subquestStates')[2];
     }.property('subquestStates').cacheable(),    
     
     subquestStatesAt0Finished: function() {
@@ -84,7 +84,7 @@ AWE.UI.Ember = (function(module) {
     }.property('subquestStates').cacheable(),    
     
     subquestStatesAt3Finished: function() {
-      return this.get('subquestStates')[3].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
+      return this.get('subquestStates')[2].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
     }.property('subquestStates').cacheable(),
     
   });  

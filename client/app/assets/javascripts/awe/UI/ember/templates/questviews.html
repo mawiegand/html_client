@@ -63,9 +63,9 @@
              <div class="two_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="quest_arrow_right_green arrow_0"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="quest_arrow_right_brown arrow_0"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>         
              </div>
@@ -75,15 +75,15 @@
              <div class="three_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="quest_arrow_right_green_short arrow_0"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="quest_arrow_right_brown_short arrow_0"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>
                {{#if subquestStatesAt1Finished}}
-                 <div class="arrow_1 finished"></div>
+                 <div class="quest_arrow_right_green_short_cracked arrow_1"></div>
                {{else}}
-                 <div class="arrow_1"></div>
+                 <div class="quest_arrow_right_brown_short_cracked arrow_1"></div>
                {{/if}}
                 <div class="third">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt2"}}</div>
              </div>
@@ -93,21 +93,21 @@
              <div class="four_layer">
                <div class="first">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt0"}}</div>
                 {{#if subquestStatesAt0Finished}}
-                  <div class="arrow_0 finished"></div>
+                  <div class="quest_arrow_down_right_green arrow_0"></div>
                 {{else}}
-                  <div class="arrow_0"></div>
+                  <div class="quest_arrow_down_right_brown arrow_0"></div>
                 {{/if}}
                <div class="second">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt1"}}</div>
                {{#if subquestStatesAt1Finished}}
-                 <div class="arrow_1 finished"></div>
+                 <div class="quest_arrow_up_right_green arrow_1"></div>
                {{else}}
-                 <div class="arrow_1"></div>
+                 <div class="quest_arrow_up_right_brown arrow_1"></div>
                {{/if}}
                 <div class="third">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt2"}}</div>
                 {{#if subquestStatesAt2Finished}}
-                  <div class="arrow_2 finished"></div>
+                  <div class="quest_arrow_down_right_green arrow_2"></div>
                 {{else}}
-                  <div class="arrow_2"></div>
+                  <div class="quest_arrow_down_right_brown arrow_2"></div>
                 {{/if}}
                 <div class="fourth">{{view AWE.UI.Ember.QuestEpicSub questStateBinding="subquestStatesAt3"}}</div         
              </div>           
@@ -169,7 +169,7 @@
 
         {{#if tutorialState.isSelectedQuestEpic}}
           <div class="epic-quest-button-info" {{action "showEpicQuestDialog"}}>
-            <image></image>
+            <div class="icon"></div>
           </div>
         {{/if}}
         
