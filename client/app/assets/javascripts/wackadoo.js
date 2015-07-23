@@ -950,6 +950,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
               theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
             }
+            if(theRules[m].selectorText === '.quest-list-view') {
+              theRules[m].style.zoom = AWE.Settings.hudScale * 0.5;
+            }
           }       
         }
       } else {

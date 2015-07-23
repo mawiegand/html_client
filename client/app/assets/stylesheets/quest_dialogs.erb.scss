@@ -373,7 +373,7 @@
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 280px;
+        top: 325px;
         left: 30px;
       }
       
@@ -387,7 +387,7 @@
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 280px;
+        top: 325px;
         right: 270px;
       }
       
@@ -401,7 +401,7 @@
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 280px;
+        top: 325px;
         right: 30px;        
       }
     }
@@ -1200,7 +1200,7 @@ div.dom-quest-container div.tutorial-dialog {
 
 .quest-dialog-content{
   width: 510px;
-  height: 350px;
+  height: 400px;
   position: absolute;
 
   -webkit-user-select: none; /* Chrome/Safari */
@@ -1218,7 +1218,7 @@ div.dom-quest-container div.tutorial-dialog {
   
   .finished_quest_container{
     float:left;
-    width: 50%;
+    width: 48%;
     
     .header{
       text-align: left;
@@ -1235,16 +1235,17 @@ div.dom-quest-container div.tutorial-dialog {
     
     .flavour_text{
       text-align: left;
-      font-size: 17px;
+      font-size: 14px;
       font-family: $main-font;
       color: #563E22;
     }
     
     .haufen{
       width: 260px;
-      height: 220px;
+      height: 200px;
       background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-haufen.png") %>');
-      background-size: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
     }
     
     .redeemButton{
@@ -1301,7 +1302,7 @@ div.dom-quest-container div.tutorial-dialog {
   }
   
   .seperator{
-    height: 110%;
+    height: 100%;
     width: 5px;
     margin-left: auto;
     margin-right: auto;
@@ -1311,9 +1312,11 @@ div.dom-quest-container div.tutorial-dialog {
   .next_quest_container{
     position: absolute;
     float:right;  
-    width: 50%;
+    width: 48%;
     left: 265px;
     top: 0px;
+    height: 378px;
+    overflow: scroll;
     
     .header{
       text-align: center;
@@ -1333,7 +1336,7 @@ div.dom-quest-container div.tutorial-dialog {
     
     .task_text{
       text-align: left;
-      font-size: 17px;
+      font-size: 14px;
       font-family: $main-font;
       color: #563E22;
       width: 200px;
