@@ -44,12 +44,15 @@ AWE.UI.Ember = (function(module) {
     building:     null,
     
 		levelBinding: 'building.level',
-		typeBinding:  'building.type',
 		mouseInView:  false,
 
     classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
     timer : null,
+
+    type: function() {
+      return this.getPath('building.type');
+    }.property('building'),
 
     levelClassName: function() {
       return "level"+this.get('level');
@@ -599,7 +602,9 @@ AWE.UI.Ember = (function(module) {
 		settlement: null,
 		slot:       null,
 		
-		buildingBinding: 'slot.building',
+		building: function() {
+      return this.getPath('slot.building');
+    }.property('slot.building'),
 				
     init: function() {
       this._super();
