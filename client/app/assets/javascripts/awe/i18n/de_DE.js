@@ -105,7 +105,7 @@ AWE.I18n.de_DE = function(module) {
             "Yeah, platt machen wir sie!"
           ],
           losing: [
-            "Tu was, unsere Armee geht grad den Bach runter!"
+            "Tu was, unsere Armee geht gerade den Bach runter!"
           ],
           neutral: [
             "Hau mal auf den Putz, da passiert ja gar nix!"
@@ -320,7 +320,7 @@ AWE.I18n.de_DE = function(module) {
         currentLevel: "derzeitiges Gebäudelevel",
         levelAfterUpgrade: "Level nach Abschluss aller Ausbauaufträge in der Bauschleife",
         levelAfterDowngrade: "Level nach Abschluss des Abrissauftrages in der Bauschleife",
-        levelAfterConversion: "Level nach Abschluss des Umwandlungsauftrages in der Bauschleife",
+        levelAfterConversion: "Level nach Abschluss des Umwandlungsauftrags in der Bauschleife",
         notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe des Hauptgebäudes benötigt.",
       },
 
@@ -1184,7 +1184,7 @@ AWE.I18n.de_DE = function(module) {
       
       moving: {
         info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann mit seiner Hauptsiedlung einmalig umziehen.",
-        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
+        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden. Außerdem verlierst du bei einem Umzug dein Artefakt, sofern du eines besitzt.",
         specificMovingCaption: "Gezieltes Umziehen",
         alreadyMoved: "Du bist bereits einmal umgezogen.",
         presentRegion: "Aktuelle Region",
