@@ -1580,13 +1580,17 @@ AWE.Controller = function (module) {
         }
         else if (that.markAttackButton()) {
           var annotationView = view.annotationView();
-          addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          if (annotationView) {
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          }  
         }
       }
       else if (view.typeName() === 'BaseView') {
         if (that.markAttackButton()) {
           var annotationView = view.annotationView();
-          addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          if (annotationView) {
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          }
         }
         else {
           if (!that.markCreateArmy()) {
@@ -3336,7 +3340,7 @@ AWE.Controller = function (module) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
           else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
-            var annotationView = view.annotationView();
+            var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
           else if (_selectedView.typeName() === 'BaseView' && that.markCreateArmy()) {

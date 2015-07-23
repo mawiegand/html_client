@@ -1218,12 +1218,14 @@ AWE.I18n.de_DE = function(module) {
       finished:         "beendet",
       reward:           "Belohnung",
       rewardLink:       "Einlösen",
-      redeemNow:        "Belohnung jetzt einlösen",
+      redeemNow:        "Jetzt Abholen",
       redeemLater:      "Belohnung später einlösen",
       showQuestLink:    "Anzeigen",
       answerQuestLink:  "Absenden",
       correctAnswered:  "Frage richtig beantwortet",
-
+      questFinished:    "Quest abgeschlossen",
+      goOn:             "Weiter gehts",
+            
       task: {
         info: {
           header:       "",

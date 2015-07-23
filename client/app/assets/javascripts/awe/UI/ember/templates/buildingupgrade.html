@@ -119,115 +119,130 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="building-details-view">
-{{#if smallTemplate}}
-  {{#unless buildingProductions}}
-    {{#unless buildingCapacity}}
-      {{#if buildingPopulation}}
-          <div class="populationDetail">
-            <div class="item population-icon"></div> {{buildingPopulation}}
-          </div>
-      {{/if}}
-    {{/unless}}
-  {{/unless}}
-  {{#if buildingProductions}}
-    <table class="resources-table">
-    {{#if buildingResourceProductions}}
-        {{#each buildingResourceProductions}}
-          {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
-        {{/each}}
-    {{/if}}
-      {{#if buildingExperienceProductions}}
-        <tr>
-          <td class="resource_xp item small"></td>
-          <td class="rate">{{buildingExperienceProductions}}/h</td>
-        </tr>
-      {{/if}}
-    </table>
-  {{/if}}
-  {{#if buildingCapacity}}
-    <table class="resources-table">
-    {{#if buildingSingleCapacity}}
-        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
+<script type="text/x-handlebars" data-template-name="upgrade-unlock-dialog">
+  <h1>
+    {{#if conversionView}}
+      {{t dialogs.convert.heading}}
     {{else}}
-      {{#each buildingCapacity}}
-        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
-      {{/each}}
+      {{t dialogs.upgrade.heading}}
     {{/if}}
-    </table>
+  </h1>
+  {{#if isTutorialUpgradeButton}}
+    {{view AWE.UI.Ember.UIMarker direction=2 top=169 left=267}}
   {{/if}}
-  {{#if buildingTradeCarts}}
-      <div class="populationDetail">
-          <div class="item carts-icon"></div> {{buildingTradeCarts}}
+  <div class="upgrade-unlock-container">
+    <div class="top-section">
+      <div {{bindAttr class="selectedBuildingClass selectedBuildingImageLevel :big-building :buildingUpgradeImage"}}>
+        <div class="level">
+          {{#if conversionView}}
+            Level {{currentLevel}} <span class="red">-{{levelDelta}}</span> => Bronzezeit
+          {{else}}
+            Level {{currentLevel}} <span class="green">+{{levelDelta}}</span>
+          {{/if}}
+        </div>
+        <div class="controlls">
+          {{#unless isMinimumSelected}}
+            {{#unless conversionView}}
+              <span class="change-level left" {{action "decreaseStepsFurther"}}></span>
+            {{/unless}}
+          {{/unless}}
+          {{#unless isMaximumSelected}}
+            {{#unless conversionView}}
+              <span class="change-level right" {{action "increaseStepsFurther"}}></span>
+            {{/unless}}
+          {{/unless}}
+        </div>
       </div>
-  {{/if}}
-  {{#if buildingProductionBoni}}
-    <table class="resources-table">
-      {{#each buildingProductionBoni}}
-        {{view AWE.UI.Ember.ResourceBonusView bonusBinding="this" tagName="tr"}}
-      {{/each}}
-    </table>
-  {{/if}}
-  {{#if buildingMilitarySpeedupQueues}}
-      <table class="resources-table">
-      {{#each buildingMilitarySpeedupQueues}}
-        {{view AWE.UI.Ember.UnitSpeedUpView queueBinding="this" tagName="tr"}}
-      {{/each}}
-      </table>
-  {{/if}}
-  {{#if buildingConstructionSpeedupQueue}}
-    <div class="populationDetail">
-        <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
+      {{#if conversionView}}
+        {{view AWE.UI.Ember.BuildingDetailsUnlockView startBuildingBinding="building" endBuildingBinding="building.converted" startLevelBinding="currentLevel" targetLevelBinding="selectedLevel"}}
+      {{else}}
+        {{view AWE.UI.Ember.BuildingDetailsUnlockView startBuildingBinding="building" endBuildingBinding="building" startLevelBinding="currentLevel" targetLevelBinding="selectedLevel"}}
+      {{/if}}
     </div>
-  {{/if}}
-  {{#if building.commandPoints}}
-   
-  {{/if}}
-  {{#unless buildingDefenseBonus}}
-    {{#if buildingGarrisonBonus}}
-      <div>{{t building.garrisonBonus}}: +{{buildingGarrisonBonus}}</div>
-    {{/if}}
-    {{#if buildingArmyBonus}}
-      <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
-    {{/if}}
-  {{/unless}}
-  {{#if buildingDefenseBonus}}
-    <div class="defenseDetail">
-        <div class="item defense-icon"></div> {{formatNumber buildingDefenseBonus}}%
+    <div class="bottom-section">
+      {{#if unlockingBuildings}}
+        <div class="unlocking-buildings">
+          <div class="unlocking">Unlocking</div>
+          {{#each unlockingBuildings}}
+            <div {{bindAttr class="this.symbolic_id :building-image"}}></div>
+          {{/each}}
+        </div>
+      {{/if}}
+      {{#if unlockingUnits}}
+        <div class="unlocking-units">
+          <div class="unlocking">Unlocking</div>
+          {{#each unlockingUnits}}
+            <div {{bindAttr class="this.db_field :cell-icon-big"}}></div>
+          {{/each}}
+        </div>
+      {{/if}}
+      <div class="upgrade-button" {{action "upgradePressed"}}>
+        <div class="cell-header">
+          <h3 class="button-title">
+            {{#if conversionView}}
+              {{t building.upgrade.conversion}}
+            {{else}}
+              {{t building.upgrade.upgrade}}
+            {{/if}}
+          </h3>
+        </div>
+        <table class="resources-table">
+          {{#each upgradeCosts}}
+            {{view AWE.UI.Ember.ResourceCostsView resourceBinding="this" tagName="tr"}}
+          {{/each}}
+          <td class="cost-item-small-uhr"></td>
+          {{#if conversionView}}
+            <td class="amount">{{formatDuration building.conversionTime}}</td>
+          {{else}}
+            <td class="amount">{{formatDuration building.productionTimeOfNextLevel}}</td>
+          {{/if}}
+        </table>
+      </div>
     </div>
-  {{/if}}
-{{else}}
-  {{#if buildingPopulation}}
-    <div class="population-detail">
-      <div class="item population-icon"></div> {{buildingPopulation}}
-    </div>
-  {{/if}}
-  <div {{bindAttr class="isSingleEconomyRow isSingleMilitaryRow :economy-details"}}>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-details-view">
+  {{#if smallTemplate}}
+    {{#unless buildingProductions}}
+      {{#unless buildingCapacity}}
+        {{#if buildingPopulation}}
+            <div class="populationDetail">
+              <div class="item population-icon"></div> {{buildingPopulation}}
+            </div>
+        {{/if}}
+      {{/unless}}
+    {{/unless}}
     {{#if buildingProductions}}
       <table class="resources-table">
       {{#if buildingResourceProductions}}
-        {{#each buildingResourceProductions}}
-          {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
-        {{/each}}
+          {{#each buildingResourceProductions}}
+            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
+          {{/each}}
       {{/if}}
-      {{#if buildingExperienceProductions}}
-        <tr>
-          <td class="resource_xp item small"></td>
-          <td class="rate">{{buildingExperienceProductions}}/h</td>
-        </tr>
-      {{/if}}
+        {{#if buildingExperienceProductions}}
+          <tr>
+            <td class="resource_xp item small"></td>
+            <td class="rate">{{buildingExperienceProductions}}/h</td>
+          </tr>
+        {{/if}}
       </table>
     {{/if}}
     {{#if buildingCapacity}}
       <table class="resources-table">
-    {{#if buildingSingleCapacity}}
-        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
-    {{else}}
-      {{#each buildingCapacity}}
-        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
-      {{/each}}
+      {{#if buildingSingleCapacity}}
+          {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
+      {{else}}
+        {{#each buildingCapacity}}
+          {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+        {{/each}}
+      {{/if}}
+      </table>
     {{/if}}
-    </table>
+    {{#if buildingTradeCarts}}
+        <div class="populationDetail">
+            <div class="item carts-icon"></div> {{buildingTradeCarts}}
+        </div>
     {{/if}}
     {{#if buildingProductionBoni}}
       <table class="resources-table">
@@ -236,41 +251,158 @@
         {{/each}}
       </table>
     {{/if}}
+    {{#if buildingMilitarySpeedupQueues}}
+        <table class="resources-table">
+        {{#each buildingMilitarySpeedupQueues}}
+          {{view AWE.UI.Ember.UnitSpeedUpView queueBinding="this" tagName="tr"}}
+        {{/each}}
+        </table>
+    {{/if}}
     {{#if buildingConstructionSpeedupQueue}}
       <div class="populationDetail">
-        <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
+          <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
       </div>
-    {{/if}}
-    {{#if buildingTradeCarts}}
-      <div class="populationDetail">
-          <div class="item carts-icon"></div> {{buildingTradeCarts}}
-      </div>
-    {{/if}}
-  </div>
-  <div {{bindAttr class="isSingleMilitaryRow isSingleEconomyRow :military-details"}}>
-    {{#if buildingMilitarySpeedupQueues}}
-      <table class="resources-table">
-      {{#each buildingMilitarySpeedupQueues}}
-        {{view AWE.UI.Ember.UnitSpeedUpView queueBinding="this" tagName="tr"}}
-      {{/each}}
-      </table>
     {{/if}}
     {{#if building.commandPoints}}
-      <div>{{t building.commandPointShort}}: {{building.commandPoints}}</div>
-    {{/if}} 
-    {{#if buildingGarrisonBonus}}
-      <div>{{t building.garrisonBonus}}: +{{buildingGarrisonBonus}}</div>
+     
     {{/if}}
-    {{#if buildingArmyBonus}}
-      <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
-    {{/if}}
+    {{#unless buildingDefenseBonus}}
+      {{#if buildingGarrisonBonus}}
+        <div>{{t building.garrisonBonus}}: +{{buildingGarrisonBonus}}</div>
+      {{/if}}
+      {{#if buildingArmyBonus}}
+        <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
+      {{/if}}
+    {{/unless}}
     {{#if buildingDefenseBonus}}
       <div class="defenseDetail">
-        <div class="item defense-icon"></div> {{formatNumber buildingDefenseBonus}}%
+          <div class="item defense-icon"></div> {{formatNumber buildingDefenseBonus}}%
       </div>
     {{/if}}
-  </div>
-{{/if}}
+  {{else}}
+    {{#if buildingPopulation}}
+      <div class="population-detail">
+        <div class="item population-icon"></div> {{buildingPopulation}}
+      </div>
+    {{/if}}
+    <div {{bindAttr class="isSingleEconomyRow isSingleMilitaryRow :economy-details"}}>
+      {{#if buildingProductions}}
+        <table class="resources-table">
+        {{#if buildingResourceProductions}}
+          {{#each buildingResourceProductions}}
+            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
+          {{/each}}
+        {{/if}}
+        {{#if buildingExperienceProductions}}
+          <tr>
+            <td class="resource_xp item small"></td>
+            <td class="rate">{{buildingExperienceProductions}}/h</td>
+          </tr>
+        {{/if}}
+        </table>
+      {{/if}}
+      {{#if buildingCapacity}}
+        <table class="resources-table">
+      {{#if buildingSingleCapacity}}
+          {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="buildingSingleCapacity" tagName="tr"}}
+      {{else}}
+        {{#each buildingCapacity}}
+          {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+        {{/each}}
+      {{/if}}
+      </table>
+      {{/if}}
+      {{#if buildingProductionBoni}}
+        <table class="resources-table">
+          {{#each buildingProductionBoni}}
+            {{view AWE.UI.Ember.ResourceBonusView bonusBinding="this" tagName="tr"}}
+          {{/each}}
+        </table>
+      {{/if}}
+      {{#if buildingConstructionSpeedupQueue}}
+        <div class="populationDetail">
+          <div class="item speedup-building-icon"></div> {{buildingConstructionSpeedupQueue.speedup}}%
+        </div>
+      {{/if}}
+      {{#if buildingTradeCarts}}
+        <div class="populationDetail">
+            <div class="item carts-icon"></div> {{buildingTradeCarts}}
+        </div>
+      {{/if}}
+    </div>
+    <div {{bindAttr class="isSingleMilitaryRow isSingleEconomyRow :military-details"}}>
+      {{#if buildingMilitarySpeedupQueues}}
+        <table class="resources-table">
+        {{#each buildingMilitarySpeedupQueues}}
+          {{view AWE.UI.Ember.UnitSpeedUpView queueBinding="this" tagName="tr"}}
+        {{/each}}
+        </table>
+      {{/if}}
+      {{#if building.commandPoints}}
+        <div>{{t building.commandPointShort}}: {{building.commandPoints}}</div>
+      {{/if}} 
+      {{#if buildingGarrisonBonus}}
+        <div>{{t building.garrisonBonus}}: +{{buildingGarrisonBonus}}</div>
+      {{/if}}
+      {{#if buildingArmyBonus}}
+        <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
+      {{/if}}
+      {{#if buildingDefenseBonus}}
+        <div class="defenseDetail">
+          <div class="item defense-icon"></div> {{formatNumber buildingDefenseBonus}}%
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-details-unlock-view">
+  <ul class="details-list">
+    {{#if currentBuildingPopulation}}
+      <li class="building-population">
+        <div class="item population-icon"></div>
+        {{currentBuildingPopulation}} <span class="green">+{{populationDelta}}</span>
+      </li>
+    {{/if}}
+    {{#if currentBuildingCapacity}}
+      <li class="building-capacity">
+        <div class="capacity item small"></div>
+        {{currentBuildingSingleCapacity}} <span class="green">+{{capacityDelta}}</span>
+      </li>
+    {{/if}}
+    {{#if currentBuildingConstructionSpeedupQueue}}
+      <li class="building-construction">
+        <div class="item speedup-building-icon"></div> {{currentBuildingConstructionSpeedupQueue.speedup}}% <span class="green">+{{buildingSpeedDelta}}%</span>
+      </li>
+    {{/if}}
+    {{#if buildingTradeCarts}}
+      <li class="building-trading">
+          <div class="item carts-icon"></div> {{buildingTradeCarts}}
+      </li>
+    {{/if}}
+    {{#if buildingMilitarySpeedupQueues}}
+      {{#each buildingMilitarySpeedupQueues}}
+        <li>
+          <div {{bindAttr class="this.queue.queueType.symbolic_id :army-icon :item"}}></div>
+          {{formatNumber this.queue.speedup maxPlaces="0"}}% <span class="green">+{{this.delta}}%</span>
+        </li>
+      {{/each}}
+    {{/if}}
+    {{#if building.commandPoints}}
+      <li>{{t building.commandPointShort}}: {{building.commandPoints}} <span class="green">+{{commandPointsDelta}}</span></li>
+    {{/if}} 
+    {{#if buildingGarrisonBonus}}
+      <li>G: +{{buildingGarrisonBonus}}</li>
+    {{/if}}
+    {{#if buildingArmyBonus}}
+      <li>A: +{{buildingArmyBonus}}</li>
+    {{/if}}
+    {{#if buildingDefenseBonus}}
+      <li class="building-defense">
+        <div class="item defense-icon"></div> {{formatNumber buildingDefenseBonus}}%
+      </li>
+    {{/if}}
+  </ul>
 </script>
 
 <script type="text/x-handlebars" data-template-name="building-unlocks-view">
