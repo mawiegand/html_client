@@ -114,7 +114,7 @@ AWE.UI = (function(module) {
             .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, 0, _barHeight)
             .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);*/
           var secondColor = _bottomColor;
-          if (my.progressAmountPercent === 1) secondColor = "#fe5f00";
+          if (my.progressAmountPercent === 1) secondColor = "#fe2400";
           _progressShape.graphics
             .beginLinearGradientFill([_topColor,secondColor], [0, 1], 0, 0, _barWidth, 0)
             .drawRect(1, 1, (_barWidth - 2) * my.progressAmountPercent, _barHeight - 2);                      
