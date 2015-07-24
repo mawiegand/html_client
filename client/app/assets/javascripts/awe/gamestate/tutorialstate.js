@@ -390,7 +390,7 @@ AWE.GS = (function(module) {
             //etc
           this.set('threshold', number_of_tests);
           
-          debugger;
+          //debugger;
         }
         else
         {
@@ -1459,8 +1459,8 @@ AWE.GS = (function(module) {
           AWE.Ext.applyFunction(openQuestStates, function(questState) {
             if(success == false)
             {
-              if(questState.reward_displayed_at === null)
-              {
+              //if(questState.reward_displayed_at === null)
+              //{
                 if (questState.checkForRewards()) {
                   var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
                   questCheckAction.send(function(status) {
@@ -1475,7 +1475,7 @@ AWE.GS = (function(module) {
                     }
                   });
                 }
-              }
+              //}
             }
           });
         
@@ -1830,10 +1830,10 @@ AWE.GS = (function(module) {
     
       WACKADOO.presentModalDialog(dialog);
       
-      if(finishedQuestState)
-      {
-        this.setQuestRewardDisplayed(finishedQuestState);
-      }
+      //if(finishedQuestState)
+      //{
+      //  this.setQuestRewardDisplayed(finishedQuestState);
+      //}
     }
     
     
