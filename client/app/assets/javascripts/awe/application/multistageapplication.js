@@ -843,9 +843,7 @@ AWE.Application = (function(module) {
         this.setModal(true);
         dialog.onClose = (function(self) {
           return function(dialog) {            
-            //self.modalDialogClosed(dialog) };
-            self.modalDialogs = [];     
-          }       
+            self.modalDialogClosed(dialog) };          
         }(this));
         if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
