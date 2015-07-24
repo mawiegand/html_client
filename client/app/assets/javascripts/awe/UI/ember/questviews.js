@@ -166,8 +166,9 @@ AWE.UI.Ember = (function(module) {
     
     okPressed: function() {
       AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
+      $('#layers').css('overflow', 'visible');
       this.destroy();
-      WACKADOO.closeAllModalDialogs();
+      //WACKADOO.closeAllModalDialogs();
     }
   });  
   
@@ -487,7 +488,7 @@ AWE.UI.Ember = (function(module) {
     }.property('nextQuestState.quest.subquests'),
     
     /** runs the popup animations */
-    didInsertElement: function() {
+    didInsertElementOLD: function() {
       // Display full animations for a Reward Dialog that hasn't been displayed before.
       
       var popupAnimations = this.get('popupAnimations');
