@@ -399,8 +399,7 @@ AWE.UI.Ember = (function(module) {
   }); 
   
 
-  //module.QuestDialog = module.InfoDialog.extend({
-  module.QuestDialog = module.PopUpDialog.extend({
+  module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
     questBinding: 'finishedQuestState.quest',
@@ -419,6 +418,8 @@ AWE.UI.Ember = (function(module) {
 
     redeemLaterButtonPressed: function() {
       $('#layers').css('overflow', 'visible');
+      state = this.get('finishedQuestState');
+      if (state) state.checkForRewards();
       this.destroy();
       //WACKADOO.closeAllModalDialogs();
     },
@@ -426,6 +427,8 @@ AWE.UI.Ember = (function(module) {
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         $('#layers').css('overflow', 'visible');
+        state = this.get('finishedQuestState');
+        if (state) state.checkForRewards();
         this.destroy();
         //WACKADOO.closeAllModalDialogs();
       }
