@@ -1448,7 +1448,7 @@ AWE.GS = (function(module) {
       if(that.allowedToShowDialog == false)
         return;
       
-      if (lastRewardsCheck.getTime() + 3000 < new Date().getTime()) {
+      if (lastRewardsCheck.getTime() + 1000 < new Date().getTime()) {
         lastRewardsCheck = new Date();
         
         if(!WACKADOO.modalDialogOpen())
