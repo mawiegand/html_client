@@ -839,17 +839,24 @@ AWE.Application = (function(module) {
       },
 
       presentModalDialog: function(dialog) {
+        log("1");
         this.setModal(true);
+        log("2");
         dialog.onClose = (function(self) {
           return function(dialog) {            
             self.modalDialogClosed(dialog) };
         }(this));
+        log("3");
         if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
           dialog.setCloseMarker(true);
+          log("4");
         }
+        log("5");
         this.modalDialogs.push(dialog);
+        log("6");
         dialog.append();
+        log("7");
         //$('#layers').css('overflow', 'hidden');
       },
 

@@ -399,7 +399,8 @@ AWE.UI.Ember = (function(module) {
   }); 
   
 
-  module.QuestDialog = module.InfoDialog.extend({
+  //module.QuestDialog = module.InfoDialog.extend({
+  module.QuestDialog = module.PopUpDialog.extend({
     templateName: 'quest-dialog',
     header: null,
     questBinding: 'finishedQuestState.quest',
@@ -417,16 +418,16 @@ AWE.UI.Ember = (function(module) {
     }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
-      //$('#layers').css('overflow', 'visible');
-      //this.destroy();
-      WACKADOO.closeAllModalDialogs();
+      $('#layers').css('overflow', 'visible');
+      this.destroy();
+      //WACKADOO.closeAllModalDialogs();
     },
     
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        //$('#layers').css('overflow', 'visible');
-        //this.destroy();
-        WACKADOO.closeAllModalDialogs();
+        $('#layers').css('overflow', 'visible');
+        this.destroy();
+        //WACKADOO.closeAllModalDialogs();
       }
     },
 
@@ -488,7 +489,7 @@ AWE.UI.Ember = (function(module) {
     }.property('nextQuestState.quest.subquests'),
     
     /** runs the popup animations */
-    didInsertElementOLD: function() {
+    didInsertElement: function() {
       // Display full animations for a Reward Dialog that hasn't been displayed before.
       
       var popupAnimations = this.get('popupAnimations');
