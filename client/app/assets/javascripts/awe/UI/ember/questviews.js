@@ -419,6 +419,13 @@ AWE.UI.Ember = (function(module) {
       this.destroy();
       WACKADOO.closeAllModalDialogs();
     },
+    
+    closeDialogRequested: function() {
+      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
+        this.destroy();
+        WACKADOO.closeAllModalDialogs();
+      }
+    },
 
     redeemButtonPressed: function() {
       if (this.get('redeeming')) {
