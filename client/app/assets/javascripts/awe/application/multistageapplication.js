@@ -838,7 +838,7 @@ AWE.Application = (function(module) {
         this.setModal(this.modalDialogs.length > 0);
       },
 
-      presentModalDialog: function(dialog) {
+      presentModalDialog: function(dialog) {debugger
         this.setModal(true);
         dialog.onClose = (function(self) {
           return function(dialog) {            

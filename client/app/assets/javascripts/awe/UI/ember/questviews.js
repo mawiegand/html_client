@@ -418,16 +418,14 @@ AWE.UI.Ember = (function(module) {
 
     redeemLaterButtonPressed: function() {
       $('#layers').css('overflow', 'visible');            
-      this.destroy();
-      AWE.GS.TutorialStateManager.triggerTutorialChecks();      
+      this.destroy();        
       //WACKADOO.closeAllModalDialogs();
     },
     
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         $('#layers').css('overflow', 'visible');
-        this.destroy();
-        AWE.GS.TutorialStateManager.triggerTutorialChecks();        
+        this.destroy();                
         //WACKADOO.closeAllModalDialogs();
       }
     },
