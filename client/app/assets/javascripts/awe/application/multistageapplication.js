@@ -829,21 +829,23 @@ AWE.Application = (function(module) {
          this.modalDialogs[this.modalDialogs.length-1].destroy();
         }
         //$('#layers').css('overflow', 'visible');
+        this.setModal(false);
       },
 
       modalDialogClosed: function(dialog) {
-        /*do {
+        do {
           log('poped the top-most modal dialog.');
         } while (this.modalDialogs.length > 0 && this.modalDialogs.pop() != dialog);
-        this.setModal(this.modalDialogs.length > 0);*/
+        this.setModal(this.modalDialogs.length > 0);
       },
 
       presentModalDialog: function(dialog) {
         this.setModal(true);
-        /*dialog.onClose = (function(self) {
+        dialog.onClose = (function(self) {
           return function(dialog) {            
-            self.modalDialogClosed(dialog) };
-        }(this));*/
+            //self.modalDialogClosed(dialog) };
+            self.setModal(false);
+        }(this));
         if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
           dialog.setCloseMarker(true);
