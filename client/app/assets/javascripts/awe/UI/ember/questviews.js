@@ -417,14 +417,12 @@ AWE.UI.Ember = (function(module) {
     }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
-      $('#layers').css('overflow', 'visible');            
       this.destroy();        
       //WACKADOO.closeAllModalDialogs();
     },
     
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        $('#layers').css('overflow', 'visible');
         this.destroy();                
         //WACKADOO.closeAllModalDialogs();
       }
