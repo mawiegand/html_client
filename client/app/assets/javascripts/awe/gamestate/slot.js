@@ -773,7 +773,7 @@ AWE.GS = (function(module) {
 
     unlockedAssignments: function() {
 
-      var level   = level || this.get('level') || 1;
+      var level   = level || this.get('level') || 0;
       var formula = this.getPath('buildingType.abilities.assignment_level');
 
       if(formula) {
@@ -782,7 +782,7 @@ AWE.GS = (function(module) {
 
       return false;
 
-    }.property('buildingId', 'level').cacheable(),
+    }.property('buildingId', 'level').cacheable(),    
 
     unlockedAssignmentsNextLevel: function() {
       return this.calculateAssignments(this.get('nextLevel'));
