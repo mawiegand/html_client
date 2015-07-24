@@ -13,6 +13,7 @@ AWE.UI = (function(module) {
     
     var _avatarView;
     var _presentAvatarString = null;
+    var _allianceId = null;
     var _nameLabelButton;
     var _rankingButtonView;
     var _rankingImageView;
@@ -121,9 +122,10 @@ AWE.UI = (function(module) {
         this.addChild(_allianceLabelView);
       }
       
-      if (alliance !== null && alliance.name !== null) {
+      if (alliance !== null && alliance !== undefined && alliance.name !== null) {
         if (_allianceLabelView.text() != alliance.name) {
           _allianceLabelView.setText(alliance.name);
+          _allianceId = alliance.id;
         }
       }
       
@@ -216,6 +218,13 @@ AWE.UI = (function(module) {
       var changed = false;
       
       if (AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {
+        changed = true;
+      }
+      
+      var character = AWE.GS.game.get('currentCharacter');
+      var alliance = character.getAlliance();
+      if (alliance !== null && alliance !== undefined && alliance.id !== _allianceId) {
+        _allianceId = alliance.id;
         changed = true;
       }
       
