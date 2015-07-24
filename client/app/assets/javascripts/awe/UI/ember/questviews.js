@@ -417,19 +417,17 @@ AWE.UI.Ember = (function(module) {
     }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
-      $('#layers').css('overflow', 'visible');
-      state = this.get('finishedQuestState');
-      if (state) state.checkForRewards();
+      $('#layers').css('overflow', 'visible');            
       this.destroy();
+      AWE.GS.TutorialStateManager.triggerTutorialChecks();      
       //WACKADOO.closeAllModalDialogs();
     },
     
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         $('#layers').css('overflow', 'visible');
-        state = this.get('finishedQuestState');
-        if (state) state.checkForRewards();
         this.destroy();
+        AWE.GS.TutorialStateManager.triggerTutorialChecks();        
         //WACKADOO.closeAllModalDialogs();
       }
     },
