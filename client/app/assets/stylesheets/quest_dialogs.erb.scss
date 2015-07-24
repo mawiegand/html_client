@@ -1225,6 +1225,8 @@ div.dom-quest-container div.tutorial-dialog {
   .finished_quest_container{
     float:left;
     width: 48%;
+    height: 100%;
+    overflow: scroll;
     
     .header{
       text-align: left;

@@ -1459,18 +1459,22 @@ AWE.GS = (function(module) {
           AWE.Ext.applyFunction(openQuestStates, function(questState) {
             if(success == false)
             {
-              if (questState.checkForRewards()) {
-                var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
-                questCheckAction.send(function(status) {
-                  if (status === AWE.Net.OK || status === AWE.Net.CREATED) { 
-                    if(questState.getPath('quest.type') == 'epic') {
-                      that.setQuestDisplayed(questState);
-                      //questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
-                      that.showQuestDialog(questState, null);
-                      success = true;
+              if(questState.reward_displayed_at === null)
+              {
+                if (questState.checkForRewards()) {
+                  var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
+                  questCheckAction.send(function(status) {
+                    if (status === AWE.Net.OK || status === AWE.Net.CREATED) { 
+                      if(questState.getPath('quest.type') == 'epic') {
+                        that.setQuestDisplayed(questState);
+                        //questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+                        that.showQuestDialog(questState, null);
+                        
+                        success = true;
+                      }
                     }
-                  }
-                });
+                  });
+                }
               }
             }
           });
@@ -1826,11 +1830,9 @@ AWE.GS = (function(module) {
     
       WACKADOO.presentModalDialog(dialog);
       
-      if (applaud) {
-        if(finishedQuestState)
-          this.setQuestRewardDisplayed(finishedQuestState);
-        //if(nextQuestState)
-        //  this.setQuestRewardDisplayed(nextQuestState);
+      if(finishedQuestState)
+      {
+        this.setQuestRewardDisplayed(finishedQuestState);
       }
     }
     
