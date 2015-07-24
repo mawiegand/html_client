@@ -421,7 +421,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     closeDialogRequested: function() {
-      if (!AWE.GS.TutorialStateManager.tutorialActive()) {
+      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         this.destroy();
         WACKADOO.closeAllModalDialogs();
       }
