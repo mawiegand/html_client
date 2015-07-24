@@ -18,7 +18,7 @@ AWE.UI.Ember = (function(module) {
       AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
       $('#layers').css('overflow', 'visible');
       this.destroy();
-      WACKADOO.closeAllModalDialogs();
+      //WACKADOO.closeAllModalDialogs();
     },
     advisor: function() {
       return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
@@ -416,14 +416,16 @@ AWE.UI.Ember = (function(module) {
     }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
+      $('#layers').css('overflow', 'visible');
       this.destroy();
-      WACKADOO.closeAllModalDialogs();
+      //WACKADOO.closeAllModalDialogs();
     },
     
     closeDialogRequested: function() {
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
+        $('#layers').css('overflow', 'visible');
         this.destroy();
-        WACKADOO.closeAllModalDialogs();
+        //WACKADOO.closeAllModalDialogs();
       }
     },
 
