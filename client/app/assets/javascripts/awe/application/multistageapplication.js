@@ -832,18 +832,18 @@ AWE.Application = (function(module) {
       },
 
       modalDialogClosed: function(dialog) {
-        do {
+        /*do {
           log('poped the top-most modal dialog.');
         } while (this.modalDialogs.length > 0 && this.modalDialogs.pop() != dialog);
-        this.setModal(this.modalDialogs.length > 0);
+        this.setModal(this.modalDialogs.length > 0);*/
       },
 
       presentModalDialog: function(dialog) {
         this.setModal(true);
-        dialog.onClose = (function(self) {
+        /*dialog.onClose = (function(self) {
           return function(dialog) {            
             self.modalDialogClosed(dialog) };
-        }(this));
+        }(this));*/
         if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
           dialog.setCloseMarker(true);
