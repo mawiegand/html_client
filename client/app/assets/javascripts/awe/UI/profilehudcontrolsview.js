@@ -190,18 +190,20 @@ AWE.UI = (function(module) {
           }
         }
       
-        var maxExp = infos[infos.length-1].position;
-        var minExp = infos[0].position;
+        if(infos.length > 0) {
+          var maxExp = infos[infos.length - 1].position;
+          var minExp = infos[0].position;
 
-        if(minExp > character.get('exp'))//prevent wrong progress on lvl 1
-          minExp = 0;        
-      
-        var ownPosition = (((character.get('exp') - minExp)*100)/(maxExp - minExp));
+          if (minExp > character.get('exp'))//prevent wrong progress on lvl 1
+            minExp = 0;
 
-        if(ownPosition < 0)//prevent negative progress
-          ownPosition = 0;
+          var ownPosition = (((character.get('exp') - minExp) * 100) / (maxExp - minExp));
+
+          if (ownPosition < 0)//prevent negative progress
+            ownPosition = 0;
           
-        return { rank: presentRank, progress: ownPosition };
+          return {rank: presentRank, progress: ownPosition};
+        }
       }
       
       return { rank: 0, progress: 0 };
