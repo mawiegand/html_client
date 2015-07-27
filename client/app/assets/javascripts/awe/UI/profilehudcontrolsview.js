@@ -177,7 +177,10 @@ AWE.UI = (function(module) {
       var presentRank = character.get('mundane_rank');
       
       if (presentRank !== undefined && presentRank !== null) {
-              
+
+        var maxRank = ranks.length - 1;
+        presentRank = Math.min(presentRank, maxRank);
+
         var infos = [];
         for (var i=Math.max(presentRank,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
           infos.push({
