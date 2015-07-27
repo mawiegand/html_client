@@ -1530,6 +1530,7 @@ AWE.I18n.en_US = function(module) {
         heading: "Building Upgrade",
         upgrade: "Upgrade",
         level: "Level",
+        unlocking: "Unlocking",
       },
       convert:{
         heading: "Building Convert",
