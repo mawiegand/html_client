@@ -1343,7 +1343,7 @@ AWE.GS = (function(module) {
       }
 
       this.set('noFurtherUserInteractionNeeded', true);
-      AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
+      //AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
       return true;
     },
   });    
