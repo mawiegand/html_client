@@ -25,6 +25,14 @@ module.LeftHUDView = Ember.View.extend({
     this.startTimer();
   },
 
+  allianceClicked: function(){
+    this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
+  },
+  
+  isInAlliance: function() {
+    return this.getPath('character.alliance_id') !== null;
+  }.property('character.alliance_id'),
+
   setHUDMode: function(currentMode) {
     this.set('mode', currentMode);
   },
@@ -219,22 +227,6 @@ module.RightHUDView = Ember.View.extend({
   
 });
 
-module.TopRightHUDView = Ember.View.extend({
-  templateName: 'top-right-hud-view',
-  
-  controller: null,
-  character: null,
-  tutorialState: null,
-  
-  allianceClicked: function(){
-    this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
-  },
-  
-  isInAlliance: function() {
-    return this.getPath('character.alliance_id') !== null;
-  }.property('character.alliance_id'),
-  
-});
 return module;
 
 }(AWE.UI.Ember || {}));

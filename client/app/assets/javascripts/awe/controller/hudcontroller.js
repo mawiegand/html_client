@@ -11,7 +11,8 @@ AWE.Controller = (function(module) {
     
     var _domLeft = null;
     var _domRight = null;
-    var _domTopRight = null;
+
+
     var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
     var _canvasLeft = null;          ///< canvas elements for the hud
     var _stageRight  = null;          ///< easelJS stage for displaying the HUD
@@ -72,18 +73,11 @@ AWE.Controller = (function(module) {
         character: character,
         tutorialState: tutorialState,
       });
-
-      _domTopRight = AWE.UI.Ember.TopRightHUDView.create({
-        controller: this,
-        character: character,
-        tutorialState: tutorialState,
-      });
       //view.append();  
       var root = that.rootElement();  
       root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas>');
       _domLeft.appendTo(root);
       _domRight.appendTo(root);
-      _domTopRight.appendTo(root);
 
 
       // HUD layers ("static", not zoomable, not moveable)
@@ -168,7 +162,6 @@ AWE.Controller = (function(module) {
           $('#left-dom-hud').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
           //$('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#right-dom-hud').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
-          $('#top-right-dom-hud').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({left: "-300px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
@@ -179,7 +172,6 @@ AWE.Controller = (function(module) {
           //$('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           $('#left-dom-hud').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           //$('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
-          $('#top-right-dom-hud').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#right-dom-hud').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({left: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: 30*AWE.Settings.hudScale}, _animationDuration, 'easeOutBack');
