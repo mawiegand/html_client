@@ -181,6 +181,45 @@ module.LeftHUDView = Ember.View.extend({
   switchToMap: function(){
     this.get('controller').switchToMapButtonClicked();
   },
+  
+  constructionQueue: function() {
+    var settlement = this.get('settlement');
+    if(settlement)
+    {
+      //AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(1437)[0].get('hashableJobs').get('collection')
+      var ret = new Array();
+      var queues = settlement.hashableQueues;//AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(settlement.id);
+      if(queues)
+      {
+        // find construction queue
+        var collection = queues.get('collection');
+        var rules = AWE.GS.RulesManager.getRules();
+        
+        for (var i = 0; i < collection.length; i++) {
+          var queue = collection[i];
+          if (queue !== undefined && rules.getQueueTypeIdWithBuildingCategory(queue.get('type_id')) != null) {
+            var jobs = queue.get('hashableJobs').get('collection');
+            for (var j = 0; j < jobs.length; j++) {
+              ret.push(jobs[j]);
+              debugger;
+            }
+          }
+          
+          
+          /*if (queue !== undefined && rules.getQueueTypeIdWithBuildingCategory(queue.get('type_id')) != null) {
+            var jobs = queue.get('hashableJobs').get('collection');
+            for (var j = 0; j < jobs.length; i++) {
+              ret.push(jobs[j]);
+              debugger;
+            } 
+          }*/
+        }
+      }
+      return ret;
+    }
+    return null;
+  }.property('settlement.hashableQueues.collection.@each.content'),
+  
 });
 
 module.RightHUDView = Ember.View.extend({

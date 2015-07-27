@@ -1,5 +1,22 @@
 <script type="text/x-handlebars" data-template-name="left-hud-view">
   <div class="settlement-map-button scale-down" id="left-dom-hud">
+    
+    {{#if isSettlement}}
+      {{#if constructionQueue}}
+        <div class="construction-queue-hud-button construction-queue-hud-button-position scrolling">
+          <div class="header">
+            {{t menu.constructionQueue}}
+          </div>
+          <div class="content">
+            {{#each constructionQueue}}
+              <div class="list">{{local this.buildingType.name}} - Level {{this.level_after}}</div>
+              <div class="list-sub">{{this.productionTime}}</div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+    
   	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}

@@ -1479,6 +1479,7 @@ AWE.I18n.en_US = function(module) {
       logout: "Log out",
       header: "Menu",
       reload: "Reload",
+      constructionQueue: "Construction Queue",
     },
 
     dialogs:{

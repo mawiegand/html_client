@@ -605,6 +605,29 @@ canvas{
   filter: alpha(opacity=70);
 }
 
+.construction-queue-hud-button{
+  width: 200px;
+  height: 120px;
+  background-color: rgb(228, 183, 113);
+  border-style: solid;
+  border-width: 3px;
+  border-color: rgb(45, 89, 124);
+  left: -15px;
+}
+.construction-queue-hud-button-position{
+  bottom: 460px;
+  position: absolute;
+}
+.construction-queue-hud-button:hover{
+  background-position: -100px 0;
+  cursor: pointer;
+}
+
+.construction-queue-hud-button:active{
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
 .map-hud-button{
   width: 100px;
   height: 94px;
