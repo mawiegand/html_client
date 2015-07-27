@@ -1,22 +1,5 @@
 <script type="text/x-handlebars" data-template-name="left-hud-view">
   <div class="settlement-map-button scale-down" id="left-dom-hud">
-    
-    {{#if isSettlement}}
-      {{#if constructionQueue}}
-        <div class="construction-queue-hud-button construction-queue-hud-button-position scrolling">
-          <div class="header">
-            {{t menu.constructionQueue}}
-          </div>
-          <div class="content">
-            {{#each constructionQueue}}
-              <div class="list">{{local this.buildingType.name}} - Level {{this.level_after}}</div>
-              <div class="list-sub">{{this.productionTime}}</div>
-            {{/each}}
-          </div>
-        </div>
-      {{/if}}
-    {{/if}}
-    
   	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
@@ -55,6 +38,35 @@
   		<div class="count-indicator-background count-indicator-background-position">{{getNewQuest}}</div>
   	  {{/if}}
   	</div>
+    
+    {{#if isSettlement}}
+  	  <div class="construction-queue-hud-button construction-queue-hud-button-position" {{action "constructionQueueClicked"}}>
+        {{#if constructionQueueVisible}}
+          <div class="arrow-right"></div>
+        {{else}}
+          <div class="arrow-left"></div>
+        {{/if}}
+  	  </div>
+    
+    {{#if constructionQueueVisible}}
+      {{#if constructionQueue}}
+        <div class="construction-queue-hud-background scrolling">
+          <div class="header">
+            {{t menu.constructionQueue}}
+          </div>
+          <div class="content">
+            {{#each constructionQueue}}
+               {{view AWE.UI.Ember.ConstructionQueueView jobBinding="this"}}
+            {{/each}}
+            
+            {{#if availablePositionsCountInConstructionQueue}}
+              {{t menu.constructionQueuePositionsAvailableBegin}} {{availablePositionsCountInConstructionQueue}} {{t menu.constructionQueuePositionsAvailableEnd}}
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  {{/if}}
   </div>
 </script>
 
@@ -64,4 +76,9 @@
       <div class="alliance-hud-icon"></div>
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="hud-jobs-job">
+  <div class="list">{{job_title}}</div>
+  <div class="list-sub">{{job_time}}</div>  
 </script>

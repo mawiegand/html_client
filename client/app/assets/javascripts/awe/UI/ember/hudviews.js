@@ -182,44 +182,6 @@ module.LeftHUDView = Ember.View.extend({
     this.get('controller').switchToMapButtonClicked();
   },
   
-  constructionQueue: function() {
-    var settlement = this.get('settlement');
-    if(settlement)
-    {
-      //AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(1437)[0].get('hashableJobs').get('collection')
-      var ret = new Array();
-      var queues = settlement.hashableQueues;//AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(settlement.id);
-      if(queues)
-      {
-        // find construction queue
-        var collection = queues.get('collection');
-        var rules = AWE.GS.RulesManager.getRules();
-        
-        for (var i = 0; i < collection.length; i++) {
-          var queue = collection[i];
-          if (queue !== undefined && rules.getQueueTypeIdWithBuildingCategory(queue.get('type_id')) != null) {
-            var jobs = queue.get('hashableJobs').get('collection');
-            for (var j = 0; j < jobs.length; j++) {
-              ret.push(jobs[j]);
-              debugger;
-            }
-          }
-          
-          
-          /*if (queue !== undefined && rules.getQueueTypeIdWithBuildingCategory(queue.get('type_id')) != null) {
-            var jobs = queue.get('hashableJobs').get('collection');
-            for (var j = 0; j < jobs.length; i++) {
-              ret.push(jobs[j]);
-              debugger;
-            } 
-          }*/
-        }
-      }
-      return ret;
-    }
-    return null;
-  }.property('settlement.hashableQueues.collection.@each.content'),
-  
 });
 
 module.RightHUDView = Ember.View.extend({
@@ -229,6 +191,57 @@ module.RightHUDView = Ember.View.extend({
   character: null,
   tutorialState: null,
 
+  settlement: null,
+  mode: null,
+  timer: null,
+  constructionQueueVisible: false,
+  maxPositionsInQueue: 2,
+  updateQueuePropertyManually: 0,
+  
+  init: function() {
+    this._super();
+    this.startTimer();
+  },
+  
+  setSettlement: function(settlementId) {
+    var self = this;
+    AWE.GS.SettlementManager.updateSettlement(settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+      var settlement = AWE.GS.SettlementManager.getSettlement(settlementId);
+      self.set('settlement', settlement);
+    });
+  },
+  
+  setHUDMode: function(currentMode) {
+    this.set('mode', currentMode);
+  },
+  
+  isSettlement: function(){
+    var mode = this.get('mode');
+    return mode === AWE.UI.HUDModeSettlement;
+  }.property('mode').cacheable(),
+  
+  startTimer: function() {
+    var timer = this.get('timer');
+    if (!timer) {
+      timer = setInterval((function(self) {
+        return function() {
+          // HACKED: Could not bind collection correctly - but this hack works
+          // Updates only construction list
+          self.set('updateQueuePropertyManually', Math.random());
+        };
+      }(this)), 1000);
+      this.set('timer', timer);
+    }
+  },
+
+  stopTimer: function() {
+    var timer = this.get('timer');
+    if (timer) {
+      clearInterval(timer);
+      this.set('timer', null);
+    }
+  },
+  
   getUnreadMessageCount: function(){
     var unreadMessages = this.getPath('character.inbox.unread_messages_count');
     if (unreadMessages === undefined) return false;
@@ -249,6 +262,55 @@ module.RightHUDView = Ember.View.extend({
     this.get('controller').questsButtonClicked();
   },
   
+  constructionQueueClicked: function(){
+    if(this.get('constructionQueueVisible') == true)
+      this.set('constructionQueueVisible', false);
+    else
+      this.set('constructionQueueVisible', true);
+  },
+  
+  constructionQueue: function() {
+    var settlement = this.get('settlement');
+    if(settlement)
+    {
+      //AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(1437)[0].get('hashableJobs').get('collection')
+      var ret = new Array();
+      var queues = settlement.hashableQueues;//AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(settlement.id);
+      if(queues)
+      {
+        // find construction queue
+        var collection = queues.get('collection');
+        var rules = AWE.GS.RulesManager.getRules();
+        
+        for (var i = 0; i < collection.length; i++) {
+          var queue = collection[i];
+          if (queue !== undefined && rules.getQueueTypeIdWithBuildingCategory(queue.get('type_id')) != null) {
+            var jobs = queue.get('hashableJobs').get('collection');
+            for (var j = 0; j < jobs.length; j++) {
+              ret.push(jobs[j]);
+            }
+            this.set('maxPositionsInQueue', queue.max_length);
+          }
+        }
+      }
+      if(ret.length > 0){
+        //debugger;
+      }
+        
+      return ret;
+    }
+    return null;
+  }.property('updateQueuePropertyManually', 'constructionQueueVisible', 'settlement.hashableQueues.collection.@each.content'),
+  
+  availablePositionsCountInConstructionQueue: function() {
+    var countInQueue = this.get('constructionQueue').length;
+    var maxAllowed = this.get('maxPositionsInQueue');
+    if(maxAllowed - countInQueue > 0)
+      return (maxAllowed - countInQueue)
+    else
+      return undefined;
+  }.property('constructionQueue.length'),
+  
 });
 
 module.TopRightHUDView = Ember.View.extend({
@@ -263,6 +325,39 @@ module.TopRightHUDView = Ember.View.extend({
   },
   
 });
+
+module.ConstructionQueueView = Ember.View.extend({
+  templateName: 'hud-jobs-job',
+  
+  job: null,
+  
+  job_title: function() {
+    return AWE.Util.Rules.lookupTranslation(this.getPath('job.buildingType.name')) + " Level " + this.getPath('job.level_after');
+  }.property('job').cacheable(),
+  
+  job_time: function() {
+    var timeRemainingInSeconds = 0;
+    
+    var finishedAt = this.getPath('job.active_job.finished_at');
+    if(finishedAt){
+      var finish = Date.parseISODate(finishedAt);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      timeRemainingInSeconds = parseInt(remaining);
+    }else{
+      timeRemainingInSeconds = this.getPath('job.productionTime');
+    }
+    var t = new Date(1970,0,1);
+    t.setSeconds(timeRemainingInSeconds);
+    var s = t.toTimeString().substr(0,8);
+    if(timeRemainingInSeconds > 86399)
+      s = Math.floor((t - Date.parse("1/1/70")) / 3600000) + s.substr(2);
+    return s;
+  }.property('job', 'job.active_job').cacheable(),
+  
+});
 return module;
+
 
 }(AWE.UI.Ember || {}));

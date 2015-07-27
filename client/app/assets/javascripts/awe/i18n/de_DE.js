@@ -1500,6 +1500,8 @@ AWE.I18n.de_DE = function(module) {
       header: "Menü",
       reload: "Aktualisieren",
       constructionQueue: "Bauschleife",
+      constructionQueuePositionsAvailableBegin: "In der Bauschleife ist noch Platz für",
+      constructionQueuePositionsAvailableEnd: "Aufträge",      
     },
 
     dialogs:{
