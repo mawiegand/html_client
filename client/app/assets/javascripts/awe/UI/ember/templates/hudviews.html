@@ -5,30 +5,30 @@
         <div class="alliance-hud-icon"></div>
       </div>
     {{/if}}
-    <div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
+    <div class="message-hud-button" {{action "mailClicked"}}>
       {{#if getUnreadMessageCount}}
         <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
       {{/if}}
     </div>
-  	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
-  	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
+  	<div class="menu-hud-button" {{action "menuClicked"}}></div>
+  	<div class="ranking-hud-button" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
       {{#if unlockedAssignments}}
-        <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}>
+        <div class="assignment-hud-button" {{action "assignmentClicked"}}>
         {{#if timeUntillNextAssignment}}
           <div class="assignment-timer count-indicator-background count-indicator-background-position">:{{timeUntillNextAssignment}}</div>
         {{/if}}
         </div>
       {{/if}}
       {{#if unlockedTrade}}
-        <div class="trade-hud-button trade-hud-button-position" {{action "tradeClicked"}}></div>
+        <div class="trade-hud-button" {{action "tradeClicked"}}></div>
       {{/if}}
-  		<div class="army-hud-button army-hud-button-position" {{action "recruitClicked"}}></div>
-	  	<div class="map-hud-button map-hud-button-position" {{action "switchToMap"}}></div>
+  		<div class="army-hud-button" {{action "recruitClicked"}}></div>
+	  	<div class="map-hud-button" {{action "switchToMap"}}></div>
   	{{else}}
-	  	<div class="map-mountains-hud-button map-mountains-hud-button-position" {{action "switchMapModeClicked"}}></div>	
-	  	<div class="army-menu-hud-button army-menu-hud-button-position" {{action "gamingPieceSelectorClicked"}}></div>
-	  	<div class="settelement-hud-button settlement-hud-button-position" {{action "switchToSettlement"}}></div>	  	
+	  	<div class="map-mountains-hud-button" {{action "switchMapModeClicked"}}></div>	
+	  	<div class="army-menu-hud-button" {{action "gamingPieceSelectorClicked"}}></div>
+	  	<div class="settelement-hud-button" {{action "switchToSettlement"}}></div>	  	
   	{{/if}}
   	{{#if isUiMarkerEnabled}}
       {{view AWE.UI.Ember.UIMarker direction=3 top=340 left=100}}
