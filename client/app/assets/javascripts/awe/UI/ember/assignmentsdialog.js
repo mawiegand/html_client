@@ -69,15 +69,15 @@ AWE.UI.Ember = (function(module) {
 
   module.AssignmentsTab = Ember.View.extend({
     templateName: 'assignments-tab',
-    classNames: ['assignments-tab', "assignments-dialog-pane"],
+    classNames: ['assignments-tab', "assignments-dialog-pane", "scrolling"],
 
     init: function() {
       this._super();
 
 
-      this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('unlockedAssignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('assignments', AWE.GS.RulesManager.getRules().assignment_types);
 
-//      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
 
@@ -120,13 +120,13 @@ AWE.UI.Ember = (function(module) {
     assignment: function() {
       var self = this;
       var foundAssignment = null;
-      this.getPath('parentView.assignments.collection').forEach(function(assignment) {
-        if (self.get('assignmentRule') && assignment.get('type_id') == self.get('assignmentRule').id) {
+      this.getPath('parentView.unlockedAssignments.collection').forEach(function(assignment) {
+        if (self.get('assignmentRule') && assignment.get('type_id') === self.get('assignmentRule').id) {
           foundAssignment = assignment;
         }
       });
       return foundAssignment;
-    }.property('assignmentRule', 'parentView.assignments.changedAt').cacheable(),
+    }.property('assignmentRule', 'parentView.unlockedAssignments.changedAt').cacheable(),
 
     barWidth: function(){
       return "width: "+ this.get("percent")  +"%";

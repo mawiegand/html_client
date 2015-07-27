@@ -20,6 +20,7 @@ AWE.I18n.de_DE = function(module) {
       no:       'Nein',
       nr:       'Nr.',
       of:       'von',
+      for:      'für',
       with:     'mit',
       change:   'Ändern',
       start:    'Start',
