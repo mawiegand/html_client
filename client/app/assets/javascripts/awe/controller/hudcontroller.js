@@ -106,7 +106,7 @@ AWE.Controller = (function(module) {
       _stageProfile = new Stage(_canvasProfile);
       _stageProfile.onClick = function() {};
       
-      _canvasProfile.width = 290;
+      _canvasProfile.width = 400;
       _canvasProfile.height = 166;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
@@ -158,7 +158,7 @@ AWE.Controller = (function(module) {
         //$('#hud-canvas-right').css('height', 114*AWE.Settings.hudScale);
         //$('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
         $('#hud-canvas-profile').css('height', 166*AWE.Settings.hudScale);
-        $('#hud-canvas-profile').css('width', 290*AWE.Settings.hudScale);
+        $('#hud-canvas-profile').css('width', 400*AWE.Settings.hudScale);
         $('#resource-canvas').css('height', 42*AWE.Settings.hudScale);
         $('#resource-canvas').css('width', 800*AWE.Settings.hudScale);
         if (_hideCanvas && !_canvasIsHidden) {
