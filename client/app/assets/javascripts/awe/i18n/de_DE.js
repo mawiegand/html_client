@@ -1539,6 +1539,7 @@ AWE.I18n.de_DE = function(module) {
           occupation: "Besetzung",
           end: "Endet",
           giveUp: "Aufgeben",
+          opponentSurrender: "Gegner {0} kann in {1} aufgeben.",
         },
       },
       move:{
