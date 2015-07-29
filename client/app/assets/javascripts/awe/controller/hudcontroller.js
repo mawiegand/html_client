@@ -542,6 +542,7 @@ AWE.Controller = (function(module) {
         }
 
         _domLeft.setHUDMode(mode);
+        _domRight.setHUDMode(mode);        
       }
       
       // TODO Mail view -> hide buttons
@@ -549,6 +550,7 @@ AWE.Controller = (function(module) {
 
     that.notifyAboutNewControllerSettlement = function(settlementId) {
       _domLeft.setSettlement(settlementId);
+      _domRight.setSettlement(settlementId);
     }
     
     that.rankingButtonClicked = function() {
