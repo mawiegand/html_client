@@ -220,11 +220,13 @@ AWE.UI.Ember = (function(module) {
       if (!AWE.GS.ShopManager.getShop()) {
           AWE.GS.ShopManager.init();
       }
+      
+      var offerId = this.getPath('offer.id');      
       var shop = AWE.GS.ShopManager.getShop();
-      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(this.getPath('offer.id'));
+      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
       var price = offer.get('price');
 
-      var creditAmount = this.getPath('shop.creditAmount') || 0;
+      var creditAmount = shop.creditAmount || 0;
       if (creditAmount < price) {
         log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
         WACKADOO.hudController.presentNotEnoughCreditsWarning();
@@ -250,6 +252,8 @@ AWE.UI.Ember = (function(module) {
             WACKADOO.hudController.setModelChanged();
           });
           AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+          
+          this.destroy();
         }
         else {
           WACKADOO.hudController.presentNotEnoughCreditsWarning();
