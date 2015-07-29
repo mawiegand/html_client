@@ -310,6 +310,10 @@ AWE.UI.Ember = (function(module) {
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
     
+    showEpicQuestDialog: function() {
+      this.get('parentView').showEpicQuestDialog(this.get('questState'));
+    },
+    
     subquestStates: function(){
       var indices = this.getPath('questState.quest.subquests');
       var array = new Array();
@@ -422,10 +426,11 @@ AWE.UI.Ember = (function(module) {
     },
     
     closeDialogRequested: function() {
-      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
+      WACKADOO.closeAllModalDialogs();
+      /*if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         this.destroy();                
         //WACKADOO.closeAllModalDialogs();
-      }
+      }*/
     },
 
     redeemButtonPressed: function() {

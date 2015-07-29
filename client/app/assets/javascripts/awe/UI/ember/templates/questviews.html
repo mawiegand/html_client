@@ -155,7 +155,7 @@
             {{/each}}
           </div>
             {{#if tutorialState.isSelectedQuestEpic}}
-          <div class="quest-detail scrolling" {{action "showEpicQuestDialog"}}>            
+          <div class="quest-detail scrolling">            
               {{view AWE.UI.Ember.QuestListItemViewDetailEpic questStateBinding="tutorialState.selected_quest_state" class="quest-content" questBinding="tutorialState.selected_quest_state.quest"}}
             {{else}}
           <div class="quest-detail scrolling">            
@@ -232,13 +232,13 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic">
-  <div class="quest-dialog-advisor-task">
+  <div class="quest-dialog-advisor-task" {{action "showEpicQuestDialog"}}>
     {{local quest.task}}
   </div>
-  <div {{bindAttr class="advisor"}}></div> 
-  
+  <div {{bindAttr class="advisor"}} {{action "showEpicQuestDialog"}}></div> 
+
   {{#if subquestStates}}
-    <div class="quest-subquests">
+    <div class="quest-subquests" {{action "showEpicQuestDialog"}}>
       {{#each subquestStates}}
         {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
       {{/each}}
@@ -246,7 +246,7 @@
   {{/if}}
   
   {{#if quest.rewards}}
-    <div class="quest-dialog-reward">
+    <div class="quest-dialog-reward" {{action "showEpicQuestDialog"}}>
       <ul class="quest-dialog-rewards-items">      
         {{#if quest.rewards.resource_rewards}}
           {{#each quest.rewards.resource_rewards}}
@@ -365,8 +365,6 @@
   
   <br>
   <br>
-  
-  
   
   {{#if finished}}
    <div class="redeemButton" {{action "redeemButtonPressed" }}>

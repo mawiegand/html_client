@@ -1466,8 +1466,8 @@ AWE.GS = (function(module) {
                   questCheckAction.send(function(status) {
                     if (status === AWE.Net.OK || status === AWE.Net.CREATED) { 
                       if(questState.getPath('quest.type') == 'epic') {
-                        that.setQuestDisplayed(questState);
-                        //questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+                        //that.setQuestDisplayed(questState);
+                        questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
                         that.showQuestDialog(questState, null);
                         
                         success = true;
@@ -1613,7 +1613,6 @@ AWE.GS = (function(module) {
               if(openQuestState.getPath('quest.type') == 'epic' || openQuestState.getPath('quest.type') == 'optional') {
                 if (!WACKADOO.modalDialogOpen()) {
                   //that.showQuestFinishedDialog(openQuestState);
-                  that.setQuestDisplayed(openQuestState);
                   that.showQuestDialog(openQuestState);
                 }
                 else {
