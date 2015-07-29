@@ -20,6 +20,12 @@ module.LeftHUDView = Ember.View.extend({
   timer: null,
   timeUntillNextAssignment: null,
 
+
+  // this tells the mode of the map i.e 1,2,3 or 4 and based on this
+  // shows the icon on the left on which the user clicks to change map
+  // modes.
+  map_mode : 1,
+
   init: function() {
     this._super();
     this.startTimer();
@@ -162,6 +168,7 @@ module.LeftHUDView = Ember.View.extend({
 
   switchMapModeClicked: function(){
     this.get('controller').switchMapModeButtonClicked();
+    this.switch_map_mode_icon();
   },
 
   gamingPieceSelectorClicked: function(){
@@ -188,7 +195,73 @@ module.LeftHUDView = Ember.View.extend({
   switchToMap: function(){
     this.get('controller').switchToMapButtonClicked();
   },
-  
+
+  switch_map_mode_icon:function(){
+    mode = this.get('map_mode');
+    mode++;
+
+    // there are 4 modes of the map only.
+    if(mode == 5)
+      mode = 1;
+
+    this.set('map_mode',mode);
+
+  },
+
+  map_mode_small_1:function()
+  {
+
+    mode = this.get('map_mode')+2;
+
+    if(mode == 5)
+      mode = 1;
+    else if(mode == 6)
+      mode = 2;
+
+    if(mode ==1)
+      return 'normal-all-inactive';
+    else if(mode ==2)
+      return 'normal-only-inactive';
+    else if(mode==3)
+      return 'strategic-all-inactive';
+    else if(mode==4)
+      return 'strategic-only-inactive';
+
+  }.property('map_mode'),
+
+  map_mode_small_2:function(){
+
+    mode = this.get('map_mode')+1;
+
+    if(mode == 5)
+      mode = 1;
+
+    if(mode ==1)
+      return 'normal-all-inactive';
+    else if(mode ==2)
+      return 'normal-only-inactive';
+    else if(mode==3)
+      return 'strategic-all-inactive';
+    else if(mode==4)
+      return 'strategic-only-inactive';
+
+  }.property('map_mode'),
+
+  map_mode_big_3:function(){
+
+    mode = this.get('map_mode');
+
+    if(mode==1)
+      return 'normal-all-active';
+    else if(mode==2)
+      return 'normal-only-active';
+    else if(mode==3)
+      return 'strategic-all-active';
+    else if(mode==4)
+      return 'strategic-only-active';
+
+  }.property('map_mode'),
+
 });
 
 module.RightHUDView = Ember.View.extend({

@@ -143,6 +143,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         
         
       });
+
+  
     },
 
     showEpicQuestDialog: function(questState){

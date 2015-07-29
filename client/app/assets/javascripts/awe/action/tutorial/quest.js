@@ -14,8 +14,7 @@ AWE.Action.Tutorial = (function(module) {
     // private attributes and methods //////////////////////////////////////
     
     var that;
-    
-  
+
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
