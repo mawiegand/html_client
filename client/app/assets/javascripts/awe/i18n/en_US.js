@@ -1519,6 +1519,7 @@ AWE.I18n.en_US = function(module) {
           occupation: "Occupation",
           end: "End",
           giveUp: "Give up",
+          opponentSurrender: "Opponent {0} may surrender in {1}.",
         },
       },
       move:{

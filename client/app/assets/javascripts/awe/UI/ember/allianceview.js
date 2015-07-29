@@ -510,19 +510,31 @@ AWE.UI.Ember = (function(module) {
       var ultimatumCreation = AWE.GS.TimeManager.serverToLocalTime(new Date(this.getPath('ultimatum.created_at')));
       var currentStateTimeInSeconds = Math.round(Math.abs(new Date() - ultimatumCreation)/1000);
       if (this.getPath('ultimatum.diplomacy_status')) {
-        var currentStateRulesDuration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('ultimatum.diplomacy_status')).duration;
+        var diplomacyType = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('ultimatum.diplomacy_status'));
+        var initiator = this.getPath('ultimatum.initiator');
+        var not_initiator_and_decreased_victim_duration = initiator !== undefined && initiator !== null && !initiator && diplomacyType.decrease_duration_for_victim;
+
+        var currentStateRulesDuration = (not_initiator_and_decreased_victim_duration) ? diplomacyType.victim_duration : diplomacyType.duration;
+        if (this.getPath('diplomacy_status') === 2) {
+            var currentOpponentSurrenderRulesDuration = (not_initiator_and_decreased_victim_duration) ? diplomacyType.duration : diplomacyType.victim_duration;
+            var opponentStateDuration = AWE.Util.secondsToDuration(currentOpponentSurrenderRulesDuration - currentStateTimeInSeconds);
+            this.set('opponentSurrenderTime', opponentStateDuration);
+        }
+
         var currentStateDuration = AWE.Util.secondsToDuration(currentStateRulesDuration - currentStateTimeInSeconds);
         this.set('ultimatumTime', currentStateDuration);
       }
       else {
         this.set('ultimatumTime', {h: 0, m: 0, s: 0});
+        this.set('opponentSurrenderTime', {h: 0, m: 0, s: 0});
       }
     },
 
     ultimatumTime: {h: 0, m: 0, s: 0},
 
-    ultimatumTimeString: function() {
-      var duration = this.get('ultimatumTime');
+    opponentSurrenderTime: {h: 0, m: 0, s: 0},
+
+    timeString: function(duration) {
       var time = {}
       time.h = duration.h + "h ";
       time.m = duration.m + "min ";
@@ -558,7 +570,21 @@ AWE.UI.Ember = (function(module) {
 
       var timeString = time.h + time.m + time.s;
       return timeString;
+    },
+
+    ultimatumTimeString: function() {
+      var duration = this.get('ultimatumTime');
+      return this.timeString(duration);
     }.property('ultimatumTime'),
+
+    opponentSurrenderTimeString: function() {
+      var duration = this.get('opponentSurrenderTime');
+      return this.timeString(duration);
+    }.property('opponentSurrenderTime'),
+
+    opponentSurrenderString: function() {
+      return AWE.I18n.lookupTranslation('dialogs.alliance.allianceDiplomacy.opponentSurrender').format(this.get('targetAllianceTag'), this.get('opponentSurrenderTimeString'));
+    }.property('opponentSurrenderTimeString'),
 
     warGiveUp: function() {
       if(this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "")
