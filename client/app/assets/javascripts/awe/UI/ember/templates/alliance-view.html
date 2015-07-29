@@ -175,7 +175,7 @@
               </div>
             </div>
             {{#each relationsAtWar}}
-              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader"}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader" war="true"}}
             {{/each}}
           </div>
       {{/if}}
@@ -230,6 +230,11 @@
     {{/if}}
   {{/if}}
   </div>
+  {{#if war}}
+  <div class="alliance-opponent-surrender-row">
+    {{opponentSurrenderString}}
+  </div>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-diplomacy-info">
