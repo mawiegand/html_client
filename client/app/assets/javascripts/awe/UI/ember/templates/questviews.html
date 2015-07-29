@@ -245,6 +245,17 @@
     </div>
   {{/if}}
   
+  {{#if finished}}
+   <div class="redeemButton" {{action "redeemButtonPressed" }}>
+     {{#if redeeming}}
+       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+     {{else}}
+        <span>{{t tutorial.redeemNow}}</span>
+     {{/if}}
+   </div>
+  {{/if}}
+
+  <br>
   {{#if quest.rewards}}
     <div class="quest-dialog-reward" {{action "showEpicQuestDialog"}}>
       <ul class="quest-dialog-rewards-items">      
@@ -286,15 +297,9 @@
     </div>
   {{/if}}
 
-  {{#if finished}}
-   <div class="redeemButton" {{action "redeemButtonPressed" }}>
-     {{#if redeeming}}
-       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-     {{else}}
-        <span>{{t tutorial.redeemNow}}</span>
-     {{/if}}
-   </div>
-  {{/if}}
+  <br>
+
+  
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-quest">
