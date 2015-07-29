@@ -338,10 +338,6 @@ AWE.GS = (function(module) {
     }.property('status').cacheable(),
     
     finished: function() {
-      // hack: if wrong state saved
-      if(this.get('finished_at') !== null)
-        return true;
-      
       return this.get('status') === module.QUEST_STATUS_FINISHED;
     }.property('status').cacheable(),
 
