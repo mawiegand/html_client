@@ -405,7 +405,7 @@ AWE.Controller = (function(module) {
             var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
             var price = offer.get('price');
 
-            var creditAmount = this.getPath('shop.creditAmount') || 0;
+            var creditAmount = this.getPath('shop.creditAmount') || 0;debugger
             if (creditAmount < price) {
               log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
               that.presentNotEnoughCreditsWarning();
