@@ -252,6 +252,8 @@ AWE.UI.Ember = (function(module) {
             WACKADOO.hudController.setModelChanged();
           });
           AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+          
+          this.destroy();
         }
         else {
           WACKADOO.hudController.presentNotEnoughCreditsWarning();
