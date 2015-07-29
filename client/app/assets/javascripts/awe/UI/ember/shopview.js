@@ -224,7 +224,7 @@ AWE.UI.Ember = (function(module) {
       var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(this.getPath('offer.id'));
       var price = offer.get('price');
 
-      var creditAmount = this.getPath('shop.creditAmount') || 0;debugger;
+      var creditAmount = shop.creditAmount || 0;
       if (creditAmount < price) {
         log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
         WACKADOO.hudController.presentNotEnoughCreditsWarning();

@@ -401,11 +401,15 @@ AWE.Controller = (function(module) {
           },
 
           buySpecialOfferPressed: function(offerId) {
+            if (!AWE.GS.ShopManager.getShop()) {
+              AWE.GS.ShopManager.init();
+            }
 
             var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
             var price = offer.get('price');
+            var shop = AWE.GS.ShopManager.getShop();
 
-            var creditAmount = this.getPath('shop.creditAmount') || 0;debugger
+            var creditAmount = shop.creditAmount || 0;
             if (creditAmount < price) {
               log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
               that.presentNotEnoughCreditsWarning();
