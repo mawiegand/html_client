@@ -220,8 +220,10 @@ AWE.UI.Ember = (function(module) {
       if (!AWE.GS.ShopManager.getShop()) {
           AWE.GS.ShopManager.init();
       }
+      
+      var offerId = this.getPath('offer.id');      
       var shop = AWE.GS.ShopManager.getShop();
-      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(this.getPath('offer.id'));
+      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
       var price = offer.get('price');
 
       var creditAmount = shop.creditAmount || 0;
