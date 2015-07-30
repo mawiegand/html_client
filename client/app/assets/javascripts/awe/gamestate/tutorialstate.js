@@ -1790,11 +1790,18 @@ AWE.GS = (function(module) {
           }
           else
           {
+            var self = this;
             var newQuestStates = that.tutorialState.get('newQuestStates');
             if(newQuestStates && newQuestStates.length > 0){
-              this.set('nextQuestState', newQuestStates[0]);
-              that.setQuestDisplayed(this.get('nextQuestState'));
-              //this.get('nextQuestState').set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+              AWE.Ext.applyFunction(newQuestStates, function(questState) {
+                if(questState.getPath('quest.type') == 'epic') {
+                  self.set('nextQuestState', questState);
+                  that.setQuestDisplayed(self.get('nextQuestState'));
+                  return;
+                }
+              });
+                  
+              
             }  
           }
         },
