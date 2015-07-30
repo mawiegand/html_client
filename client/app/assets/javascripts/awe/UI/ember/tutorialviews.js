@@ -11,7 +11,7 @@ AWE.UI.Ember = (function(module) {
   
   module.TutorialEndDialog = module.InfoDialog.extend({
     templateName: 'tutorial-end-dialog',
-
+/*
     okPressed: function() {
       var self = this;
       self.set('redeeming', true);
@@ -30,7 +30,7 @@ AWE.UI.Ember = (function(module) {
         });
         WACKADOO.presentModalDialog(dialog);
       });
-    },
+    },*/
   });
 
   module.UIMarker = Ember.View.extend({

@@ -161,9 +161,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var self = this;
 
       AWE.GS.TutorialStateManager.allowedToShowDialog = false;
-      /*
-      var dialog = AWE.UI.Ember.TutorialEndDialog.create();
-      self.presentModalDialog(dialog); */
+      
+     /* var dialog = AWE.UI.Ember.TutorialEndDialog.create();
+      self.presentModalDialog(dialog); 
+      dialog.okPressed = function() { 
+        this.destroy();
+        
+        AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+          var nextdialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+          WACKADOO.presentModalDialog(nextdialog);
+        });
+        
+      };
+      
+     return  */ 
 
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
         if (statusCode === AWE.Net.OK) {
