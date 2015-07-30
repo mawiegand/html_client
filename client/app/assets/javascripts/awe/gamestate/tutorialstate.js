@@ -1533,6 +1533,7 @@ AWE.GS = (function(module) {
       if (AWE.GS.TutorialManager.getTutorial().lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 300000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
         AWE.GS.TutorialManager.updateTutorial();
       }
+      AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
     };
 
     that.checkForRewards = function() {
