@@ -715,6 +715,10 @@ AWE.UI.Ember = (function(module) {
     questIds: [0,2,5,6,7,9,12,20,24,27,31,34,37,41,48],
 
     close:function(){
+      if (this.onClose) {
+        this.onClose(this);
+        $('#layers').css('overflow', 'visible');
+      }
       this.destroy();
     },
 
