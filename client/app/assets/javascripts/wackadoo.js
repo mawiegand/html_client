@@ -973,7 +973,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           for (m in theRules)
           {
             if (theRules[m].selectorText === ".scale-down") {
-              debugger
               theRules[m].style.zoom = AWE.Settings.hudScale;
             }
             if (theRules[m].selectorText === '.topbar-info-box') {

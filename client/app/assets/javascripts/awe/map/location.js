@@ -260,63 +260,118 @@ AWE.Map = (function(module) {
           frame.origin.y + frame.size.height/2
         );
       //callculate village positon
-      } else {
+      }
+      else {
         //callculate base position
         var basePositon;
         var offDir;
         var streetEndPosition;
-        if (_slot < 3) {
-          //slot 1,2 top
+        if (_slot === 1) {
+          //slot 1 top
           basePositon = {
             x: frame.origin.x + frame.size.width/2,
             y: frame.origin.y
           };
-          offDir = {x: -1, y: 0};
+          offDir = {x: -1.6, y: -6};
           streetEndPosition = {
             x: basePositon.x + frame.size.width/4, 
-            y: basePositon.y };
+            y: basePositon.y
+          };
           basePositon.y += frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
-        } else if (_slot < 5) {
-          //slot 3,4 right
+        }
+        else if (_slot === 2) {
+          //slot 2 top
+          basePositon = {
+            x: frame.origin.x + frame.size.width/2,
+            y: frame.origin.y
+          };
+          offDir = {x: 1.6, y: 0};
+          streetEndPosition = {
+            x: basePositon.x + frame.size.width/4, 
+            y: basePositon.y 
+          };
+          basePositon.y += frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
+        }
+        else if (_slot === 3) {
+          //slot 3 right
           basePositon = {
             x: frame.origin.x + frame.size.width,
+            y: frame.origin.y + frame.size.height/2
+          };
+          offDir = {x: 0, y: -1.2};
+          streetEndPosition = {
+            x: basePositon.x, 
+            y: basePositon.y + frame.size.height/4
+          };
+          basePositon.x -= frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
+        }
+        else if (_slot === 4) {
+          //slot 4 right
+          basePositon = {
+            x: frame.origin.x + frame.size.width,
+            y: frame.origin.y + frame.size.height/2
+          };
+          offDir = {x: 0, y: 1.2};
+          streetEndPosition = {
+            x: basePositon.x, 
+            y: basePositon.y + frame.size.height/4
+          };
+          basePositon.x -= frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
+        }
+        else if (_slot === 5) {
+          //slot 5 bottom
+          basePositon = {
+            x: frame.origin.x + frame.size.width/2,
+            y: frame.origin.y + frame.size.height - 2500
+          };
+          offDir = {x: 1.6, y: 0};
+          streetEndPosition = {
+            x: basePositon.x + frame.size.width/4, 
+            y: basePositon.y
+          };
+          basePositon.y -= frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
+        }
+        else if (_slot === 6) {
+          //slot 6 bottom
+          basePositon = {
+            x: frame.origin.x + frame.size.width/2,
+            y: frame.origin.y + frame.size.height
+          };
+          offDir = {x: -1.6, y: 0};
+          streetEndPosition = {
+            x: basePositon.x + frame.size.width/4, 
+            y: basePositon.y
+          };
+          basePositon.y -= frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
+        }
+        else if (_slot === 7){
+          //slot 7 left
+          basePositon = {
+            x: frame.origin.x,
+            y: frame.origin.y + frame.size.height/2
+          };
+          offDir = {x: 0, y: 1.6};
+          streetEndPosition = {
+            x: basePositon.x, 
+            y: basePositon.y + frame.size.height/4
+          };
+          basePositon.x += frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN; 
+        }
+        else if (_slot === 8){
+          //slot 8 left
+          basePositon = {
+            x: frame.origin.x,
             y: frame.origin.y + frame.size.height/2
           };
           offDir = {x: 0, y: -1};
           streetEndPosition = {
             x: basePositon.x, 
-            y: basePositon.y + frame.size.height/4};
-          basePositon.x -= frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
-        } else if (_slot < 7) {
-          //slot 5,6 bottom
-          basePositon = {
-            x: frame.origin.x + frame.size.width/2,
-            y: frame.origin.y + frame.size.height
+            y: basePositon.y + frame.size.height/4
           };
-          offDir = {x: 1, y: 0};
-          streetEndPosition = {
-            x: basePositon.x + frame.size.width/4, 
-            y: basePositon.y};
-          basePositon.y -= frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
-        } else if (_slot < 9){
-          //slot 7,8 left
-          basePositon = {
-            x: frame.origin.x,
-            y: frame.origin.y + frame.size.height/2
-          };
-          offDir = {x: 0, y: 1};
-          streetEndPosition = {
-            x: basePositon.x, 
-            y: basePositon.y + frame.size.height/4};
           basePositon.x += frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN; 
-        } else {
-          console.error("Can't callculate positon for slot that have a higher number than 8");
         }
-        //callculate the offset dir
-        var mod = _slot/2;
-        if (Math.floor(mod) == mod) {
-          offDir.x *= -1;
-          offDir.y *= -1;
+        else {
+          console.error("Can't callculate positon for slot that have a higher number than 8");
         }
 
         //callculate the length of the offset dir
