@@ -184,10 +184,7 @@
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-overview">
   
   <div class="center">
-    <!--<div class="cave_painting_button" {{action open_cave_painting}}></div>-->
-    <div class="advisor chef sketched"></div>
-    <div class="advisor warrior sketched"></div>
-    <div class="advisor girl sketched"></div>
+    <div class="cave_painting_button" {{action open_cave_painting}}></div>
   </div>
    
   <div class="item">
@@ -681,23 +678,20 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-cave-painting-view">
-      
+  <div class="cave-painting-container" {{action close}}>
+    <div class="center-helper">
+      <div class="cave-painting-background" {{action close}}>
+        <div class="cave-painting-carvings"></div>
+        {{#if varFalse}}
+          <div {{bindAttr class="spiral :cave-painting-spiral"}}></div>
+        {{/if}}
+        
 
-      <div class="cave-painting-container">
-          <div class="cave-painting-background" >
-            <div class="cave-painting-carvings " ></div>
-            <div class="cave-painting-close-button" {{action close_cave_painting}} ></div>
-
-            {{#if spiral_url}}
-              <div {{bindAttr class="spiral :cave-painting-spiral"}}  ></div>
-            {{/if}}
-            
-
-
-            {{#each item in carving_colored_objs}}
-              <div {{bindAttr class="item.css_class :cave-painting-carving-colored"}} ></div>
-            {{/each}}
-          </div>
-
+        {{#each unlockedPaintings}}
+          <div {{bindAttr class="this.cssClass :cave-painting-carving-colored"}}></div>
+        {{/each}}
       </div>
+    </div>
+
+  </div>
 </script>
