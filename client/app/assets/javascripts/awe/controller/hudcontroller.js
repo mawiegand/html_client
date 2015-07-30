@@ -1238,7 +1238,7 @@ AWE.Controller = (function(module) {
         if (_domLeft && _loopCounter % 10 == 0) {
           var lastTutorialUpdate = Date.parseISODate(AWE.GS.TutorialStateManager.getTutorialState().get('updated_at'));
 
-          if (lastTutorialUpdate > that.lastMarkerUpdate) {
+          if (lastTutorialUpdate >= that.lastMarkerUpdate) {
             that.lastMarkerUpdate = lastTutorialUpdate;
             
             that.updateUIMarker();
