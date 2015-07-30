@@ -714,8 +714,6 @@ AWE.UI.Ember = (function(module) {
     // way the colored images should be shown ( got these from Daniel ).
     questIds: [0,2,5,6,7,9,12,20,24,27,31,34,37,41,48],
 
-    varFalse: false,
-
     close:function(){
       this.destroy();
     },
