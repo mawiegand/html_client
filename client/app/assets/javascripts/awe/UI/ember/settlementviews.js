@@ -59,6 +59,9 @@ AWE.UI.Ember = (function(module) {
           {
             filteredCollection[i] = collection[unlockOrder[i-1]];
           }
+          filteredCollection.sort(function(a,b) {
+            return a.get('slot_num') - b.get('slot_num');
+          });
           return filteredCollection;
         }
         return collection;
