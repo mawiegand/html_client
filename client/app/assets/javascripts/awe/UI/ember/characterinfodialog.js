@@ -37,6 +37,16 @@ AWE.UI.Ember = (function(module) {
     isOwn: function() {
       return this.get("characterId") === AWE.GS.game.getPath('currentCharacter.id');
     }.property(),
+
+    currentCharacterIsAllianceLeader: function() {
+      var currentCharacterId = AWE.GS.game.getPath('currentCharacter.id');
+      var currentCharacterAllianceId = AWE.GS.game.getPath('currentCharacter.alliance_id');
+      if (!currentCharacterId || !currentCharacterAllianceId) {
+        return false;
+      }
+      var currentCharacterAlliance = AWE.GS.AllianceManager.getAlliance(currentCharacterAllianceId);
+      return currentCharacterAlliance && currentCharacterId === currentCharacterAlliance.get('leader_id');
+    }.property(),
     
     showDescription: function() {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
@@ -325,6 +335,57 @@ AWE.UI.Ember = (function(module) {
     WACKADOO.activateMessagesController({ recipient: character });
     
     return false;// prevent default behavior
+    },
+
+    sendAllianceInvitation: function() {
+      var confirmationDialog = AWE.UI.Ember.InfoDialog.create({
+        classNames: ['confirmation-dialog'],
+
+        controller: this,
+
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.heading'),
+        message:    AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.message').format(this.getPath('character.name')),
+
+        cancelText: AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.cancel'),
+        okText:     AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.ok'),
+
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processSendAllianceCharacterInvite();
+          }
+          this.destroy();
+        },
+
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    processSendAllianceCharacterInvite: function() {
+      var self = this;
+      var characterInviteName = this.getPath('character.name');
+      var action = AWE.Action.Fundamental.createSendAllianceCharacterInviteAction(characterInviteName);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          var successDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.success'),
+          });
+          WACKADOO.presentModalDialog(successDialog);
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          var successDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.characterNotFound').format(characterInviteName),
+          });
+          WACKADOO.presentModalDialog(successDialog);
+        }
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.confirmAllianceCharacterInvite.error'),
+          });
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
     },
     
     // settlementPressed: function() {

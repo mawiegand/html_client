@@ -27,8 +27,14 @@
         {{alliance.tag}}
       </div>
     {{else}}
-      <div class="modal-dialog-blue-button-big modal-dialog-blue-button-big-transparent">
-      </div>
+      {{#if currentCharacterIsAllianceLeader}}
+        <div class="modal-dialog-blue-button-big clickable" {{action "sendAllianceInvitation"}}>
+          {{t dialogs.alliance.invite}}
+        </div>
+      {{else}}
+        <div class="modal-dialog-blue-button-big modal-dialog-blue-button-big-transparent">
+        </div>
+      {{/if}}
     {{/if}}
 
     {{#if AWE.Config.LIKE_ENABLED}}

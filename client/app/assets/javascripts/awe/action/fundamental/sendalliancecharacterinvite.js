@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createSendAllianceCharacterInviteAction = function(characterInviteName, allianceId, my) {
+  module.createSendAllianceCharacterInviteAction = function(characterInviteName, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -28,7 +28,6 @@ AWE.Action.Fundamental = (function(module) {
       return {
         send_alliance_character_invite_action: {
 		  character_invite_name: characterInviteName,
-          alliance_id: allianceId,
         }
       };
     }
