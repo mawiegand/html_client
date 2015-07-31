@@ -467,11 +467,9 @@ module.TopRightHUDView = Ember.View.extend({
             {
               var subquest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(subquests[j]);
 
-
               // check for rewards will tell us if the subquest is complete or not. True means it's complete.
-              if(subquest.actual>actual && !subquest.checkForRewards())
+              if(subquest !== "undefined" && subquest !== null && subquest.actual > actual && !subquest.checkForRewards())
               {
-
                 actual = subquest.actual;
                 bestEpic = quests[i];
                 bestSub = subquest;
