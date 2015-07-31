@@ -117,6 +117,9 @@ AWE.Config = (function(module) {
     "map/artifactinitiated/6": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact_head_active.png',
     "map/artifactinitiated/7": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact_figure_active.png',
 
+/* === POACHER TREASURE SECTION == */
+    "map/poachertreasure": AWE.Config.RAILS_ASSET_PATH + 'poacher_treasures/poacher_treasure.png',
+
 /* === MAP SECTION === */
     "map/icon/bubble":        AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
     "map/easement/yes":       AWE.Config.RAILS_ASSET_PATH + 'ok.png',
