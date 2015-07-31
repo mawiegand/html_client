@@ -77,8 +77,13 @@ module.LeftHUDView = Ember.View.extend({
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
   
   finishedAssignmentsCount: function() {
-    var count = this.getPath('character.numberOfFinishedAssignments');
-    if (count === "undefined") return false;
+    var count = 0;
+    var assignments = this.getPath('character.hashableStandardAssignments.collection');      
+    if(assignments !== null) {
+      for(var i = 0; i < assignments.length; i++) {
+        if(assignments[i].get('ended_at') !== null) count++;
+      }
+    }
     return count > 0 ? count : false;
   }.property('character.hashableStandardAssignments.changedAt').cacheable(),
 

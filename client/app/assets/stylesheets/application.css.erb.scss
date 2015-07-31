@@ -466,7 +466,8 @@ canvas{
   background-image:url("<%= asset_path 'dialogs/quest-list/quest-selection-bg.png' %>");
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  width: 120px;
+  width: 140px;
+  height: 260px;
   font-size: 0.7em;
   position: relative;
   z-index: 50;
@@ -474,12 +475,7 @@ canvas{
   right: -150px;
   padding: 0% 9% 15% 11%;
   overflow: hidden;
-}
-
-.quest-info-box-scroll{
-  width: 120px;
-  height: 210px;
-  overflow: auto;
+  pointer-events: all;
 }
 
 .quest-info-box .title{

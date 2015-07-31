@@ -85,16 +85,14 @@
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">  
   <div class="top-right-hud scale-down" id="top-right-dom-hud">
     <div id="quest-info-box" class="quest-info-box" {{action "toggleQuestInfoPosition"}}>
-      <div class="quest-info-box-scroll">
-        <div class="title"><h5>{{local epicQuest.questName}}</h5></div>
-        <div class="description">{{local epicQuest.quest.task}}</div>
-        <div class="title"><h5>{{local epicSubQuest.questName}} 
-        {{#if epicSubQuest.tutorialstate.tutorial_completed}}
-          ... {{epicSubQuest.actual}} / {{epicSubQuest.threshold}}
-        {{/if}}
-        </h5></div>
-        <div class="description">{{local epicSubQuest.quest.task}}</div>
-      </div>
+      <div class="title"><h5>{{local epicQuest.questName}}</h5></div>
+      <div class="description">{{local epicQuest.quest.task}}</div>
+      <div class="title"><h5>{{local epicSubQuest.questName}} 
+      {{#if epicSubQuest.tutorialstate.tutorial_completed}}
+        ... {{epicSubQuest.actual}} / {{epicSubQuest.threshold}}
+      {{/if}}
+      </h5></div>
+      <div class="description">{{local epicSubQuest.quest.task}}</div>      
     </div>
   </div>  
 </script>
