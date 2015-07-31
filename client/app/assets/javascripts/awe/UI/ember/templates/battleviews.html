@@ -1,9 +1,74 @@
 <script type="text/x-handlebars" data-template-name="battle-dialog">
       <div class="battle-dialog-pane">
          <h1>Kampf in Sterntulpenweide</h1>
-         <div class="battle-init-users">Angriff von</div>
+         <div class="battle-init-users">
+          <div class="battle-stats-value">
+            stats1
+          </div>
+          <div class="battle-stats-value">
+            stats2
+          </div>
+          <div class="battle-stats-value">
+            stats3
+          </div>
+         </div>
          <div class="battle-chef"></div>
-         <div class="battle-init-users">am 23.07.15</div>
+         <div class="battle-init-time">am 23.07.15</div>
+         <div class="battle-citation">"Ja, platt machen Wir Sie"</div>
+         <div class="battle-round">Runde: 15        Nächste Runde: 06:02</div>
+         <div class="battle-ratio">
+          <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
+          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
+          <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
+         </div>
+         <!--1-->
+         <div class="battle-stats1">
+          <div class="battle-stats-value">
+            stats1
+          </div>
+          <div class="battle-stats-value">
+            stats2
+          </div>
+          <div class="battle-stats-value">
+            stats3
+          </div>
+         </div>
+         <!--2-->
+         <div class="battle-stats2">
+          <div class="battle-stats-value">
+            stats1
+          </div>
+          <div class="battle-stats-value">
+            stats2
+          </div>
+          <div class="battle-stats-value">
+            stats3
+          </div>
+         </div>
+         <!--3-->
+         <div class="battle-stats3">
+          <div class="battle-stats-value">
+            stats1
+          </div>
+          <div class="battle-stats-value">
+            stats2
+          </div>
+          <div class="battle-stats-value">
+            stats3
+          </div>
+         </div>
+         <!--4-->
+         <div class="battle-stats4">
+          <div class="battle-stats-value">
+            stats1
+          </div>
+          <div class="battle-stats-value">
+            stats2
+          </div>
+          <div class="battle-stats-value">
+            stats3
+          </div>
+         </div>
          <!-- OLD DIALOG-->
        <!-- <a class="close clickable" {{action "closePressed" target="parentView"}}></a>-->
            

@@ -69,11 +69,11 @@ AWE.UI.Ember = (function(module) {
         
     
     ratioLengthOwn: function(){
-      return 'width: ' + Math.round(376 * (this.getPath('battle.ratio') || 0)) + 'px;';
+      return 'width: ' + Math.round(576 * (this.getPath('battle.ratio') || 0)) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     ratioLengthOther: function(){
-      return 'width: ' + Math.round(376 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
+      return 'width: ' + Math.round(576 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     message: function() {
