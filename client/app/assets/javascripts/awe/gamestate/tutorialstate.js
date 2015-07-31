@@ -1535,7 +1535,7 @@ AWE.GS = (function(module) {
       }
       AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
     };
-
+/*
     that.checkForRewards = function() {
       
       if (!that.tutorialEnabled()) return;
@@ -1579,7 +1579,7 @@ AWE.GS = (function(module) {
         that.showNextNewQuest();
       }
     }
-        
+        */
     that.checkForCustomTestRewards = function(testId) {
       
       if (!that.tutorialEnabled()) return;
@@ -1806,7 +1806,7 @@ AWE.GS = (function(module) {
             }  
           }
         },
-        
+        /*
         okPressed: function() {
           //that.checkForNewQuests();
           this._super();
@@ -1824,15 +1824,57 @@ AWE.GS = (function(module) {
                 heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
                 message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
               });
-              WACKADOO.presentModalDialog(dialog);
-            });
-            AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
-              var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+              
+              dialog.okPressed = function() { 
+                this.destroy();
+                
+                AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+                  var nextdialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+                  WACKADOO.presentModalDialog(nextdialog);
+                });
+                
+              };
+              
               WACKADOO.presentModalDialog(dialog);
             });
           }
-        },
+        },*/
       });      
+      
+      dialog.closeDialogRequested = function() {
+
+        that.currentDialog = null;
+        this.destroy();
+        var self = this;
+        if (finishedQuestState && finishedQuestState.getPath('quest.tutorial_end_quest') && !AWE.GS.TutorialStateManager.getTutorialState().get('tutorial_completed')) {
+          try {
+            AndroidDelegate.tutorialCompleted();
+          } catch (err) {
+          }
+          AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {
+            // success
+            var tutorialEndDialog = AWE.UI.Ember.TutorialEndDialog.create();
+            WACKADOO.presentModalDialog(tutorialEndDialog);
+            tutorialEndDialog.okPressed = function() { 
+              this.destroy();
+              AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function() {
+                var nextDialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: AWE.GS.SpecialOfferManager.getSpecialOffers()[0]});
+                WACKADOO.presentModalDialog(nextDialog);
+              });
+              
+            };
+            
+          }, function() {
+            //error
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
+              message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
+            });
+            WACKADOO.presentModalDialog(dialog);
+          });
+        }
+      };
+      
       that.currentDialog = dialog;
     
       WACKADOO.presentModalDialog(dialog);
@@ -1848,7 +1890,7 @@ AWE.GS = (function(module) {
     
     
     
-    
+    /*
     that.showQuestFinishedDialog = function(questState) {
       
       if (!that.tutorialEnabled()) return;
@@ -1877,7 +1919,7 @@ AWE.GS = (function(module) {
             }
             /*var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
             WACKADOO.presentModalDialog(dialog);*/
-            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {debugger}, function() {
+/*            AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {debugger}, function() {
               var dialog = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
                 message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
@@ -1896,7 +1938,7 @@ AWE.GS = (function(module) {
       if (applaud) {
         this.setQuestRewardDisplayed(questState);
       }
-    }
+    }*/
     
     that.setQuestRewardDisplayed = function(questState) {
       var questRewardDisplayedAction = AWE.Action.Tutorial.createQuestRewardDisplayedAction(questState.getId());

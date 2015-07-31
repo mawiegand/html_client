@@ -427,13 +427,14 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('finishedQuestState.status') === AWE.GS.QUEST_STATUS_FINISHED;
     }.property('finishedQuestState.status'),        
 
-    redeemLaterButtonPressed: function() {
+    /*redeemLaterButtonPressed: function() {
       this.destroy();        
       //WACKADOO.closeAllModalDialogs();
-    },
+    },*/
     
     closeDialogRequested: function() {
-      WACKADOO.closeAllModalDialogs();
+      this.destroy();  
+      //WACKADOO.closeAllModalDialogs();
       /*if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         this.destroy();                
         //WACKADOO.closeAllModalDialogs();
