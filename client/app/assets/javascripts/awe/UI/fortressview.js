@@ -17,6 +17,7 @@ AWE.UI = (function(module) {
     var _flagBackground = null;
     var _labelView = null;
     var _selectShape = null;
+    var _ownShape = null;
     var _flagView = null;
     var _battleView = null;
     var _suspensionView = null;
@@ -69,7 +70,7 @@ AWE.UI = (function(module) {
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 1);
       }
 
       // FLAG VIEW ///////////////////////////////////////////////////////////
@@ -92,6 +93,23 @@ AWE.UI = (function(module) {
 //        _flagView.setAllianceId(allianceId);
 //        _flagView.setAllianceColor(allianceColor);
 //      }
+      
+      if (!_ownShape && _node.region().isOwn()) {
+        var ownGraphics = new Graphics();
+        ownGraphics.setStrokeStyle(1);
+        ownGraphics.beginStroke(Graphics.getRGB(0,0,0));
+        ownGraphics.beginFill(Graphics.getRGB(255,255,0));
+        ownGraphics.drawEllipse(0, 0, AWE.Config.MAP_FORTRESS_HILL_WIDTH, AWE.Config.MAP_FORTRESS_HILL_WIDTH / 3.0);
+        _ownShape = AWE.UI.createShapeView();
+        _ownShape.initWithControllerAndGraphics(my.controller, ownGraphics);
+        _ownShape.setFrame(AWE.Geometry.createRect(-17, AWE.Config.MAP_FORTRESS_SIZE / 2 + 20, AWE.Config.MAP_FORTRESS_HILL_WIDTH, AWE.Config.MAP_FORTRESS_HILL_WIDTH / 3.0));
+        this.addChildAt(_ownShape, 0);
+      }
+      else if (_ownShape && !_node.region().isOwn())
+      {
+        //that.removeChild(_ownShape);
+        //_ownShape = null;
+      }
 
       // SELECT SHAPE ////////////////////////////////////////////////////////
       if (!_selectShape && (this.selected() || this.hovered())) {

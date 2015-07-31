@@ -16,6 +16,7 @@ AWE.UI = (function(module) {
     var _imageView = null;
     var _labelView = null;
     var _selectShape = null;
+    var _ownShape = null;
     var _battleView = null;
     var _suspensionView = null;
     var _flagView = null;
@@ -51,6 +52,23 @@ AWE.UI = (function(module) {
 
       var allianceId = _location.allianceId();
       var allianceColor = _location.allianceColor();
+
+      if (!_ownShape && _location.settlement().owner_id === AWE.GS.CharacterManager.currentCharacter.id) {
+        var ownGraphics = new Graphics();
+        ownGraphics.setStrokeStyle(1);
+        ownGraphics.beginStroke(Graphics.getRGB(0,0,0));
+        ownGraphics.beginFill(Graphics.getRGB(255,255,0));
+        ownGraphics.drawEllipse(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+        _ownShape = AWE.UI.createShapeView();
+        _ownShape.initWithControllerAndGraphics(my.controller, ownGraphics);
+        _ownShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
+        that.addChildAt(_ownShape, 0);
+      }
+      else if (_ownShape && _location.settlement().owner_id !== AWE.GS.CharacterManager.currentCharacter.id)
+      {
+        that.removeChild(_ownShape);
+        _ownShape = null;
+      }
 
       if (!_selectShape && (this.selected() || this.hovered())) {
         var selectGraphics = new Graphics();
@@ -105,7 +123,7 @@ AWE.UI = (function(module) {
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 1);
       }
 
       if (!_flagView) {
