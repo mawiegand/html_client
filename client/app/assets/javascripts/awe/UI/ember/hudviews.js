@@ -80,7 +80,7 @@ module.LeftHUDView = Ember.View.extend({
     var count = this.getPath('character.numberOfFinishedAssignments');
     if (count === "undefined") return false;
     return count > 0 ? count : false;
-  }.property('character.numberOfFinishedAssignments').cacheable(),
+  }.property('character.hashableStandardAssignments.changedAt').cacheable(),
 
   getNextAssignmentToFinish: function() {
     var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
@@ -426,10 +426,10 @@ module.TopRightHUDView = Ember.View.extend({
   
   toggleQuestInfoPosition: function() {
     if ($('#quest-info-box').css('right') > -140) {
-      $('#quest-info-box').delay(10).animate({right: "-315px"}, _animationDuration, 'easeOutBack');
+      $('#quest-info-box').delay(10).animate({right: "-315px"}, 800, 'easeOutBack');
     }
     else {
-      $('#quest-info-box').delay(10).animate({right: "-150px"}, _animationDuration, 'easeOutBack');
+      $('#quest-info-box').delay(10).animate({right: "-150px"}, 800, 'easeOutBack');
     }
   },
 
