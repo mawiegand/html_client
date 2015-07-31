@@ -14,7 +14,6 @@ AWE.UI.Ember = (function(module) {
     
     battle:                    null,
     timer:                     null,
-    /*battleRegion:              null,*/
     
     participantsOwnFaction:   'battle.participantsOwnFaction',
     participantsOtherFaction: 'battle.participantsOtherFaction',
@@ -25,18 +24,163 @@ AWE.UI.Ember = (function(module) {
  
     init: function() {
       this._super(); 
-      /*this.setAndUpdateBattleRegion();     */
     },
     
-    /*setAndUpdateBattleRegion: function() {
-      var regionId = this.getPath('battle.region_id');
-      var region = AWE.Map.Manager.getRegion(regionId);
-      this.set('battleRegion', region);
-    },
+    region_name: function() {
+      var region_id = this.getPath('battle.region_id');
+      if(region_id){
+        var region = AWE.Map.Manager.getRegion(region_id);
+        return (typeof region !== "undefined") ? region.name() : null;
+      }
+      return null;  
+    }.property('battle'),
+    
+    initiator_name: function() {
+      var initiator_id = this.getPath('battle.initiator_id');
+      if(initiator_id){
+        var initiator = AWE.GS.CharacterManager.getCharacter(initiator_id);
+        return (typeof initiator !== "undefined") ? initiator.name : null;
+      }
+      return null;
+    }.property('battle'),
 
-    battleRegionName: function() {
-      return this.getPath('battle.region_id');
-    }.property(),*/
+
+    opponent_name: function() {
+      var opponent_id = this.getPath('battle.opponent_id');
+      if(opponent_id)
+      {
+        var opponent = AWE.GS.CharacterManager.getCharacter(opponent_id);
+        if(typeof opponent === "undefined"){
+          var participants = this.getPath('battle.participants.content');
+          for(var i=0; i<participants.length; i++)
+            if(participants[i].character_id == opponent_id)
+              return participants[i].army_name;
+        }else{
+          return opponent;
+        }
+      }
+      return null;
+    }.property('battle'),
+    
+    round: function() {
+      var nextRound = this.getPath('battle.nextRoundNumber');
+      return nextRound - 1;
+    }.property('battle'),
+
+    attack_started_at_date: function() {
+      var date = new Date(this.getPath('battle.started_at'));
+      return (typeof date !== "undefined") ? date.toLocaleDateString() : null;
+    }.property('battle'),
+    
+    attack_started_at_time: function() {
+      var date = new Date(this.getPath('battle.started_at'));
+      return (typeof date !== "undefined") ? date.toLocaleTimeString() : null;
+    }.property('battle'),
+    
+    
+    army_of_initiator: function(){
+      var initiator_id = this.getPath('battle.initiator_id');
+      var opponent_id = this.getPath('battle.opponent_id');
+      var participants = this.getPath('battle.participants.content');
+      for(var i=0; i<participants.length; i++)
+        if(participants[i].character_id == initiator_id)
+          return participants[i].get('army');
+      return null;
+    }.property('battle'),
+
+    own_army_battle_count: function(){
+      return this.getPath('battle.participantsOwnFaction').length;
+    }.property('battle'),
+
+    other_army_battle_count: function(){
+      return this.getPath('battle.participantsOtherFaction').length;
+    }.property('battle'),
+
+    own_army_count: function(){
+      var armyCount = 0;
+      var participants = this.getPath('battle.participantsOwnFaction');
+          for(var i=0; i<participants.length; i++)
+            armyCount += Object.keys(AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id)).length;
+      return armyCount;
+    }.property('battle'),
+
+    other_army_count: function(){
+      var armyCount = 0;
+      var participants = this.getPath('battle.participantsOtherFaction');
+          for(var i=0; i<participants.length; i++)
+            armyCount += Object.keys(AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id)).length;
+      return armyCount;
+    }.property('battle'),
+
+    own_bonus: function(){
+      var ownStrength = 0;
+      this.getPath('battle.participantsOwnFaction').forEach(function(participant) {
+        ownStrength += participant.getPath('army.strength') || 0;
+      });
+
+      var bonus = 0;
+      var id = this.getPath('battle.location_id');
+      var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
+      var bonusStrength = 0;
+      var allianceID = settlement.alliance_id;
+      var rawBonus = settlement.present_defense_bonus * 100;
+      var participants = this.getPath('battle.participantsOwnFaction');
+      for(var i=0; i<participants.length; i++)
+      {
+        if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+        {
+          bonusStrength += participants[i].army.strength;
+        }
+        else
+        {
+          return 0;
+        }
+      }
+
+      var percentageOfArmyValidForBonus = bonusStrength / ownStrength;
+      return rawBonus * percentageOfArmyValidForBonus;
+
+    }.property('battle'),
+
+    other_bonus: function(){
+      var otherStrength = 0;
+      this.getPath('battle.participantsOtherFaction').forEach(function(participant) {
+        otherStrength += participant.getPath('army.strength') || 0;
+      });
+
+      var bonus = 0;
+      var id = this.getPath('battle.location_id');
+      var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
+      var bonusStrength = 0;
+      var allianceID = settlement.alliance_id;
+      var rawBonus = settlement.present_defense_bonus * 100;
+      var participants = this.getPath('battle.participantsOtherFaction');
+      for(var i=0; i<participants.length; i++)
+      {
+        if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+        {
+          bonusStrength += participants[i].army.strength;
+        }
+        else
+        {
+          return 0;
+        }
+      }
+
+      var percentageOfArmyValidForBonus = bonusStrength / otherStrength;
+      return rawBonus * percentageOfArmyValidForBonus;
+
+    }.property('battle'),
+
+    army_of_opponent: function(){
+      var initiator_id = this.getPath('battle.initiator_id');
+      var opponent_id = this.getPath('battle.opponent_id');
+      var participants = this.getPath('battle.participants.content');
+      for(var i=0; i<participants.length; i++)
+        if(participants[i].character_id == opponent_id)
+          return participants[i].get('army');
+      return null;
+    }.property('battle'),
 
     didInsertElement: function() {
       this.startTimer();
@@ -98,6 +242,7 @@ AWE.UI.Ember = (function(module) {
     }.property('battle.ratio').cacheable(),
     
     updateBattle: function() {
+      //debugger;
       var battleId = this.getPath('battle.id');
       if (battleId) {
         AWE.GS.BattleManager.updateBattle(battleId); 

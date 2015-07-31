@@ -25,7 +25,7 @@
 .battle-chef{
   position: absolute;
   margin-left: 506px;
-  margin-top: 5px;
+  margin-top: -8px;
   width: 120px;
   height: 120px;
   background: url('<%= asset_path("advisors/head_chef_noneborder_quest.png") %>');
@@ -38,61 +38,85 @@
 
 .battle-init-users{
   position: absolute;
-  margin-left: 0px;
+  margin-left: 8px;
   margin-top: 0px;
   height: 50px;
-  width: 480px;
-  background-color: #000;
+  width: 600px;
 }
 
 .battle-init-time{
   position: absolute;
-  margin-left: 0px;
-  margin-top: 55px;
+  margin-left: 8px;
+  margin-top: 30px;
   height: 50px;
   width: 300px;
-  background-color: #000;
+  font-size: 18px;
+  padding: 5px;
+  /*background-color: #000;*/
 }
+
+q { quotes: '\201c' '\201d'; }
+q:before { content: open-quote; }
+q:after  { content: close-quote; }
 
 .battle-citation{
   position: absolute;
   margin-left: 307px;
-  margin-top: 55px;
+  margin-top: 40px;
   height: 50px;
   width: 200px;
   font-size: 14px;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 
 .battle-round{
+  font-size: 18px;
   position: absolute;
   margin-left: 0px;
   margin-top: 110px;
   height: 50px;
   width: 624px;
-  background-color: #000;
+  /*background-color: #000;*/
+}
+
+.battle-round50-left{
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+  position: relative;
+  left: 80px;
+}
+.battle-round50-right{
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+  position: relative;
+  left: 50px;
 }
 
 .battle-ratio {
   width: 600px;
   position: absolute;
-  margin-top: 165px;
+  margin-top: 140px;
   margin-left: 24px;
 }
 
 .battle-ratio-left {
-  background-color: #cfc;
+  background-color: rgb(163,193,79);
   display: inline-block;
   height: 32px;
 }
 
 .battle-ratio-right {
-  background-color: #fcc;
+  background-color: rgb(199,21,26);
   display: inline-block;
   height: 32px;
 }
 
 .battle-ratio-left-text {
+  color: white;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -103,6 +127,7 @@
 }
 
 .battle-ratio-right-text {
+  color: white;
   position: absolute;
   left: -100px;
   top: 0px;
@@ -119,7 +144,7 @@
   margin-top: 207px;
   height: 30px;
   width: 624px;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 
 .battle-stats2{
@@ -128,7 +153,7 @@
   margin-top: 260px;
   height: 30px;
   width: 624px;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 
 .battle-stats3{
@@ -137,7 +162,7 @@
   margin-top: 292px;
   height: 30px;
   width: 624px;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 
 .battle-stats4{
@@ -146,10 +171,20 @@
   margin-top: 342px;
   height: 30px;
   width: 624px;
-  background-color: #000;
+  /*background-color: #000;*/
 }
 
 .battle-stats-value{
+  padding: 5px;
+  font-size: 18px;
+  height: 100%;
+  float: left;
+  display: inline-block;
+}
+
+.battle-stats-value33{
+  font-size: 18px;
+  text-align: center;
   width: 33%;
   height: 100%;
   float: left;

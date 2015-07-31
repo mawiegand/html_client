@@ -90,6 +90,16 @@ AWE.I18n.de_DE = function(module) {
         oneFaction: "Eine Fraktion",
         otherFaction: "Andere Fraktion",
         lostUnits: "Verlorene Einheiten",
+        battle_in: "Kampf in",
+        attack_of: "Angriff von",
+        on: "auf",
+        on_time: "am",
+        at_time: "um",
+        round: "Runde",
+        battleBonus: 'Battle Bonus',
+        totalArmies: 'Gesamt Armeen',
+        currentlyInvolved: '...aktuell beteiligt',
+        killedUnits: 'Gefallene Einheiten',
 
         participants: {
           name: "Name",

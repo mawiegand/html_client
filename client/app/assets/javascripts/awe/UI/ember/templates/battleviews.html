@@ -1,21 +1,45 @@
 <script type="text/x-handlebars" data-template-name="battle-dialog">
       <div class="battle-dialog-pane">
-         <h1>Kampf in Sterntulpenweide</h1>
+         <h1>{{t battle.details.battle_in}} {{region_name}}</h1>
          <div class="battle-init-users">
           <div class="battle-stats-value">
-            stats1
+            {{t battle.details.attack_of}}
           </div>
           <div class="battle-stats-value">
-            stats2
+            {{#if army_of_initiator.npc}}
+              {army_of_initiator.owner_name}}{{#if army_of_initiator.alliance_tag}} | {{army_of_initiator.alliance_tag}}{{/if}} 
+            {{else}}
+               {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_initiator"}}
+            {{/if}}
           </div>
           <div class="battle-stats-value">
-            stats3
+            {{t battle.details.on}}
+          </div>
+          <div class="battle-stats-value">
+            {{#if army_of_opponent.npc}}
+              {{army_of_opponent.owner_name}}{{#if army_of_opponent.alliance_tag}} | {{army_of_opponent.alliance_tag}}{{/if}} 
+            {{else}}
+               {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_opponent"}}
+            {{/if}}
           </div>
          </div>
          <div class="battle-chef"></div>
-         <div class="battle-init-time">am 23.07.15</div>
-         <div class="battle-citation">"Ja, platt machen Wir Sie"</div>
-         <div class="battle-round">Runde: 15        Nächste Runde: 06:02</div>
+         <div class="battle-init-time">{{t battle.details.on_time}} {{attack_started_at_date}} {{t battle.details.at_time}} {{attack_started_at_time}} MEZ</div>
+         <div class="battle-citation"><q>{{message}}</q></div>
+         <div class="battle-round">
+          <div class="battle-round50-left">
+            {{t battle.details.round}}:          
+            {{#if battle.lastRound}}
+              {{battle.lastRound.number}}
+            {{else}}
+              {{ round }}
+            {{/if}}
+          </div>
+          <div class="battle-round50-right">
+            {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}
+          </div>
+
+         </div>
          <div class="battle-ratio">
           <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
           <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
@@ -23,58 +47,58 @@
          </div>
          <!--1-->
          <div class="battle-stats1">
-          <div class="battle-stats-value">
-            stats1
+          <div class="battle-stats-value33">
+            {{own_bonus}}
           </div>
-          <div class="battle-stats-value">
-            stats2
+          <div class="battle-stats-value33">
+            {{t battle.details.battleBonus}}
           </div>
-          <div class="battle-stats-value">
-            stats3
+          <div class="battle-stats-value33">
+            {{other_bonus}}
           </div>
          </div>
          <!--2-->
          <div class="battle-stats2">
-          <div class="battle-stats-value">
-            stats1
+          <div class="battle-stats-value33">
+            {{own_army_count}}
           </div>
-          <div class="battle-stats-value">
-            stats2
+          <div class="battle-stats-value33">
+            {{t battle.details.totalArmies}}
           </div>
-          <div class="battle-stats-value">
-            stats3
+          <div class="battle-stats-value33">
+            {{other_army_count}}
           </div>
          </div>
          <!--3-->
          <div class="battle-stats3">
-          <div class="battle-stats-value">
-            stats1
+          <div class="battle-stats-value33">
+            {{own_army_battle_count}}
           </div>
-          <div class="battle-stats-value">
-            stats2
+          <div class="battle-stats-value33">
+            {{t battle.details.currentlyInvolved}}
           </div>
-          <div class="battle-stats-value">
-            stats3
+          <div class="battle-stats-value33">
+            {{other_army_battle_count}}
           </div>
          </div>
          <!--4-->
          <div class="battle-stats4">
-          <div class="battle-stats-value">
-            stats1
+          <div class="battle-stats-value33">
+            {{battle.ownFaction.total_casualties}}
           </div>
-          <div class="battle-stats-value">
-            stats2
+          <div class="battle-stats-value33">
+            {{t battle.details.killedUnits}}
           </div>
-          <div class="battle-stats-value">
-            stats3
+          <div class="battle-stats-value33">
+            {{battle.otherFaction.total_casualties}}
           </div>
          </div>
          <!-- OLD DIALOG-->
        <!-- <a class="close clickable" {{action "closePressed" target="parentView"}}></a>-->
            
-        <!--<div class="advisor chef"></div>-->
+        <!--<div class="advisor chef"></div>
         
-        <!--<h2>{{t battle.details.heading}}</h2>
+       <h2>{{t battle.details.heading}}</h2>
 
         {{#if battle.lastRound}}
         <div>{{t battle.details.afterRound}} {{battle.lastRound.number}}</div>
@@ -148,7 +172,7 @@
         {{else}}
         <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
         {{/if}}-->
-         <!-- OLD DIALOG-->
+
       </div>
 </script>
 
