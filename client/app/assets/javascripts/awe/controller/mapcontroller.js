@@ -72,7 +72,6 @@ AWE.Controller = function (module) {
     var regionViews = {};
     var fortressViews = {};
     var artifactViews = {};
-    var poacherTreasureViews = {};
     var armyViews = {};
     var movementArrowViews = {};
     var locationViews = {};
@@ -1348,7 +1347,7 @@ AWE.Controller = function (module) {
         }
       }
     };
-    
+
     that.battleInfoButtonClicked = function (army) {
       var battle_id = army.get('battle_id');
       var battle = army.battle();
@@ -1372,31 +1371,6 @@ AWE.Controller = function (module) {
       });
 
       that.applicationController.presentModalDialog(dialog);
-    };
-
-    that.battleInfoButtonClicked_NEW = function (army) {
-      var battle_id = army.get('battle_id');
-      var updated = false;
-      AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
-        //var battle = army.battle();
-        var dialog = AWE.UI.Ember.BattleDialog.create({
-          battle:battle,
-
-          closePressed:function (evt) {
-            this.destroy();
-          },
-          retreatPressed:function (evt) {
-            that.armyRetreatButtonClicked(evt.view.army);
-          },
-          cancelRetreatPressed:function (evt) {
-            that.armyRetreatButtonClicked(evt.view.army);
-          },
-        });
-        updated = true;
-        that.applicationController.presentModalDialog(dialog);
-        //dialog.set('battle', battle);
-      });
-      if (!updated) that.applicationController.presentModalDialog(army.battle());
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -1597,7 +1571,7 @@ AWE.Controller = function (module) {
       _showInspectorWith(_selectedView);
 
       if (view.typeName() === 'ArmyView') {
-        if (that.markMoveOwnArmy() && view.army().isOwn()) {
+        if (that.markMoveOwnArmy()) {
           var annotationView = view.annotationView();
           if(annotationView === null)
           {
@@ -1609,7 +1583,7 @@ AWE.Controller = function (module) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
         }
-        else if (that.markAttackButton() && view.army().isOwn()) {
+        else if (that.markAttackButton()) {
           var annotationView = view.annotationView();
           if (annotationView) {
 
@@ -1618,14 +1592,13 @@ AWE.Controller = function (module) {
         }
       }
       else if (view.typeName() === 'BaseView') {
-        // Remove arrow attack button marker for settlements. Really needed?
-        /*if (that.markAttackButton()) {
+        if (that.markAttackButton()) {
           var annotationView = view.annotationView();
           if (annotationView) {
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(35, 100));
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
         }
-        else {*/
+        else {
           if (!that.markCreateArmy()) {
             if (that.markSelectOwnHomeSettlement()) {
               var annotationView = view.annotationView();
@@ -1637,7 +1610,7 @@ AWE.Controller = function (module) {
               removeMarker();
             }
           }
-        //}
+        }
       }
 
       _actionViewChanged = true;
@@ -1710,7 +1683,6 @@ AWE.Controller = function (module) {
           that.nextSettlementButtonClicked(location);
         };
       }
-
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
@@ -1772,6 +1744,7 @@ AWE.Controller = function (module) {
           that.nextSettlementButtonClicked(location);
         };
       }
+
       if (inspectorViews.inspector) {
         _stages[3].addChild(inspectorViews.inspector.displayObject());
         if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
@@ -1990,7 +1963,6 @@ AWE.Controller = function (module) {
     that.updateModel = (function () {
 
       var lastArtifactCheck = new Date(1970);
-      var lastPoacherTreasureCheck = new Date(1970);
       var lastArmyCheck = new Date(1970);
       var lastOwnArmiesCheck = new Date(1970);
       var lastLocationUpdateCheck = new Date(1970);
@@ -2083,11 +2055,6 @@ AWE.Controller = function (module) {
 
               // updating artifacts
               AWE.GS.ArtifactManager.updateArtifactsInRegion(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (artifacts) {
-                that.setModelChanged();
-              });
-
-              // updating artifacts
-              AWE.GS.PoacherTreasureManager.updatePoacherTreasuresInRegion(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (poacherTreasures) {
                 that.setModelChanged();
               });
             }
@@ -2446,13 +2413,6 @@ AWE.Controller = function (module) {
       ));
     }
 
-    var setPoacherTreasurePosition = function (view, pos) {
-      view.setCenter(AWE.Geometry.createPoint(
-        pos.x + 146,
-        pos.y + 8
-      ));
-    }
-
     var setArmyPosition = function (view, pos, army) {
       view.setCenter(AWE.Geometry.createPoint(pos.x + view.frame().size.width * 0.7, pos.y - view.frame().size.height / 2));
 
@@ -2728,53 +2688,6 @@ AWE.Controller = function (module) {
       return removedSomething;
     }
 
-    that.updatePoacherTreasures = function (nodes) {
-
-          var newPoacherTreasureViews = {};
-
-          for (var i = 0; i < nodes.length; i++) {
-              var frame = that.mc2vc(nodes[i].frame());
-
-              if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
-                  var poacherTreasures = AWE.GS.PoacherTreasureManager.getPoacherTreasuresInRegion(nodes[i].region().id());
-
-                  for (var id in poacherTreasures) {
-
-                      if (poacherTreasures.hasOwnProperty(id)) {
-
-                          var poacherTreasure = poacherTreasures[id];
-                          var location = AWE.Map.Manager.getLocation(poacherTreasure.get('location_id'));
-
-                          if (location) {
-                              var view = poacherTreasureViews[id];
-
-                              if (view) {
-                                  if (view.lastChange !== undefined && // if model of view updated
-                                      view.lastChange().getTime() < artifact.lastChange().getTime()) {
-                                      view.setNeedsUpdate();
-                                  }
-                              }
-                              else {
-                                  view = AWE.UI.createPoacherTreasureView();
-                                  view.initWithControllerAndPoacherTreasure(that, poacherTreasure);
-                                  _stages[1].addChild(view.displayObject());
-                              }
-
-                              if (view) {
-                                  setPoacherTreasurePosition(view, that.mc2vc(poacherTreasure.get('location').position()), frame);
-                                  newPoacherTreasureViews[id] = view;
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-
-          var removedSomething = purgeDispensableViewsFromStage(poacherTreasureViews, newPoacherTreasureViews, _stages[1]);
-          artifactViews = newPoacherTreasureViews;
-          return removedSomething;
-      }
-
     /** update the army views. */
     that.updateArmies = function (nodes) {
 
@@ -3035,7 +2948,6 @@ AWE.Controller = function (module) {
       removedSomething = that.updateFortresses(nodes) || removedSomething;
       removedSomething = that.updateSettlements(nodes) || removedSomething;
       removedSomething = that.updateArtifacts(nodes) || removedSomething;
-      removedSomething = that.updatePoacherTreasures(nodes) || removedSomething;
       removedSomething = that.updateArmies(nodes) || removedSomething;
 
       return removedSomething;
@@ -3201,6 +3113,7 @@ AWE.Controller = function (module) {
 
           annotationView.onAttackButtonClick = (function (self) {
             return function (view) {
+              view.removeView(false);
               self.armyAttackButtonClicked(view);
             }
           })(that);
@@ -3433,11 +3346,11 @@ AWE.Controller = function (module) {
       }
       else {
         if (_selectedView && !that.animatedMarker) {
-          if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy() && _selectedView.army().isOwn()) {
+          if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
-          else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton() && _selectedView.army().isOwn()) {
+          else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(35, 100));
           }
@@ -3585,7 +3498,6 @@ AWE.Controller = function (module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(artifactViews) || stagesNeedUpdate[1];
-        stagesNeedUpdate[1] = propUpdates(poacherTreasureViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
@@ -3623,11 +3535,10 @@ AWE.Controller = function (module) {
       var numFortressViews = AWE.Util.hashCount(fortressViews);
       var numArmyViews = AWE.Util.hashCount(armyViews);
       var numArtifactViews = AWE.Util.hashCount(artifactViews);
-      var numPoacherTreasureViews = AWE.Util.hashCount(poacherTreasureViews);
       var numLocationViews = AWE.Util.hashCount(locationViews);
 
       $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews +
-        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + numPoacherTreasureViews + '/' + ' (regions, fortresses, locations, armies, artifacts, poacherTreasures)');
+        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + ' (regions, fortresses, locations, armies, artifacts)');
     };
 
 
@@ -3736,7 +3647,7 @@ AWE.Controller = function (module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
             regionViews,
-            [fortressViews, artifactViews, poacherTreasureViews, armyViews, locationViews, movementArrowViews],
+            [fortressViews, artifactViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
             inspectorViews,
             controlsViews
