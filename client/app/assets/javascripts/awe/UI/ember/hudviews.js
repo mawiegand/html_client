@@ -350,10 +350,10 @@ module.RightHUDView = Ember.View.extend({
   },    
 
   getNewQuest: function(){
-    var numberOfQuests = this.getPath('tutorialState.notClosedQuestStates');
+    var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');
     if (numberOfQuests === undefined) return false;
     return numberOfQuests > 0 ? numberOfQuests : false;
-  }.property('tutorialState.notClosedQuestStates').cacheable(),
+  }.property('tutorialState.newQuestStatesCount').cacheable(),
 
 
   questsClicked: function(){
@@ -430,11 +430,11 @@ module.TopRightHUDView = Ember.View.extend({
   },
   
   toggleQuestInfoPosition: function() {
-    if ($('#quest-info-box').css('right') > -140) {
-      $('#quest-info-box').delay(10).animate({right: "-315px"}, 800, 'easeOutBack');
+    if ($('#quest-info-box').css('right') > -130) {
+      $('#quest-info-box').delay(10).animate({right: "-295px"}, 800, 'easeOutBack');
     }
     else {
-      $('#quest-info-box').delay(10).animate({right: "-150px"}, 800, 'easeOutBack');
+      $('#quest-info-box').delay(10).animate({right: "-120px"}, 800, 'easeOutBack');
     }
   },
 
