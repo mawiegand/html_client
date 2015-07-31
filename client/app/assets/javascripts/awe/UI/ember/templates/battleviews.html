@@ -1,5 +1,8 @@
 <script type="text/x-handlebars" data-template-name="battle-dialog">
       <div class="battle-dialog-pane">
+      
+      <!-- NEW DIALOG -->
+      <!--
          <h1>{{t battle.details.battle_in}} {{region_name}}</h1>
          <div class="battle-init-users">
           <div class="battle-stats-value">
@@ -45,7 +48,7 @@
           <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
           <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
          </div>
-         <!--1-->
+         
          <div class="battle-stats1">
           <div class="battle-stats-value33">
             {{own_bonus}}
@@ -57,7 +60,7 @@
             {{other_bonus}}
           </div>
          </div>
-         <!--2-->
+         
          <div class="battle-stats2">
           <div class="battle-stats-value33">
             {{own_army_count}}
@@ -69,7 +72,7 @@
             {{other_army_count}}
           </div>
          </div>
-         <!--3-->
+         
          <div class="battle-stats3">
           <div class="battle-stats-value33">
             {{own_army_battle_count}}
@@ -81,7 +84,7 @@
             {{other_army_battle_count}}
           </div>
          </div>
-         <!--4-->
+         
          <div class="battle-stats4">
           <div class="battle-stats-value33">
             {{battle.ownFaction.total_casualties}}
@@ -93,10 +96,12 @@
             {{battle.otherFaction.total_casualties}}
           </div>
          </div>
+         -->
+         
          <!-- OLD DIALOG-->
-       <!-- <a class="close clickable" {{action "closePressed" target="parentView"}}></a>-->
+       <a class="close clickable" {{action "closePressed" target="parentView"}}></a>
            
-        <!--<div class="advisor chef"></div>
+        <div class="advisor chef"></div>
         
        <h2>{{t battle.details.heading}}</h2>
 
@@ -171,7 +176,7 @@
         <div class="battle-time">{{t battle.details.lastRound}}: {{formatTime battle.lastRound.executed_at}} | {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}</div>
         {{else}}
         <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
-        {{/if}}-->
+        {{/if}}
 
       </div>
 </script>
