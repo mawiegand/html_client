@@ -187,46 +187,57 @@
     <div class="cave_painting_button" {{action open_cave_painting}}></div>
   </div>
    
-  <div class="item">
-    <div class="left">{{t ranking.rank}}</div>
-    <div class="right">{{character_mundane_rank_numeric}} {{local character_rank_name}}</div>  
-  </div>
-
-  <div class="item">
-    <div class="left xp-icon"></div>
-    <div class="right">{{character_exp}}</div>
-  </div>
-  
-  <div class="item">  
-    <div class="left population"></div>
-    <div class="right">{{character_population}}</div>
-  </div>
+  <table>
+    <tr class="item">
+      <td class="left">{{t ranking.rank}}</td>
+      <td class="empty"></td>
+      <td class="right">{{character_mundane_rank_numeric}} {{local character_rank_name}}</td>
+    </tr>
     
-  <div class="item">  
-    <div class="left capacity"></div>
-    <div class="right">{{character_capacity}}</div>
-  </div>
-  
-  <div class="item">  
-    <div class="left fortress"></div>
-    <div class="right">{{character_fortresses}}</div>
-  </div>
-  
-  <div class="item">  
-    <div class="left outpost"></div>
-    <div class="right">{{character_outposts}}</div>
-  </div>
-  
-  <div class="item">  
-    <div class="left settlement_points"></div>
-    <div class="right">{{character_settlement_points}} / {{character_settlement_points_total}}</div>
-  </div>
-  
-  <div class="item">  
-    <div class="left victories"></div>
-    <div class="right">{{character_victories}}</div>
-  </div>
-  
+    <tr class="item">
+      <td class="left xp-icon"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_exp}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left population"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_population}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left capacity"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_capacity}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left fortress"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_fortresses}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left outpost"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_outposts}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left settlement_points"></td>
+      <td class="empty"></td>
+      <td class="right">{{character_settlement_points}} / {{character_settlement_points_total}}</td>
+    </tr>
+    
+    <tr class="item">
+      <td class="left victories"></td>
+      <td class="empty"></td>      
+      <td class="right">{{character_victories}}</td>
+    </tr>
+    
+  </table>
+
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic">
