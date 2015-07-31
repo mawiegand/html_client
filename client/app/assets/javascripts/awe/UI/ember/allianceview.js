@@ -199,7 +199,7 @@ AWE.UI.Ember = (function(module) {
     processSendAllianceCharacterInvite: function() {
       var self = this;
       var characterInviteName = this.get('characterInviteName');
-      var action = AWE.Action.Fundamental.createSendAllianceCharacterInviteAction(characterInviteName, this.get('alliance').getId());
+      var action = AWE.Action.Fundamental.createSendAllianceCharacterInviteAction(characterInviteName);
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
           var successDialog = AWE.UI.Ember.InfoDialog.create({
