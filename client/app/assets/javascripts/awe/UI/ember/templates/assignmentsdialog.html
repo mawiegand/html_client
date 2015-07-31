@@ -122,17 +122,17 @@
             <div class="progress-value progress-value-assignment-progress">{{formatDuration timeRemaining}}</div>
           </div>
         </div>
+        {{#unless isHalved }}
+          {{#if halving }}
+          {{else}}
+            <div class="name-change-button-gold assignment-gold" {{action "speedupPressed"}}>
+              <div class="item-price">{{speedupCosts}}</div>
+              <div class="item-toad"></div>
+              <div class="name-change-button-gold-titel">{{t settlement.assignment.hurry}}</div>
+            </div>
+          {{/if}}
+        {{/unless }}
       {{/if}}
-      {{#unless isHalved }}
-        {{#if halving }}
-        {{else}}
-          <div class="name-change-button-gold assignment-gold" {{action "speedupPressed"}}>
-            <div class="item-price">{{speedupCosts}}</div>
-            <div class="item-toad"></div>
-            <div class="name-change-button-gold-titel">{{t settlement.assignment.hurry}}</div>
-          </div>
-        {{/if}}
-      {{/unless }}
     {{else}}
       {{#if starting }}
       {{else}}
