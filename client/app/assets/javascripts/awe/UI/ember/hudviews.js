@@ -429,9 +429,8 @@ module.TopRightHUDView = Ember.View.extend({
     this.get('controller').initQuestDialog();
   },
   
-  toggleQuestInfoPosition: function() {
-    debugger
-    if ($('#quest-info-box').css('right') > -130) {
+  toggleQuestInfoPosition: function() {    
+    if (parseInt($('#quest-info-box').css('right')) > -130) {
       $('#quest-info-box').delay(10).animate({right: "-295px"}, 800, 'easeOutBack');
     }
     else {
