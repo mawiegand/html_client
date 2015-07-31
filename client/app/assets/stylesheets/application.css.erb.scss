@@ -467,13 +467,18 @@ canvas{
   background-size: 100% 100%;
   background-repeat: no-repeat;
   width: 120px;
-  height: 200px;
-  font-size: 0.65em;
+  font-size: 0.7em;
   position: relative;
   z-index: 50;
   top:150px;
   right: -150px;
   padding: 0% 9% 15% 11%;
+  overflow: hidden;
+}
+
+.quest-info-box-scroll{
+  width: 120px;
+  height: 210px;
   overflow: auto;
 }
 
