@@ -85,7 +85,7 @@ module.LeftHUDView = Ember.View.extend({
       }
     }
     return count > 0 ? count : false;
-  }.property('character.hashableStandardAssignments.changedAt').cacheable(),
+  }.property('character.hashableStandardAssignments.@each.changedAt').cacheable(),
 
   getNextAssignmentToFinish: function() {
     var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;

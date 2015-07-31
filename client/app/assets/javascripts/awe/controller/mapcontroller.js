@@ -1353,7 +1353,7 @@ AWE.Controller = function (module) {
       var battle_id = army.get('battle_id');
       var updated = false;
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
-        var battle = army.battle();
+        //var battle = army.battle();
         var dialog = AWE.UI.Ember.BattleDialog.create({
           battle:battle,
 
@@ -1371,7 +1371,7 @@ AWE.Controller = function (module) {
         that.applicationController.presentModalDialog(dialog);
         //dialog.set('battle', battle);
       });
-      if (!updated) that.applicationController.presentModalDialog(dialog);
+      if (!updated) that.applicationController.presentModalDialog(army.battle());
     };
 
     // ///////////////////////////////////////////////////////////////////////
