@@ -58,7 +58,7 @@ AWE.UI = (function(module) {
       var allianceId = _location.allianceId();
       var allianceColor = _location.allianceColor();
 
-      if (!_ownShape && _location.settlement().owner_id === AWE.GS.CharacterManager.currentCharacter.id) {
+      if (!_ownShape && _location.settlement() && _location.settlement().owner_id === AWE.GS.CharacterManager.currentCharacter.id) {
         var ownGraphics = new Graphics();
         ownGraphics.setStrokeStyle(1);
         ownGraphics.beginStroke(Graphics.getRGB(0,0,0));
@@ -69,7 +69,7 @@ AWE.UI = (function(module) {
         _ownShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
         that.addChildAt(_ownShape, 0);
       }
-      else if(_ownShape && _location.settlement().owner_id !== AWE.GS.CharacterManager.currentCharacter.id)
+      else if(_ownShape && _location.settlement() && _location.settlement().owner_id !== AWE.GS.CharacterManager.currentCharacter.id)
       {
         that.removeChild(_ownShape);
         _ownShape = null;
