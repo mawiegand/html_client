@@ -75,6 +75,12 @@ module.LeftHUDView = Ember.View.extend({
     }
     return false;
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
+  
+  finishedAssignmentsCount: function() {
+    var count = this.getPath('character.numberOfFinishedAssignments');
+    if (count === "undefined") return false;
+    return count > 0 ? count : false;
+  }.property('character.numberOfFinishedAssignments').cacheable(),
 
   getNextAssignmentToFinish: function() {
     var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
@@ -271,6 +277,12 @@ module.LeftHUDView = Ember.View.extend({
       return 'strategic-only-active';
 
   }.property('map_mode'),
+  
+  getUnreadMessageCount: function(){
+    var unreadMessages = this.getPath('character.inbox.unread_messages_count');
+    if (unreadMessages === undefined) return false;
+    return unreadMessages > 0 ? unreadMessages : false;
+  }.property('character.inbox.unread_messages_count').cacheable(),
 
 });
 
@@ -330,19 +342,13 @@ module.RightHUDView = Ember.View.extend({
       clearInterval(timer);
       this.set('timer', null);
     }
-  },
-  
-  getUnreadMessageCount: function(){
-    var unreadMessages = this.getPath('character.inbox.unread_messages_count');
-    if (unreadMessages === undefined) return false;
-    return unreadMessages > 0 ? unreadMessages : false;
-  }.property('character.inbox.unread_messages_count').cacheable(),
+  },    
 
   getNewQuest: function(){
-    var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');
+    var numberOfQuests = this.getPath('tutorialState.notClosedQuestStates');
     if (numberOfQuests === undefined) return false;
     return numberOfQuests > 0 ? numberOfQuests : false;
-  }.property('tutorialState.newQuestStatesCount').cacheable(),
+  }.property('tutorialState.notClosedQuestStates').cacheable(),
 
 
   questsClicked: function(){
@@ -416,6 +422,15 @@ module.TopRightHUDView = Ember.View.extend({
 
   initQuestDialog:function(){
     this.get('controller').initQuestDialog();
+  },
+  
+  toggleQuestInfoPosition: function() {
+    if ($('#quest-info-box').css('right') > -140) {
+      $('#quest-info-box').delay(10).animate({right: "-315px"}, _animationDuration, 'easeOutBack');
+    }
+    else {
+      $('#quest-info-box').delay(10).animate({right: "-150px"}, _animationDuration, 'easeOutBack');
+    }
   },
 
   epicQuest: function(){

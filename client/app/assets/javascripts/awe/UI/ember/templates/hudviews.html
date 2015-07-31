@@ -18,6 +18,10 @@
         <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}>
         {{#if timeUntillNextAssignment}}
           <div class="assignment-timer count-indicator-background count-indicator-background-position">:{{timeUntillNextAssignment}}</div>
+        {{else}}
+          {{#if finishedAssignmentsCount}}
+            <div class="count-indicator-background count-indicator-background-position">{{finishedAssignmentsCount}}</div>
+          {{/if}}
         {{/if}}
         </div>
       {{/if}}
@@ -80,7 +84,7 @@
 
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">  
   <div class="top-right-hud scale-down" id="top-right-dom-hud">
-    <div class="quest-info-box">
+    <div id="quest-info-box" class="quest-info-box" {{action "toggleQuestInfoPosition"}}>
       <div class="quest-info-box-scroll">
         <div class="title"><h5>{{local epicQuest.questName}}</h5></div>
         <div class="description">{{local epicQuest.quest.task}}</div>

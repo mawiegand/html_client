@@ -411,6 +411,18 @@ AWE.GS = (function(module) {
     enumerableStandardAssignments: function() {
       return this.getPath('hashableStandardAssignments.collection');
     }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
+    
+    numberOfFinishedAssignments: function() {
+      var count = 0;
+      var assignments = this.getPath('hashableStandardAssignments.collection');      
+      if(assignments !== null) {
+        for(var i = 0; i < assignments.length; i++) {
+          if(assignments[i].get('ended_at') !== null) count++;
+        }
+      }
+      return count;
+    }
+    }.property('hashableStandardAssignments.changedAt').cacheable(),
 
     finishedTutorial: function() {
       var finishedTutorial = this.get('tutorial_finished_at');
