@@ -43,7 +43,10 @@ AWE.Application = (function(module) {
    * @class
    * @name AWE.Application.MultiStageApplication
    */
+
+
   module.MultiStageApplication = Ember.Application.extend(function() {
+
 
     var oldMouseX = 0, mouseX = 0, mouseY = 0, oldMouseY = 0;
     var hoveredView=null;
@@ -68,6 +71,7 @@ AWE.Application = (function(module) {
       presentScreenController: null,
       allianceScreenController: null,
       readyForRunloop: false,
+      actualUpdate: false,
 
       runloopStartedAt: null,
 
@@ -513,7 +517,13 @@ AWE.Application = (function(module) {
             this.checkCharacterRankProgress();
           }
         }
-        window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
+
+
+      window.requestAnimFrame(function(self) { 
+          return function() {
+            self.runloop();
+          }; 
+        }(this));  // request next animation frame that will initiate the next cycle of the runloop
       },
 
       lastRunloopRun: new Date(1970),

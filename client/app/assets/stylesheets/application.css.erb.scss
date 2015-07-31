@@ -462,6 +462,41 @@ canvas{
   pointer-events: all;
 }
 
+.quest-info-box{
+  background-image:url('/client/assets/dialogs/quest-list/quest-selection-bg.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: 320px;
+  position: relative;
+  z-index: 50;
+  top:230px;
+  right: 10px;
+  padding: 3% 9% 11% 11%;
+  overflow: auto;
+}
+
+.quest-info-box .title{
+  width: 100%;
+  margin-top:25px;
+}
+.quest-info-box .title h5{
+  color:#643a13;
+  font-family: 'Freckle Face', cursive;
+  font-weight:300;
+  font-stretch:normal;
+  font-size:1.5em;
+  margin: 0;
+  padding: 0;
+}
+.quest-info-box .description{
+  color:#643a13;
+  font-family: 'Freckle Face', cursive;
+  margin: 0;
+  padding: 0;
+  font-weight:100;
+  font-stretch:normal;
+  font-size:1.2em;
+}
 .alliance-hud-button {
   width: 52px;
   height: 52px;
@@ -472,6 +507,13 @@ canvas{
   background: url("<%= asset_path 'hud/hud_stone_button.png' %>");
   cursor: pointer;
   z-index: 50;
+}
+.alliance-hud-button-position {
+
+  bottom: 0px;
+  left: 0px;
+  position: relative;
+  margin-top: 10%;
 }
 .alliance-hud-button:active{
   opacity: 0.7;
@@ -512,9 +554,10 @@ canvas{
   background-position: 0 0;
 }
 .message-hud-button-position{
-  bottom: 160px;
+  bottom: 0px;
   left: 0px;
   position: relative;
+  margin-top: 10%;
 }
 .message-hud-button:hover{
   background-position: -52px 0;
@@ -564,7 +607,7 @@ canvas{
 /* == NEW DOM LEFT HUD START== */
 .settlement-map-button {
   width: 120px;
-  height: 440px;
+  height: 450px;
   position: fixed;
   bottom: 10px;
   z-index: 50;
@@ -709,7 +752,7 @@ canvas{
 
 .menu-hud-button-position{
   position: relative;
-  top: 0px;
+  margin-top: 10%;
 }
 .menu-hud-button:hover{
   background-position: -52px 0;
@@ -729,7 +772,7 @@ canvas{
 }
 .ranking-hud-button-position{
   position: relative;
-  top: 20px;
+  margin-top: 10%;
 }
 .ranking-hud-button:hover{
   background-position: -52px 0;
@@ -845,7 +888,7 @@ canvas{
 
 .army-hud-button-position{
   position: absolute;
-  bottom: 100px;
+  margin-top: 10%;
 }
 
 .army-hud-button:hover{
@@ -867,7 +910,7 @@ canvas{
 
 .assignment-hud-button-position{
   position: relative;
-  top: 42px;
+  margin-top: 10%;
 }
 
 .assignment-hud-button:hover{
@@ -889,7 +932,7 @@ canvas{
 
 .trade-hud-button-position{
   position: relative;
-  top: 52px;
+  margin-top: 10%;
 }
 
 .trade-hud-button:hover{
@@ -6504,6 +6547,9 @@ div.dom-quest-container div.tutorial-dialog {
   top: 80%;
   left: 84%;
 }
+
+
+
 
 @media (max-width : 800px) {
   p.citation.clearfix{

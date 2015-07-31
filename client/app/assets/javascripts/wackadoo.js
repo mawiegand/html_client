@@ -139,13 +139,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
           }
         }
-        
-        
-        
       });
-
-  
     },
+
+    createQuestDialog:function(){
+        console.log("wow");
+    },
+
 
     showEpicQuestDialog: function(questState){
       var dialog = AWE.UI.Ember.QuestEpicView.create({

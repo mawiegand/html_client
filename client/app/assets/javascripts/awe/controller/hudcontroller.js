@@ -607,6 +607,9 @@ AWE.Controller = (function(module) {
       WACKADOO.showQuestListDialog(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     };
 
+    that.initQuestDialog = function(){
+      console.log('log');
+    },
     
     that.recruitButtonClicked = function() {
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
