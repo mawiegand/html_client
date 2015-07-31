@@ -521,6 +521,8 @@ AWE.I18n.de_DE = function(module) {
         victoryAfter: 'Sieg nach',
         won: "Gewonnen",
         days: 'Tagen',
+        artifact: "Artefakt",
+        dominion: "Herrschaft",
       },
 
       error: {
@@ -1033,7 +1035,11 @@ AWE.I18n.de_DE = function(module) {
       fortresses: "Festungen",
       homeSettlement: "Heimatsiedlung",
       sendMessage: "Nachricht senden",
-
+      tabs: {
+        info: "Info",
+        rank: "Rang",
+        customize: "Anpassen"
+      },
       battles: "Kämpfe",
       victories: "Siege",
       defeats: "Niederlagen",

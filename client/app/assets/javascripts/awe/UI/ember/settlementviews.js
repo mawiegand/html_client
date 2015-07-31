@@ -37,7 +37,6 @@ AWE.UI.Ember = (function(module) {
 
     /** reference to all building-slots of the base. May be null or empty. */
     slots: function() {
-      debugger
       var collection = this.getPath('hashableSlots.collection');
       log ('SORTING SLOTS')
       if(collection)

@@ -114,7 +114,7 @@ module.ProfileNewTabView = module.TabViewNew.extend({
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: "Info", 
+         title: AWE.I18n.lookupTranslation('profile.tabs.info'),
          view:  module.ProfileNewInfoView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance", 
@@ -122,7 +122,7 @@ module.ProfileNewTabView = module.TabViewNew.extend({
          buttonClass: "left-menu-button"
        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
        { key:   "tab2",
-         title: "Rank", 
+         title: AWE.I18n.lookupTranslation('profile.tabs.rank'),
          view:  module.ProfileNewRangView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance", 
@@ -130,7 +130,7 @@ module.ProfileNewTabView = module.TabViewNew.extend({
          buttonClass: "middle-menu-button"
        },
        { key:   "tab3",
-         title: "Customize", 
+         title: AWE.I18n.lookupTranslation('profile.tabs.customize'),
          view: module.ProfileNewCustomizeView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance",

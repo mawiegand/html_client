@@ -1011,7 +1011,11 @@ AWE.I18n.en_US = function(module) {
       fortresses:"Fortresses",
       homeSettlement:"Home settlement",
       sendMessage:"Send message",
-
+      tabs: {
+        info: "Info",
+        rank: "Rank",
+        customize: "Customize"
+      },
       battles:"Battles",
       victories:"Victories",
       defeats:"Defeats",
