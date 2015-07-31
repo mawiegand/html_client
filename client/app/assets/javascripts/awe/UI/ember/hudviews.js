@@ -81,7 +81,7 @@ module.LeftHUDView = Ember.View.extend({
     var assignments = this.getPath('character.hashableStandardAssignments.collection');      
     if(assignments !== null) {
       for(var i = 0; i < assignments.length; i++) {
-        if(assignments[i].get('ended_at') !== null) count++;
+        if(assignments[i].get('finished')) count++;
       }
     }
     return count > 0 ? count : false;
@@ -429,9 +429,8 @@ module.TopRightHUDView = Ember.View.extend({
     this.get('controller').initQuestDialog();
   },
   
-  toggleQuestInfoPosition: function() {
-    debugger
-    if ($('#quest-info-box').css('right') > -130) {
+  toggleQuestInfoPosition: function() {    
+    if (parseInt($('#quest-info-box').css('right')) > -130) {
       $('#quest-info-box').delay(10).animate({right: "-295px"}, 800, 'easeOutBack');
     }
     else {

@@ -1351,27 +1351,27 @@ AWE.Controller = function (module) {
 
     that.battleInfoButtonClicked = function (army) {
       var battle_id = army.get('battle_id');
-      var battle = army.battle();
-
-      var dialog = AWE.UI.Ember.BattleDialog.create({
-        battle:battle,
-
-        closePressed:function (evt) {
-          this.destroy();
-        },
-        retreatPressed:function (evt) {
-          that.armyRetreatButtonClicked(evt.view.army);
-        },
-        cancelRetreatPressed:function (evt) {
-          that.armyRetreatButtonClicked(evt.view.army);
-        },
-      });
-
+      var updated = false;
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
-        dialog.set('battle', battle);
-      });
+        //var battle = army.battle();
+        var dialog = AWE.UI.Ember.BattleDialog.create({
+          battle:battle,
 
-      that.applicationController.presentModalDialog(dialog);
+          closePressed:function (evt) {
+            this.destroy();
+          },
+          retreatPressed:function (evt) {
+            that.armyRetreatButtonClicked(evt.view.army);
+          },
+          cancelRetreatPressed:function (evt) {
+            that.armyRetreatButtonClicked(evt.view.army);
+          },
+        });
+        updated = true;
+        that.applicationController.presentModalDialog(dialog);
+        //dialog.set('battle', battle);
+      });
+      if (!updated) that.applicationController.presentModalDialog(army.battle());
     };
 
     // ///////////////////////////////////////////////////////////////////////
