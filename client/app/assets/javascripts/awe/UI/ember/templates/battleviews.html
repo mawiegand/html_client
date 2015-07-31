@@ -1,13 +1,15 @@
 <script type="text/x-handlebars" data-template-name="battle-dialog">
-    <div class="modal-dialog-background"></div>
-    <div class="center-helper">
       <div class="battle-dialog-pane">
-        
-        <a class="close clickable" {{action "closePressed" target="parentView"}}></a>
+         <h1>Kampf in Sterntulpenweide</h1>
+         <div class="battle-init-users">Angriff von</div>
+         <div class="battle-chef"></div>
+         <div class="battle-init-users">am 23.07.15</div>
+         <!-- OLD DIALOG-->
+       <!-- <a class="close clickable" {{action "closePressed" target="parentView"}}></a>-->
            
-        <div class="advisor chef"></div>
+        <!--<div class="advisor chef"></div>-->
         
-        <h2>{{t battle.details.heading}}</h2>
+        <!--<h2>{{t battle.details.heading}}</h2>
 
         {{#if battle.lastRound}}
         <div>{{t battle.details.afterRound}} {{battle.lastRound.number}}</div>
@@ -80,9 +82,9 @@
         <div class="battle-time">{{t battle.details.lastRound}}: {{formatTime battle.lastRound.executed_at}} | {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}</div>
         {{else}}
         <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
-        {{/if}}
+        {{/if}}-->
+         <!-- OLD DIALOG-->
       </div>
-    </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="battle-participant-view">

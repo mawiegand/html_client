@@ -1,0 +1,43 @@
+.battle-dialog-pane {
+  position: absolute; 
+  width: 585px;
+  /*min-height: 100px;
+  padding: 16px 20px 16px 20px;*/
+  z-index:256;
+
+  /*-moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;*/
+}
+
+
+.battle-dialog-pane a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-chef{
+  position: absolute;
+  margin-left: 506px;
+  margin-top: -62px;
+  width: 120px;
+  height: 120px;
+  background: url('<%= asset_path("advisors/head_chef_noneborder_quest.png") %>');
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.battle-init-users{
+  /*position: absolute;*/
+  height: 50px;
+  width: 480px;
+  background-color: #000;
+}

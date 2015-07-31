@@ -9,11 +9,12 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
     
-  module.BattleDialog = module.Dialog.extend({
+  module.BattleDialog = module.PopUpDialog.extend({
     templateName: 'battle-dialog',
     
     battle:                    null,
     timer:                     null,
+    /*battleRegion:              null,*/
     
     participantsOwnFaction:   'battle.participantsOwnFaction',
     participantsOtherFaction: 'battle.participantsOtherFaction',
@@ -23,9 +24,20 @@ AWE.UI.Ember = (function(module) {
         
  
     init: function() {
-      this._super();      
+      this._super(); 
+      /*this.setAndUpdateBattleRegion();     */
     },
     
+    /*setAndUpdateBattleRegion: function() {
+      var regionId = this.getPath('battle.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      this.set('battleRegion', region);
+    },
+
+    battleRegionName: function() {
+      return this.getPath('battle.region_id');
+    }.property(),*/
+
     didInsertElement: function() {
       this.startTimer();
     },
@@ -57,11 +69,11 @@ AWE.UI.Ember = (function(module) {
         
     
     ratioLengthOwn: function(){
-      return 'width: ' + Math.round(676 * (this.getPath('battle.ratio') || 0)) + 'px;';
+      return 'width: ' + Math.round(376 * (this.getPath('battle.ratio') || 0)) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     ratioLengthOther: function(){
-      return 'width: ' + Math.round(676 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
+      return 'width: ' + Math.round(376 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     message: function() {
@@ -88,7 +100,7 @@ AWE.UI.Ember = (function(module) {
     updateBattle: function() {
       var battleId = this.getPath('battle.id');
       if (battleId) {
-        AWE.GS.BattleManager.updateBattle(battleId);    
+        AWE.GS.BattleManager.updateBattle(battleId); 
       }  
     },
     
