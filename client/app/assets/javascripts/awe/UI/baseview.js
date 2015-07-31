@@ -74,9 +74,6 @@ AWE.UI = (function(module) {
         that.removeChild(_ownShape);
         _ownShape = null;
       }
-      if (_ownShape) {
-        _ownShape.setAlpha(that.selected() ? 1. : 0.2);
-      }
 
       if (!_selectShape && (that.selected() || that.hovered())) {
         var selectGraphics = new Graphics();
@@ -146,7 +143,7 @@ AWE.UI = (function(module) {
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 1);
       }
 
       if (!_flagView) {

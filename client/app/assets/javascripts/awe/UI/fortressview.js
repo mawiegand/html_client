@@ -70,7 +70,7 @@ AWE.UI = (function(module) {
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 1);
       }
 
       // FLAG VIEW ///////////////////////////////////////////////////////////
@@ -105,10 +105,10 @@ AWE.UI = (function(module) {
         _ownShape.setFrame(AWE.Geometry.createRect(-17, AWE.Config.MAP_FORTRESS_SIZE / 2 + 20, AWE.Config.MAP_FORTRESS_HILL_WIDTH, AWE.Config.MAP_FORTRESS_HILL_WIDTH / 3.0));
         this.addChildAt(_ownShape, 0);
       }
-      else if (_ownShape && _location.settlement().owner_id !== AWE.GS.CharacterManager.currentCharacter.id)
+      else if (_ownShape && !_node.region().isOwn())
       {
-        that.removeChild(_ownShape);
-        _ownShape = null;
+        //that.removeChild(_ownShape);
+        //_ownShape = null;
       }
 
       // SELECT SHAPE ////////////////////////////////////////////////////////

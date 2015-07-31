@@ -123,7 +123,7 @@ AWE.UI = (function(module) {
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 1);
       }
 
       if (!_flagView) {
