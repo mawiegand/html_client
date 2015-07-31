@@ -127,7 +127,7 @@ AWE.UI.Ember = (function(module) {
       var participants = this.getPath('battle.participantsOwnFaction');
       for(var i=0; i<participants.length; i++)
       {
-        if(allianceID !== null && participants[i].army !== "undefined" && participants[i].army.alliance_id === allianceID)
+        if(allianceID !== null && participants[i].army !== undefined && participants[i].army.alliance_id === allianceID)
         {
           bonusStrength += participants[i].army.strength;
         }
@@ -157,7 +157,7 @@ AWE.UI.Ember = (function(module) {
       var participants = this.getPath('battle.participantsOtherFaction');
       for(var i=0; i<participants.length; i++)
       {
-        if(allianceID !== null && participants[i].army !== "undefined" && participants[i].army.alliance_id === allianceID)
+        if(allianceID !== null && participants[i].army !== undefined && participants[i].army.alliance_id === allianceID)
         {
           bonusStrength += participants[i].army.strength;
         }
