@@ -667,9 +667,7 @@
     font-size: 25px;
     line-height: 2em;
     width: 216px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
   }
 
   .actual_threshold {
@@ -741,10 +739,14 @@
      .name {
        font-size: 22px;
        line-height: 2.2em;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
      }
      
      .actual_threshold {
-       
+        float: right;
+        margin-right: 5px;
      }
    }
 }
@@ -1245,6 +1247,8 @@ div.dom-quest-container div.tutorial-dialog {
     }
     
     .haufen{
+      position: absolute;
+      top: 110px;
       width: 260px;
       height: 200px;
       background-image: url('<%= asset_path("dialogs/quest-dialog/quest-dialog-haufen.png") %>');
@@ -1253,7 +1257,8 @@ div.dom-quest-container div.tutorial-dialog {
     }
     
     .redeemButton{
-      position: relative;
+      position: absolute;
+      top: 260px;
 
       width: 180px;
       height: 53px;
@@ -1273,8 +1278,7 @@ div.dom-quest-container div.tutorial-dialog {
       -o-user-select: none;
       user-select: none;
 
-      top: -50px;
-      left: 40px;
+      left: 20px;
       text-align: center;
     
       span{
@@ -1296,8 +1300,8 @@ div.dom-quest-container div.tutorial-dialog {
     }
     
     .quest-dialog-reward{
-      position: relative;
-      top: -70px;
+      position: absolute;
+      top: 320px;
     }
 
     .quest-reward-item-number{
@@ -1316,10 +1320,10 @@ div.dom-quest-container div.tutorial-dialog {
   .next_quest_container{
     position: absolute;
     float:right;  
-    width: 48%;
+    width: 52%;
     left: 265px;
     top: 0px;
-    height: 378px;
+    height: 100%;
     overflow: scroll;
     
     .header{
@@ -1327,6 +1331,7 @@ div.dom-quest-container div.tutorial-dialog {
       font-size: 22px;
       font-family: $main-font;
       color: #563E22;
+      width: 75%;
     }
      
     .advisor{
@@ -1343,29 +1348,44 @@ div.dom-quest-container div.tutorial-dialog {
       font-size: 14px;
       font-family: $main-font;
       color: #563E22;
-      width: 200px;
-      height: 90px;
-      margin-bottom: 40px;
+      width: 75%;
+    }
+    
+    .quest-dialog-reward {
+      position: absolute;  
+      top: 320px;
     }
     
     .quest-subquests{
+      position: absolute;  
+      top: 140px;
       margin-left: 0px;
         
-      .quest-list-item{
-          
+      .quest-list-item{  
+        cursor: pointer;
+        height: 38px;
+            
         .advisor{
           position: relative;
-          width:38px;
-          height:38px;        
-          top: 0px;
+          width:34px;
+          height:34px;        
+          top: -1px;
         }
         
         .name{
           font-family: $main-font;
           font-size: 16px;
-          line-height: 2.8em;  
-          width: 66%;
+          line-height: 2.5em;  
+          width: 68%;
+          float:left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
+        .actual_threshold {
+          line-height: 2.0em;
+        }
+        
       }
     }
   }
