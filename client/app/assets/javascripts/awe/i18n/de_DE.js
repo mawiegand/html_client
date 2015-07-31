@@ -1067,7 +1067,7 @@ AWE.I18n.de_DE = function(module) {
         noRankUpPossible: "Derzeit ist kein Aufstieg möglich.",
         info: "Ein Aufstieg im weltlichen Rang gibt mehr Siedlungspunkte.",
         experienceInfo: "Deine Erfahrung steigt, indem Du baust und kämpfst.",
-        experienceProduction: "Erfahrungsproduktion",
+        experienceBonus: "Erfahrungsbonus",
         settlementPoints: "Siedlungspunkte",
         freeSettlementPoints: "Freie Siedlungspunkte",
         notUsed: "Noch nicht verwendet",

@@ -194,7 +194,7 @@
 .next-rank,
 .current-level,
 .next-level,
-.experience-production,
+.experience-bonus,
 .settlement-points {
   padding: 0 20px 0 20px;
   font-size: 0.8em;
@@ -212,7 +212,7 @@
 
 .current-level-title,
 .next-level-title,
-.experience-production-title,
+.experience-bonus-title,
 .settlement-points-title {
   color: rgb(112,92,48);
   line-height: 2em;
@@ -221,7 +221,7 @@
 
 .current-level-value,
 .next-level-value,
-.experience-production-value,
+.experience-bonus-value,
 .settlement-points-value {
   color: rgb(154,148,138);
   line-height: 2em;
@@ -230,7 +230,7 @@
 
 .current-level div,
 .next-level div,
-.experience-production div,
+.experience-bonus div,
 .settlement-points div {
   display: inline-block;
 }

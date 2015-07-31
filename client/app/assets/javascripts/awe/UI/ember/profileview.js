@@ -334,6 +334,10 @@ module.ProfileNewRangView  = Ember.View.extend  ({
       return "background-size: "+ this.get('progressBarPosition') + " 100%";
     }.property().cacheable(),
 
+    expBonus: function(){
+      return this.getPath('character.exp_bonus_total') *  100 + "%";
+    }.property('character.exp_bonus_total')
+
    });
 
   
