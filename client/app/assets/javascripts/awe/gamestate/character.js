@@ -417,7 +417,7 @@ AWE.GS = (function(module) {
       var assignments = this.getPath('hashableStandardAssignments.collection');      
       if(assignments !== null) {
         for(var i = 0; i < assignments.length; i++) {
-          if(assignments[i].get('ended_at') !== null) count++;
+          if(assignments[i].get('finished')) count++;
         }
       }
       return count;    

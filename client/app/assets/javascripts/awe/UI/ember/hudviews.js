@@ -81,11 +81,11 @@ module.LeftHUDView = Ember.View.extend({
     var assignments = this.getPath('character.hashableStandardAssignments.collection');      
     if(assignments !== null) {
       for(var i = 0; i < assignments.length; i++) {
-        if(assignments[i].get('ended_at') !== null) count++;
+        if(assignments[i].get('finished') !== null) count++;
       }
     }
     return count > 0 ? count : false;
-  }.property('character.hashableStandardAssignments.@each.changedAt').cacheable(),
+  }.property('character.hashableStandardAssignments.changedAt').cacheable(),
 
   getNextAssignmentToFinish: function() {
     var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
