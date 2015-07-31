@@ -420,8 +420,7 @@ AWE.GS = (function(module) {
           if(assignments[i].get('ended_at') !== null) count++;
         }
       }
-      return count;
-    }
+      return count;    
     }.property('hashableStandardAssignments.changedAt').cacheable(),
 
     finishedTutorial: function() {
