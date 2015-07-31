@@ -160,17 +160,12 @@
       {{/if}}
     </div>
     <div class="bottom-section">
-      {{#if unlockingBuildings}}
-        <div class="unlocking-buildings">
+      {{#if unlocking}}
+        <div class="unlocking-container">
           <div class="unlocking">{{t dialogs.upgrade.unlocking}}</div>
           {{#each unlockingBuildings}}
             <div {{bindAttr class="this.symbolic_id :building-image"}}></div>
           {{/each}}
-        </div>
-      {{/if}}
-      {{#if unlockingUnits}}
-        <div class="unlocking-units">
-          <div class="unlocking">Unlocking</div>
           {{#each unlockingUnits}}
             <div {{bindAttr class="this.db_field :cell-icon-big"}}></div>
           {{/each}}
