@@ -3114,7 +3114,6 @@ AWE.Controller = function (module) {
 
           annotationView.onAttackButtonClick = (function (self) {
             return function (view) {
-              view.removeView(false);
               self.armyAttackButtonClicked(view);
             }
           })(that);

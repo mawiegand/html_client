@@ -12,8 +12,6 @@ AWE.UI = (function(module) {
     var that;
     var _army = null;
     var _armyView = null;
-    
-    var _hide_tooltip = true;
     var first_attempt = false;
 
     var _actionMode = null;
@@ -113,9 +111,8 @@ AWE.UI = (function(module) {
           AWE.UI.ImageCache.getImage("hud/annotation/activestate")
         );
       _attackButtonView.onClick = function() { 
-
-
-        if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
+        if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); }
+      }
         this.addChild(_attackButtonView);
 
 
@@ -205,6 +202,17 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, -20, 20, 20));
       this.addChild(_rankImageView);
       
+      that.createInfoContainer(controller);
+      
+      if (!frame) {
+        my.frame.size.width = 192;
+        my.frame.size.height = 128;
+      }
+
+      this.recalcView();
+    };
+
+    that.createInfoContainer = function(controller) {
       infoContainer = AWE.UI.createMultiColumnContainer();
       infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,0,0));
       this.addChild(infoContainer);
@@ -270,13 +278,11 @@ AWE.UI = (function(module) {
       _littleChiefInfoView.setTextAlign("right");
       _littleChiefInfoView.setIconImage("map/icon/rank");
       armyInfoContainer.addChild(_littleChiefInfoView);
-        
-      if (!frame) {
-        my.frame.size.width = 192;
-        my.frame.size.height = 128;
-      }
+    };
 
-      this.recalcView();
+    that.removeInfoContainer = function(){
+      this.removeChild(infoContainer);
+      infoContainer = null;
     };
     
     that.onAttackButtonClick = function() {};
@@ -406,26 +412,6 @@ AWE.UI = (function(module) {
 
 //      _retreatButtonView.setSelected(_army.get('battle_retreat'));
     }
-
-    that.removeView = function(attackbutton){
-
-      _hide_tooltip = attackbutton;
-
-      if(!attackbutton)
-      {
-        this.removeChild(_backgroundShapeView);
-        infoContainer.removeChild(armyInfoContainer);
-        generalInfoContainer.removeChild(_infoText1View);
-        generalInfoContainer.removeChild(_infoText2View);
-        generalInfoContainer.removeChild(_infoText3View);
-        armyInfoContainer.removeChild(emptyLine);
-        armyInfoContainer.removeChild(_infantryInfoView);
-        armyInfoContainer.removeChild(_artilleryInfoView);
-        armyInfoContainer.removeChild(_cavalryInfoView);
-        armyInfoContainer.removeChild(_littleChiefInfoView);
-      }
-
-   };
     
     that.recalcView = function() {
       
@@ -442,26 +428,29 @@ AWE.UI = (function(module) {
       // info view
       if (_backgroundShapeView) {
         this.removeChild(_backgroundShapeView);
-      }
-
-      _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
-      _infoText2View.setText(_army.get('strength'));
-      _infoText3View.setText(_army.get('size_present'));
-
-      _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
-      _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
-      _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
-      if(_army.details !== null && _army.details !== "undefined" && _army.details.unit_little_chief !== null)
-      {
-        _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
-      }
-      else
-      {
-        _littleChiefInfoView.setText(0);
-      }
+      }      
       
-      if(_hide_tooltip)
+      if(_actionMode !== 'moveTargetSelection' && _actionMode !== 'attackTargetSelection')
       {
+        if(!infoContainer)
+        {
+          that.createInfoContainer();
+        }
+        _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
+        _infoText2View.setText(_army.get('strength'));
+        _infoText3View.setText(_army.get('size_present'));
+
+        _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
+        _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
+        _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
+        if(_army.details !== null && _army.details !== "undefined" && _army.details.unit_little_chief !== null)
+        {
+          _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
+        }
+        else
+        {
+          _littleChiefInfoView.setText(0);
+        }
         infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
         backgroundGraphics = new Graphics();
@@ -477,6 +466,9 @@ AWE.UI = (function(module) {
                                                               infoContainer.frame().size.width + 12, 
                                                               infoContainer.frame().size.height+ 4));
         this.addChildAt(_backgroundShapeView, 0);
+      }
+      else {
+        that.removeInfoContainer();
       }
       
       
