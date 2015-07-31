@@ -115,6 +115,14 @@ AWE.UI.Ember = (function(module) {
       return this.get('selectedLevel') - this.get('currentLevel');
     }.property('selectedLevel', 'currentLevel'),
 
+    unlocking: function() {
+      if(this.get('unlockingBuildings').length > 0 || this.get('unlockingUnits').length > 0)
+      {
+        return true;
+      }
+      return false;
+    }.property('unlockingBuildings', 'unlockingUnits'),
+
     unlockingBuildings: function() {
       return this.getPath('slot.building').getUnlockedBuildingsForLevel(this.get('selectedLevel'));
     }.property('slot.building.unlockedBuildings', 'selectedLevel'),
