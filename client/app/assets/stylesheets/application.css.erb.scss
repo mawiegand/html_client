@@ -786,7 +786,7 @@ canvas{
   background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
   background-position: 0 0;
   position: relative;
-  top: 0px;
+  top: -5px;
 
   &.normal-all-active{
     background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
@@ -856,7 +856,7 @@ canvas{
 
 .army-menu-hud-button-position{
   position: relative;
-  top: 5px;
+  top: 0px;
 }
 .army-menu-hud-button{
   width: 52px;
