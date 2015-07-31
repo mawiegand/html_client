@@ -1503,14 +1503,19 @@ AWE.GS = (function(module) {
             that.currentDialog.checkForNextQuest();
           }
         }
+        
         // HACKED:
         /*
-          var closedQuestStates = that.tutorialState.get('closedQuestStates');
-          var finishedQuest = closedQuestStates[0];
-          var nextQuest = closedQuestStates[11];        
-          //that.showQuestDialog(finishedQuest, nextQuest);
-          that.showQuestDialog(finishedQuest, null);        
-        */
+        if(typeof my.debug === "undefined")
+          my.debug = true;
+        if(my.debug == true)
+        {
+          my.debug = false;
+          var finishedQuest = that.tutorialState.get('closedQuestStates')[5];
+          var nextQuest = that.tutorialState.get('notClosedQuestStates')[0];        
+          that.showQuestDialog(finishedQuest, nextQuest);
+          //that.showQuestDialog(finishedQuest, null);        
+        }*/
         // HACKED END
         
         /*if (delayedFinishedQuestState) {
