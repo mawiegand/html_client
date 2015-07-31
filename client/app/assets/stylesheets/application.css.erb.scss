@@ -5830,78 +5830,8 @@ a.trading-carts-speedup-button:hover {
   display: inline-block;
 }
 
-.battle-ratio {
-  position: relative;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.battle-ratio-left {
-  background-color: #cfc;
-  display: inline-block;
-  height: 32px;
-}
-
-.battle-ratio-right {
-  background-color: #fcc;
-  display: inline-block;
-  height: 32px;
-}
-
-.battle-ratio-left-text {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 5px;
-  width: 870px;
-}
-
-.battle-ratio-right-text {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: right;
-  padding: 5px;
-  width: 669px;
-}
-
 .battle-time {
   margin-top: 20px;
-}
-
-.battle-dialog-pane {
-  position: absolute; 
-  margin-left: -354px;
-  margin-top: -240px;
-  width: 676px;
-  min-height: 100px;
-  background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
-  z-index:256;
-
-  -moz-border-radius: 12px;
-  border-radius:      12px;
-  -moz-box-shadow:    3px 3px 2px 2px #333;
-  -webkit-box-shadow: 3px 3px 2px 2px #333;
-  box-shadow:         3px 3px 2px 2px #333;
-}
-
-
-.battle-dialog-pane a.close {
-  position: absolute;
-  background: url('<%= asset_path("ui/close_button.png") %>');
-  width: 50px;
-  height: 46px;
-  right: 24px;
-  top: 26px;
-}
-
-.battle-dialog-pane a.close:hover {
-  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .attack-dialog-pane {
@@ -6621,6 +6551,7 @@ div.dom-quest-container div.tutorial-dialog {
 @import 'quest_dialogs';
 @import 'ranking_dialog';
 @import 'army_list_dialog';
+@import 'battle_dialog_info';
 
 @import 'ptero';
 @import 'retentionegg';

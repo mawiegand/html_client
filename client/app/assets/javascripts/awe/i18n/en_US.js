@@ -90,6 +90,16 @@ AWE.I18n.en_US = function(module) {
         oneFaction:"One faction",
         otherFaction:"Other faction",
         lostUnits: "Lost Units",
+        battle_in: "Battle in",
+        attack_of: "Attack of",
+        on: "on",
+        on_time: "on",
+        at_time: "at",
+        round: "Round",
+        battleBonus: 'Battle Bonus',
+        totalArmies: 'Total Armies',
+        currentlyInvolved: '...currently involved',
+        killedUnits: 'Killed Units',
 
         participants:{
           name:"Name",
