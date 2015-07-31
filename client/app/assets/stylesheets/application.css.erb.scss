@@ -786,7 +786,7 @@ canvas{
   background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
   background-position: 0 0;
   position: relative;
-  top: 15px;
+  top: 0px;
 
   &.normal-all-active{
     background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
@@ -809,7 +809,7 @@ canvas{
   background-position: 0 0;
 
   &.small-1{
-    top: 41px;
+    top: 32px;
     left: 6px;
     background:url("<%= asset_path 'hud/map_mountains_button/strategic_all_inactive.png' %>") no-repeat;
 
@@ -829,7 +829,7 @@ canvas{
 
   &.small-2{
     left:6px;
-    top: 21px;
+    top: 12px;
     background:url("<%= asset_path 'hud/map_mountains_button/normal_only_inactive.png' %>") no-repeat;
 
     &.normal-all-inactive{
@@ -856,7 +856,7 @@ canvas{
 
 .army-menu-hud-button-position{
   position: relative;
-  top: 26px;
+  top: 5px;
 }
 .army-menu-hud-button{
   width: 52px;

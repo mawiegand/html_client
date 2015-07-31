@@ -1351,6 +1351,7 @@ AWE.Controller = function (module) {
 
     that.battleInfoButtonClicked = function (army) {
       var battle_id = army.get('battle_id');
+      var updated = false;
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
         var battle = army.battle();
         var dialog = AWE.UI.Ember.BattleDialog.create({
@@ -1366,11 +1367,11 @@ AWE.Controller = function (module) {
             that.armyRetreatButtonClicked(evt.view.army);
           },
         });
+        updated = true;
         that.applicationController.presentModalDialog(dialog);
         //dialog.set('battle', battle);
       });
-
-      //that.applicationController.presentModalDialog(dialog);
+      if (!updated) that.applicationController.presentModalDialog(dialog);
     };
 
     // ///////////////////////////////////////////////////////////////////////

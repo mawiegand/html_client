@@ -130,14 +130,10 @@ AWE.UI.Ember = (function(module) {
         if(allianceID !== null && participants[i].army !== undefined && participants[i].army.alliance_id === allianceID)
         {
           bonusStrength += participants[i].army.strength;
-        }
-        else
-        {
-          return 0;
-        }
+        }        
       }
 
-      var percentageOfArmyValidForBonus = bonusStrength / ownStrength;
+      var percentageOfArmyValidForBonus = bonusStrength / (ownStrength === 0 ? 1 : ownStrength);
       return rawBonus * percentageOfArmyValidForBonus;
 
     }.property('battle'),
@@ -160,14 +156,10 @@ AWE.UI.Ember = (function(module) {
         if(allianceID !== null && participants[i].army !== undefined && participants[i].army.alliance_id === allianceID)
         {
           bonusStrength += participants[i].army.strength;
-        }
-        else
-        {
-          return 0;
-        }
+        }        
       }
 
-      var percentageOfArmyValidForBonus = bonusStrength / otherStrength;
+      var percentageOfArmyValidForBonus = bonusStrength / (otherStrength === 0 ? 1 : otherStrength);
       return rawBonus * percentageOfArmyValidForBonus;
 
     }.property('battle'),
