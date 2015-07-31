@@ -786,7 +786,7 @@ canvas{
   background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
   background-position: 0 0;
   position: relative;
-  top: -5px;
+  top: -10px;
 
   &.normal-all-active{
     background:url("<%= asset_path 'hud/map_mountains_button/normal_all_active.png' %>") no-repeat;
