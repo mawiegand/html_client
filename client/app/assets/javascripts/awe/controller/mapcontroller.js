@@ -3113,7 +3113,9 @@ AWE.Controller = function (module) {
 
           annotationView.onAttackButtonClick = (function (self) {
             return function (view) {
-              view.removeView(false);
+              if(typeof view.removeView === 'function') {
+                view.removeView(false);
+              }
               self.armyAttackButtonClicked(view);
             }
           })(that);
