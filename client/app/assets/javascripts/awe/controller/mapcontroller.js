@@ -2725,7 +2725,7 @@ AWE.Controller = function (module) {
 
                               if (view) {
                                   if (view.lastChange !== undefined && // if model of view updated
-                                      view.lastChange().getTime() < artifact.lastChange().getTime()) {
+                                      view.lastChange().getTime() < poacherTreasure.lastChange().getTime()) {
                                       view.setNeedsUpdate();
                                   }
                               }
@@ -2746,7 +2746,7 @@ AWE.Controller = function (module) {
           }
 
           var removedSomething = purgeDispensableViewsFromStage(poacherTreasureViews, newPoacherTreasureViews, _stages[1]);
-          artifactViews = newPoacherTreasureViews;
+          poacherTreasureViews = newPoacherTreasureViews;
           return removedSomething;
       }
 
