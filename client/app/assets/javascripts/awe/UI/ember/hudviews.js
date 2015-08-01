@@ -77,6 +77,7 @@ module.LeftHUDView = Ember.View.extend({
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
   
   finishedAssignmentsCount: function() {
+    return false; // TODO: REPAIR BINDING, jb
     var count = 0;
     var assignments = this.getPath('character.hashableStandardAssignments.collection');      
     if(assignments !== null) {
