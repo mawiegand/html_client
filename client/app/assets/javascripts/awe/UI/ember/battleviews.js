@@ -122,24 +122,29 @@ AWE.UI.Ember = (function(module) {
       var id = this.getPath('battle.location_id');
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
       var bonusStrength = 0;
-      var allianceID = settlement.alliance_id;
-      var rawBonus = settlement.present_defense_bonus * 100;
-      var participants = this.getPath('battle.participantsOwnFaction');
-      for(var i=0; i<participants.length; i++)
-      {
-        if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+      if(settlement && typeof settlement !== "undefined"){
+        var allianceID = settlement.alliance_id;
+        var rawBonus = settlement.present_defense_bonus * 100;
+        var participants = this.getPath('battle.participantsOwnFaction');
+        for(var i=0; i<participants.length; i++)
         {
-          bonusStrength += participants[i].army.strength;
-        }
-        else
-        {
-          return 0;
+          if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+          {
+            bonusStrength += participants[i].army.strength;
+          }
+          else
+          {
+            return 0;
+          }
         }
       }
 
-      var percentageOfArmyValidForBonus = bonusStrength / ownStrength;
-      return rawBonus * percentageOfArmyValidForBonus;
-
+      if(ownStrength > 0){
+        var percentageOfArmyValidForBonus = bonusStrength / ownStrength;
+        return rawBonus * percentageOfArmyValidForBonus;        
+      }else{
+        return rawBonus;
+      }
     }.property('battle'),
 
     other_bonus: function(){
@@ -152,24 +157,27 @@ AWE.UI.Ember = (function(module) {
       var id = this.getPath('battle.location_id');
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
       var bonusStrength = 0;
-      var allianceID = settlement.alliance_id;
-      var rawBonus = settlement.present_defense_bonus * 100;
-      var participants = this.getPath('battle.participantsOtherFaction');
-      for(var i=0; i<participants.length; i++)
-      {
-        if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+      if(settlement && typeof settlement !== "undefined"){
+        var allianceID = settlement.alliance_id;
+        var rawBonus = settlement.present_defense_bonus * 100;
+        var participants = this.getPath('battle.participantsOtherFaction');
+        for(var i=0; i<participants.length; i++)
         {
-          bonusStrength += participants[i].army.strength;
-        }
-        else
-        {
-          return 0;
-        }
+          if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+          {
+            bonusStrength += participants[i].army.strength;
+          }
+          else
+          {
+            return 0;
+          }
+        }        
       }
-
-      var percentageOfArmyValidForBonus = bonusStrength / otherStrength;
-      return rawBonus * percentageOfArmyValidForBonus;
-
+      if(otherStrength > 0){
+        var percentageOfArmyValidForBonus = bonusStrength / otherStrength;
+        return rawBonus * percentageOfArmyValidForBonus;        
+      }else
+        return rawBonus;
     }.property('battle'),
 
     army_of_opponent: function(){

@@ -5796,53 +5796,109 @@ a.trading-carts-speedup-button:hover {
   margin-top: 20px;
 }
 
+
+@media (max-width : 960px){
+  .attack-dialog-pane {
+    zoom: 0.5 !important;
+  }
+}
+
 .attack-dialog-pane {
-  position: absolute; 
-  margin-left: -370px;
-  margin-top: -200px;
-  width: 700px; min-height: 100px;
-  background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
+  background-image: url('<%= asset_path("dialogs/quest-list/quest-selection-bg.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: 100%;
+
+  position: fixed; 
+  margin-left: -382px;
+  margin-top: 72px;
+  width: 764px;
+  height: 576px;
+  top: 100px;
   z-index:258;
-
-  -moz-border-radius: 12px;
-  border-radius:      12px;
-  -moz-box-shadow:    3px 3px 2px 2px #333;
-  -webkit-box-shadow: 3px 3px 2px 2px #333;
-  box-shadow:         3px 3px 2px 2px #333;
 }
 
-.attack-dialog-pane .icon-button {
-  margin-left: 20px;
+.attack-dialog-pane .advisor{
+  margin-left:50px;
 }
+
+.attack-dialog-pane h2{
+  font-family: $main-font;
+  font-size: 32px;  
+  color: #643a13;
+  margin-top: 50px;
+}
+
+.attack-dialog-pane .citation {
+  margin-right: 50px;
+  font-family: $main-font;
+  font-size: 14px;
+  color: #643a13;
+}
+
+.attack-dialog-pane p{
+  font-family: $main-font;
+  font-size: 18px;  
+  color: #643a13;
+  margin-right: 50px;
+}
+
+
+.attack-dialog-pane 
+
+  .icon-button {
+    margin-left: 120px;
+    margin-right: 60px;
+    background-size: 100% 100%;
+    background-image: url('<%= asset_path("dialogs/buttons/button_blue_wide.png") %>');
+    height: 48px;
+    width: 148px;
+  
+
+  
+  .icon-button:hover{
+    cursor: pointer;
+    opacity: 0.7;
+  }
+}
+
+
 
 .attack-participant-table {
-  width: 400px;
-  border: 1px solid #ccc;
+  width: 80%;
+  border: 1px solid #683F14;
   border-radius: 10px;
   border-collapse: separate;
   border-spacing: 0;
-  margin: 0px 0px 10px 0px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .attack-participant-table th {
-  background-color: #555;  
+  background-color: #6C5239;  
   color: #fff;
   padding: 4px 4px 4px 4px;
+  font-family: $main-font;
+  font-size: 22px;
 }
 
 .attack-participant-table th.left {
   border-top-left-radius: 10px;
   border-bottom-left-radsius: 10px;
+  text-align: center;
 }
 
 .attack-participant-table th.right {
   border-top-right-radius: 10px;
   border-bottom-right-rasdius: 10px;
+  text-align: center;
 }
 
 .attack-participant-table td {
   padding: 4px 4px 4px 14px;
+  font-family: $main-font;
+  font-size: 18px;
 }
 
 .attack-participant-faction {
