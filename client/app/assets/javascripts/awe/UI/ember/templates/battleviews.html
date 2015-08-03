@@ -6,25 +6,16 @@
             {{t battle.details.attack_of}}
           </div>
           <div class="battle-stats-value">
-            {{#if army_of_initiator.npc}}
-              {army_of_initiator.owner_name}}{{#if army_of_initiator.alliance_tag}} | {{army_of_initiator.alliance_tag}}{{/if}} 
-            {{else}}
-               {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_initiator"}}
-            {{/if}}
+            {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_initiator"}}
           </div>
           <div class="battle-stats-value">
             {{t battle.details.on}}
           </div>
           <div class="battle-stats-value">
-            {{#if army_of_opponent.npc}}
-              {{army_of_opponent.owner_name}}{{#if army_of_opponent.alliance_tag}} | {{army_of_opponent.alliance_tag}}{{/if}} 
-            {{else}}
-               {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_opponent"}}
-            {{/if}}
+            {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_opponent"}}
           </div>
          </div>
          <div class="battle-chef"></div>
-         <div class="battle-init-time">{{t battle.details.on_time}} {{attack_started_at_date}} {{t battle.details.at_time}} {{attack_started_at_time}} MEZ</div>
          <div class="battle-citation"><q>{{message}}</q></div>
          <div class="battle-round">
           <div class="battle-round50-left">
@@ -45,7 +36,7 @@
           <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
           <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
          </div>
-         <!--1-->
+
          <div class="battle-stats1">
           <div class="battle-stats-value33">
             {{own_bonus}}
@@ -57,7 +48,7 @@
             {{other_bonus}}
           </div>
          </div>
-         <!--2-->
+
          <div class="battle-stats2">
           <div class="battle-stats-value33">
             {{own_army_count}}
@@ -69,7 +60,7 @@
             {{other_army_count}}
           </div>
          </div>
-         <!--3-->
+
          <div class="battle-stats3">
           <div class="battle-stats-value33">
             {{own_army_battle_count}}
@@ -81,7 +72,7 @@
             {{other_army_battle_count}}
           </div>
          </div>
-         <!--4-->
+
          <div class="battle-stats4">
           <div class="battle-stats-value33">
             {{battle.ownFaction.total_casualties}}

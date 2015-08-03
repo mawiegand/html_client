@@ -99,18 +99,34 @@ AWE.UI.Ember = (function(module) {
     own_army_count: function(){
       var armyCount = 0;
       var participants = this.getPath('battle.participantsOwnFaction');
-          for(var i=0; i<participants.length; i++)
-            armyCount += Object.keys(AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id)).length;
+      for(var i=0; i<participants.length; i++)
+      {
+        var charArmies = AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id);
+        Object.keys(charArmies).forEach(function(key){
+          if(!charArmies[key].isGarrison())
+          {
+            armyCount++;
+          }
+        });
+      }
       return armyCount;
-    }.property('battle'),
+    }.property('battle.participantsOwnFaction'),
 
     other_army_count: function(){
       var armyCount = 0;
       var participants = this.getPath('battle.participantsOtherFaction');
-          for(var i=0; i<participants.length; i++)
-            armyCount += Object.keys(AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id)).length;
+      for(var i=0; i<participants.length; i++)
+      {
+        var charArmies = AWE.GS.ArmyManager.getArmiesOfCharacter(participants[i].character_id);
+        Object.keys(charArmies).forEach(function(key){
+          if(!charArmies[key].isGarrison())
+          {
+            armyCount++;
+          }
+        });
+      }
       return armyCount;
-    }.property('battle'),
+    }.property('battle.participantsOtherFaction'),
 
     own_bonus: function(){
       var ownStrength = 0;
@@ -128,9 +144,9 @@ AWE.UI.Ember = (function(module) {
         var participants = this.getPath('battle.participantsOwnFaction');
         for(var i=0; i<participants.length; i++)
         {
-          if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+          if(allianceID !== null && participants[i].getPath('army.alliance_id') === allianceID)
           {
-            bonusStrength += participants[i].army.strength;
+            bonusStrength += participants[i].getPath('army.strength');
           }
           else
           {
@@ -163,9 +179,9 @@ AWE.UI.Ember = (function(module) {
         var participants = this.getPath('battle.participantsOtherFaction');
         for(var i=0; i<participants.length; i++)
         {
-          if(allianceID !== null && participants[i].army.alliance_id === allianceID)
+          if(allianceID !== null && participants[i].getPath('army.alliance_id') === allianceID)
           {
-            bonusStrength += participants[i].army.strength;
+            bonusStrength += participants[i].getPath('army.strength');
           }
           else
           {
