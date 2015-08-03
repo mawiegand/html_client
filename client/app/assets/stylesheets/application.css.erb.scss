@@ -642,27 +642,25 @@ canvas{
 .construction-queue-hud-button{
   width: 52px;
   height: 52px;
+  right: -25px;
   background:url("<%= asset_path 'hud/topbar/topbar.png' %>") no-repeat;
   background-size: 100% 100%;
-  
-  .arrow-left{
-    width: 52px;
-    height: 52px;
-    margin-left: auto;
-    margin-right: auto;    
-    background:url("<%= asset_path 'hud/topbar/topbar_arrow_left.png' %>") no-repeat;
-    background-size: 80% 80%;
-    background-position: 3px 3px;
+  transition: 0.5s;
+  &.enabled {
+    right: 187px;
+    .arrow {
+      background-image: url("<%= asset_path 'hud/topbar/topbar_arrow_right.png' %>");
+    }
   }
-  
-  .arrow-right{
+  .arrow {
     width: 52px;
     height: 52px;
     margin-left: auto;
     margin-right: auto;    
-    background:url("<%= asset_path 'hud/topbar/topbar_arrow_right.png' %>") no-repeat;
+    background-image: url("<%= asset_path 'hud/topbar/topbar_arrow_left.png' %>");
     background-size: 80% 80%;
     background-position: 3px 3px;
+    background-repeat: no-repeat;
   }
   
 }
@@ -674,9 +672,13 @@ canvas{
   border-style: solid;
   border-width: 3px;
   border-color: rgb(45, 89, 124);
-  right: 80px;
-  bottom: 15px;
+  right: -213px;
+  bottom: 63px;
   position: absolute;
+  transition: 0.5s;
+  &.enabled {
+    right: 0px;
+  }
   
   .header {
     font-family: $main-font;
@@ -706,7 +708,6 @@ canvas{
 }
 .construction-queue-hud-button-position{
   bottom: 130px;
-  left: 0px;
   position: relative;
 }
 .construction-queue-hud-button:hover{

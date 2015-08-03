@@ -402,7 +402,11 @@ module.RightHUDView = Ember.View.extend({
   }.property('updateQueuePropertyManually', 'constructionQueueVisible', 'settlement.hashableQueues.collection.@each.content'),
   
   availablePositionsCountInConstructionQueue: function() {
-    var countInQueue = this.get('constructionQueue').length;
+    var countInQueue = 0;
+    if(this.get('constructionQueue'))
+    {
+      countInQueue = this.get('constructionQueue').length;
+    }
     var maxAllowed = this.get('maxPositionsInQueue');
     if(maxAllowed - countInQueue > 0)
       return (maxAllowed - countInQueue)

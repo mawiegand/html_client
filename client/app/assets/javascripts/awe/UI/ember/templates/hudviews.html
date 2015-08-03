@@ -52,33 +52,25 @@
   	</div>
     
     {{#if isSettlement}}
-  	  <div class="construction-queue-hud-button construction-queue-hud-button-position" {{action "constructionQueueClicked"}}>
-        {{#if constructionQueueVisible}}
-          <div class="arrow-right"></div>
-        {{else}}
-          <div class="arrow-left"></div>
-        {{/if}}
+  	  <div {{bindAttr class=":construction-queue-hud-button :construction-queue-hud-button-position constructionQueueVisible:enabled"}} {{action "constructionQueueClicked"}}>
+        <div class="arrow"></div>
   	  </div>
     
-    {{#if constructionQueueVisible}}
-      {{#if constructionQueue}}
-        <div class="construction-queue-hud-background scrolling">
-          <div class="header">
-            {{t menu.constructionQueue}}
-          </div>
-          <div class="content">
-            {{#each constructionQueue}}
-               {{view AWE.UI.Ember.ConstructionQueueView jobBinding="this"}}
-            {{/each}}
-            
-            {{#if availablePositionsCountInConstructionQueue}}
-              {{t menu.constructionQueuePositionsAvailableBegin}} {{availablePositionsCountInConstructionQueue}} {{t menu.constructionQueuePositionsAvailableEnd}}
-            {{/if}}
-          </div>
+      <div {{bindAttr class=":construction-queue-hud-background :scrolling constructionQueueVisible:enabled"}}>
+        <div class="header">
+          {{t menu.constructionQueue}}
         </div>
-      {{/if}}
+        <div class="content">
+          {{#each constructionQueue}}
+             {{view AWE.UI.Ember.ConstructionQueueView jobBinding="this"}}
+          {{/each}}
+          
+          {{#if availablePositionsCountInConstructionQueue}}
+            {{t menu.constructionQueuePositionsAvailableBegin}} {{availablePositionsCountInConstructionQueue}} {{t menu.constructionQueuePositionsAvailableEnd}}
+          {{/if}}
+        </div>
+      </div>
     {{/if}}
-  {{/if}}
   </div>
 </script>
 
