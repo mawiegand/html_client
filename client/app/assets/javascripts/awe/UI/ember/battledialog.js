@@ -129,7 +129,7 @@ AWE.UI.Ember = (function(module) {
       var rawBonus = 0;
       if(settlement && typeof settlement !== "undefined"){
         var allianceID = settlement.alliance_id;
-        rawBonus = settlement.present_defense_bonus * 100;
+        rawBonus = settlement.get('present_defense_bonus') * 100;
         var participants = this.getPath('battle.participantsOwnFaction');
         for(var i=0; i<participants.length; i++)
         {
@@ -161,7 +161,7 @@ AWE.UI.Ember = (function(module) {
       var rawBonus = 0;
       if(settlement && typeof settlement !== "undefined"){
         var allianceID = settlement.alliance_id;
-        rawBonus = settlement.present_defense_bonus * 100;
+        rawBonus = settlement.get('present_defense_bonus') * 100;
         var participants = this.getPath('battle.participantsOtherFaction');
         for(var i=0; i<participants.length; i++)
         {
