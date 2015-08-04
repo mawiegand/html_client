@@ -1,90 +1,3 @@
-<script type="text/x-handlebars" data-template-name="battle-dialog">
-    <div class="modal-dialog-background"></div>
-    <div class="center-helper">
-      <div class="battle-dialog-pane">
-        
-        <a class="close clickable" {{action "closePressed" target="parentView"}}></a>
-           
-        <div class="advisor chef"></div>
-        
-        <h2>{{t battle.details.heading}}</h2>
-
-        {{#if battle.lastRound}}
-        <div>{{t battle.details.afterRound}} {{battle.lastRound.number}}</div>
-        {{else}}
-        <div>{{t battle.details.preparingRound}} {{ battle.nextRoundNumber }}</div>
-        {{/if}}
-        <p class="citation">{{message}}</p>
-        
-        <div class="clearfix"></div>
-        
-        <div class="battle-ratio">
-          <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
-          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
-          <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
-        </div>
-
-        <table class="participant-table">
-          <tr>
-            <th class="participant-name left">{{t battle.details.participants.name}}</th>
-            <th class="participant-owner">{{t battle.details.participants.owner}}</th>
-            <th class="participant-size">{{t army.details.size}}</th>
-            <th class="participant-strength">{{t battle.details.participants.strength}}</th>
-            <th class="participant-exp right-line">{{t army.details.rank}}</th>
-{{#if retreat_ausblenden_hotfix }}  
-            <th class="participant-retreat">{{t battle.details.participants.retreat}}</th>
-{{/if}}
-
-            
-            <th class="participant-name">{{t battle.details.participants.name}}</th>
-            <th class="participant-owner">{{t battle.details.participants.owner}}</th>
-            <th class="participant-size">{{t army.details.size}}</th>
-            <th class="participant-strength">{{t battle.details.participants.strength}}</th>
-            <th class="participant-exp right">{{t army.details.rank}}</th>
-          </tr>
-          <tr>
-            <td colspan="5" class="right-line inner-table">
-              <table class="participant-inner-table">
-                {{#each battle.participantsOwnFaction}}
-                <tr>                    
-                  {{#if disbanded}}
-                    <td colspan="5"><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></td>
-                  {{else}}
-                    {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
-                  {{/if}}
-                </tr>
-                {{/each}}
-              </table>
-            </td>
-            <td colspan="5" class="inner-table">
-              <table class="participant-inner-table">
-                {{#each battle.participantsOtherFaction}}
-                <tr>                    
-                  {{#if disbanded}}
-                    <td colspan="5"><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></td>
-                  {{else}}
-                    {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
-                  {{/if}}
-                </tr>
-                {{/each}}
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="5" class="right-line">{{t battle.details.lostUnits}}: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</td>
-            <td colspan="5">{{t battle.details.lostUnits}}: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</td>
-          </tr>
-        </table>
-
-        {{#if battle.lastRound}}
-        <div class="battle-time">{{t battle.details.lastRound}}: {{formatTime battle.lastRound.executed_at}} | {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}</div>
-        {{else}}
-        <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
-        {{/if}}
-      </div>
-    </div>
-</script>
-
 <script type="text/x-handlebars" data-template-name="battle-participant-view">
       <td class="participant-name"><a href="#" {{action "armyLinkPressed"}}>{{army.name}}</a></td>
       <td class="participant-owner">
@@ -158,8 +71,15 @@
           </tbody>
         </table>
         
-        <div class="icon-button cancel-button float-right" {{action "cancelPressed" target="parentView"}}>{{t battle.attack.cancel}}</div>
-        <div class="icon-button ok-button float-right" {{action "attackPressed" target="parentView"}}>{{t battle.attack.attack}}</div>
+        <div class="buttons">
+          <div class="button">
+            <div class="cancel-button" {{action "cancelPressed" target="parentView"}}>{{t battle.attack.cancel}}</div>
+          </div>
+          
+          <div class="button">
+            <div class="ok-button" {{action "attackPressed" target="parentView"}}>{{t battle.attack.attack}}</div>
+          </div>
+        </div>
       </div>
     </div>
 </script>

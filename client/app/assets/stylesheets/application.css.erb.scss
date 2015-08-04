@@ -5742,176 +5742,7 @@ a.trading-carts-speedup-button:hover {
   border-top: 1px solid #ccc;
 }
 
-.participant-table {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0px 0px 10px 0px;
-}
 
-.participant-table th {
-  background-color: #787da8;  
-  color: #fff;
-  padding: 4px 4px 4px 4px;
-  font-size: 14px;
-  text-shadow: none;
-}
-
-.participant-table td {
-  font-size: 14px;
-  padding: 4px 4px 4px 4px;
-}
-
-.participant-table td.inner-table {
-  padding: 0px;
-}
-
-.participant-table th:first-child, .ranking-table th:first-child {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.participant-table th:last-child, .ranking-table th:last-child {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.participant-table td.right-line {
-  border-right: 1px solid #ccc;
-}
-
-.participant-inner-table td {
-  padding: 4px 4px 4px 4px;
-  font-size: 14px;
-}
-
-
-.participant div {
-  display: inline-block;
-  font-size: 14px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.participant-name {
-  width: 100px;
-}
-
-.participant-owner {
-  width: 120px;
-}
-
-.participant-size {
-  width: 50px;
-  text-align: center;
-}
-
-.participant-strength {
-  width: 50px;
-  text-align: center;
-}
-
-.participant-exp {
-  width: 80px;
-  text-align: center;
-}
-
-.participant-retreat {
-  width: 0px;
-}
-
-.participants-left {
-  display: inline-block;
-  border-right: 1px solid #ccc;
-}
-
-.participants-right {
-  margin-left: 10px;
-  display: inline-block;
-}
-
-.battle-time {
-  margin-top: 20px;
-}
-
-.attack-dialog-pane {
-  position: absolute; 
-  margin-left: -370px;
-  margin-top: -200px;
-  width: 700px; min-height: 100px;
-  background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
-  z-index:258;
-
-  -moz-border-radius: 12px;
-  border-radius:      12px;
-  -moz-box-shadow:    3px 3px 2px 2px #333;
-  -webkit-box-shadow: 3px 3px 2px 2px #333;
-  box-shadow:         3px 3px 2px 2px #333;
-}
-
-.attack-dialog-pane .icon-button {
-  margin-left: 20px;
-}
-
-.attack-participant-table {
-  width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0px 0px 10px 0px;
-}
-
-.attack-participant-table th {
-  background-color: #555;  
-  color: #fff;
-  padding: 4px 4px 4px 4px;
-}
-
-.attack-participant-table th.left {
-  border-top-left-radius: 10px;
-  border-bottom-left-radsius: 10px;
-}
-
-.attack-participant-table th.right {
-  border-top-right-radius: 10px;
-  border-bottom-right-rasdius: 10px;
-}
-
-.attack-participant-table td {
-  padding: 4px 4px 4px 14px;
-}
-
-.attack-participant-faction {
-  width: 200px;
-}
-
-.attack-participant-spinwheel {
-  width: 400px;
-  height: 50px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.attack-participant-faction .own-character {
-  font-weight: bold;
-}
-
-.activity-indicator-small {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  background-image: url('<%= asset_path("icons/activityindicator_small.svg") %>');
-}
-
-.activity-indicator-small-white {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  background-image: url('<%= asset_path("icons/activityindicator_small_white.svg") %>');
-}
 
 button.fb-button {
   background-color: rgba(255,255,255,0.0);
@@ -5932,8 +5763,6 @@ button.fb-button {
 
   padding-left: 50px;
 }
-
-
 
 
 .quest-answer-field {
@@ -6515,39 +6344,6 @@ div.dom-quest-container div.tutorial-dialog {
 }
 
 
-.battle-dialog-pane {
- position: absolute; 
- margin-left: -354px;
- margin-top: -240px;
- width: 676px;
- min-height: 100px;
- background-color: #FFF;  
- padding: 16px 20px 16px 20px;
- z-index:256;
-
- -moz-border-radius: 12px;
- border-radius:      12px;
- -moz-box-shadow:    3px 3px 2px 2px #333;
- -webkit-box-shadow: 3px 3px 2px 2px #333;
- box-shadow:         3px 3px 2px 2px #333;
-}
-
-
-.battle-dialog-pane a.close {
- position: absolute;
- background: url('<%= asset_path("ui/close_button.png") %>');
- width: 50px;
- height: 46px;
- right: 24px;
- top: 26px;
-}
-
-.battle-dialog-pane a.close:hover {
- background: url('<%= asset_path("ui/close_button-hovered.png") %>');
-}
-
-
-
 @media (max-width : 800px) {
   p.citation.clearfix{
     font-family: 'Asap', 'sans-serif';
@@ -6623,6 +6419,8 @@ div.dom-quest-container div.tutorial-dialog {
 @import 'quest_dialogs';
 @import 'ranking_dialog';
 @import 'army_list_dialog';
+@import 'battle_dialog';
+@import 'attack_dialogs';
 
 @import 'ptero';
 @import 'retentionegg';

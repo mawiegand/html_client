@@ -1,0 +1,220 @@
+.attack-dialog-pane {
+  background-image: url('<%= asset_path("dialogs/quest-list/quest-selection-bg.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: 100%;
+
+  position: fixed; 
+  margin-left: -382px;
+  margin-top: 72px;
+  width: 764px;
+  height: 576px;
+  top: 100px;
+  z-index:258;
+  cursor: default;
+  .advisor{
+    margin-left:50px;
+  }
+  h2{
+    font-family: $main-font;
+    font-size: 32px;  
+    color: #643a13;
+    margin-top: 50px;
+  }
+  .citation {
+    margin-right: 50px;
+    font-family: $main-font;
+    font-size: 14px;
+    color: #643a13;
+  }
+  p {
+    font-family: $main-font;
+    font-size: 18px;  
+    color: #643a13;
+    margin-right: 50px;
+  }
+  .attack-participant-table {
+    width: 80%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto;
+    th {
+      background-color: #6C5239;  
+      color: #fff;
+      padding: 4px 4px 4px 4px;
+      font-family: $main-font;
+      font-size: 22px;
+      &.left {
+        border-top-left-radius: 10px;
+        border-bottom-left-radsius: 10px;
+        text-align: center;
+      }
+
+      &.right {
+        border-top-right-radius: 10px;
+        border-bottom-right-rasdius: 10px;
+        text-align: center;
+      }
+    }
+    td {
+      padding: 4px 4px 4px 14px;
+      font-family: $main-font;
+      font-size: 18px;
+    }
+  }
+  .buttons {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    margin-top: 40px;
+    .button {
+      background-size: 100% 100%;
+      background-image: url('<%= asset_path("dialogs/buttons/button_blue_wide.png") %>');
+      height: 48px;
+      width: 148px;
+      color: white;
+      font-family: $main-font;
+      padding: 10px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      font-size: 20px;
+      text-align: center;
+      display: inline-block;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.participant-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px 0px 10px 0px;
+}
+
+.participant-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.participant-table td {
+  font-size: 14px;
+  padding: 4px 4px 4px 4px;
+}
+
+.participant-table td.inner-table {
+  padding: 0px;
+}
+
+.participant-table th:first-child, .ranking-table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.participant-table th:last-child, .ranking-table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.participant-table td.right-line {
+  border-right: 1px solid #ccc;
+}
+
+.participant-inner-table td {
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+}
+
+
+.participant div {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.participant-name {
+  width: 100px;
+}
+
+.participant-owner {
+  width: 120px;
+}
+
+.participant-size {
+  width: 50px;
+  text-align: center;
+}
+
+.participant-strength {
+  width: 50px;
+  text-align: center;
+}
+
+.participant-exp {
+  width: 80px;
+  text-align: center;
+}
+
+.participant-retreat {
+  width: 0px;
+}
+
+.participants-left {
+  display: inline-block;
+  border-right: 1px solid #ccc;
+}
+
+.participants-right {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.battle-time {
+  margin-top: 20px;
+}
+
+
+@media (max-width : 960px){
+  .attack-dialog-pane {
+    zoom: 0.5 !important;
+  }
+}
+
+.attack-participant-faction {
+  width: 200px;
+}
+
+.attack-participant-spinwheel {
+  width: 400px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.attack-participant-faction .own-character {
+  font-weight: bold;
+}
+
+.activity-indicator-small {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('<%= asset_path("icons/activityindicator_small.svg") %>');
+}
+
+.activity-indicator-small-white {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('<%= asset_path("icons/activityindicator_small_white.svg") %>');
+}

@@ -108,11 +108,11 @@ AWE.GS = (function(module) {
       else {
         return null;
       }
-    },
+    }.property('battle_id'),
 
     battleParticipant: function() {
       var self = this;
-      var participants = this.battle().getPath('participants.content');
+      var participants = this.getPath('battle.participants.content');
       var participant = null;
       if (participants != null && participants != undefined) {
         participants.forEach(function(p) {
@@ -122,7 +122,7 @@ AWE.GS = (function(module) {
         })
       }
       return participant;
-    }.property('battle_id', 'battle.participants.content').cacheable(),
+    }.property('battle.participants.content').cacheable(),
 
     battle_retreat: false,
     
@@ -305,7 +305,7 @@ AWE.GS = (function(module) {
     }.property('owner_name', 'alliance_tag').cacheable(),
     
     factionContainsGarrison: function() {
-      var battle = this.battle();
+      var battle = this.get('battle');
       if (battle != null) {
         participants = battle.participantsOfFactionWithArmy(this);
         for (var i = 0; i < participants.length; i++) {
