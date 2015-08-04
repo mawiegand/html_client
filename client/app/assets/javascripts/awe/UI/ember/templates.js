@@ -14,6 +14,7 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armylistviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armyviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentsdialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/battledialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/startupdialogs.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/artifactviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliancediplomacydialog.html');

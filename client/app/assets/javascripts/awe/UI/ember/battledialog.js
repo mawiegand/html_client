@@ -128,13 +128,13 @@ AWE.UI.Ember = (function(module) {
         ownStrength += participant.getPath('army.strength') || 0;
       });
 
-      var bonus = 0;
       var id = this.getPath('battle.location_id');
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
       var bonusStrength = 0;
+      var rawBonus = 0;
       if(settlement && typeof settlement !== "undefined"){
         var allianceID = settlement.alliance_id;
-        var rawBonus = settlement.present_defense_bonus * 100;
+        rawBonus = settlement.present_defense_bonus * 100;
         var participants = this.getPath('battle.participantsOwnFaction');
         for(var i=0; i<participants.length; i++)
         {
@@ -142,17 +142,14 @@ AWE.UI.Ember = (function(module) {
           {
             bonusStrength += participants[i].getPath('army.strength');
           }
-          else
-          {
-            return 0;
-          }
         }
       }
 
       if(ownStrength > 0){
         var percentageOfArmyValidForBonus = bonusStrength / ownStrength;
         return rawBonus * percentageOfArmyValidForBonus;        
-      }else{
+      }
+      else {
         return rawBonus;
       }
     }.property('battle'),
@@ -163,13 +160,13 @@ AWE.UI.Ember = (function(module) {
         otherStrength += participant.getPath('army.strength') || 0;
       });
 
-      var bonus = 0;
       var id = this.getPath('battle.location_id');
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(id);
       var bonusStrength = 0;
+      var rawBonus = 0;
       if(settlement && typeof settlement !== "undefined"){
         var allianceID = settlement.alliance_id;
-        var rawBonus = settlement.present_defense_bonus * 100;
+        rawBonus = settlement.present_defense_bonus * 100;
         var participants = this.getPath('battle.participantsOtherFaction');
         for(var i=0; i<participants.length; i++)
         {
@@ -186,8 +183,10 @@ AWE.UI.Ember = (function(module) {
       if(otherStrength > 0){
         var percentageOfArmyValidForBonus = bonusStrength / otherStrength;
         return rawBonus * percentageOfArmyValidForBonus;        
-      }else
+      }
+      else {
         return rawBonus;
+      }
     }.property('battle'),
 
     army_of_opponent: function(){
