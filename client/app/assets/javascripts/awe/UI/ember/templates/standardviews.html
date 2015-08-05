@@ -25,6 +25,24 @@
   {{view Ember.ContainerView currentViewBinding="currentView"}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="toggle-view">
+  {{#if buttonTop}}
+    <div class="toggle" {{action toggleClick}}>
+      {{otherView.title}}
+    </div>
+    <div class="clearfix"></div>
+  {{/if}}
+  <div class="container">
+    {{view Ember.ContainerView currentViewBinding="currentView.view"}}
+  </div>
+  {{#unless buttonTop}}
+    <div class="clearfix"></div>
+    <div class="toggle" {{action toggleClick}}>
+      {{otherView.title}}
+    </div>
+  {{/unless}}
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
   {{#if rank}}

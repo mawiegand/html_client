@@ -1355,17 +1355,7 @@ AWE.Controller = function (module) {
 
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
         var dialog = AWE.UI.Ember.BattleDialog.create({
-          battle:battle,
-
-          closePressed:function (evt) {
-            this.destroy();
-          },
-          retreatPressed:function (evt) {
-            that.armyRetreatButtonClicked(evt.view.army);
-          },
-          cancelRetreatPressed:function (evt) {
-            that.armyRetreatButtonClicked(evt.view.army);
-          },
+          battle:battle
         });
 
         that.applicationController.presentModalDialog(dialog);

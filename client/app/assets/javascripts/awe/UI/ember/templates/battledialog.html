@@ -1,88 +1,215 @@
 <script type="text/x-handlebars" data-template-name="battle-dialog">
-      <div class="battle-dialog-pane">
-         <h1>{{t battle.details.battle_in}} {{region_name}}</h1>
-         <div class="battle-init-users">
-          <div class="battle-stats-value">
-            {{t battle.details.attack_of}}
-          </div>
-          <div class="battle-stats-value">
-            {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_initiator"}}
-          </div>
-          <div class="battle-stats-value">
-            {{t battle.details.on}}
-          </div>
-          <div class="battle-stats-value">
-            {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_opponent"}}
-          </div>
-         </div>
-         <div class="battle-chef"></div>
-         <div class="battle-citation"><q>{{message}}</q></div>
-         <div class="battle-round">
-          <div class="battle-round50-left">
-            {{t battle.details.round}}:          
-            {{#if battle.lastRound}}
-              {{battle.lastRound.number}}
-            {{else}}
-              {{ round }}
-            {{/if}}
-          </div>
-          <div class="battle-round50-right">
-            {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}
-          </div>
+  <h1>{{t battle.details.battle_in}} {{region_name}}</h1>
+  {{view AWE.UI.Ember.BattleToggleView battleBinding="battle"}}
+</script>
 
-         </div>
-         <div class="battle-ratio">
-          <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
-          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
-          <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
-         </div>
-
-         <div class="battle-stats1">
-          <div class="battle-stats-value33">
-            {{own_bonus}}%
-          </div>
-          <div class="battle-stats-value33">
-            {{t battle.details.battleBonus}}
-          </div>
-          <div class="battle-stats-value33">
-            {{other_bonus}}%
-          </div>
-         </div>
-
-         <div class="battle-stats2">
-          <div class="battle-stats-value33">
-            {{own_army_count}}
-          </div>
-          <div class="battle-stats-value33">
-            {{t battle.details.totalArmies}}
-          </div>
-          <div class="battle-stats-value33">
-            {{other_army_count}}
-          </div>
-         </div>
-
-         <div class="battle-stats3">
-          <div class="battle-stats-value33">
-            {{own_army_battle_count}}
-          </div>
-          <div class="battle-stats-value33">
-            {{t battle.details.currentlyInvolved}}
-          </div>
-          <div class="battle-stats-value33">
-            {{other_army_battle_count}}
-          </div>
-         </div>
-
-         <div class="battle-stats4">
-          <div class="battle-stats-value33">
-            {{battle.ownFaction.total_casualties}}
-          </div>
-          <div class="battle-stats-value33">
-            {{t battle.details.killedUnits}}
-          </div>
-          <div class="battle-stats-value33">
-            {{battle.otherFaction.total_casualties}}
-          </div>
-         </div>
+<script type="text/x-handlebars" data-template-name="battle-info-view">
+  <div class="battle-info-view-pane">
+    <div class="battle-init-users">
+      <div class="battle-stats-value">
+        {{t battle.details.attack_of}}
       </div>
+      <div class="battle-stats-value">
+        {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_initiator"}}
+      </div>
+      <div class="battle-stats-value">
+        {{t battle.details.on}}
+      </div>
+      <div class="battle-stats-value">
+        {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army_of_opponent"}}
+      </div>
+     </div>
+     <div class="battle-chef"></div>
+     <div class="battle-citation"><q>{{message}}</q></div>
+     <div class="battle-round">
+      <div class="battle-round50-left">
+        {{t battle.details.round}}:          
+        {{#if battle.lastRound}}
+          {{battle.lastRound.number}}
+        {{else}}
+          {{ round }}
+        {{/if}}
+      </div>
+      <div class="battle-round50-right">
+        {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}
+      </div>
+
+     </div>
+     <div class="battle-ratio">
+      <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
+      <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
+      <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
+     </div>
+
+     <div class="battle-stats1">
+      <div class="battle-stats-value33">
+        {{own_bonus}}%
+      </div>
+      <div class="battle-stats-value33">
+        {{t battle.details.battleBonus}}
+      </div>
+      <div class="battle-stats-value33">
+        {{other_bonus}}%
+      </div>
+     </div>
+
+     <div class="battle-stats2">
+      <div class="battle-stats-value33">
+        {{own_army_count}}
+      </div>
+      <div class="battle-stats-value33">
+        {{t battle.details.totalArmies}}
+      </div>
+      <div class="battle-stats-value33">
+        {{other_army_count}}
+      </div>
+     </div>
+
+     <div class="battle-stats3">
+      <div class="battle-stats-value33">
+        {{own_army_battle_count}}
+      </div>
+      <div class="battle-stats-value33">
+        {{t battle.details.currentlyInvolved}}
+      </div>
+      <div class="battle-stats-value33">
+        {{other_army_battle_count}}
+      </div>
+     </div>
+
+     <div class="battle-stats4">
+      <div class="battle-stats-value33">
+        {{battle.ownFaction.total_casualties}}
+      </div>
+      <div class="battle-stats-value33">
+        {{t battle.details.killedUnits}}
+      </div>
+      <div class="battle-stats-value33">
+        {{battle.otherFaction.total_casualties}}
+      </div>
+     </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="battle-details-view">
+  <div class="battle-details">
+    <div class="battle-round-info">
+      <div class="current">
+        {{t battle.details.round}}:          
+        {{#if battle.lastRound}}
+          {{battle.lastRound.number}}
+        {{else}}
+          {{ round }}
+        {{/if}}
+      </div>
+      <div class="next">
+        {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}
+      </div>
+    </div>
+    <div class="battle-ratio">
+      <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
+      <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
+      <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
+    </div>
+    <div class="battle-unit-count">
+      <div class="own">
+        <table>
+          <tr>
+            <td class="info infantry">
+              <div class="icon"></div>
+              <div class="count">{{ownUnitsCount.infantry}}</div>
+            </td>
+            <td class="info artillery">
+              <div class="icon"></div>
+              <div class="count">{{ownUnitsCount.artillery}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="info cavalry">
+              <div class="icon"></div>
+              <div class="count">{{ownUnitsCount.cavalry}}</div>
+            </td>
+            <td class="info special">
+              <div class="icon"></div>
+              <div class="count">{{ownUnitsCount.special}}</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="other">
+        <table>
+          <tr>
+            <td class="info infantry">
+              <div class="icon"></div>
+              <div class="count">{{otherUnitsCount.infantry}}</div>
+            </td>
+            <td class="info artillery">
+              <div class="icon"></div>
+              <div class="count">{{otherUnitsCount.artillery}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="info cavalry">
+              <div class="icon"></div>
+              <div class="count">{{otherUnitsCount.cavalry}}</div>
+            </td>
+            <td class="info special">
+              <div class="icon"></div>
+              <div class="count">{{otherUnitsCount.special}}</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="army-details">
+      <div class="own">
+        <table>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <thead>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>Strength</th>
+            <th>Size</th>
+          </thead>
+          <tbody>
+            {{#each army in ownArmies}}
+              <tr>
+                <td>{{army.army_name}}</td>
+                <td>{{army.army.ownerString}}</td>
+                <td class="right">{{army.army.strength}}</td>
+                <td class="right">{{army.army.size_present}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      <div class="other">
+        <table>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <col style="width: 25%"/>
+          <thead>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>Strength</th>
+            <th>Size</th>
+          </thead>
+          <tbody>
+            {{#each army in otherArmies}}
+              <tr>
+                <td>{{army.army_name}}</td>
+                <td>{{army.army.ownerString}}</td>
+                <td class="right">{{army.army.strength}}</td>
+                <td class="right">{{army.army.size_present}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </script>

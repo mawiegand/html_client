@@ -2,19 +2,11 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
-    
+
   module.BattleDialog = module.PopUpDialog.extend({
     templateName: 'battle-dialog',
-    
-    battle:                    null,
-    timer:                     null,
-    
-    participantsOwnFaction:   'battle.participantsOwnFaction',
-    participantsOtherFaction: 'battle.participantsOtherFaction',
+    battle: null,
 
-    ownFactionBinding:        'battle.ownFaction',
-    otherFactionBinding:      'battle.otherFaction',
-    
     region_name: function() {
       var region_id = this.getPath('battle.region_id');
       if(region_id){
@@ -23,6 +15,41 @@ AWE.UI.Ember = (function(module) {
       }
       return null;  
     }.property('battle'),
+
+  }),
+
+  module.BattleToggleView = module.ToggleView.extend({
+    battle: null,
+    buttonTop: false,
+
+    init: function() {
+      var self = this;
+      this.set('toggleViews', [
+        {
+          title: "Overview",//AWE.I18n.lookupTranslation('army.list.armies'), 
+          view:  module.BattleInfoView.create()
+        },
+        { 
+          title: "Details", //AWE.I18n.lookupTranslation('army.list.settlements'), 
+          view:  module.BattleDetailsView.create()
+        }
+      ]);
+
+      this._super();
+    }
+  }),
+
+  module.BattleInfoView = Ember.View.extend({
+    templateName: 'battle-info-view',
+    
+    battleBinding: 'parentView.parentView.battle',
+    timer:                     null,
+    
+    participantsOwnFaction:   'battle.participantsOwnFaction',
+    participantsOtherFaction: 'battle.participantsOtherFaction',
+
+    ownFactionBinding:        'battle.ownFaction',
+    otherFactionBinding:      'battle.otherFaction',
     
     initiator_name: function() {
       var initiator_id = this.getPath('battle.initiator_id');
@@ -260,6 +287,111 @@ AWE.UI.Ember = (function(module) {
         AWE.GS.BattleManager.updateBattle(battleId); 
       }  
     },
+    
+  });
+
+  module.BattleDetailsView = Ember.View.extend({
+    templateName: 'battle-details-view',
+    
+    battleBinding: 'parentView.parentView.battle',
+    timer:                     null,
+    
+    participantsOwnFaction:   'battle.participantsOwnFaction',
+    participantsOtherFaction: 'battle.participantsOtherFaction',
+
+    ownFactionBinding:        'battle.ownFaction',
+    otherFactionBinding:      'battle.otherFaction',
+
+
+    ownUnitsCount: function() {
+      var participants = this.getPath('battle.participantsOwnFaction');
+      var count = {
+        infantry: 0,
+        artillery: 0,
+        cavalry: 0,
+        special: 0
+      };
+
+      for(var i=0; i<participants.length; i++) {
+        var p = participants[i];
+        var army = p.get('army');
+        var details = army.get('details');
+        count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
+        count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
+        count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
+        if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
+        {
+          count.special += details.unit_little_chief;
+        }
+      }
+      return count;
+    }.property('battle.participantsOwnFaction'),
+
+    otherUnitsCount: function() {
+      var participants = this.getPath('battle.participantsOtherFaction');
+      var count = {
+        infantry: 0,
+        artillery: 0,
+        cavalry: 0,
+        special: 0
+      };
+
+      for(var i=0; i<participants.length; i++) {
+        var p = participants[i];
+        var army = p.get('army');
+        var details = army.get('details');
+        count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
+        count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
+        count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
+        if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
+        {
+          count.special += details.unit_little_chief;
+        }
+      }
+      return count;
+    }.property('battle.participantsOtherFaction'),
+    
+    round: function() {
+      var nextRound = this.getPath('battle.nextRoundNumber');
+      return nextRound - 1;
+    }.property('battle.nextRoundNumber'),    
+
+    ownArmies: function(){
+      return this.getPath('battle.participantsOwnFaction');
+    }.property('battle.participantsOwnFaction'),
+
+    otherArmies: function(){
+      return this.getPath('battle.participantsOtherFaction');
+    }.property('battle.participantsOtherFaction'),
+    
+    ratioLengthOwn: function(){
+      return 'width: ' + Math.round(576 * (this.getPath('battle.ratio') || 0)) + 'px;';
+    }.property('battle.ratio').cacheable(),
+
+    ratioLengthOther: function(){
+      return 'width: ' + Math.round(576 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
+    }.property('battle.ratio').cacheable(),
+
+    message: function() {
+      var own = this.getPath('battle.ownBattle');
+      if (own === undefined || own === null) {
+        return null; // return nothing, if value hasn't been computed so far.
+      }
+      if (own) {
+        if (this.getPath('battle.ratio') > 0.7) {
+          return AWE.I18n.lookupTranslation('battle.messages.own.winning');
+        }
+        else if (this.getPath('battle.ratio') < 0.3) {
+          return AWE.I18n.lookupTranslation('battle.messages.own.losing');
+        }
+        else {
+          return AWE.I18n.lookupTranslation('battle.messages.own.neutral');
+        }
+      }
+      else {
+        return AWE.I18n.lookupTranslation('battle.messages.other');
+      }
+    }.property('battle.ratio').cacheable(),
     
   });
 

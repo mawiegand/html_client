@@ -400,6 +400,31 @@ AWE.UI.Ember = (function(module) {
     classNames: ["tab-button-view-new"]
   });
 
+  module.ToggleView = Ember.View.extend({
+    templateName: 'toggle-view',
+    classNames:   'toggle-view',
+
+    toggleViews: null,
+    currentView: null,
+    otherView: null,
+
+    buttonTop: true,
+    
+    init: function() {
+      this.set('currentView', this.get('toggleViews')[0]);
+      this.set('otherView', this.get('toggleViews')[1]);
+      this._super();
+    },
+
+    toggleClick: function(key) {
+      var current = this.get('currentView');
+      var other = this.get('otherView');
+      this.set('currentView', other);
+      this.set('otherView', current);
+    }
+    
+  });
+
   module.SliderView = Ember.View.extend({
     templateName: "slider-view",
     classNames: ["slider-view"],
