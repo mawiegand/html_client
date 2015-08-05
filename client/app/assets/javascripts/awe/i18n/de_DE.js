@@ -69,6 +69,8 @@ AWE.I18n.de_DE = function(module) {
     },
         
     battle: {
+      overview: "Übersicht",
+      detail: "Detail",
       attack: {
         heading: "Kampfvorschau",
         citation: "Willst Du da etwa wirklich in den Kampf ziehen?",
@@ -105,6 +107,7 @@ AWE.I18n.de_DE = function(module) {
           name: "Name",
           owner: "Besitzer",
           strength: "Stärke",
+          size: "Größe",
           retreat: "Rückzug",
           armyDisbanded: "Aufgelöste Armee",
           armyDisbandedDescription: "das passiert, wenn die Heimatsiedlung einer Armee verloren geht",

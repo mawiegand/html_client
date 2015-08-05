@@ -80,6 +80,8 @@ AWE.I18n.en_US = function(module) {
       },
 
       details:{
+        overview: "Overview",
+        detail: "Detail",
         heading:"Battle Details",
         afterRound:"After round",
         preparingRound:"Preparing round",
@@ -105,6 +107,7 @@ AWE.I18n.en_US = function(module) {
           name:"Name",
           owner:"Owner",
           strength:"Strength",
+          size: "Size",
           retreat:"Retreat",
           armyDisbanded:"Disbanded army",
           armyDisbandedDescription:"This is what happens when a home settlement is lost to an enemy army.",

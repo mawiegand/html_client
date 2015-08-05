@@ -26,11 +26,11 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       this.set('toggleViews', [
         {
-          title: "Overview",//AWE.I18n.lookupTranslation('army.list.armies'), 
+          title: AWE.I18n.lookupTranslation('battle.overview'), 
           view:  module.BattleInfoView.create()
         },
         { 
-          title: "Details", //AWE.I18n.lookupTranslation('army.list.settlements'), 
+          title: AWE.I18n.lookupTranslation('battle.detail'), 
           view:  module.BattleDetailsView.create()
         }
       ]);
@@ -312,16 +312,18 @@ AWE.UI.Ember = (function(module) {
         special: 0
       };
 
-      for(var i=0; i<participants.length; i++) {
-        var p = participants[i];
-        var army = p.get('army');
-        var details = army.get('details');
-        count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
-        count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
-        count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
-        if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
-        {
-          count.special += details.unit_little_chief;
+      if(participants !== null) {
+        for(var i=0; i<participants.length; i++) {
+          var p = participants[i];
+          var army = p.get('army');
+          var details = army.get('details');
+          count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
+          count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
+          count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
+          if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
+          {
+            count.special += details.unit_little_chief;
+          }
         }
       }
       return count;
@@ -336,16 +338,18 @@ AWE.UI.Ember = (function(module) {
         special: 0
       };
 
-      for(var i=0; i<participants.length; i++) {
-        var p = participants[i];
-        var army = p.get('army');
-        var details = army.get('details');
-        count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
-        count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
-        count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
-        if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
-        {
-          count.special += details.unit_little_chief;
+      if(participants !== null) {
+        for(var i=0; i<participants.length; i++) {
+          var p = participants[i];
+          var army = p.get('army');
+          var details = army.get('details');
+          count.infantry += Math.round(army.get('unitcategory_infantry_strength'));
+          count.artillery += Math.round(army.get('unitcategory_artillery_strength'));
+          count.cavalry += Math.round(army.get('unitcategory_cavalry_strength'));
+          if(details !== null && typeof details !== "undefined" && details.unit_little_chief !== null)
+          {
+            count.special += details.unit_little_chief;
+          }
         }
       }
       return count;
