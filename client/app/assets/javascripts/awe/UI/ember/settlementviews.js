@@ -49,7 +49,7 @@ AWE.UI.Ember = (function(module) {
           var unlockOrder = AWE.Config.GRID_UNLOCK_ORDER[this.getPath('settlement.type.symbolic_id')];
           var filteredCollection = [];
           var unlockedSlots = this.get('unlockedSlots');
-          if(this.getPath('settlement.type.symbolic_id') === "settlement_fortress")
+          if(this.getPath('settlement.type.symbolic_id') === "settlement_fortress" || this.getPath('settlement.type.symbolic_id') === "settlement_outpost")
           {
             unlockedSlots++;
           }
