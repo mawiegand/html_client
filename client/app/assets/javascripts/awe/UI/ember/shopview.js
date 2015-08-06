@@ -221,50 +221,54 @@ AWE.UI.Ember = (function(module) {
           AWE.GS.ShopManager.init();
       }
       
-      var offerId = this.getPath('offer.id');      
-      var shop = AWE.GS.ShopManager.getShop();
-      var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
-      var price = offer.get('price');
-
-      var creditAmount = shop.creditAmount || 0;
-      if (creditAmount < price) {
-        log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
-        WACKADOO.hudController.presentNotEnoughCreditsWarning();
-        return ;
-      }
-
-      AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
-        if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-          var info = AWE.UI.Ember.InfoDialog.create({
-            heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
-            message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
-          });
-
-          AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
-            AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
-          });
-
-          WACKADOO.presentModalDialog(info);
-          AWE.GS.ShopManager.fetchCreditAmount(function(){
-            WACKADOO.hudController.setModelChanged();
-          });
-          AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-            WACKADOO.hudController.setModelChanged();
-          });
-          AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-          
-          this.destroy();
-        }
-        else {
+      var offerId = this.getPath('offer.id');
+      
+      AWE.GS.ShopManager.fetchCreditAmount(function() {
+                    
+        var shop = AWE.GS.ShopManager.getShop();
+        var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
+        var price = offer.get('price');
+  
+        var creditAmount = shop.creditAmount || 0;
+        if (creditAmount < price) {
+          log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
           WACKADOO.hudController.presentNotEnoughCreditsWarning();
+          return ;
         }
-      }, function() {                                   // error handler
-        var info = AWE.UI.Ember.InfoDialog.create({
-          heading: AWE.I18n.lookupTranslation('shop.error.heading'),
-          message: AWE.I18n.lookupTranslation('shop.error.message'),
-        });
-        WACKADOO.presentModalDialog(info);
-      })
+  
+        AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
+          if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
+              message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
+            });
+  
+            AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
+              AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
+            });
+  
+            WACKADOO.presentModalDialog(info);
+            AWE.GS.ShopManager.fetchCreditAmount(function(){
+              WACKADOO.hudController.setModelChanged();
+            });
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+              WACKADOO.hudController.setModelChanged();
+            });
+            AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+            
+            this.destroy();
+          }
+          else {
+            WACKADOO.hudController.presentNotEnoughCreditsWarning();
+          }
+        }, function() {                                   // error handler
+          var info = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+            message: AWE.I18n.lookupTranslation('shop.error.message'),
+          });
+          WACKADOO.presentModalDialog(info);
+        })
+      });
     },
   });
   
