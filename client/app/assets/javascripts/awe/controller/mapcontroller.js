@@ -2685,6 +2685,53 @@ AWE.Controller = function (module) {
       return removedSomething;
     }
 
+    that.updatePoacherTreasures = function (nodes) {
+
+          var newPoacherTreasureViews = {};
+
+          for (var i = 0; i < nodes.length; i++) {
+              var frame = that.mc2vc(nodes[i].frame());
+
+              if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
+                  var poacherTreasures = AWE.GS.PoacherTreasureManager.getPoacherTreasuresInRegion(nodes[i].region().id());
+
+                  for (var id in poacherTreasures) {
+
+                      if (poacherTreasures.hasOwnProperty(id)) {
+
+                          var poacherTreasure = poacherTreasures[id];
+                          var location = AWE.Map.Manager.getLocation(poacherTreasure.get('location_id'));
+
+                          if (location) {
+                              var view = poacherTreasureViews[id];
+
+                              if (view) {
+                                  if (view.lastChange !== undefined && // if model of view updated
+                                      view.lastChange().getTime() < poacherTreasure.lastChange().getTime()) {
+                                      view.setNeedsUpdate();
+                                  }
+                              }
+                              else {
+                                  view = AWE.UI.createPoacherTreasureView();
+                                  view.initWithControllerAndPoacherTreasure(that, poacherTreasure);
+                                  _stages[1].addChild(view.displayObject());
+                              }
+
+                              if (view) {
+                                  setPoacherTreasurePosition(view, that.mc2vc(poacherTreasure.get('location').position()), frame);
+                                  newPoacherTreasureViews[id] = view;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+          var removedSomething = purgeDispensableViewsFromStage(poacherTreasureViews, newPoacherTreasureViews, _stages[1]);
+          poacherTreasureViews = newPoacherTreasureViews;
+          return removedSomething;
+      }
+
     /** update the army views. */
     that.updateArmies = function (nodes) {
 
