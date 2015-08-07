@@ -1351,9 +1351,16 @@ AWE.Controller = function (module) {
     that.battleInfoButtonClicked = function (army) {
       var battle_id = army.get('battle_id');
       var battle = army.get('battle');
-
-
+      
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
+        
+        // check battle ist still on going, otherwise do not open dialog
+        if(battle && typeof battle !== "undefined")
+        {
+          if(battle.ended_at)
+            return;
+        }
+        
         var dialog = AWE.UI.Ember.BattleDialog.create({
           battle:battle
         });
