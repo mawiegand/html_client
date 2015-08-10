@@ -1,5 +1,5 @@
 .ranking-table {
-	width: 600px;
+	width: 625px;
 	height: 275px;
 	margin-top: 10px;
 	table {
@@ -10,6 +10,7 @@
 				color: white;
 				line-height: 45px;
 				font-size: 24px;
+				float: left;
 			}
 			.rank {
 				display: inline-block;
@@ -29,7 +30,6 @@
 				margin-left: 10px;
 				background-size: 100% 100%;
 				width: 132px;
-				float: right;
 			}
 		}
 		.own-entry {
