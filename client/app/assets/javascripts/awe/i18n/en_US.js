@@ -1195,7 +1195,7 @@ AWE.I18n.en_US = function(module) {
 					caption: "Confirm move.",
 					message1: "Do you really want to move to ",
 					message2: " ?",
-					cancel: "No, not right now",
+					cancel: "Not right now",
 					ok: "Move!",
 				},
 				movingErrorHeading: "Error",
