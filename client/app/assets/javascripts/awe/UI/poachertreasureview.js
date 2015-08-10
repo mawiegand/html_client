@@ -21,7 +21,7 @@ AWE.UI = (function(module) {
     var _annotationView = null;
 
     //var _baseImage = null;
-    var _selectShape = null;
+    //var _selectShape = null;
 
     var _poacherTreasureImageView = null;
     var _poacherTreasureImage = null;
@@ -33,7 +33,7 @@ AWE.UI = (function(module) {
     var _super = {
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame:       AWE.Ext.superior(that, "setFrame"),
-      setSelected:    AWE.Ext.superior(that, "setSelected"),
+      //setSelected:    AWE.Ext.superior(that, "setSelected"),
       updateView:     AWE.Ext.superior(that, "updateView"),
     };
     
@@ -44,7 +44,7 @@ AWE.UI = (function(module) {
       that.initWithController(controller, frame);
       _poacherTreasure = poacherTreasure;
 
-      var _selectGraphics = new Graphics();
+      /*var _selectGraphics = new Graphics();
       _selectGraphics.setStrokeStyle(1);
       _selectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       _selectGraphics.beginFill(Graphics.getRGB(0, 255, 0));
@@ -52,7 +52,7 @@ AWE.UI = (function(module) {
       _selectShape = AWE.UI.createShapeView();
       _selectShape.initWithControllerAndGraphics(my.controller, _selectGraphics);
       _selectShape.setFrame(AWE.Geometry.createRect(0, 74, 72, 36));
-      this.addChild(_selectShape);      
+      this.addChild(_selectShape);      */
       
       //var baseImage = _poacherTreasure.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       /*var baseImage = AWE.UI.ImageCache.getImage('map/army/base/own');
@@ -99,10 +99,10 @@ AWE.UI = (function(module) {
         that.addChildAt(_frameRectShape, 0);    
       }  
                
-      if (_selectShape) {
+      /*if (_selectShape) {
         _selectShape.setVisible(this.selected() || this.hovered());
         _selectShape.setAlpha(this.selected() ? 1. : 0.2);
-      }
+      }*/
 
       if (!_poacherTreasureImageView) {
         _poacherTreasureImage = 'map/poachertreasure';
@@ -127,13 +127,13 @@ AWE.UI = (function(module) {
       }
     }
     
-    that.setAnnotationView = function(annotationView) {
+    /*that.setAnnotationView = function(annotationView) {
       _annotationView = annotationView;
-    }
+    }*/
     
-    that.annotationView = function() {
+    /*that.annotationView = function() {
       return _annotationView;
-    }
+    }*/
 
     that.poacherTreasure = function() {
       return _poacherTreasure;
@@ -145,13 +145,13 @@ AWE.UI = (function(module) {
 
     /** actions */
    
-    that.onClick = function(evt) {
+    /*that.onClick = function(evt) {
       my.controller.viewClicked(that);
-    };
+    };*/
     
-    that.onDoubleClick = function(evt) {
-      //my.controller.poacherTreasureInfoButtonClicked(_poacherTreasure);
-    };
+    /*that.onDoubleClick = function(evt) {
+      my.controller.poacherTreasureInfoButtonClicked(_poacherTreasure);
+    };*/
     
     that.onMouseOver = function(evt){ 
       my.controller.viewMouseOver(that);

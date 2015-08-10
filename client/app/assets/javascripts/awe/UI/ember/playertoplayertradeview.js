@@ -327,10 +327,20 @@ AWE.UI.Ember = (function(module) {
 
         }
         else if (status === AWE.Net.NOT_FOUND) {
-          self.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'));          
+          //self.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'));          
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'),
+            message: AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'),
+          });
+          WACKADOO.presentModalDialog(errorDialog);
         }
         else {
-          self.set('errorMessage', AWE.I18n.lookupTranslation('error.genericServer'));
+          //self.set('errorMessage', AWE.I18n.lookupTranslation('error.genericServer'));
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.heading'),
+            message: AWE.I18n.lookupTranslation('error.genericServer'),
+          });
+          WACKADOO.presentModalDialog(errorDialog);
         }
         self.set('sending', false);
       });   

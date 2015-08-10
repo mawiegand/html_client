@@ -69,6 +69,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     battle:{
+      overview: "Overview",
+      detail: "Detail",
       attack:{
         heading:"Battle Preview",
         citation:"Do you really want to initiate this battle?",
@@ -80,14 +82,12 @@ AWE.I18n.en_US = function(module) {
       },
 
       details:{
-        overview: "Overview",
-        detail: "Detail",
         heading:"Battle Details",
         afterRound:"After round",
-        preparingRound:"Preparing round",
         lastRound:"Last round",
         nextRound:"Next round",
-        firstRound:"First round",
+        firstRound:"First round",        
+        preparingRound:"Preparing round",        
         myFaction:"My faction",
         oneFaction:"One faction",
         otherFaction:"Other faction",
