@@ -33,6 +33,7 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/rankingview.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/mainmenudialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/messagecenter.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/movingdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/shopview.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/standardviews.html');

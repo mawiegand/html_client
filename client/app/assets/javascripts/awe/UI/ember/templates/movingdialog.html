@@ -1,0 +1,27 @@
+<script type="text/x-handlebars" data-template-name="moving-view">
+  <h1>{{t dialogs.move.heading}}</h1>
+  {{#if alreadyMoved}}  
+    <div class="description">
+      {{t profile.moving.alreadyMoved}}
+    </div>
+  {{else}}
+    <div class="description">
+      {{t profile.moving.info1}}
+      {{t profile.moving.info2}}
+    </div>
+    <p class="red-color">{{message}}</p>
+    <div class="footer-wrapper">
+      <div class="input-wrapper">
+        {{t dialogs.move.to}}:
+        {{view Ember.TextField placeholder="Regionsname" valueBinding="newRegionName" }}
+      </div>
+      <div class="button-wrapper">
+        {{#if moving }}
+          &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+        {{else}}
+          <div class="move-button" {{action "moveToRegionClicked"}}>{{t profile.moving.moveButton}}</div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+</script>
