@@ -201,6 +201,7 @@ AWE.Config = (function(module) {
           
     
     "hud/button/army/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/army_button/army_button.png',
+    "hud/button/assignment":  AWE.Config.RAILS_ASSET_PATH + "hud/assignment_button/assignment_button.png", 
     "hud/button/army_menu/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/army_menu_button/army_menu_button.png',
     "hud/button/count_indicator" :    AWE.Config.RAILS_ASSET_PATH + 'hud/count_indicator/count_indicator.png',
     "hud/button/map/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/map_button/map_button.png',
@@ -212,12 +213,19 @@ AWE.Config = (function(module) {
     "hud/button/quest_list/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/quest_list_button/quest_list_button.png',
     "hud/button/ranking/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/ranking_button/ranking_button.png',
     "hud/button/settlement/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button.png',
+    "hud/button/trade" :    AWE.Config.RAILS_ASSET_PATH + 'hud/trade_button/trade_button.png',
 
     "hud/icon/upgrade"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_upgrade/icon_upgrade.png',
     "hud/icon/info"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_info/icon_info.png',
     "hud/icon/info/hover"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_info/icon_info_hover.png',
     "hud/icon/army"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_army/icon_army.png',
+    "hud/icon/artifact"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_artifact/icon_artifact.png',
+    "hud/icon/assignment"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_assignment/icon_assignment.png',
     "hud/icon/army/hover"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_army/icon_army_hover.png',
+    "hud/icon/center"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_center/icon_center.png',
+    "hud/icon/convert"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_convert/icon_convert.png',
+    "hud/icon/diplomacy"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_diplomacy/icon_diplomacy.png',
+    "hud/icon/trade"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_trade/icon_trade.png',
     
     "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
     "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',
@@ -508,25 +516,25 @@ AWE.Config = (function(module) {
     "cavepainting/spiral_15": AWE.Config.RAILS_ASSET_PATH + 'cavepainting/spiral_15.png',
     "cavepainting/spiral_16": AWE.Config.RAILS_ASSET_PATH + 'cavepainting/spiral_16.png',
 
-    "cavepainting/background": AWE.Config.RAILS_ASSET_PATH + 'cavepainting/cavepainting_background.jpg',
-    "cavepainting/button": AWE.Config.RAILS_ASSET_PATH + 'cavepainting/cavepainting_button.png',
-    "cavepainting/close": AWE.Config.RAILS_ASSET_PATH + 'cavepainting/x_button.png',
+    "cavepainting/background":  AWE.Config.RAILS_ASSET_PATH + 'cavepainting/cavepainting_background.jpg',
+    "cavepainting/button":      AWE.Config.RAILS_ASSET_PATH + 'cavepainting/cavepainting_button.png',
+    "cavepainting/close":       AWE.Config.RAILS_ASSET_PATH + 'cavepainting/x_button.png',
 
 /* === Dialog === */
     "dialogs/window/arrow_back":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/arrow_back.png',
     "dialogs/window/background":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/background.png',
-    "dialogs/window/close_button":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/close_button.png',
-    "dialogs/window/cogwheel":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/cogwheel.png',
-    "dialogs/window/close_button_up":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/close_button_up.png',
+    "dialogs/window/close_button":    AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/close_button.png',
+    "dialogs/window/cogwheel":        AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/cogwheel.png',
+    "dialogs/window/close_button_up": AWE.Config.RAILS_ASSET_PATH + 'dialogs/window/close_button_up.png',
 
 /* === Welcome Dialog === */
-    "dialogs/welcome-dialog/welcome-dialog-arrow-first": AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-first.png',
-    "dialogs/welcome-dialog/welcome-dialog-arrow-second":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-second.png',
-    "dialogs/welcome-dialog/welcome-dialog-arrow-third":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-third.png',
-    "dialogs/welcome-dialog/welcome-dialog-first":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-first.png',
-    "dialogs/welcome-dialog/welcome-dialog-fourth":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-fourth.png',
-    "dialogs/welcome-dialog/welcome-dialog-second":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-second.png',
-    "dialogs/welcome-dialog/welcome-dialog-third":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-third.png',
+    "dialogs/welcome-dialog/welcome-dialog-arrow-first":  AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-first.png',
+    "dialogs/welcome-dialog/welcome-dialog-arrow-second": AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-second.png',
+    "dialogs/welcome-dialog/welcome-dialog-arrow-third":  AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-arrow-third.png',
+    "dialogs/welcome-dialog/welcome-dialog-first":        AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-first.png',
+    "dialogs/welcome-dialog/welcome-dialog-fourth":       AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-fourth.png',
+    "dialogs/welcome-dialog/welcome-dialog-second":       AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-second.png',
+    "dialogs/welcome-dialog/welcome-dialog-third":        AWE.Config.RAILS_ASSET_PATH + 'dialogs/welcome-dialog/welcome-dialog-third.png',
 
 /* === Units === */
     "dialogs/units/artillery/big/normal":     AWE.Config.RAILS_ASSET_PATH + 'dialogs/units/artillery/artillery_big/artillery_big_normal.png',
@@ -847,6 +855,19 @@ AWE.Config = (function(module) {
     "dialogs/backgrounds/background_textfield_grey_xs":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/backgrounds/background_textfield_grey_xs.png',
     "dialogs/backgrounds/background_unit_counter":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/backgrounds/background_unit_counter.png',
     "dialogs/backgrounds/background_upgrade_hilight":      AWE.Config.RAILS_ASSET_PATH + 'dialogs/backgrounds/background_upgrade_hilight.png',
+
+/* === INFO DIALOG === */
+    "extras/egg/active":      AWE.Config.RAILS_ASSET_PATH + 'extras/egg/egg_active.png',
+    "extras/egg/dinos":       AWE.Config.RAILS_ASSET_PATH + 'extras/egg/egg_dinos.png',
+    "extras/egg/inactive":    AWE.Config.RAILS_ASSET_PATH + 'extras/egg/egg_inactive.png',
+    "extras/egg/progressbar": AWE.Config.RAILS_ASSET_PATH + 'extras/egg/progressbar_green_empty.png',
+
+    "extras/fire/small":      AWE.Config.RAILS_ASSET_PATH + 'extras/fire/small_fire/small_fire_anim.png',
+    "extras/level_sign":      AWE.Config.RAILS_ASSET_PATH + 'extras/level_signs/sign.png',
+    "extras/ptero/anim":      AWE.Config.RAILS_ASSET_PATH + 'extras/ptero/ptero_anim.png',
+    "extras/ptero/shadow":    AWE.Config.RAILS_ASSET_PATH + 'extras/ptero/ptero_shadow.png',
+
+/* === HUD === */
   }
 /* === MAP STANCES === */
   module.MAP_STANCE_IMAGES = [
