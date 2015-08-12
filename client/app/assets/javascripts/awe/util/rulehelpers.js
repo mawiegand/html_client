@@ -499,7 +499,16 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
       if (costHash.hasOwnProperty(item.id)) {
         var amount = costHash[item.id];
         if (evaluate) {
-          amount = Math.ceil(AWE.GS.Util.parseAndEval(amount, level));
+          amount = AWE.GS.Util.parseAndEval(amount, level);
+          if(amount < 1.0)
+          {
+            amount = Math.round(amount * 100)/100
+          }
+          else if(amount < 10.0)
+          {
+            amount = Math.round(amount * 10)/10
+          }
+          amount = Math.ceil(amount);
         }
         if (all || amount > 0) {
 	        costs.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper

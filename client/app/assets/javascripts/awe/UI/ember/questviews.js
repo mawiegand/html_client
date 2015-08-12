@@ -462,6 +462,10 @@ AWE.UI.Ember = (function(module) {
           return true;
       return false;
     }.property('finishedQuestState', 'nextQuestState', 'redeemed_successfully'),
+
+    showTutorialArrow: function(){
+      return AWE.GS.TutorialStateManager.tutorialState.tutorial_states_completed <= 1;
+    }.property('AWE.GS.TutorialStateManager.tutorialState.tutorial_states_completed'),
     
     nextButtonVisible: function(){
       if(this.get('finishedQuestState') == null)

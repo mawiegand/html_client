@@ -72,6 +72,7 @@ AWE.Controller = function (module) {
     var regionViews = {};
     var fortressViews = {};
     var artifactViews = {};
+    var poacherTreasureViews = {};
     var armyViews = {};
     var movementArrowViews = {};
     var locationViews = {};
@@ -1960,6 +1961,7 @@ AWE.Controller = function (module) {
     that.updateModel = (function () {
 
       var lastArtifactCheck = new Date(1970);
+      var lastPoacherTreasureCheck = new Date(1970);
       var lastArmyCheck = new Date(1970);
       var lastOwnArmiesCheck = new Date(1970);
       var lastLocationUpdateCheck = new Date(1970);
@@ -2052,6 +2054,11 @@ AWE.Controller = function (module) {
 
               // updating artifacts
               AWE.GS.ArtifactManager.updateArtifactsInRegion(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (artifacts) {
+                that.setModelChanged();
+              });
+
+              // updating poacher treasures
+              AWE.GS.PoacherTreasureManager.updatePoacherTreasuresInRegion(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (poacherTreasures) {
                 that.setModelChanged();
               });
             }
@@ -2407,6 +2414,13 @@ AWE.Controller = function (module) {
       view.setCenter(AWE.Geometry.createPoint(
         pos.x + 68,
         pos.y - 20
+      ));
+    }
+
+    var setPoacherTreasurePosition = function (view, pos) {
+      view.setCenter(AWE.Geometry.createPoint(
+        pos.x + 146,
+        pos.y + 8
       ));
     }
 
@@ -2992,6 +3006,7 @@ AWE.Controller = function (module) {
       removedSomething = that.updateFortresses(nodes) || removedSomething;
       removedSomething = that.updateSettlements(nodes) || removedSomething;
       removedSomething = that.updateArtifacts(nodes) || removedSomething;
+      removedSomething = that.updatePoacherTreasures(nodes) || removedSomething;
       removedSomething = that.updateArmies(nodes) || removedSomething;
 
       return removedSomething;
@@ -3544,6 +3559,7 @@ AWE.Controller = function (module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(artifactViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(poacherTreasureViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
@@ -3581,10 +3597,11 @@ AWE.Controller = function (module) {
       var numFortressViews = AWE.Util.hashCount(fortressViews);
       var numArmyViews = AWE.Util.hashCount(armyViews);
       var numArtifactViews = AWE.Util.hashCount(artifactViews);
+      var numPoacherTreasureViews = AWE.Util.hashCount(poacherTreasureViews);
       var numLocationViews = AWE.Util.hashCount(locationViews);
 
       $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews +
-        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + ' (regions, fortresses, locations, armies, artifacts)');
+        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + numPoacherTreasureViews + '/' + ' (regions, fortresses, locations, armies, artifacts, poacherTreasures)');
     };
 
 
@@ -3693,7 +3710,7 @@ AWE.Controller = function (module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
             regionViews,
-            [fortressViews, artifactViews, armyViews, locationViews, movementArrowViews],
+            [fortressViews, artifactViews, poacherTreasureViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
             inspectorViews,
             controlsViews

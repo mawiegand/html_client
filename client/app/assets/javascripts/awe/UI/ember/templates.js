@@ -10,54 +10,69 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
 
   module.templates = module.templates || [];
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alertviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliancediplomacydialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliance-view.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armychangecreateviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armylistviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armyviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentsdialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/battledialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/startupdialogs.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/artifactviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliancediplomacydialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/victoryprogressviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/trainingqueueviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/basescreen.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/outpostscreen.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentsdialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentviews.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/battledialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/battleviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/buildingupgrade.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/basescreen.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/buildingdetailviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/buildingviews.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterinfodialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/constructionqueueviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterprogressdialog.html');
+
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/domview.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/encyclopediaview.html');
+
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/fortressscreen.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/profileview.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/rankingview.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/foundsettlementdialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/facebookviews.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/hudviews.html');
+
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/mainmenudialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/messagecenter.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/shopview.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/standardviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/encyclopediaview.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/questviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/movingdialog.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/outpostscreen.html');
+
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/playertoplayertradeview.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementinfodialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterinfodialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/profileview.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/pteroview.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/questviews.html');
+
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourceinformationdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourcedetailsdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourceexchangedialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/foundsettlementdialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/facebookviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterprogressdialog.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialsettle.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliance-view.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/buildingupgrade.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/taxesscreen.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/hudviews.html');
-
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alertviews.html');
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/pteroview.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/rankingview.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/retentioneggview.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/startupdialogs.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/shopview.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/standardviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementinfodialog.html');
+
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialsettle.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/taxesscreen.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/trainingqueueviews.html');
+  
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/victoryprogressviews.html');
+
 
   return module;
 
