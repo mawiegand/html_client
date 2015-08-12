@@ -479,13 +479,16 @@
             <div class="haufen"></div>
 
             {{#if redeemButtonVisible}}
-             <div class="redeemButton" {{action "redeemButtonPressed" }}>
-               {{#if redeeming}}
-                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-               {{else}}
+              {{#if showTutorialArrow}}
+                {{view AWE.UI.Ember.UIMarker direction=2 top=170 left=60}}
+              {{/if}}
+              <div class="redeemButton" {{action "redeemButtonPressed" }}>
+                {{#if redeeming}}
+                  {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+                {{else}}
                   <span>{{t tutorial.redeemNow}}</span>
-               {{/if}}
-             </div>
+                {{/if}}
+              </div>
             {{/if}}
             
             {{#if quest.rewards}}
@@ -666,6 +669,9 @@
 
 
         {{#if nextButtonVisible}}
+          {{#if showTutorialArrow}}
+            {{view AWE.UI.Ember.UIMarker direction=2 top=290 left=410}}
+          {{/if}}
         <div class="nextButton" {{action "closeDialogRequested" }}>
           <span>{{t tutorial.goOn}}</span>
         </div>
