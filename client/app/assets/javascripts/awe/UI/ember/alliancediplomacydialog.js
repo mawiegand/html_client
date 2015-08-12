@@ -164,57 +164,6 @@ AWE.UI.Ember = (function(module) {
       });
       WACKADOO.presentModalDialog(errorDialog);
     },
-
-    leaveAlliance: function() {
-      if (this.get('ongoingAction')) return;
-
-      var self = this;
-      var message = AWE.I18n.lookupTranslation('alliance.confirmLeave.message');
-      var hours = this.getPath("character.hoursUntilAllianceRejoinAllowed");
-      if(hours !== 0){
-        var string = AWE.I18n.lookupTranslation('alliance.confirmLeave.message2');
-        message += string.format(hours);
-      }
-
-      var dialog = AWE.UI.Ember.InfoDialog.create({
-        heading:    AWE.I18n.lookupTranslation('alliance.confirmLeave.heading'),
-        message:    message,
-
-        okText: AWE.I18n.lookupTranslation('general.yes'),
-        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
-
-        allianceId: this.getPath('character.alliance_id'),
-
-        okPressed: function() {
-          var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
-          if (!action) {
-            this.leaveAllianceError(AWE.I18n.lookupTranslation('alliance.error.leaveFailedClient'));
-          }
-          else {
-            self.startAction('leave');
-            AWE.Action.Manager.queueAction(action, function(statusCode) {
-              if (statusCode !== 200) {
-                self.leaveAllianceError(AWE.I18n.lookupTranslation('alliance.error.leaveFailed'));
-              }
-              self.endAction('leave');
-            });
-          }
-          this.destroy();
-        },
-        cancelPressed: function() {
-          this.destroy();
-        },
-      });
-      WACKADOO.presentModalDialog(dialog);
-    },
-
-    leaveAllianceError: function(message) {
-      errorDialog = AWE.UI.Ember.InfoDialog.create({
-        heading: AWE.I18n.lookupTranslation('alliance.leaveAllianceFailedHead'),
-        message: message
-      });
-      WACKADOO.presentModalDialog(errorDialog);
-    }
   });
 
   return module;

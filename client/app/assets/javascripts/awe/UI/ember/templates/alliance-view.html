@@ -5,62 +5,66 @@
 
 <script type="text/x-handlebars" data-template-name="alliance-info-tab">
   <div class="alliance-container scrolling">
-
-    {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
-
-
     <div class="alliance-about">
+      <div class="col left">
+        {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+        <div class="modal-dialog-green-button-big leave-button" {{action "leaveAlliance"}}>
+          {{t alliance.leave}}
+        </div>
+      </div>
+      <div class="col right">
         <h3>{{alliance.name}}</h3>
-        {{#if ownAlliance}}
         <div class="alliance-information">
+          {{#if ownAlliance}}
             <h4>Invitelink:</h4>
             <div class="alliance-invite-link">
-                {{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
+                {{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}
             </div>
-            {{else}}
+          {{else}}
             <div class="alliance-join-button" {{action "sendAllianceApplication"}}>
-                {{t dialogs.alliance.apply}}
+              {{t dialogs.alliance.apply}}
             </div>
-            {{/if}}
-            {{#if isAllianceLeader}}
-            <div class="alliance-management">
-                <div class="alliance-character-invite">
-                    <h4>{{t dialogs.alliance.allianceInfo.invite}}</h4>
-                    <div class="alliance-character-invite-first alliance-character-invite-input">
-                        {{view Ember.TextField class="alliance-character-invite-inputfield" type="text" placeholderBinding="allianceCharacterInvitePlaceholder" valueBinding="characterInviteName"}}
-                    </div>
-                    <div class="alliance-character-invite-second">
-                        <div class="alliance-character-invite-button" {{action "sendAllianceCharacterInvite"}}>
-                            {{t dialogs.alliance.invite}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="alliance-slogan">
-                    <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
-                    {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 
-                </div>
-
-                <div class="alliance-accept">
-                    <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
-                    <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
-                        <div {{bindAttr class=":alliance-toggle isToggleOn"}}>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{/if}}
+          {{/if}}
         </div>
         {{#if isAllianceLeader}}
-        <div class="alliance-text">
-            {{view Ember.TextArea class="alliance-description" maxlength=AWE.Config.DESCRIPTION_MAX_LENGTH type="text" allianceBinding="alliance" valueBinding="alliance.description" focusOutBinding="processNewDescription"}}
-        </div>
-        {{else}}
-        <div class="alliance-text">
-            {{alliance.description}}
-        </div>
+          <div class="alliance-management">
+            <div class="alliance-character-invite">
+              <h4>{{t dialogs.alliance.allianceInfo.invite}}</h4>
+              <div class="alliance-character-invite-first alliance-character-invite-input">
+                {{view Ember.TextField class="alliance-character-invite-inputfield" type="text" placeholderBinding="allianceCharacterInvitePlaceholder" valueBinding="characterInviteName"}}
+              </div>
+              <div class="alliance-character-invite-second">
+                <div class="alliance-character-invite-button" {{action "sendAllianceCharacterInvite"}}>
+                  {{t dialogs.alliance.invite}}
+                </div>
+              </div>
+            </div>
+
+            <div class="alliance-slogan">
+              <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
+              {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 
+            </div>
+
+            <div class="alliance-accept">
+              <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
+              <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
+                <div {{bindAttr class=":alliance-toggle isToggleOn"}}>
+                </div>
+              </div>
+            </div>
+          </div>
         {{/if}}
-    </div>
+      </div>
+    </div> 
+    {{#if isAllianceLeader}}
+      <div class="alliance-text">
+        {{view Ember.TextArea class="alliance-description" maxlength=AWE.Config.DESCRIPTION_MAX_LENGTH type="text" allianceBinding="alliance" valueBinding="alliance.description" focusOutBinding="processNewDescription"}}
+      </div>
+    {{else}}
+      <div class="alliance-text">
+        {{alliance.description}}
+      </div>
+    {{/if}}
   </div>
 </script>
 

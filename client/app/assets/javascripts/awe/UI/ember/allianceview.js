@@ -285,6 +285,56 @@ AWE.UI.Ember = (function(module) {
       });        
     },
 
+    leaveAlliance: function() {
+      if (this.get('ongoingAction')) return;
+      var character = AWE.GS.game.currentCharacter;
+      var self = this;
+      var message = AWE.I18n.lookupTranslation('alliance.confirmLeave.message');
+      var hours = character.get("hoursUntilAllianceRejoinAllowed");
+      if(hours !== 0){
+        var string = AWE.I18n.lookupTranslation('alliance.confirmLeave.message2');
+        message += string.format(hours);
+      }
+
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmLeave.heading'),
+        message:    message,
+
+        okText: AWE.I18n.lookupTranslation('general.yes'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
+
+        allianceId: self.get('alliance').getId(),
+
+        okPressed: function() {
+          debugger;
+          var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
+          if (!action) {
+            this.leaveAllianceError(AWE.I18n.lookupTranslation('alliance.error.leaveFailedClient'));
+          }
+          else {
+            AWE.Action.Manager.queueAction(action, function(statusCode) {
+              if (statusCode !== 200) {
+                self.leaveAllianceError(AWE.I18n.lookupTranslation('alliance.error.leaveFailed'));
+              }
+            });
+          }
+          this.destroy();
+        },
+        cancelPressed: function() {
+          this.destroy();
+        },
+      });
+      WACKADOO.presentModalDialog(dialog);
+    },
+
+    leaveAllianceError: function(message) {
+      errorDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('alliance.leaveAllianceFailedHead'),
+        message: message
+      });
+      WACKADOO.presentModalDialog(errorDialog);
+    }
+
   });
 
   //Mermbers View Controller
