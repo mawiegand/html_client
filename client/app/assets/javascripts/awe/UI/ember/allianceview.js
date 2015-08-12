@@ -306,7 +306,6 @@ AWE.UI.Ember = (function(module) {
         allianceId: self.get('alliance').getId(),
 
         okPressed: function() {
-          debugger;
           var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
           if (!action) {
             this.leaveAllianceError(AWE.I18n.lookupTranslation('alliance.error.leaveFailedClient'));

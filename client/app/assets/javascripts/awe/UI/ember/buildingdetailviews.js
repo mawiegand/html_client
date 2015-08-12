@@ -102,11 +102,18 @@ AWE.UI.Ember = (function(module) {
     },
     
     diplomacyClicked: function(event) {
-      var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
-        unlockedAllianceCreation: this.getPath('building.unlockedAllianceCreation')
-      });
-      WACKADOO.presentModalDialog(dialog);
-      //this.get('controller').constructionDiplomacyClicked(this.get('slot'));
+      var allianceId = AWE.GS.game.currentCharacter.alliance_id;
+      if(allianceId === null || typeof allianceId === "undefined")
+      {
+        var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+          unlockedAllianceCreation: this.getPath('building.unlockedAllianceCreation')
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else {
+        WACKADOO.showAllianceDialog(allianceId);
+      }
+
     },
     
     tradeClicked: function() {
