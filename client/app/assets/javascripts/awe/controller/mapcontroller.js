@@ -1532,6 +1532,7 @@ AWE.Controller = function (module) {
       document.body.style.cursor = "pointer";
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArtifactView'
+        || view.typeName() === 'PoacherTreasureView'
         || view.typeName() === 'ArmyView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
@@ -1551,6 +1552,7 @@ AWE.Controller = function (module) {
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArmyView'
         || view.typeName() === 'ArtifactView'
+        || view.typeName() === 'PoacherTreasureView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
         || view.typeName() === 'EmptySlotView') {
@@ -3141,6 +3143,18 @@ AWE.Controller = function (module) {
           annotationView.initWithControllerAndView(that, annotatedView);
           if (annotatedView.location()) {
             AWE.GS.ArtifactManager.updateArtifactsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {
+              that.setModelChanged();
+            });
+          }
+          else {
+            log("ERROR: expected location to be there, but its missing!");
+          }
+        }
+        else if (annotatedView.typeName() === 'PoacherTreasureView') {
+          annotationView = AWE.UI.createPoacherTreasureAnnotationView();
+          annotationView.initWithControllerAndView(that, annotatedView);
+          if (annotatedView.location()) {
+            AWE.GS.PoacherTreasureManager.updatePoacherTreasuresAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {
               that.setModelChanged();
             });
           }

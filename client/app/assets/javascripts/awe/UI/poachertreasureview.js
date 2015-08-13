@@ -127,13 +127,13 @@ AWE.UI = (function(module) {
       }
     }
     
-    /*that.setAnnotationView = function(annotationView) {
+    that.setAnnotationView = function(annotationView) {
       _annotationView = annotationView;
-    }*/
+    }
     
-    /*that.annotationView = function() {
+    that.annotationView = function() {
       return _annotationView;
-    }*/
+    }
 
     that.poacherTreasure = function() {
       return _poacherTreasure;

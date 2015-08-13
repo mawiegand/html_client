@@ -160,7 +160,7 @@ AWE.GS = function (module) {
       );
     }
 
-    that.updatePoacherTreasureAtLocation = function (locationId, updateType, callback) {
+    that.updatePoacherTreasuresAtLocation = function (locationId, updateType, callback) {
       var url = AWE.Config.MAP_SERVER_BASE + 'locations/' + locationId + '/treasures';
       return my.fetchEntitiesFromURL(
         url,

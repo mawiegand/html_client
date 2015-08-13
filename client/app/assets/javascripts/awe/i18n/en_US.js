@@ -393,8 +393,9 @@ AWE.I18n.en_US = function(module) {
     },
 
     map:{
-       regions: 'Regions',
+      regions: 'Regions',
       arriving: 'Arriving...',
+      treasure: 'Treasure',
 
       button:{
         attack:"Attack",
