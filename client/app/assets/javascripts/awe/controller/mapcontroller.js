@@ -2718,8 +2718,11 @@ AWE.Controller = function (module) {
 
                 var poacherTreasure = poacherTreasures[id];
                 var army = AWE.GS.ArmyManager.getArmy(poacherTreasure.get('army_id'));
-
                 if (army) {
+                  var armyView = armyViews[poacherTreasure.get('army_id')];
+                }
+
+                if (armyView) {
                   var view = poacherTreasureViews[id];
 
                   if (view) {
@@ -2734,9 +2737,7 @@ AWE.Controller = function (module) {
                       _stages[1].addChild(view.displayObject());
                     }
 
-                    var armyView = armyViews[poacherTreasure.get('army_id')];
-
-                    if (view && armyView) {
+                    if (view) {
                       setPoacherTreasurePosition(view, armyView.center());
                       newPoacherTreasureViews[id] = view;
                     }
