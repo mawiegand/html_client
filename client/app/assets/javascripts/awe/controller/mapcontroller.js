@@ -822,7 +822,7 @@ AWE.Controller = function (module) {
           });
         }
         else {
-          that.handleError(status, "The server did not accept the movement comannd.");
+          that.handleError(status, "The server did not accept the movement command.");
         }
       });
     }
@@ -838,7 +838,7 @@ AWE.Controller = function (module) {
           });
         }
         else {
-          that.handleError(status, "The server did not accept the cancel comannd.");
+          that.handleError(status, "The server did not accept the cancel command.");
         }
       });
     };
@@ -878,8 +878,17 @@ AWE.Controller = function (module) {
             that.setModelChanged();
           });
         }
+        else if (status === AWE.Net.CONFLICT) {
+          that.handleError(status, AWE.I18n.lookupTranslation('army.poacherFightError'));
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function () {
+            that.setModelChanged();
+          });
+          AWE.GS.ArmyManager.updateArmy(targetArmy.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function () {
+            that.setModelChanged();
+          });
+        }
         else {
-          that.handleError(status, "The server did not accept the attack comannd.");
+          that.handleError(status, "The server did not accept the attack command.");
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function () {
             that.setModelChanged();
           });
@@ -1320,7 +1329,7 @@ AWE.Controller = function (module) {
             });
           }
           else {
-            that.handleError(status, "The server did not accept the retreat comannd.");
+            that.handleError(status, "The server did not accept the retreat command.");
           }
           runningRetreatAction = false;
         });

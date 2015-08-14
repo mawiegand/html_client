@@ -133,6 +133,7 @@ AWE.I18n.de_DE = function(module) {
       maximumArmySizeReached: "Maximale Armeegröße erreicht!",
       waitingForResources: "Warte auf Rohstoffe!",
       newArmy: "Neue Armee",
+      poacherFightError: "Tut uns leid Häuptling, das ist eine persönliche Angelegenheit",
 
       list: {
         header: "Armeeübersicht",

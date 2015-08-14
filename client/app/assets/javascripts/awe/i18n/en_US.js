@@ -133,6 +133,7 @@ AWE.I18n.en_US = function(module) {
       maximumArmySizeReached: "Maximum army size reached!",
       waitingForResources: "Waiting for resources!",
       newArmy:"New Army",
+      poacherFightError: "Sorry chieftain, it's a personal matter",
 
       list: {
         header: "Overview",
