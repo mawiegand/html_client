@@ -2422,8 +2422,8 @@ AWE.Controller = function (module) {
 
     var setPoacherTreasurePosition = function (view, pos) {
       view.setCenter(AWE.Geometry.createPoint(
-        pos.x + 146,
-        pos.y + 8
+        pos.x + 60,
+        pos.y + 60
       ));
     }
 
@@ -2704,44 +2704,46 @@ AWE.Controller = function (module) {
 
     that.updatePoacherTreasures = function (nodes) {
 
-          var newPoacherTreasureViews = {};
+      var newPoacherTreasureViews = {};
 
-          for (var i = 0; i < nodes.length; i++) {
-              var frame = that.mc2vc(nodes[i].frame());
+      for (var i = 0; i < nodes.length; i++) {
+        var frame = that.mc2vc(nodes[i].frame());
 
-              if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
-                  var poacherTreasures = AWE.GS.PoacherTreasureManager.getPoacherTreasuresInRegion(nodes[i].region().id());
+        if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
+          var poacherTreasures = AWE.GS.PoacherTreasureManager.getPoacherTreasuresInRegion(nodes[i].region().id());
 
-                  for (var id in poacherTreasures) {
+            for (var id in poacherTreasures) {
 
-                      if (poacherTreasures.hasOwnProperty(id)) {
+              if (poacherTreasures.hasOwnProperty(id)) {
 
-                          var poacherTreasure = poacherTreasures[id];
-                          var location = AWE.Map.Manager.getLocation(poacherTreasure.get('location_id'));
+                var poacherTreasure = poacherTreasures[id];
+                var army = AWE.GS.ArmyManager.getArmy(poacherTreasure.get('army_id'));
 
-                          if (location) {
-                              var view = poacherTreasureViews[id];
+                if (army) {
+                  var view = poacherTreasureViews[id];
 
-                              if (view) {
-                                  if (view.lastChange !== undefined && // if model of view updated
-                                      view.lastChange().getTime() < poacherTreasure.lastChange().getTime()) {
-                                      view.setNeedsUpdate();
-                                  }
-                              }
-                              else {
-                                  view = AWE.UI.createPoacherTreasureView();
-                                  view.initWithControllerAndPoacherTreasure(that, poacherTreasure);
-                                  _stages[1].addChild(view.displayObject());
-                              }
-
-                              if (view) {
-                                  setPoacherTreasurePosition(view, that.mc2vc(poacherTreasure.get('location').position()), frame);
-                                  newPoacherTreasureViews[id] = view;
-                              }
-                          }
+                  if (view) {
+                    if (view.lastChange !== undefined && // if model of view updated
+                      view.lastChange().getTime() < poacherTreasure.lastChange().getTime()) {
+                      view.setNeedsUpdate();
                       }
+                    }
+                    else {
+                      view = AWE.UI.createPoacherTreasureView();
+                      view.initWithControllerAndPoacherTreasure(that, poacherTreasure);
+                      _stages[1].addChild(view.displayObject());
+                    }
+
+                    var armyView = armyViews[poacherTreasure.get('army_id')];
+
+                    if (view && armyView) {
+                      setPoacherTreasurePosition(view, armyView.center());
+                      newPoacherTreasureViews[id] = view;
+                    }
                   }
+                }
               }
+            }
           }
 
           var removedSomething = purgeDispensableViewsFromStage(poacherTreasureViews, newPoacherTreasureViews, _stages[1]);
