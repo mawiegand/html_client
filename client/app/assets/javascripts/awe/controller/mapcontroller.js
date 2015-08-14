@@ -1571,7 +1571,7 @@ AWE.Controller = function (module) {
       _showInspectorWith(_selectedView);
 
       if (view.typeName() === 'ArmyView') {
-        if (that.markMoveOwnArmy()) {
+        if (that.markMoveOwnArmy() && view.army().isOwn()) {
           var annotationView = view.annotationView();
           if(annotationView === null)
           {
@@ -1583,7 +1583,7 @@ AWE.Controller = function (module) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
         }
-        else if (that.markAttackButton()) {
+        else if (that.markAttackButton() && view.army().isOwn()) {
           var annotationView = view.annotationView();
           if (annotationView) {
 
@@ -1592,13 +1592,14 @@ AWE.Controller = function (module) {
         }
       }
       else if (view.typeName() === 'BaseView') {
-        if (that.markAttackButton()) {
+        // Remove arrow attack button marker for settlements. Really needed?
+        /*if (that.markAttackButton()) {
           var annotationView = view.annotationView();
           if (annotationView) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
         }
-        else {
+        else {*/
           if (!that.markCreateArmy()) {
             if (that.markSelectOwnHomeSettlement()) {
               var annotationView = view.annotationView();
@@ -1610,7 +1611,7 @@ AWE.Controller = function (module) {
               removeMarker();
             }
           }
-        }
+        //}
       }
 
       _actionViewChanged = true;
@@ -3421,11 +3422,11 @@ AWE.Controller = function (module) {
       }
       else {
         if (_selectedView && !that.animatedMarker) {
-          if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy()) {
+          if (_selectedView.typeName() === 'ArmyView' && that.markMoveOwnArmy() && _selectedView.army().isOwn()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(0, 50));
           }
-          else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
+          else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton() && _selectedView.army().isOwn()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(35, 100));
           }
