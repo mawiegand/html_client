@@ -15,6 +15,14 @@ AWE.UI.Ember = (function(module) {
       }
       return null;  
     }.property('battle'),
+    
+    close: function(){
+      if (this.onClose) {
+        this.onClose(this);
+        $('#layers').css('overflow', 'visible');
+      }
+      this.destroy();
+    },
 
   }),
 
@@ -281,11 +289,21 @@ AWE.UI.Ember = (function(module) {
     }.property('battle.ratio').cacheable(),
     
     updateBattle: function() {
-      //debugger;
+      var dialog = this.getPath('parentView.parentView.dialog');
       var battleId = this.getPath('battle.id');
       if (battleId) {
-        AWE.GS.BattleManager.updateBattle(battleId); 
-      }  
+        AWE.GS.BattleManager.updateBattle(battleId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (battle) {
+          if(!battle || typeof battle === "undefined"){
+            dialog.close();
+          }else
+          {
+            if(battle.ended_at)
+              dialog.close();
+          }
+        }); 
+      }else{      
+        dialog.close();
+      }
     },
     
   });
