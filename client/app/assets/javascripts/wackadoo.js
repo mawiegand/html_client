@@ -970,7 +970,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
       var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
-      if (isAndroid) {
+      var isiOS = /iPad|iPhone|iPod/.test(navigator.platform);   
+      if (isAndroid || isiOS) {
         AWE.Settings.hudScale = 0.5;
         var styleSheets = document.styleSheets;
       
