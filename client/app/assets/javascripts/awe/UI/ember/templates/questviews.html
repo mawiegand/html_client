@@ -203,11 +203,20 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-cave-painting-view">
-    
-      <div class="cave_background scale-down">
-        <div class="cave_background_carving">
+      
 
-        </div>
+      <div class="cave_painting_container">
+          <img src="/client/assets/cavepainting/cavepainting_background.jpg" class="cave_painting_background" />
+          <img src="/client/assets/cavepainting/carving_all_empty.png" class="cave_painting_carvings " />
+          <img src="/client/assets/cavepainting/x_button.png" class="cave_painting_close_button" {{action close_cave_painting}} />
+
+          {{#if spiral_url}}
+            <img {{bindAttr src="spiral_url"}} class="cave_painting_spiral" />
+          {{/if}}
+
+          {{#each carvings in carving_colored_objs}}
+            <img {{bindAttr src="carvings.url"}} {{bindAttr class="carvings.css_class"}} />
+          {{/each}}
+
       </div>
-
 </script>

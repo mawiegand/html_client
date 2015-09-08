@@ -183,7 +183,7 @@ AWE.UI.Ember = (function(module) {
                       {
                         self.set('spinningBackground', true);
                       }
-                    }   
+                    }
                   }
                 });
               },
@@ -328,6 +328,93 @@ AWE.UI.Ember = (function(module) {
 
   module.CavePainting = Ember.View.extend({
     templateName: 'quest-cave-painting-view',
+    questBinding: 'questState.quest',
+
+    cave_painting_url:'/client/assets/cavepainting/',
+    spiral_url:null,
+
+    carving_colored_objs:[],
+
+    // these should be 16. Each quest refers to a colored_carving and they are ordered in the
+    // way the colored images are shown.
+    quest_ids: [0,3,6,7,9,12,20,24,27,31,34],
+
+
+
+    init:function()
+    {
+
+      this._super();
+      this.unlock_painting();
+    },
+
+    close_cave_painting:function(){
+      this.destroy();
+    },
+
+    get_version_number:function(level){
+
+      // concatenate 0 so the number 8 for e.g becomes 08. Since our spiral images
+      // are named like this.
+
+
+    // level+1 because we're passing the index of loop in this function which starts from 0.
+    // there is no image with the following index 00 hence we +1 to make it 01.
+      level = level+1;
+
+      if(level<10)
+        version = "0"+level;
+      else
+        version = level;
+
+      return version;
+    },
+
+
+    get_spiral_version:function(level){
+      return "spiral_"+this.get_version_number(level)+".png";
+    },
+
+    get_carving_colored_version:function(level){
+      return this.get_version_number(level);
+    },
+
+
+    unlock_painting:function(){
+
+       questids = this.get('quest_ids');
+
+      // this is used to find out the number of completed quests out of the given
+      // quests. Based on this variable count we load the spiral image.
+       total_quests_completed = 0;
+
+       this.set('carving_colored_objs',new Array());
+
+       for(i=0;i<questids.length;i++)
+       {
+          // if it's not null, the quest has an entry and it is completed
+          if(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(questids[i])!==null)
+          {
+             carving_colored_pic_url = this.get('cave_painting_url')+'carving_colored_'+this.get_carving_colored_version(i)+'.png';
+             carving_colored_pic_class = 'cave_painting_carving_colored_'+this.get_carving_colored_version(i);
+
+             current_carvings = this.get('carving_colored_objs');
+             current_carvings.push({ url : carving_colored_pic_url , css_class : carving_colored_pic_class});
+
+             this.set('carving_colored_objs',current_carvings);
+             total_quests_completed++;
+          }
+          else
+          {
+            break;
+          }
+       }
+
+       this.set('spiral_url',this.get('cave_painting_url')+this.get_spiral_version(total_quests_completed));
+
+
+    },
+
   });
 
   return module;
