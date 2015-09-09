@@ -253,7 +253,7 @@ AWE.UI.Ember = (function(module) {
           }
       });
 
-      if(currentUnits == 0)
+      if(currentUnits <10)
       {
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         return tutorialState.isUIMarkerActive(AWE.GS.MARK_CREATE_ARMY_DIALOG_FLOW) ;
@@ -280,7 +280,7 @@ AWE.UI.Ember = (function(module) {
         }
       });
 
-      if(currentUnits > 0)
+      if(currentUnits >= 10)
       {
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         return tutorialState.isUIMarkerActive(AWE.GS.MARK_CREATE_ARMY_DIALOG_FLOW) ;
