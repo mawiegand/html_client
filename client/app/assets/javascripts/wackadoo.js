@@ -159,7 +159,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showAnnouncement: function() {
       var self = this;
-
+      debugger
       AWE.GS.TutorialStateManager.allowedToShowDialog = false;
       
      /* var dialog = AWE.UI.Ember.TutorialEndDialog.create();
