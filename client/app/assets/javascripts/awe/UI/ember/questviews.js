@@ -329,14 +329,12 @@ AWE.UI.Ember = (function(module) {
   module.CavePainting = Ember.View.extend({
     templateName: 'quest-cave-painting-view',
     questBinding: 'questState.quest',
-
     cave_painting_url:'/client/assets/cavepainting/',
-    spiral_url:null,
-
+    spiral_url:"/client/assets/cavepainting/spiral_01.png",
     carving_colored_objs:[],
-
+    version : 0,
     // these should be 16. Each quest refers to a colored_carving and they are ordered in the
-    // way the colored images are shown.
+    // way the colored images should be shown ( got these from Daniel ).
     quest_ids: [0,3,6,7,9,12,20,24,27,31,34],
 
 
@@ -367,18 +365,19 @@ AWE.UI.Ember = (function(module) {
       else
         version = level;
 
+      this.set('version',version);
       return version;
     },
 
 
+
     get_spiral_version:function(level){
-      return "spiral_"+this.get_version_number(level)+".png";
+      return "spiral_"+this.get_version_number(level-1)+".png";
     },
 
     get_carving_colored_version:function(level){
       return this.get_version_number(level);
     },
-
 
     unlock_painting:function(){
 
@@ -390,13 +389,13 @@ AWE.UI.Ember = (function(module) {
 
        this.set('carving_colored_objs',new Array());
 
-       for(i=0;i<questids.length;i++)
+       for(i=0 ; i<questids.length ; i++)
        {
           // if it's not null, the quest has an entry and it is completed
           if(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(questids[i])!==null)
           {
              carving_colored_pic_url = this.get('cave_painting_url')+'carving_colored_'+this.get_carving_colored_version(i)+'.png';
-             carving_colored_pic_class = 'cave_painting_carving_colored_'+this.get_carving_colored_version(i);
+             carving_colored_pic_class = 'cave-painting-carving-colored-'+this.get_carving_colored_version(i);
 
              current_carvings = this.get('carving_colored_objs');
              current_carvings.push({ url : carving_colored_pic_url , css_class : carving_colored_pic_class});
@@ -410,10 +409,21 @@ AWE.UI.Ember = (function(module) {
           }
        }
 
+
        this.set('spiral_url',this.get('cave_painting_url')+this.get_spiral_version(total_quests_completed));
 
 
     },
+
+
+
+    spiral:function(){
+       return "spiral-" + this.get('version');
+    }.property('version'),
+
+
+
+
 
   });
 
