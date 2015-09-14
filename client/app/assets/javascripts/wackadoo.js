@@ -92,13 +92,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     showWelcomeDialog: function() {
       var self = this;
-
+      
+      AWE.GS.TutorialStateManager.allowedToShowDialog = false;        
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          AWE.GS.TutorialStateManager.checkForNewQuests();
+          //AWE.GS.TutorialStateManager.checkForNewQuests();
+          AWE.GS.TutorialStateManager.allowedToShowDialog = true;  
+          AWE.GS.TutorialStateManager.lastRewardsCheck = new Date();
           this.destroy();
 
           self.get('presentScreenController').welcomeDialogClosed();
+		  
+	      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+	        $(window).scrollTop($(window).height() / 1.25);
+	        $(window).scrollLeft($(window).width() / 2.35);
+	      }
         },
       });
       this.presentModalDialog(dialog);
@@ -113,18 +121,31 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // var dialog = AWE.UI.Ember.QuestListView.create({
       //   tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
       // });
+      // dialog.initialize();
       // this.presentModalDialog(dialog);
       // AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
       //   // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
       // });
+
       var dialog = AWE.UI.Ember.CavePainting.create();
-      this.presentModalDialog(dialog);
+       this.presentModalDialog(dialog);
+  
     },
 
+    showEpicQuestDialog: function(questState){
+      var dialog = AWE.UI.Ember.QuestEpicView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      this.presentModalDialog(dialog);
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
+      });      
+    },
 
     showAnnouncement: function() {
       var self = this;
 
+      AWE.GS.TutorialStateManager.allowedToShowDialog = false;
       /*
       var dialog = AWE.UI.Ember.TutorialEndDialog.create();
       self.presentModalDialog(dialog); */
@@ -134,6 +155,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
             okPressed:    function() {
+              AWE.GS.TutorialStateManager.allowedToShowDialog = true;              
               AWE.GS.TutorialStateManager.checkForNewQuests();
               $('#layers').css('overflow', 'visible');
               this.destroy();
@@ -141,6 +163,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               self.get('presentScreenController').welcomeDialogClosed();
               //self.get('extrasController').startRandomPterodactylus(60, 90);
               self.get('extrasController').enableAutoPterodactylus();
+			  
+		      if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+		        $(window).scrollTop($(window).height() / 1.25);
+		        $(window).scrollLeft($(window).width() / 2.35);
+		      }
             },
           });
           self.presentModalDialog(dialog);
@@ -931,12 +958,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           for (m in theRules)
           {
             if (theRules[m].selectorText === ".scale-down") {
+              debugger
               theRules[m].style.zoom = AWE.Settings.hudScale;
             }
             if (theRules[m].selectorText === '.topbar-info-box') {
               theRules[m].style.top = 90*AWE.Settings.hudScale+'px';
               theRules[m].style.marginLeft= -170*AWE.Settings.hudScale+'px';
             }
+            if(theRules[m].selectorText === '.quest-list-view.scale-down' || theRules[m].selectorText === '.quest-epic-view.scale-down') {
+              theRules[m].style.zoom = 0.35; //HACK
+            }
+            
+      			if (theRules[m].selectorText === '.jm_chat-content') {
+      			  theRules[m].style.height = '175px';
+      			}
           }       
         }
       } else {

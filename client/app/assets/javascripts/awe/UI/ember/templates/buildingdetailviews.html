@@ -223,26 +223,26 @@
       <div class="building-annotation-icon building-destroy-button-icon" style="opacity: 0.5;">&nbsp;</div>
     {{/if}}
   {{/unless}}
-  {{#if building.unlockedAssignments}} <!-- CORRECT ??? -->
+  {{#if building.unlockedAssignments}}
     {{#if assignmentUIMarker}}
         {{view AWE.UI.Ember.UIMarker direction=2 top="-20" left=55}}
     {{/if}}
     <div class="building-annotation-background building-assignment-button-background" {{action "assignmentClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-assignment-button-icon" {{action "assignmentClicked"}}>&nbsp;</div>
   {{/if}}
-  {{#if building.unlockedDiplomacy}} <!-- CORRECT ??? -->
+  {{#if building.unlockedDiplomacy}}
     <div class="building-annotation-background building-diplomacy-button-background" {{action "diplomacyClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-diplomacy-button-icon" {{action "diplomacyClicked"}}>&nbsp;</div>
   {{/if}}
-  {{#if building.unlockedPlayerToPlayerTrade}} <!-- CORRECT ??? -->
+  {{#if building.unlockedPlayerToPlayerTrade}}
     <div class="building-annotation-background building-trade-button-background" {{action "tradeClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-trade-button-icon" {{action "tradeClicked"}}>&nbsp;</div>
   {{/if}}
-  {{#if building.unlockedArtifactInitiation}} <!-- CORRECT ??? -->
+  {{#if building.unlockedArtifactInitiation}}
     <div class="building-annotation-background building-artifact-button-background" {{action "artifactClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-artifact-button-icon" {{action "artifactClicked"}}>&nbsp;</div>
   {{/if}}
-  {{#if isMilitary}} <!-- CORRECT ??? -->
+  {{#if isMilitary}}
     {{#if militaryUIMarker}}
       {{view AWE.UI.Ember.UIMarker direction=2 top="-20" left=55}}
     {{/if}}

@@ -1,3 +1,4 @@
+
 var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
@@ -105,6 +106,22 @@ AWE.UI.Ember = (function(module) {
         return tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) ;
       }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
+  });
+
+  module.UpgradeUnlockDialog = module.UpgradeView.extend({
+    templateName: 'upgrade-unlock-dialog',
+
+    levelDelta: function() {
+      return this.get('selectedLevel') - this.get('currentLevel');
+    }.property('selectedLevel', 'currentLevel'),
+
+    unlockingBuildings: function() {
+      return this.getPath('slot.building').getUnlockedBuildingsForLevel(this.get('selectedLevel'));
+    }.property('slot.building.unlockedBuildings', 'selectedLevel'),
+
+    unlockingUnits: function() {
+      return this.getPath('slot.building').getUnlockedUnitsForLevel(this.get('selectedLevel'));
+    }.property('slot.building.unlockedUnits', 'selectedLevel')
   });
 
   module.BuildingDetailsView = Ember.View.extend({
@@ -272,6 +289,186 @@ AWE.UI.Ember = (function(module) {
       }
       return false;
     }.property("containsEconomyInfo", "containsMilitaryInfo"),
+
+  });
+
+  module.BuildingDetailsUnlockView = Ember.View.extend({
+    templateName: 'building-details-unlock-view',
+    classNames: ['building-details-unlock'],
+    classBinding: "smallTemplate",
+    startBuilding: null,
+    endBuilding: null,
+    startLevel: 0,
+    targetLevel: 1,
+    smallTemplate: false,
+    conversion: false,
+
+    currentBuildingCapacity: function() {
+      var capacity = this.get("startBuilding").getCapacityForLevel(this.get("startLevel"));
+      if(capacity)
+      {
+        return capacity;
+      }
+      return false;
+    }.property("startBuilding", "building.level"),
+
+    targetBuildingCapacity: function() {
+
+      var capacity = this.get("endBuilding").getCapacityForLevel(this.get("targetLevel"));
+      if(capacity)
+      {
+        return capacity;
+      }
+      return false;
+    }.property("endBuilding", "targetLevel"),
+
+    currentBuildingSingleCapacity: function() {
+      var capacity = 0;
+      this.get('currentBuildingCapacity').forEach(function(cap) {
+        if(capacity === 0)
+        {
+          capacity = cap.capacity;
+        }
+        if(cap.capacity !== capacity)
+        {
+          return false;
+        }
+      });
+      return capacity;
+    }.property("currentBuildingCapacity"),
+
+    targetBuildingSingleCapacity: function() {
+      var capacity = 0;
+      this.get('targetBuildingCapacity').forEach(function(cap) {
+        if(capacity === 0)
+        {
+          capacity = cap.capacity;
+        }
+        if(cap.capacity !== capacity)
+        {
+          return false;
+        }
+      });
+      return capacity;
+    }.property("targetBuildingCapacity"),
+
+    capacityDelta: function() {
+      return this.get('targetBuildingSingleCapacity') - this.get('currentBuildingSingleCapacity');
+    }.property('currentBuildingSingleCapacity', 'targetBuildingSingleCapacity'),
+
+    currentBuildingPopulation: function() {
+      var population = this.get("startBuilding").getPopulationForLevel(this.get("startLevel"));
+      if(population)
+      {
+        return population;
+      }
+      return false;
+    }.property("startBuilding", "startLevel"),
+
+    targetBuildingPopulation: function() {
+      var population = this.get("endBuilding").getPopulationForLevel(this.get("targetLevel"));
+      if(population)
+      {
+        return population;
+      }
+      return false;
+    }.property("endBuilding", "targetLevel"),
+
+    populationDelta: function() {
+      return this.get('targetBuildingPopulation') - this.get('currentBuildingPopulation');
+    }.property("currentBuildingPopulation", "targetBuildingPopulation"),
+
+    commandPointsDelta: function() {
+      return this.getPath('endBuilding').calcCommandPoints(this.get('targetLevel')) - this.get('startBuilding').calcCommandPoints(this.get('startLevel'));
+    }.property("building.commandPoints", "building.commandPointsNextLevel"),
+
+
+    buildingMilitarySpeedupQueues: function() {
+      var returnQueues = [];
+      var targetQueues = this.get("endBuilding").calculateSpeedupQueues(this.get("targetLevel"));
+      var currentQueues = this.get("startBuilding").calculateSpeedupQueues(this.get("startLevel"));
+      currentQueues.forEach(function(queue) {
+        var correspondingTarget = null;
+        targetQueues.forEach(function(targetQueue) {
+          if(queue.queueType.id === targetQueue.queueType.id)
+          {
+            correspondingTarget = targetQueue;
+            return;
+          }
+        });
+        
+        var delta = correspondingTarget.speedup - queue.speedup;
+        if(queue.queueType.symbolic_id !== "queue_buildings")
+        {
+          returnQueues.push({
+            queue: queue,
+            delta: delta
+          });
+        }
+      });
+      if(returnQueues.length > 0)
+      {
+        return returnQueues;
+      }
+      return false;
+    }.property("building", "startLevel", "targetLevel"),
+
+    currentBuildingConstructionSpeedupQueue: function() {
+      var returnQueue;
+      var queues = this.get("startBuilding").calculateSpeedupQueues(this.get("startLevel"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id === "queue_buildings")
+        {
+          returnQueue = queue;
+        }
+      });
+      if(returnQueue)
+      {
+        return returnQueue;
+      }
+      return false;
+    }.property("building", "startLevel"),
+
+    targetBuildingConstructionSpeedupQueue: function() {
+      var returnQueue;
+      var queues = this.get("endBuilding").calculateSpeedupQueues(this.get("targetLevel"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id === "queue_buildings")
+        {
+          returnQueue = queue;
+        }
+      });
+      if(returnQueue)
+      {
+        return returnQueue;
+      }
+      return false;
+    }.property("building", "targetLevel"),
+
+    buildingSpeedDelta: function() {
+      debugger
+      return this.getPath('targetBuildingConstructionSpeedupQueue.speedup') - this.getPath('currentBuildingConstructionSpeedupQueue.speedup');
+    }.property("targetBuildingConstructionSpeedupQueue", "currentBuildingConstructionSpeedupQueue"),
+
+    buildingTradeCarts: function() {
+      var carts = this.get("startBuilding").calcTradingCarts(this.get("level"));
+      return carts;
+    }.property("building", "level"),
+
+    buildingGarrisonBonus: function() {
+      var bonus = this.get('startBuilding').getGarrisonBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingArmyBonus: function() {
+      var bonus = this.get('startBuilding').getArmyBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingDefenseBonus: function() {
+      var bonus = 100 * this.get('startBuilding').getDefenseBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
 
   });
 

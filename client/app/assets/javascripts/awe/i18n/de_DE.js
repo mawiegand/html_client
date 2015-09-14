@@ -20,6 +20,7 @@ AWE.I18n.de_DE = function(module) {
       no:       'Nein',
       nr:       'Nr.',
       of:       'von',
+      for:      'für',
       with:     'mit',
       change:   'Ändern',
       start:    'Start',
@@ -105,7 +106,7 @@ AWE.I18n.de_DE = function(module) {
             "Yeah, platt machen wir sie!"
           ],
           losing: [
-            "Tu was, unsere Armee geht grad den Bach runter!"
+            "Tu was, unsere Armee geht gerade den Bach runter!"
           ],
           neutral: [
             "Hau mal auf den Putz, da passiert ja gar nix!"
@@ -320,7 +321,7 @@ AWE.I18n.de_DE = function(module) {
         currentLevel: "derzeitiges Gebäudelevel",
         levelAfterUpgrade: "Level nach Abschluss aller Ausbauaufträge in der Bauschleife",
         levelAfterDowngrade: "Level nach Abschluss des Abrissauftrages in der Bauschleife",
-        levelAfterConversion: "Level nach Abschluss des Umwandlungsauftrages in der Bauschleife",
+        levelAfterConversion: "Level nach Abschluss des Umwandlungsauftrags in der Bauschleife",
         notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe des Hauptgebäudes benötigt.",
       },
 
@@ -577,6 +578,15 @@ AWE.I18n.de_DE = function(module) {
         success: "Bewerbung war erfolgreich",
         error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
+      confirmAllianceCharacterInvite: {
+        heading: "Einladung bestätigen",
+        message: "Willst Du die Einladung an {0} wirklich abschicken?",
+        cancel: "Nein",
+        ok: "Ja",
+        success: "Versenden der Einladung war erfolgreich",
+        characterNotFound: "{0} wurde nicht gefunden.",
+        error: "Die Einladung wurde aus unbekanntem Grund nicht verschickt.",
+      },
       confirmDiplomacyRelation: {
         heading: "Änderung der Diplomatie bestätigen",
         message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
@@ -793,6 +803,10 @@ AWE.I18n.de_DE = function(module) {
           start: "Hey! Du kannst hier jetzt kein Gebäude vom Typ",
           end: "bauen. Die folgenden Vorrausetzungen sind nicht erfüllt",
           cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
+        },
+        requirementsNotMet:{
+          heading: "Vorrausetzungen nicht erfüllt",
+          text: "Du erfüllst die Vorraussetzungen nicht, um dieses Gebäude zu bauen!",
         },
         constructionQueueFull: {
           start: "Tut uns Leid, aber die Bauschleife ist schon voll. Du kannst maximal ",
@@ -1175,7 +1189,7 @@ AWE.I18n.de_DE = function(module) {
       
       moving: {
         info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann mit seiner Hauptsiedlung einmalig umziehen.",
-        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
+        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden. Außerdem verlierst du bei einem Umzug dein Artefakt, sofern du eines besitzt.",
         specificMovingCaption: "Gezieltes Umziehen",
         alreadyMoved: "Du bist bereits einmal umgezogen.",
         presentRegion: "Aktuelle Region",
@@ -1209,12 +1223,14 @@ AWE.I18n.de_DE = function(module) {
       finished:         "beendet",
       reward:           "Belohnung",
       rewardLink:       "Einlösen",
-      redeemNow:        "Belohnung jetzt einlösen",
+      redeemNow:        "Jetzt Abholen",
       redeemLater:      "Belohnung später einlösen",
       showQuestLink:    "Anzeigen",
       answerQuestLink:  "Absenden",
       correctAnswered:  "Frage richtig beantwortet",
-
+      questFinished:    "Quest abgeschlossen",
+      goOn:             "Weiter gehts",
+            
       task: {
         info: {
           header:       "",
@@ -1327,7 +1343,7 @@ AWE.I18n.de_DE = function(module) {
       infantry: "Infanterie",
       artillery: "Artillerie",
       cavalery: "Kavallerie",
-      specialUnits: "Spezialeinheiten",
+      specialUnits: "Spezial",
       military: "Militär",
 
       commandPointsAbbreviation: "KP",
@@ -1501,9 +1517,12 @@ AWE.I18n.de_DE = function(module) {
         info: "Info",
         members: "Mitglieder",
         diplomacy: "Diplomatie",
+        invite: "Einladen",
         apply: "Bewerben",
 
         allianceInfo: {
+          invite: "Einladung:",
+          allianceCharacterInvitePlaceholder: "Character Name",
           slogan: "Losung:",
           autoJoin: "Aufnahme:"
         },
@@ -1531,6 +1550,7 @@ AWE.I18n.de_DE = function(module) {
         heading: "Gebäude ausbauen",
         upgrade: "Ausbauen",
         level: "Stufe",
+        unlocking: "Freischalten",
       },
       convert:{
         heading: "Gebäude umwandeln",

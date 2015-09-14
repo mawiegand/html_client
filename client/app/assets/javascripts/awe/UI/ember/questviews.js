@@ -9,6 +9,129 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
   
+  module.QuestEpicView = module.InfoDialog.extend({
+    templateName: 'quest-epic-view',  
+    tutorialState: null,
+    questStateBinding: 'tutorialState.selected_quest_state',
+    questBinding: 'tutorialState.selected_quest_state.quest',
+    okPressed: function() {
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
+      $('#layers').css('overflow', 'visible');
+      this.destroy();
+      //WACKADOO.closeAllModalDialogs();
+    },
+    advisor: function() {
+      return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    subquestStates: function(){
+      var indices = this.getPath('quest.subquests');
+      var array = new Array();
+      if(indices && indices.length > 0)
+      {
+        for(var i = 0; i < indices.length; i++)
+        {
+          var quest_id = indices[i];
+          var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest_id);
+          if (questState !== null) {
+            questState.checkForRewards();
+            array.push(questState);
+          }
+        }
+        return array;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('quest.subquests').cacheable(),
+    
+    subquestStatesCountEqualsTwo: function() {
+      return (this.get('subquestStates').length == 2);
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesCountEqualsThree: function() {
+      return (this.get('subquestStates').length == 3);
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesCountEqualsFour: function() {
+      return (this.get('subquestStates').length == 4);
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesAt0: function() {
+      return this.get('subquestStates')[0];
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesAt1: function() {
+      return this.get('subquestStates')[1];
+    }.property('subquestStates').cacheable(),    
+    
+    subquestStatesAt2: function() {
+      return this.get('subquestStates')[2];
+    }.property('subquestStates').cacheable(),
+  
+    subquestStatesAt3: function() {
+      return this.get('subquestStates')[2];
+    }.property('subquestStates').cacheable(),    
+    
+    subquestStatesAt0Finished: function() {
+      return this.get('subquestStates')[0].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesAt1Finished: function() {
+      return this.get('subquestStates')[1].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('subquestStates').cacheable(),
+    
+    subquestStatesAt2Finished: function() {
+      return this.get('subquestStates')[2].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('subquestStates').cacheable(),    
+    
+    subquestStatesAt3Finished: function() {
+      return this.get('subquestStates')[2].get('status') == AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('subquestStates').cacheable(),
+    
+  });  
+  
+  module.QuestEpicSub = Ember.View.extend({
+    templateName: 'quest-epic-view-sub',
+
+    actual: function() {
+      return this.getPath('questState.actual');
+    }.property('questState.actual'), 
+
+    threshold: function() {
+      return this.getPath('questState.threshold');
+    }.property('questState.threshold'), 
+    
+    advisor: function() {
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-end';
+      }
+      else {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-start';
+      }
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    epic_actual_threshold: function() {
+      if (this.get('finished')) {
+        return 'epic_actual_threshold finished';
+      }
+      else {
+        return 'epic_actual_threshold';
+      }
+    }.property('finished').cacheable(),
+    
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),     
+    
+    classNameBindings: ['finished'],
+       
+  }); 
+  
+  
+  
+  
   module.QuestListView = module.InfoDialog.extend({
     templateName: 'quest-list-view',
     
@@ -16,64 +139,293 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
+    initialize: function() {
+      this.tutorialState.set('selected_quest_state', null);
+    },
+    
     redeemButtonPressed: function(questState) {
       questState.set('redeeming', true);
-      AWE.GS.TutorialStateManager.redeemRewards(questState, null, function() {
+      AWE.GS.TutorialStateManager.redeemRewards(questState, function(){
+        questState.set('redeeming', false);
+        questState.get('tutorialState').set('selected_quest_state', null);        
+      }, function() {
         questState.set('redeeming', false);
       });
     },
     
-    showQuestInfoPressed: function(quest) {
-      AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
+    showEpicQuestDialog: function() {
+      WACKADOO.showEpicQuestDialog();
+    },
+    
+    showQuestInfoPressed: function(questState) {
+      //var quest = questState.get('quest');
+      // types found in xml: epic, epic_optional, sub, optional
+      this.tutorialState.set('selected_quest_state', questState);
+      //AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
     
     okPressed: function() {
       AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');
       $('#layers').css('overflow', 'visible');
       this.destroy();
+      //WACKADOO.closeAllModalDialogs();
     }
   });  
   
-  module.QuestListEntryView = Ember.View.extend({
-    templateName: 'quest-list-entry-view',
+  module.QuestListItemView = Ember.View.extend({
+    templateName: 'quest-list-item-view',
     
     questState: null,
 
-  
     redeemButtonPressed: function() {
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
   
     showQuestInfoPressed: function() {
-      this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
+      this.get('parentView').showQuestInfoPressed(this.getPath('questState'));
     },
-  
-    
-    classNameBindings: ['finished'],
+
+   
     
     finished: function() {
       return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
-    }.property('questState.status'),        
+    }.property('questState.status'),   
+    
+    epic: function()
+    {
+      return this.getPath('questState.questIsEpic');
+    }.property('questState.questIsEpic').cacheable(),
+    
+    optional: function()
+    {
+      return !this.getPath('questState.questIsEpic');
+    }.property('questState.questIsEpic').cacheable(),
+    
+    tutorial: function()
+    {
+      return this.getPath('questState.quest').tutorial;
+    }.property('questState.quest.tutorial').cacheable(),
+    
+    advisor: function() {
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+      }
+      else {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+      }
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    classNameBindings: ['finished', 'epic', 'optional', 'tutorial'], 
   });  
   
+  module.QuestListItemViewDetailOverview = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-overview',
+    questState: null,    
+    
+    character: function() {
+      var ret = AWE.GS.CharacterManager.getCurrentCharacter();
+      return ret;
+    }.property('character'),
+    
+    character_rank: function() {
+      var character = this.get('character');
+      if(AWE.GS.RulesManager.getRules().character_ranks.mundane != null)
+      {
+        var ret = AWE.GS.RulesManager.getRules().character_ranks.mundane[character.get('mundane_rank')];
+        return ret;
+      }
+      return '';
+    }.property('character_rank'),
+    
+    character_rank_name: function() {
+      return this.getPath('character_rank.name');
+    }.property('character_rank'),
+    
+    character_mundane_rank_numeric: function() {
+      return this.getPath('character.mundane_rank_numeric');
+    }.property('character_rank'),
+    
+    character_exp: function() {
+      return this.getPath('character.exp');
+    }.property('character'),
+    
+    character_population: function(){
+      var settlements = AWE.GS.SettlementManager.getOwnSettlements();
+      var sum = 0;
+      AWE.Ext.applyFunctionToElements(settlements, function(settlement) {
+        sum += settlement.score;
+      });
+      return sum;
+    }.property('character'),
+    
+    character_capacity: function(){
+      var settlements = AWE.GS.SettlementManager.getOwnSettlements();
+      var sum = 0;
+      AWE.Ext.applyFunctionToElements(settlements, function(settlement) {
+        sum += parseInt(settlement.resource_stone_capacity);
+      });
+      return sum;
+    }.property('character'),
+    
+    character_fortresses: function(){
+      var settlements = AWE.GS.SettlementManager.getOwnSettlements();
+      var sum = 0;
+      AWE.Ext.applyFunctionToElements(settlements, function(settlement) {
+        sum += settlement.get('isFortress') == true ? 1 : 0;
+      });
+      return sum;
+    }.property('character'),
+    
+    character_outposts: function(){
+      var settlements = AWE.GS.SettlementManager.getOwnSettlements();
+      var sum = 0;
+      AWE.Ext.applyFunctionToElements(settlements, function(settlement) {
+        sum += settlement.get('isOutpost') == true ? 1 : 0;
+      });
+      return sum;
+    }.property('character'),
+    
+    character_settlement_points: function(){
+      return this.getPath('character.settlementPointsAvailable');
+    }.property('character'),
+    
+    character_settlement_points_total: function(){
+      return this.getPath('character.settlement_points_total');
+    }.property('character'),
+    
+    character_victories: function(){
+      return this.getPath('character.victories');
+    }.property('character'),
+    
+    classNameBindings: ['finished'],
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),        
+  }); 
+  
+  module.QuestListItemViewDetailEpic = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-epic',
+    
+    redeemButtonPressed: function() {
+      this.get('parentView').redeemButtonPressed(this.get('questState'));
+    },
+    
+    subquestStates: function(){
+      var indices = this.getPath('questState.quest.subquests');
+      var array = new Array();
+      if(indices && indices.length > 0)
+      {
+        for(var i = 0; i < indices.length; i++)
+        {
+          var quest_id = indices[i];
+          var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest_id);
+          if (questState !== null) {
+            questState.checkForRewards();
+            array.push(questState);
+          }
+        }
+        return array;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('questState.quest.subquests'),
+    
+    advisor: function() {
+      return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),     
+    
+    classNameBindings: ['finished'],
+       
+  }); 
+  
+  module.QuestListItemViewDetailEpicSub = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-epic-sub',
 
+    actual: function() {
+      return this.getPath('questState.actual');
+    }.property('questState.actual'), 
+
+    threshold: function() {
+      return this.getPath('questState.threshold');
+    }.property('questState.threshold'), 
+    
+    advisor: function() {
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-end';
+      }
+      else {
+        return 'advisor ' + this.getPath('questState.quest.advisor') + '-quest-start';
+      }
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),     
+    
+    classNameBindings: ['finished', 'quest-list-item'],
+       
+  }); 
+  
+  module.QuestListItemViewDetailQuest = Ember.View.extend({
+    templateName: 'quest-list-item-view-detail-quest',
+    
+    redeemButtonPressed: function() {
+      this.get('parentView').redeemButtonPressed(this.get('questState'));
+    },
+    
+    actual: function() {
+      return this.getPath('questState.actual');
+    }.property('questState.actual'), 
+
+    threshold: function() {
+      return this.getPath('questState.threshold');
+    }.property('questState.threshold'), 
+    
+    advisor: function() {
+      return 'advisor ' + this.getPath('questState.quest.advisor') + ' sketched';
+    }.property('questState.quest.advisor', 'finished').cacheable(),
+    
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),     
+    
+    classNameBindings: ['finished'],      
+  }); 
+  
 
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
-    questBinding: 'questState.quest',
-    questState: null,
+    questBinding: 'finishedQuestState.quest',
+    questState: 'finishedQuestState',
+    nextQuestBinding: 'nextQuestState.quest',
+    nextState: 'nextState',
     redeeming: false,
+    redeemed_successfully: false,
     spinningBackground: false,
     popupAnimations: false,
     spinningAnimation: false,
-
+        
     finished: function() {
-      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
-    }.property('questState.status'),        
+      return this.getPath('finishedQuestState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('finishedQuestState.status'),        
 
     redeemLaterButtonPressed: function() {
-      this.destroy();
+      this.destroy();        
+      //WACKADOO.closeAllModalDialogs();
+    },
+    
+    closeDialogRequested: function() {
+      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
+        this.destroy();                
+        //WACKADOO.closeAllModalDialogs();
+      }
     },
 
     redeemButtonPressed: function() {
@@ -83,42 +435,58 @@ AWE.UI.Ember = (function(module) {
       var that = this;
       this.set('redeeming', true);
       
-      AWE.GS.TutorialStateManager.redeemRewards(this.get('questState'), function() {
-        that.destroy();
+      AWE.GS.TutorialStateManager.redeemRewards(this.get('finishedQuestState'), function() {
+        that.set('redeemed_successfully', true);
+        that.set('redeeming', false);
       }, function() {
+        that.set('redeemed_successfully', false);
         that.set('redeeming', false);
       });
     },
-
-    okPressed: function() {
-      var hasRewards = this.getPath('quest.rewards');
-      var isFinished = this.get('finished');
-      
-      log('QUEST STATUS', hasRewards, isFinished, this.get('quest'), this.get('questState'), this.getPath('questState.status'));
-      
-      if (hasRewards && isFinished) {
-        this.redeemButtonPressed(); // remove the function later, if this proves to be good.
-      }
-      else {
-        $('#layers').css('overflow', 'visible');
-        this.destroy();
-      }
-    },
+    redeemButtonVisible: function(){
+      if(this.get('finishedQuestState') != null)
+        if(this.get('redeemed_successfully') == false)
+          return true;
+      return false;
+    }.property('finishedQuestState', 'nextQuestState', 'redeemed_successfully'),
+    
+    nextButtonVisible: function(){
+      if(this.get('finishedQuestState') == null)
+        return true;
+      if(this.get('redeemed_successfully') == true)
+        return true;      
+      return false;
+    }.property('finishedQuestState', 'nextQuestState', 'redeemed_successfully'),
     
     advisor: function() {
-      if (this.get('finished')) {
-        return 'advisor ' + this.getPath('quest.advisor') + '-quest-end';
-      }
-      else {
-        return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
-      }
+      return 'advisor ' + this.getPath('quest.advisor') + ' sketched';
     }.property('quest.advisor', 'finished').cacheable(),
 
-  
-      
+    nextAdvisor: function() {
+      return 'advisor ' + this.getPath('nextQuest.advisor') + ' sketched';
+    }.property('nextQuest.advisor').cacheable(),
+    
+    nextSubquestStates: function(){
+      var indices = this.getPath('nextQuestState.quest.subquests');
+      var array = new Array();
+      if(indices && indices.length > 0)
+      {
+        for(var i = 0; i < indices.length; i++)
+        {
+          var quest_id = indices[i];
+          var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest_id);
+          array.push(questState);
+        }
+        return array;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('nextQuestState.quest.subquests'),
+    
     /** runs the popup animations */
     didInsertElement: function() {
-      
       // Display full animations for a Reward Dialog that hasn't been displayed before.
       
       var popupAnimations = this.get('popupAnimations');

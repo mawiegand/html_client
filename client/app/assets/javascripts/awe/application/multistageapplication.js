@@ -828,7 +828,8 @@ AWE.Application = (function(module) {
         while (this.modalDialogs.length > 0) {
          this.modalDialogs[this.modalDialogs.length-1].destroy();
         }
-        $('#layers').css('overflow', 'visible');
+        //$('#layers').css('overflow', 'visible');
+        this.setModal(false);
       },
 
       modalDialogClosed: function(dialog) {
@@ -842,7 +843,7 @@ AWE.Application = (function(module) {
         this.setModal(true);
         dialog.onClose = (function(self) {
           return function(dialog) {            
-            self.modalDialogClosed(dialog) };
+            self.modalDialogClosed(dialog) };          
         }(this));
         if(dialog.setCloseMarker && AWE.GS.TutorialStateManager.tutorialActive())
         {
@@ -850,7 +851,7 @@ AWE.Application = (function(module) {
         }
         this.modalDialogs.push(dialog);
         dialog.append();
-        $('#layers').css('overflow', 'hidden');
+        //$('#layers').css('overflow', 'hidden');
       },
 
       presentDomOverlay: function(dialog) {

@@ -48,10 +48,21 @@ AWE.UI.Ember = (function(module) {
     }.property('building.hashableJobs.collection.length').cacheable(),
     
     upgradeClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
-        slot: this.get('slot'),
-        controller: this.get('controller')
-      });
+      var dialog;
+      if(AWE.Config.BuildingSettings.newUpgradeForBuilding(this.getPath('slot.building.buildingType.symbolic_id')))
+      {
+        var dialog = AWE.UI.Ember.UpgradeUnlockDialog.create({
+          slot: this.get('slot'),
+          controller: this.get('controller')
+        });
+      }
+      else 
+      {
+        var dialog = AWE.UI.Ember.UpgradeView.create({
+          slot: this.get('slot'),
+          controller: this.get('controller')
+        });
+      }
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
@@ -61,11 +72,22 @@ AWE.UI.Ember = (function(module) {
     },
     
     conversionClicked: function(event) {
-      var dialog = AWE.UI.Ember.UpgradeView.create({
-        slot: this.get('slot'),
-        controller: this.get('controller'),
-        conversionView: true,
-      });
+      if(AWE.Config.BuildingSettings.newUpgradeForBuilding(this.getPath('slot.building.buildingType.symbolic_id')))
+      {
+        var dialog = AWE.UI.Ember.UpgradeUnlockDialog.create({
+          slot: this.get('slot'),
+          controller: this.get('controller'),
+          conversionView: true,
+        });
+      }
+      else 
+      {
+        var dialog = AWE.UI.Ember.UpgradeView.create({
+          slot: this.get('slot'),
+          controller: this.get('controller'),
+          conversionView: true,
+        });
+      }
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionConvertClicked(this.get('slot'));
     },

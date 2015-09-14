@@ -267,7 +267,10 @@ module.ProfileNewRangView  = Ember.View.extend  ({
       if (present === undefined || present === null) {
         return [];
       }
-      
+
+      var maxRank = ranks.length - 1;
+      present = Math.min(present, maxRank);
+
       var infos = [];
       for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
         infos.push({
@@ -280,31 +283,35 @@ module.ProfileNewRangView  = Ember.View.extend  ({
         }
       }
       
-      var maxExp = infos[infos.length-1].position;
-      var minExp = infos[0].position;
-
-      if(minExp > this.getPath('character.exp'))//prevent wrong progress on lvl 1
-        minExp = 0;
-
-      infos.forEach(function(item) {
-        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
-      });
+      if (infos.length > 0) {
+        var maxExp = infos[infos.length-1].position;
+        var minExp = infos[0].position;
+  
+        if(minExp > this.getPath('character.exp'))//prevent wrong progress on lvl 1
+          minExp = 0;
+  
+        infos.forEach(function(item) {
+          item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+        });
+        
+        var ownPosition = (present === maxRank) ? 100 : (((this.getPath('character.exp') - minExp)*100)/(maxExp - minExp));
+  
+        if(ownPosition < 0)//prevent negative progress
+          ownPosition = 0;
+  
+        var ownCustomOwnProgress =  parseInt(ownPosition) + "%";
+        //(1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+        this.set('progressBarPosition', ownCustomOwnProgress);
+        
+        this.set('maxExp', maxExp);
+      }
       
-      var ownPosition = (((this.getPath('character.exp') - minExp)*100)/(maxExp - minExp));
-
-      if(ownPosition < 0)//prevent negative progress
-        ownPosition = 0;
-
-      var ownCustomOwnProgress =  parseInt(ownPosition) + "%";
-      //(1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
-      this.set('progressBarPosition', ownCustomOwnProgress);
-      
-      this.set('maxExp', maxExp);
       return infos;
     }.property('character.exp').cacheable(),
 
     currentMundaneRank: function(){
       var rank = this.getPath('character.mundane_rank');
+      rank = Math.min(rank, AWE.GS.RulesManager.getRules().character_ranks.mundane.length - 1);
       if(rank < 1)
         return 1;
       else
@@ -317,7 +324,9 @@ module.ProfileNewRangView  = Ember.View.extend  ({
     }.property('character.exp').cacheable(),
 
     nextDisplayRank: function(){
-      return (this.get("nextMundaneRank").rule.id + 1);
+      var nextRank =  this.get("nextMundaneRank").rule.id;
+      var maxRank = AWE.GS.RulesManager.getRules().character_ranks.mundane.length - 1;
+      return (nextRank === maxRank + 1) ? "-" : (nextRank + 1);
     }.property('nextMundaneRank'),
 
     barWidth: function(){
@@ -1283,7 +1292,10 @@ module.UserNameTextfield = Ember.TextField.extend({
       if (present === undefined || present === null) {
         return [];
       }
-      
+
+      var maxRank = ranks.length - 1;
+      present = Math.min(present, maxRank);
+
       var infos = [];
       for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
         infos.push({
@@ -1296,15 +1308,18 @@ module.UserNameTextfield = Ember.TextField.extend({
         }
       }
       
-      var maxExp = infos[infos.length-1].position;
-      infos.forEach(function(item) {
-        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
-      });
+      if (infos.length > 0) {
+        var maxExp = infos[infos.length-1].position;
+        infos.forEach(function(item) {
+          item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+        });
+        
+        var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+        this.set('progressBarPosition', ownPosition);
+        
+        this.set('maxExp', maxExp);
+      }
       
-      var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
-      this.set('progressBarPosition', ownPosition);
-      
-      this.set('maxExp', maxExp);
       return infos;
     }.property('character.exp').cacheable(),
     

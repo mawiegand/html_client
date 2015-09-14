@@ -106,7 +106,7 @@ AWE.Controller = (function(module) {
       _stageProfile = new Stage(_canvasProfile);
       _stageProfile.onClick = function() {};
       
-      _canvasProfile.width = 268;
+      _canvasProfile.width = 290;
       _canvasProfile.height = 166;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
@@ -158,7 +158,7 @@ AWE.Controller = (function(module) {
         //$('#hud-canvas-right').css('height', 114*AWE.Settings.hudScale);
         //$('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
         $('#hud-canvas-profile').css('height', 166*AWE.Settings.hudScale);
-        $('#hud-canvas-profile').css('width', 268*AWE.Settings.hudScale);
+        $('#hud-canvas-profile').css('width', 290*AWE.Settings.hudScale);
         $('#resource-canvas').css('height', 42*AWE.Settings.hudScale);
         $('#resource-canvas').css('width', 800*AWE.Settings.hudScale);
         if (_hideCanvas && !_canvasIsHidden) {
@@ -169,7 +169,7 @@ AWE.Controller = (function(module) {
           //$('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#right-dom-hud').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#top-right-dom-hud').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-profile').delay(600).animate({right: "-268px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-profile').delay(600).animate({left: "-300px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
@@ -181,7 +181,7 @@ AWE.Controller = (function(module) {
           //$('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#top-right-dom-hud').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#right-dom-hud').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-profile').delay(600).animate({left: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: 30*AWE.Settings.hudScale}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
@@ -230,7 +230,18 @@ AWE.Controller = (function(module) {
             WACKADOO.presentModalDialog(dialog);
           }
           else {
-            AWE.GS.ShopManager.openCreditShopWindow();
+			if (navigator.userAgent.toLowerCase().indexOf('android') >= 0) {
+		        try
+		        {
+		          AndroidDelegate.openShop();
+		        }
+		        catch(err)
+		        {
+				}
+			}
+			else {
+              AWE.GS.ShopManager.openCreditShopWindow();
+		    }
           }
 
           this.destroy();
@@ -929,8 +940,9 @@ AWE.Controller = (function(module) {
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 
-          { topColor: "#89B1D0", bottomColor: "#425460" });
-        HUDViews.stoneView.setFrame(AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+          //{ topColor: "#89B1D0", bottomColor: "#425460" });
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.stoneView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject()); 
 
@@ -938,7 +950,7 @@ AWE.Controller = (function(module) {
         var stoneDiv = document.createElement('DIV');
         stoneDiv.style.position = 'fixed';
         stoneDiv.style.top   = 30+'px';
-        stoneDiv.style.left  = 20+'px';
+        stoneDiv.style.right  = ((resourceViewWidth + 20) * 3) + 'px';
         stoneDiv.style.width = 180+'px';
         stoneDiv.style.height = 34+'px';
         stoneDiv.style.zoom = AWE.Settings.hudScale;
@@ -951,7 +963,8 @@ AWE.Controller = (function(module) {
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerResourceNameColorsAndFrame(that, "wood", 
-          { topColor: "#D7CC98", bottomColor: "#806322" },
+          //{ topColor: "#D7CC98", bottomColor: "#806322" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.woodView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
@@ -960,7 +973,7 @@ AWE.Controller = (function(module) {
         var woodDiv = document.createElement('DIV');
         woodDiv.style.position = 'fixed';
         woodDiv.style.top   = 30+'px';
-        woodDiv.style.left  = 205+'px';
+        woodDiv.style.right  = ((resourceViewWidth + 25) * 2) + 'px';
         woodDiv.style.width = 180+'px';
         woodDiv.style.height = 34+'px';
         woodDiv.style.zoom = AWE.Settings.hudScale;
@@ -973,7 +986,8 @@ AWE.Controller = (function(module) {
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerResourceNameColorsAndFrame(that, "fur", 
-          { topColor: "#A45341", bottomColor: "#521103" },
+          //{ topColor: "#A45341", bottomColor: "#521103" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
         HUDViews.furView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject());
@@ -982,7 +996,7 @@ AWE.Controller = (function(module) {
         var furDiv = document.createElement('DIV');
         furDiv.style.position = 'fixed';
         furDiv.style.top   = 30+'px';
-        furDiv.style.left  = 400+'px';
+        furDiv.style.right  = ((resourceViewWidth + 40) * 1) + 'px';
         furDiv.style.width = 180+'px';
         furDiv.style.height = 34+'px';
         furDiv.style.zoom = AWE.Settings.hudScale;
@@ -994,16 +1008,17 @@ AWE.Controller = (function(module) {
         xOffset += resourceViewWidth + spacingX - 5;                
         HUDViews.toadsView = AWE.UI.createResourceCashBubbleView();
         HUDViews.toadsView.initWithControllerColorsAndFrame(that,
-          { topColor: "#94BE57", bottomColor: "#658434" },
-          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.toadsView.onClick = function(){};//cashDetailsHandler;
+          //{ topColor: "#94BE57", bottomColor: "#658434" },
+          { topColor: "#fecb00", bottomColor: "#ff8b00" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));        
+        HUDViews.toadsView.onClick = function(){};
         _resourceStage.addChild(HUDViews.toadsView.displayObject());
 
         //add div for click start
         var toadsDiv = document.createElement('DIV');
         toadsDiv.style.position = 'fixed';
         toadsDiv.style.top   = 30 +'px';
-        toadsDiv.style.left  = 570 +'px';
+        toadsDiv.style.right  = 30 +'px';
         toadsDiv.style.width = 180+'px';
         toadsDiv.style.height = 34+'px';
         toadsDiv.style.zoom = AWE.Settings.hudScale;

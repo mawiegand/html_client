@@ -97,7 +97,14 @@ module.LeftHUDView = Ember.View.extend({
       var duration = (endTime - now)/1000;
       if(duration < 60 && duration > 0)
       {
-        this.set('timeUntillNextAssignment', Math.floor(duration));
+        if(duration < 10)
+        {
+          this.set('timeUntillNextAssignment', "0" + Math.floor(duration));
+        }
+        else
+        {
+          this.set('timeUntillNextAssignment', Math.floor(duration));
+        }
         return
       }
       this.set('timeUntillNextAssignment', null);
@@ -218,10 +225,14 @@ module.TopRightHUDView = Ember.View.extend({
   controller: null,
   character: null,
   tutorialState: null,
-
+  
   allianceClicked: function(){
     this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
   },
+  
+  isInAlliance: function() {
+    return this.getPath('character.alliance_id') !== null;
+  }.property('character.alliance_id'),
   
 });
 return module;

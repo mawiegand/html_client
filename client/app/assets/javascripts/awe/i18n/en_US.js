@@ -20,6 +20,7 @@ AWE.I18n.en_US = function(module) {
       no:'No',
       nr:'No.',
       of:'of',
+      for: 'for',
       with:'with',
       change:'Change',
       start:'Start',
@@ -563,6 +564,15 @@ AWE.I18n.en_US = function(module) {
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
+      confirmAllianceCharacterInvite: {
+        heading: "Confirm Invitation",
+        message: "Do you really want to send an invitation to {0}?",
+        cancel: "Not right now.",
+        ok: "Yes.",
+        success: "Invitation successfully sent.",
+        characterNotFound: "{0} not found.",
+        error: "Something went wrong with the application.",
+      },
       confirmApplication: {
         heading: "Confirm application",
         message: "Do you really want to apply to this alliance?",
@@ -768,6 +778,10 @@ AWE.I18n.en_US = function(module) {
           start:"Hey! You can't build a",
           end:"here right now. The following conditions haven't been met: ",
           cancelText:['Aargh!', 'Grmpf!', 'Hgnnhgn.', 'Oh well.'],
+        },
+        requirementsNotMet:{
+          heading: "Requirements not met",
+          text: "You don't fulfil requirements for building or upgrading this building!",
         },
         constructionQueueFull:{
           start:"Sorry, but your construction queue is currently full. You can only have a maximum of ",
@@ -1186,12 +1200,14 @@ AWE.I18n.en_US = function(module) {
       finished:"Finished",
       reward:"Reward",
       rewardLink:"Claim",
-      redeemNow:"Claim reward now",
+      redeemNow:"Redeem",
       redeemLater:"Claim reward later",
       showQuestLink:"Show",
       answerQuestLink:"Answer",
       correctAnswered:"Correct!",
-
+      questFinished: "Quest finished",
+      goOn:             "Go on",
+      
       task:{
         info:{
           header:"Task:",
@@ -1231,7 +1247,7 @@ AWE.I18n.en_US = function(module) {
 
         error:"Oops - that's not right. Bad luck! Try again later.",
       },
-
+      
       questStart:{
         header:"New Quest started",
       },
@@ -1308,7 +1324,7 @@ AWE.I18n.en_US = function(module) {
       infantry: "Infantry",
       artillery: "Artillery",
       cavalery: "Cavalery",
-      specialUnits: "Special Units",
+      specialUnits: "Special",
       military: "Military",
 
       commandPointsAbbreviation:"CP",
@@ -1481,9 +1497,12 @@ AWE.I18n.en_US = function(module) {
         info: "Info",
         members: "Members",
         diplomacy: "Diplomacy",
+        invite: "Invite",
         apply: "Apply",
 
         allianceInfo: {
+          invite: "Invitation:",
+          allianceCharacterInvitePlaceholder: "Character Name",
           slogan: "Slogan",
           autoJoin: "AutoJoin"
         },
@@ -1511,6 +1530,7 @@ AWE.I18n.en_US = function(module) {
         heading: "Building Upgrade",
         upgrade: "Upgrade",
         level: "Level",
+        unlocking: "Unlocking",
       },
       convert:{
         heading: "Building Convert",

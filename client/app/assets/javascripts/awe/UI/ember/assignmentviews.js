@@ -266,6 +266,20 @@ AWE.UI.Ember = function(module) {
       return rewardResult;
     }.property('assignmentType').cacheable(),
 
+    constructionBonusRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.construction_bonus_rewards') || [];
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          rewardResult.push({
+            bonus: (item.bonus * 100),
+            duration: item.duration
+          });
+        });
+      }
+      return rewardResult;
+    }.property('assignmentType').cacheable(),
+
     redeemRewards: function() {
       WACKADOO.presentScreenController.standardAssignmentFinishPressed(this.get('assignment'));
     }

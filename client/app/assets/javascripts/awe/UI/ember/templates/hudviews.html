@@ -6,7 +6,7 @@
       {{#if unlockedAssignments}}
         <div class="assignment-hud-button assignment-hud-button-position" {{action "assignmentClicked"}}>
         {{#if timeUntillNextAssignment}}
-          <div class="assignment-timer count-indicator-background count-indicator-background-position">{{timeUntillNextAssignment}}</div>
+          <div class="assignment-timer count-indicator-background count-indicator-background-position">:{{timeUntillNextAssignment}}</div>
         {{/if}}
         </div>
       {{/if}}
@@ -41,10 +41,12 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="top-right-hud-view">
+<script type="text/x-handlebars" data-template-name="top-right-hud-view">  
   <div class="top-right-hud scale-down" id="top-right-dom-hud">
-    <div class="alliance-hud-button" {{action "allianceClicked"}}>
-      <div class="alliance-hud-icon"></div>
-    </div>
-  </div>
+    {{#if isInAlliance}}
+      <div class="alliance-hud-button" {{action "allianceClicked"}}>
+        <div class="alliance-hud-icon"></div>
+      </div>
+    {{/if}}
+  </div>  
 </script>

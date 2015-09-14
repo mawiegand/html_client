@@ -44,12 +44,15 @@ AWE.UI.Ember = (function(module) {
     building:     null,
     
 		levelBinding: 'building.level',
-		typeBinding:  'building.type',
 		mouseInView:  false,
 
     classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
     timer : null,
+
+    type: function() {
+      return this.getPath('building.type');
+    }.property('building'),
 
     levelClassName: function() {
       return "level"+this.get('level');
@@ -165,24 +168,12 @@ AWE.UI.Ember = (function(module) {
             return true;
          }
       }
-
       return false;
     }.property('building'),
 
 
     active:function(){
-
-      
-        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
-        
-
-        if(buildingId == "building_tavern")
-        {
-          return this.getPath('building.active');
-        }
-
-        return false;
-
+      return this.getPath('building.active');
     }.property("building.active"),
 
 
@@ -235,8 +226,12 @@ AWE.UI.Ember = (function(module) {
     }.property('level').cacheable(),
 
     hasFire: function() {
-      var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
-      return AWE.Config.BuildingImageLibrary.hasFire(buildingId);
+      if(this.getPath("building.buildingId"))
+      {
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        return AWE.Config.BuildingImageLibrary.hasFire(buildingId);
+      }
+      return false;
     }.property('level', 'building.buildingId'),
   });
   
@@ -599,7 +594,9 @@ AWE.UI.Ember = (function(module) {
 		settlement: null,
 		slot:       null,
 		
-		buildingBinding: 'slot.building',
+		building: function() {
+      return this.getPath('slot.building');
+    }.property('slot.building'),
 				
     init: function() {
       this._super();

@@ -65,7 +65,7 @@ AWE.UI = (function(module) {
         my.amountProgressView.initWithControllerColorsAndFrame(
           my.controller, 
           { topColor: my.colors.topColor, bottomColor: my.colors.bottomColor },
-          AWE.Geometry.createRect(50, 10, 140, 24)
+          AWE.Geometry.createRect(50, 10, 104, 25)
         );
         my.container.addChild(my.amountProgressView.displayObject());     
         my.amountProgressView.onClick = function() { 
@@ -95,15 +95,16 @@ AWE.UI = (function(module) {
         }
         else if (_resourceName === "stone")
         {
-          my.resourceImageView.setFrame(AWE.Geometry.createRect(8, 2, 52, 40));
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(14, 2, 52, 40));
         }
         else if (_resourceName === "cash")
         {
           my.resourceImageView.setFrame(AWE.Geometry.createRect(18, 0, 42, 42));
+          my.amountProgressView.setShowProgress(false);
         }
         else if (_resourceName === "wood")
         {
-          my.resourceImageView.setFrame(AWE.Geometry.createRect(5, 6, 52, 36));
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(8, 8, 52, 36));
         }
         my.container.addChild(my.resourceImageView.displayObject());     
         my.resourceImageView.onClick = function() { 

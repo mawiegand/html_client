@@ -15,7 +15,7 @@ AWE.Config = (function(module) {
     //========== TILES SMALL
     "map/tiles/split128":     AWE.Config.RAILS_ASSET_PATH + 'tiles/base128.jpg',
     "map/tiles/base128":      AWE.Config.RAILS_ASSET_PATH + 'tiles/base128.jpg',
-    "map/tiles/forest128":    AWE.Config.RAILS_ASSET_PATH + 'tiles/forest128.jpg',
+    "map/tiles/lake128":      AWE.Config.RAILS_ASSET_PATH + 'tiles/lake128.jpg',
     "map/tiles/plain128":     AWE.Config.RAILS_ASSET_PATH + 'tiles/plain128.jpg',
     "map/tiles/mountains128": AWE.Config.RAILS_ASSET_PATH + 'tiles/mountains128.jpg',
     "map/tiles/desert128":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert128.jpg',
@@ -24,16 +24,16 @@ AWE.Config = (function(module) {
     //========== TILES MIDDLE
     "map/tiles/split256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/base256.jpg',
     "map/tiles/base256":      AWE.Config.RAILS_ASSET_PATH + 'tiles/base256.jpg',
-    "map/tiles/forest256":    AWE.Config.RAILS_ASSET_PATH + 'tiles/forest256.jpg',
+    "map/tiles/lake256":      AWE.Config.RAILS_ASSET_PATH + 'tiles/lake256.jpg',
     "map/tiles/plain256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/plain256.jpg',
     "map/tiles/mountains256": AWE.Config.RAILS_ASSET_PATH + 'tiles/mountains256.jpg',
     "map/tiles/desert256":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert256.jpg',
-	"map/tiles/swamp256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp256.jpg',
+	  "map/tiles/swamp256":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp256.jpg',
 	
 	//========== TILES LARGE
     "map/tiles/split512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/base512.jpg',
     "map/tiles/base512":      AWE.Config.RAILS_ASSET_PATH + 'tiles/base512.jpg',
-    "map/tiles/forest512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/forest512.jpg',
+    "map/tiles/lake512":      AWE.Config.RAILS_ASSET_PATH + 'tiles/lake512.jpg',
     "map/tiles/plain512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/plain512.jpg',
     "map/tiles/mountains512": AWE.Config.RAILS_ASSET_PATH + 'tiles/mountains512.jpg',
     "map/tiles/desert512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert512.jpg',
@@ -188,7 +188,8 @@ AWE.Config = (function(module) {
     "hud/bubble/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',
     "hud/bubble/pressed":     AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble_hover.png',
     
-    "hud/resourcebars/empty"     :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_empty.png',
+    "hud/resourcebars/empty"          :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_empty.png',
+    "hud/resourcebars/background"     :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_background.png',
     
     "hud/resourcebars/fur/item"  :   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_fur/resourcebar_fur_item.png',
     "hud/resourcebars/stone/item":   AWE.Config.RAILS_ASSET_PATH + 'hud/resourcebars/resourcebar_stone/resourcebar_stone_item.png',
@@ -218,6 +219,9 @@ AWE.Config = (function(module) {
     "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
     "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',
     "hud/profile/namelabel/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_label_background/avatar_label_background.png',
+    "hud/profile/ranklabel/rankicon"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/icon_rank/icon_rank.png',
+    
+    "hud/icon/trophy"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_trophy/icon_trophy.png',
     
     "hud/profile/alliance/button"  : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_button/alliance_button.png',
     "hud/profile/alliance/icon"    : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_flag/alliance_flag.png',

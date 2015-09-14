@@ -15,7 +15,6 @@ AWE.UI = (function(module) {
     var _frameHeight;
     
     var _levelText;
-    var _levelTextShadow;
     var _levelBackgroundImage;
     var _levelForegroundImage;
     var _levelArcShape;
@@ -80,51 +79,36 @@ AWE.UI = (function(module) {
       
       if (!_levelForegroundImage) {
         _levelForegroundImage = new Bitmap();
-        _levelForegroundImage.x = 10
-        _levelForegroundImage.y = 10;
+        _levelForegroundImage.x = 0
+        _levelForegroundImage.y = 80;
         _levelForegroundImage.view = that;
 
         _levelForegroundImage.onClick = function() {
           that.onClick();
         };
         _levelForegroundImage.image = AWE.UI.ImageCache.getImage("hud/profile/levelbutton/foreground");
-        my.container.addChild(_levelForegroundImage);
-      }                  
-      
-      if (!_levelTextShadow) {
-        _levelTextShadow = new Text("123", "24px hvd_comic_serif_proregular", "#0247a6");
-        _levelTextShadow.textAlign = "center";
-        _levelTextShadow.textBaseline = "middle";
-        _levelTextShadow.x = _frameWidth / 2;
-        _levelTextShadow.y = _frameHeight / 2;
-        _levelTextShadow.view = that;
-
-        _levelTextShadow.onClick = function() { 
-          that.onClick(); 
-        }
-        my.container.addChild(_levelTextShadow);
-      } 
+        my.container.addChild(_levelForegroundImage);        
+      }                        
 
       if (!_levelText) {
-        _levelText = new Text("123", "22px hvd_comic_serif_proregular", "#f5f8e3");
+        _levelText = new Text("123", "20px hvd_comic_serif_proregular", "#f5f8e3");
         _levelText.textAlign = "center";
         _levelText.textBaseline = "middle";
-        _levelText.x = _frameWidth / 2;
-        _levelText.y = _frameHeight / 2;
+        _levelText.shadow = new Shadow("#000000", 2, 2, 0);
+        _levelText.x = 19;
+        _levelText.y = _frameHeight - 17;
         _levelText.view = that;
 
         _levelText.onClick = function() { 
           that.onClick(); 
-        }
-        my.container.addChild(_levelText);
+        }       
+        my.container.addChild(_levelText); 
       }
       if(isButtonDown){
         if(_levelBackgroundImage)
           _levelBackgroundImage.alpha = 0.7;
         if(_levelForegroundImage)
           _levelForegroundImage.alpha = 0.7;
-        if(_levelTextShadow)
-          _levelTextShadow.alpha = 0.7;
         if(_levelText)
           _levelText.alpha = 0.7;
       }else{
@@ -132,8 +116,6 @@ AWE.UI = (function(module) {
           _levelBackgroundImage.alpha = 1.0;
         if(_levelForegroundImage)
           _levelForegroundImage.alpha = 1.0;
-        if(_levelTextShadow)
-          _levelTextShadow.alpha = 1.0;
         if(_levelText)
           _levelText.alpha = 1.0;
       }
@@ -151,20 +133,20 @@ AWE.UI = (function(module) {
           _levelArcShape.onClick = function() {
             that.onClick();
           }
-          my.container.addChild(_levelArcShape);
+          my.container.addChildAt(_levelArcShape, 0);          
         }
       
         var startX = _frameWidth / 2;
         var startY = _frameHeight / 2;
-        var innerRadius = 26;
-        var outerRadius = 36;
+        var innerRadius = 46;
+        var outerRadius = 56;
         var startRadians = Math.PI/180.0 - Math.PI/2;
         var endRadians = (_levelProgress / _levelProgressMax) * 2*Math.PI - Math.PI/2;
-      
+        
         _levelArcShape.graphics.clear();
         _levelArcShape.graphics.setStrokeStyle(1);    
-        _levelArcShape.graphics.beginFill("#9fddf8");
-        _levelArcShape.graphics.beginStroke("#9fddf8");    
+        _levelArcShape.graphics.beginFill("#1d83c1");
+        _levelArcShape.graphics.beginStroke("#1d83c1");    
         _levelArcShape.graphics.arc(startX, startY, outerRadius, startRadians, endRadians);    
         _levelArcShape.graphics.lineTo(startX + Math.cos(endRadians) * innerRadius, startY + Math.sin(endRadians) * innerRadius);
         _levelArcShape.graphics.arc(startX, startY, innerRadius, endRadians, startRadians, true); 
@@ -182,7 +164,6 @@ AWE.UI = (function(module) {
     that.setRankAndProgress = function(rank, progress) {
       _levelProgress = progress;
       _levelText.text = ''+rank;
-      _levelTextShadow.text = ''+rank;
       this.redrawLevelProgress();
     }
     

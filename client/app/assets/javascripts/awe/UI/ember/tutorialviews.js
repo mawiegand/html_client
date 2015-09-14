@@ -8,7 +8,7 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
-
+  
   module.TutorialEndDialog = module.InfoDialog.extend({
     templateName: 'tutorial-end-dialog',
 
