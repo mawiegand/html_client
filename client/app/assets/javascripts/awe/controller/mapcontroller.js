@@ -14,6 +14,7 @@ AWE.Controller = function (module) {
     var _sortStages = [];
     //var _canvas = new Array(4);  ///< canvas elements for the four stages
     var _canvas = new Array(3);  ///< canvas elements for the four stages
+    var _context = new Array(3);
 
     var _selectedView = null;    ///< there can be only one selected view!
     var _hoveredView = null;
@@ -112,6 +113,7 @@ AWE.Controller = function (module) {
       root.append('<canvas id="map-tile-canvas"></canvas>');
       _canvas[0] = root.find('#map-tile-canvas')[0];
       _stages[0] = new Stage(_canvas[0]);
+      _context[0] = _canvas[0].getContext("2d");
       _stages[0].onClick = function () {
       };   // we generate our own clicks
 
@@ -120,6 +122,7 @@ AWE.Controller = function (module) {
       root.append('<canvas id="gaming-pieces-canvas"></canvas>');
       _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
+      _context[1] = _canvas[1].getContext("2d");
       _stages[1].onClick = function () {
       };   // we generate our own clicks
 
@@ -127,6 +130,7 @@ AWE.Controller = function (module) {
       root.append('<canvas id="annotation-canvas"></canvas>');
       _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
+      _context[2] = _canvas[2].getContext("2d");
       _stages[2].onClick = function () {
       };   // we generate our own clicks
 
@@ -136,7 +140,8 @@ AWE.Controller = function (module) {
       root.append('<canvas id="inspector-canvas" class="topbar-info-box"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _canvas[3].width = 340;
-      _canvas[3].height = 60;  
+      _canvas[3].height = 60;
+      _context[3] = _canvas[3].getContext("2d");
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function () {
       };   // we generate our own clicks
@@ -3095,6 +3100,7 @@ AWE.Controller = function (module) {
 
           annotationView.onFoundButtonClick = (function (self) {
             return function (view) {
+
               self.armyFoundSettlementButtonClicked(view);
             }
           })(that);
@@ -3107,6 +3113,7 @@ AWE.Controller = function (module) {
 
           annotationView.onAttackButtonClick = (function (self) {
             return function (view) {
+              view.removeView(false);
               self.armyAttackButtonClicked(view);
             }
           })(that);
@@ -3329,6 +3336,9 @@ AWE.Controller = function (module) {
               setTargetPosition(targetView, targetedView.center());
               newTargetViews[targetArmy.getId()] = targetView;
             }
+
+
+
           });
         }
 

@@ -10,10 +10,12 @@ AWE.UI = (function(module) {
   module.createArmyAnnotationView = function(spec, my) {
         
     var that;
-        
     var _army = null;
     var _armyView = null;
     
+    var _hide_tooltip = true;
+    var first_attempt = false;
+
     var _actionMode = null;
 
     // selected
@@ -32,13 +34,15 @@ AWE.UI = (function(module) {
     var _infoText3View = null;    
     
     var infoContainer = null;  
-    
+    var backgroundGraphics = null;
+
     my = my || {};
     
     my.typeName = 'ArmyAnnotationView';
  
 
     that = module.createContainer(spec, my);
+
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -108,8 +112,11 @@ AWE.UI = (function(module) {
           AWE.Geometry.createRect(30, 140, 64, 64),
           AWE.UI.ImageCache.getImage("hud/annotation/activestate")
         );
-      _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
-      this.addChild(_attackButtonView);
+      _attackButtonView.onClick = function() { 
+
+
+        if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
+        this.addChild(_attackButtonView);
 
 
       _stanceButtonView = AWE.UI.createButtonIconView();
@@ -263,7 +270,7 @@ AWE.UI = (function(module) {
       _littleChiefInfoView.setTextAlign("right");
       _littleChiefInfoView.setIconImage("map/icon/rank");
       armyInfoContainer.addChild(_littleChiefInfoView);
-            
+        
       if (!frame) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
@@ -399,15 +406,36 @@ AWE.UI = (function(module) {
 
 //      _retreatButtonView.setSelected(_army.get('battle_retreat'));
     }
+
+    that.removeView = function(attackbutton){
+
+      _hide_tooltip = attackbutton;
+
+      if(!attackbutton)
+      {
+        this.removeChild(_backgroundShapeView);
+        infoContainer.removeChild(armyInfoContainer);
+        generalInfoContainer.removeChild(_infoText1View);
+        generalInfoContainer.removeChild(_infoText2View);
+        generalInfoContainer.removeChild(_infoText3View);
+        armyInfoContainer.removeChild(emptyLine);
+        armyInfoContainer.removeChild(_infantryInfoView);
+        armyInfoContainer.removeChild(_artilleryInfoView);
+        armyInfoContainer.removeChild(_cavalryInfoView);
+        armyInfoContainer.removeChild(_littleChiefInfoView);
+      }
+
+   };
     
     that.recalcView = function() {
       
+
       // buttons
       this.updateButtonVisibility();
       if (_army.isOwn() && _armyView.selected()) {
         this.updateButtonState();
       }
-      
+
       // rank image
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.min(4, Math.floor((_army.get('rank') || 0) / 5 + 1))));
 
@@ -432,20 +460,25 @@ AWE.UI = (function(module) {
         _littleChiefInfoView.setText(0);
       }
       
-      infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
+      if(_hide_tooltip)
+      {
+        infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
-      var backgroundGraphics = new Graphics();
-      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(0, 0,
-                                       infoContainer.frame().size.width + 12,
-                                       infoContainer.frame().size.height+ 4, 4);
-      _backgroundShapeView = AWE.UI.createShapeView();
-      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
-      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 6, 
-                                                            infoContainer.frame().origin.y - 2, 
-                                                            infoContainer.frame().size.width + 12, 
-                                                            infoContainer.frame().size.height+ 4));
-      this.addChildAt(_backgroundShapeView, 0);      
+        backgroundGraphics = new Graphics();
+        backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        backgroundGraphics.drawRoundRect(0, 0,
+                                         infoContainer.frame().size.width + 12,
+                                         infoContainer.frame().size.height+ 4, 4);
+
+        _backgroundShapeView = AWE.UI.createShapeView();
+        _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
+        _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 6, 
+                                                              infoContainer.frame().origin.y - 2, 
+                                                              infoContainer.frame().size.width + 12, 
+                                                              infoContainer.frame().size.height+ 4));
+        this.addChildAt(_backgroundShapeView, 0);
+      }
+      
       
       that.setNeedsDisplay();
     }
