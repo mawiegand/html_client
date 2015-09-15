@@ -42,6 +42,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     sessionEnded: false,
 
+
     /** custom object initialization goes here. */
     init: function() {
       this._super();

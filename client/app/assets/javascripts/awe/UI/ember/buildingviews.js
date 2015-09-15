@@ -104,6 +104,12 @@ AWE.UI.Ember = (function(module) {
 
           clearInterval(this.get('timer'));
           this.set('timer',setInterval(function(){
+
+            if(self.getPath('building.endTime') === undefined)
+            {
+              return;
+            }
+
             self.calculate_tavern_remaining_time(self.getPath('building.endTime'));
           },1000));
       }

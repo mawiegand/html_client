@@ -136,13 +136,21 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-list-view',
     
     tutorialState: null,
+    cave_painting_button_colored : false,
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
     initialize: function() {
       this.tutorialState.set('selected_quest_state', null);
+      this.set('cave_painting_button_colored',true);
     },
-    
+
+    blinking:function(){
+
+      // we should write the logic here for checking if it is opened the first time.
+      return true;
+    }.property('cave_painting_button_colored'),
+ 
     redeemButtonPressed: function(questState) {
       questState.set('redeeming', true);
       AWE.GS.TutorialStateManager.redeemRewards(questState, function(){

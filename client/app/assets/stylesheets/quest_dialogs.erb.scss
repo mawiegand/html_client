@@ -1992,23 +1992,58 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .cave_painting_button{
   background-image: url('<%= asset_path("cavepainting/cavepainting_button.png") %>');
-  background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-color: transparent;
   z-index: 259;
   width: 100%;
   position: relative;
-}
-
-.cave_painting_button {
   height: 57px;
   background-position: 0px 0px;
+
+  &.blinking{}
 }
 .cave_painting_button:hover {
   height: 57px;
   background-position: 0px -58px;
 }
+
+/* ==== CavePainting Button Animations ==== */
+.cave_painting_button.blinking{
+  -webkit-animation: anim_button .8s steps(2) infinite;
+     -moz-animation: anim_button .8s steps(2) infinite;
+      -ms-animation: anim_button .8s steps(2) infinite;
+       -o-animation: anim_button .8s steps(2) infinite;
+          animation: anim_button .8s steps(2) infinite;    
+}
+
+@-webkit-keyframes anim_button {
+   from { background-position: 0px 0px;  }
+     to { background-position: 0px -114px; }
+}
+
+@-moz-keyframes anim_button {
+   from { background-position: 0px 0px;  }
+     to { background-position: 0px -114px; }
+}
+
+@-ms-keyframes anim_button {
+   from { background-position: 0px 0px;  }
+     to { background-position: 0px -114px; }
+}
+
+@-o-keyframes anim_button {
+   from { background-position: 0px 0px;  }
+     to { background-position: 0px -114px; }
+}
+
+@keyframes anim_button {
+   from { background-position: 0px 0px;  }
+     to { background-position: 0px -114px; }
+}
+
+
+
 
 
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
