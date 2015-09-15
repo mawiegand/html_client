@@ -689,22 +689,25 @@ canvas{
   width: 52px;
   height: 52px;
   position: relative;
-  top: 66px;
-  left: 6px;
-  background:url("<%= asset_path 'hud/map_mountains_button/strategic_all_inactive.png' %>") no-repeat;
   background-position: 0 0;
 
-  &.normal-all-inactive{
-    background:url("<%= asset_path 'hud/map_mountains_button/normal_all_inactive.png' %>") no-repeat;
-  }
-  &.normal-only-inactive{
-    background:url("<%= asset_path 'hud/map_mountains_button/normal_only_inactive.png' %>") no-repeat;
-  }
-  &.strategic-all-inactive{
+  &.small-1{
+    top: 66px;
+    left: 6px;
     background:url("<%= asset_path 'hud/map_mountains_button/strategic_all_inactive.png' %>") no-repeat;
-  }
-  &.strategic-only-inactive{
-    background:url("<%= asset_path 'hud/map_mountains_button/strategic_only_inactive.png' %>") no-repeat;
+
+    &.normal-all-inactive{
+      background:url("<%= asset_path 'hud/map_mountains_button/normal_all_inactive.png' %>") no-repeat;
+    }
+    &.normal-only-inactive{
+      background:url("<%= asset_path 'hud/map_mountains_button/normal_only_inactive.png' %>") no-repeat;
+    }
+    &.strategic-all-inactive{
+      background:url("<%= asset_path 'hud/map_mountains_button/strategic_all_inactive.png' %>") no-repeat;
+    }
+    &.strategic-only-inactive{
+      background:url("<%= asset_path 'hud/map_mountains_button/strategic_only_inactive.png' %>") no-repeat;
+    }
   }
 
   &.small-2{
@@ -726,6 +729,7 @@ canvas{
     }
   }
 }
+
 
 .map-mountains-hud-button-position{
   position: relative;
