@@ -1781,7 +1781,10 @@ AWE.GS = (function(module) {
     that.showQuestDialog = function(finishedQuestState, nextQuestState) {
       if (!that.tutorialEnabled()) return;
       var applaud = finishedQuestState && finishedQuestState.get('finished') && !finishedQuestState.get('rewardDisplayed');
-
+      // Unselects the selected building after quest with id 1 to prevent ui overlapping with tutorial arrow
+      if (AWE.GS.TutorialStateManager.getTutorialState().tutorial_states_completed ==1) {
+        WACKADOO.presentScreenController.unselectSlot();
+      }
       var dialog = AWE.UI.Ember.QuestDialog.create({
         modeEnd: true,
         finishedQuestState: finishedQuestState,
