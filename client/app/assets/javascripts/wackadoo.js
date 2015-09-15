@@ -127,8 +127,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
       });
 
-      // var dialog = AWE.UI.Ember.CavePainting.create();
-      //  this.presentModalDialog(dialog);
   
     },
 
