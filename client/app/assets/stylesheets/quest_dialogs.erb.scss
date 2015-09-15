@@ -1830,7 +1830,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
           background-color: transparent;
           z-index: 258;
           left:3%;
-          top:16%;
+          top:8%;
       }
 
       .cave-painting-spiral{
@@ -1965,36 +1965,50 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
               background-image: url('<%= asset_path("cavepainting/carving_colored_11.png") %>');
           }
           &.cave-painting-carving-colored-12{
-              left:35%;
-              top:22%;
+              left:29%;
+              top:34%;
               background-image: url('<%= asset_path("cavepainting/carving_colored_12.png") %>');
           }
           &.cave-painting-carving-colored-13{
-              left:35%;
-              top:22%;
+              left:24%;
+              top:52%;
               background-image: url('<%= asset_path("cavepainting/carving_colored_13.png") %>');
           }
           &.cave-painting-carving-colored-14{
-              left:35%;
-              top:22%;
+              left:18%;
+              top:70%;
               background-image: url('<%= asset_path("cavepainting/carving_colored_14.png") %>');
           }
           &.cave-painting-carving-colored-15{
-              left:35%;
-              top:22%;
+              left:32%;
+              top:76%;
               background-image: url('<%= asset_path("cavepainting/carving_colored_15.png") %>');
-          }
-          &.cave-painting-carving-colored-16{
-              left:35%;
-              top:22%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_16.png") %>');
           }
       }
     }
 }
 
+/*=== Cave Painting Dialog Button ===*/
 
+.cave_painting_button{
+  background-image: url('<%= asset_path("cavepainting/cavepainting_button.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-color: transparent;
+  z-index: 259;
+  width: 100%;
+  position: relative;
+}
 
+.cave_painting_button {
+  height: 57px;
+  background-position: 0px 0px;
+}
+.cave_painting_button:hover {
+  height: 57px;
+  background-position: 0px -58px;
+}
 
 
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }

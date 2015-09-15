@@ -222,6 +222,12 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-list-item-view-detail-overview',
     questState: null,    
     
+
+    open_cave_painting:function(){
+       var dialog = AWE.UI.Ember.CavePainting.create();
+       WACKADOO.presentModalDialog(dialog);
+    },
+
     character: function() {
       var ret = AWE.GS.CharacterManager.getCurrentCharacter();
       return ret;
@@ -309,6 +315,7 @@ AWE.UI.Ember = (function(module) {
     redeemButtonPressed: function() {
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
+
     
     subquestStates: function(){
       var indices = this.getPath('questState.quest.subquests');

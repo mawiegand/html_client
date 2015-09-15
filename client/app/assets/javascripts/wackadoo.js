@@ -118,17 +118,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     showQuestListDialog: function() {
-      // var dialog = AWE.UI.Ember.QuestListView.create({
-      //   tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
-      // });
-      // dialog.initialize();
-      // this.presentModalDialog(dialog);
-      // AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-      //   // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
-      // });
+      var dialog = AWE.UI.Ember.QuestListView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      dialog.initialize();
+      this.presentModalDialog(dialog);
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
+      });
 
-      var dialog = AWE.UI.Ember.CavePainting.create();
-       this.presentModalDialog(dialog);
+      // var dialog = AWE.UI.Ember.CavePainting.create();
+      //  this.presentModalDialog(dialog);
   
     },
 
