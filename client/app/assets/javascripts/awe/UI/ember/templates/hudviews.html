@@ -81,10 +81,12 @@
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">  
   <div class="top-right-hud scale-down" id="top-right-dom-hud">
     <div class="quest-info-box">
-      {{#each task in tasks}}
-          <div class="title"><h5>{{task.title}}</h5></div>
-          <div class="description">{{task.message}}</div>
-      {{/each}}
+      <div class="title"><h5>{{local epicQuest.questName}}</h5></div>
+      <div class="description">{{local epicQuest.quest.task}}</div>
+      <div class="title"><h5>{{local epicSubQuest.questName}} 
+        ... {{epicSubQuest.actual}} / {{epicSubQuest.threshold}}
+      </h5></div>
+      <div class="description">{{local epicSubQuest.quest.task}}</div>
     </div>
   </div>  
 </script>

@@ -407,49 +407,88 @@ module.TopRightHUDView = Ember.View.extend({
   character: null,
   tutorialState: null,
 
-  tasks : [],
+  bestEpicSubQuest: null,
   
   init:function(){
     this._super();
-    
-    var quests = this.getPath('tutorialState.openQuestStates');
-    this.createQuestInfoMessage(quests,quests.length);
-
+    actual = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(18).actual;    
+//    this.initQuestDialog();
   },
 
-  createQuestInfoMessage:function(quests,count){
+  initQuestDialog:function(){
+    this.get('controller').initQuestDialog();
+  },
+
+  epicQuest: function(){
 
 
-    if(count==0)
-    {
-      // no quests to show.
+    // if(timer!==undefined)
+    // {
+    //   clearInterval(timer);
+    // }
 
-      this.set('tasks',null);
+    timer = setInterval(function(){
+
+      console.log(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(18).actual);
+    },1000);
+
+
+    var bestEpic;
+    var bestSub = null;
+
+    var questss = this.getPath('tutorialState.openQuestStates');
+
+    // if there are no openQuests
+    if(questss.length == 0)
       return;
-    }
 
 
-    t = this.get('tasks');
-    for(var i=0;i<count;i++)
+    if(!questss[0].getPath('tutorialstate.tutorial_completed'))
     {
-      t.push({'title':this.getPath('tutorialState.openQuestStates')[0].get('questName').en_US,'message':this.getPath('tutorialState.openQuestStates')[0].getPath('quest.task').en_US});      
+      if(questss[0].get('questIsEpic'))
+      {
+        bestEpic = questss[0];
+      }
     }
-    this.set('tasks',t);
+    else
+    {
+      // -1 so that we add atleast one into the array. There might be a situation in which all the actuals are 0.
+      var actual = -1;
 
-  },
-
-  getNewQuest: function(){
-    var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');
-    
-    if (numberOfQuests === undefined) return false;
-    
-    var quests = this.getPath('tutorialState.openQuestStates');
-    this.createQuestInfoMessage(quests,quests.length);
-
-    return numberOfQuests > 0 ? numberOfQuests : false;
+      for(var i=0;i<questss.length;i++)
+      {
+        if(questss[i].get('questIsEpic'))
+        {
+          if(questss[i].getPath('quest.subquests')!==undefined && questss[i].getPath('quest.subquests')!==null)
+          {
+            var subquestss = questss[i].getPath('quest.subquests');
 
 
-  }.property('tutorialState.newQuestStatesCount').cacheable(),
+            for(var j=0;j<subquestss.length;j++)
+            {
+              var subquests = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(subquestss[j]);
+
+              if(subquests.actual>actual && subquests.threshold!=subquests.actual)
+              {
+                actual = subquests.actual;
+                bestEpic = questss[i];
+                bestSub = subquests;
+              }
+            }
+          }
+        }
+      }
+    }
+    this.set('bestEpicSubQuest',bestSub);
+
+    return bestEpic;
+
+  }.property('AWE.GS.TutorialStateManager.tutorialState.lastAggregateUpdate'),
+
+  epicSubQuest: function(){
+    return this.get('bestEpicSubQuest');
+  }.property('epicQuest'),
+
 });
 
 module.ConstructionQueueView = Ember.View.extend({

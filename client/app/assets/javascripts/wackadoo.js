@@ -139,13 +139,33 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
           }
         }
-        
-        
-        
       });
-
-  
     },
+
+    createQuestDialog:function(){
+      var dialog = AWE.UI.Ember.QuestListView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      dialog.initialize();
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
+        
+        // fix: hack (can be removed after a week from now: 29.07.2915)
+        if(tutorialState){
+          if(tutorialState.quests){
+            if(tutorialState.quests.content){
+              tutorialState.quests.content.forEach(function(questState) {
+                if(questState.finished_at !== null && questState.status < AWE.GS.QUEST_STATUS_FINISHED)
+                {
+                  questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+                } 
+              });
+            }
+          }
+        }
+      });
+    },
+
 
     showEpicQuestDialog: function(questState){
       var dialog = AWE.UI.Ember.QuestEpicView.create({

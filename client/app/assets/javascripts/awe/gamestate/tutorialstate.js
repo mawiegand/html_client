@@ -103,6 +103,7 @@ AWE.GS = (function(module) {
       var openQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') <= module.QUEST_STATUS_DISPLAYED) {
+
           openQuestStates.push(questState);
         }
       });
