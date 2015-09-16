@@ -42,6 +42,16 @@ module.LeftHUDView = Ember.View.extend({
       self.set('settlement', settlement);
     });
   },
+  mailClicked: function(){
+    this.get('controller').mailButtonClicked();
+  },
+  allianceClicked: function(){
+    this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
+  },
+  
+  isInAlliance: function() {
+    return this.getPath('character.alliance_id') !== null;
+  }.property('character.alliance_id'),
 
   isSettlement: function(){
     var mode = this.get('mode');
@@ -285,9 +295,6 @@ module.RightHUDView = Ember.View.extend({
     return numberOfQuests > 0 ? numberOfQuests : false;
   }.property('tutorialState.newQuestStatesCount').cacheable(),
 
-  mailClicked: function(){
-    this.get('controller').mailButtonClicked();
-  },
 
   questsClicked: function(){
     this.get('controller').questsButtonClicked();
@@ -301,15 +308,50 @@ module.TopRightHUDView = Ember.View.extend({
   controller: null,
   character: null,
   tutorialState: null,
+
+  tasks : [],
   
-  allianceClicked: function(){
-    this.get("controller").allianceFlagClicked(this.getPath("character.alliance_id"));
+  init:function(){
+    this._super();
+    
+    var quests = this.getPath('tutorialState.openQuestStates');
+    this.createQuestInfoMessage(quests,quests.length);
+
   },
-  
-  isInAlliance: function() {
-    return this.getPath('character.alliance_id') !== null;
-  }.property('character.alliance_id'),
-  
+
+  createQuestInfoMessage:function(quests,count){
+
+
+    if(count==0)
+    {
+      // no quests to show.
+
+      this.set('tasks',null);
+      return;
+    }
+
+
+    t = this.get('tasks');
+    for(var i=0;i<count;i++)
+    {
+      t.push({'title':this.getPath('tutorialState.openQuestStates')[0].get('questName').en_US,'message':this.getPath('tutorialState.openQuestStates')[0].getPath('quest.task').en_US});      
+    }
+    this.set('tasks',t);
+
+  },
+
+  getNewQuest: function(){
+    var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');
+    
+    if (numberOfQuests === undefined) return false;
+    
+    var quests = this.getPath('tutorialState.openQuestStates');
+    this.createQuestInfoMessage(quests,quests.length);
+
+    return numberOfQuests > 0 ? numberOfQuests : false;
+
+
+  }.property('tutorialState.newQuestStatesCount').cacheable(),
 });
 return module;
 

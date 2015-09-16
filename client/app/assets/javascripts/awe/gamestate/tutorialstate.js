@@ -53,7 +53,6 @@ AWE.GS = (function(module) {
     tutorial: null,
     rules: null,
     selected_quest_state: null,
-
     
     init: function(spec) {
       this._super(spec);      

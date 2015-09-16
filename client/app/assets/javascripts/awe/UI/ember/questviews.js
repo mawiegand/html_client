@@ -101,7 +101,7 @@ AWE.UI.Ember = (function(module) {
 
     threshold: function() {
       return this.getPath('questState.threshold');
-    }.property('questState.threshold'), 
+    }.property('questState.threshold'),
     
     advisor: function() {
       if (this.get('finished')) {

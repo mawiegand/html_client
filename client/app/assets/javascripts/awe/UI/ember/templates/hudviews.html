@@ -1,5 +1,16 @@
 <script type="text/x-handlebars" data-template-name="left-hud-view">
   <div class="settlement-map-button scale-down" id="left-dom-hud">
+
+    {{#if isInAlliance}}
+      <div class="alliance-hud-button alliance-hud-button-position" {{action "allianceClicked"}}>
+        <div class="alliance-hud-icon"></div>
+      </div>
+    {{/if}}
+    <div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
+      {{#if getUnreadMessageCount}}
+        <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{/if}}
+    </div>
   	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
   	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
   	{{#if isSettlement}}
@@ -30,11 +41,6 @@
 
 <script type="text/x-handlebars" data-template-name="right-hud-view">
   <div class="right-hud scale-down" id="right-dom-hud">
-  	<div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
-      {{#if getUnreadMessageCount}}
-  		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
-      {{/if}}
-  	</div>
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
   	  {{#if getNewQuest}}
   		<div class="count-indicator-background count-indicator-background-position">{{getNewQuest}}</div>
@@ -45,10 +51,11 @@
 
 <script type="text/x-handlebars" data-template-name="top-right-hud-view">  
   <div class="top-right-hud scale-down" id="top-right-dom-hud">
-    {{#if isInAlliance}}
-      <div class="alliance-hud-button" {{action "allianceClicked"}}>
-        <div class="alliance-hud-icon"></div>
-      </div>
-    {{/if}}
+    <div class="quest-info-box">
+      {{#each task in tasks}}
+          <div class="title"><h5>{{task.title}}</h5></div>
+          <div class="description">{{task.message}}</div>
+      {{/each}}
+    </div>
   </div>  
 </script>
