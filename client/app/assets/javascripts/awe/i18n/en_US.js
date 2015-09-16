@@ -1484,6 +1484,9 @@ AWE.I18n.en_US = function(module) {
       logout: "Log out",
       header: "Menu",
       reload: "Reload",
+      constructionQueue: "Construction Queue",
+      constructionQueuePositionsAvailableBegin: "Number of available slots in construction queue",
+      constructionQueuePositionsAvailableEnd: "",         
     },
 
     dialogs:{
@@ -1519,6 +1522,7 @@ AWE.I18n.en_US = function(module) {
           occupation: "Occupation",
           end: "End",
           giveUp: "Give up",
+          opponentSurrender: "Opponent {0} may surrender in {1}.",
         },
       },
       move:{

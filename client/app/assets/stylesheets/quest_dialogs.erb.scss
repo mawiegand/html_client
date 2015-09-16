@@ -1770,219 +1770,203 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .cave-painting-container{
   position: fixed;
-  left: 0;
-  top: 0;
-
-  
-  background-image: url('<%= asset_path("cavepainting/cave_background.jpg") %>');
-  background-size: cover;
-  background-repeat: repeat-x repeat-y;
-  background-color: transparent;
-
   width: 100%;
   height: 100%;
-  z-index:256;
-  max-width: 100%;
-  max-height: 100%;
-
-    .cave-painting-background
-    {
-      position: relative;
-      top:0;
-      left:0; 
-      z-index:257;
-      background-image: url('<%= asset_path("cavepainting/cavepainting_background.jpg") %>');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: transparent;
-      background-size: 100% auto;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-      box-shadow: none;
-      border-radius: 0px;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index:257;
+  .cave-painting-background {
+    position: relative;
+    margin-top: -28%;
+    margin-left: -50%;
+    z-index:257;
+    background-image: url('<%= asset_path("cavepainting/cavepainting_background.jpg") %>');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: 100% auto;
+    height: 640px;
+    width: 1136px;
 
 
       .cave-painting-carvings
       {
-          z-index: 257;
-          position: absolute;
-          background-image: url('<%= asset_path("cavepainting/carving_all_empty.png") %>');
-          background-size: 100% auto;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-color: transparent;
-          left: 19%;
-          top:12%;
-          height:81%;
-          width:64%; 
+        z-index: 257;
+        position: absolute;
+        background-image: url('<%= asset_path("cavepainting/carving_all_empty.png") %>');
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        left: 207px;
+        top: 48px;
+        height: 577px;
+        width: 747px;
       }
 
       .cave-painting-close-button
       {
-          height:20%;
-          width:6%; 
-          position: absolute;
-          background-size: 100% auto;
-          background-image: url('<%= asset_path("cavepainting/x_button.png") %>');
-          background-position: center;
-          background-repeat: no-repeat;
-          background-color: transparent;
-          z-index: 258;
-          left:3%;
-          top:8%;
+        height:64px;
+        width:67px; 
+        position: absolute;
+        background-size: 100% auto;
+        background-image: url('<%= asset_path("cavepainting/x_button.png") %>');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        z-index: 258;
+        left:3%;
+        top:8%;
+        &:hover {
+          background-image: url('<%= asset_path("cavepainting/x_button_hover.png") %>');
+        }
       }
 
       .cave-painting-spiral{
-          position: absolute;
-          max-width: 100%;
-          max-height: 100%;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: 100% auto;
-          background-color: transparent;
-          z-index: 258;
-          left:18%;
-          top:24%;
-          width: 66%;
-          height: 57%;
-
-          &.spiral-01{
-            background-image: url('<%= asset_path("cavepainting/spiral_01.png") %>');
-          }
-          &.spiral-02{
-            background-image: url('<%= asset_path("cavepainting/spiral_02.png") %>');
-          }
-          &.spiral-03{
-            background-image: url('<%= asset_path("cavepainting/spiral_03.png") %>');
-          }
-          &.spiral-04{
-            background-image: url('<%= asset_path("cavepainting/spiral_04.png") %>');
-          }
-          &.spiral-05{
-            background-image: url('<%= asset_path("cavepainting/spiral_05.png") %>');
-          }
-          &.spiral-06{
-            background-image: url('<%= asset_path("cavepainting/spiral_06.png") %>');
-          }
-          &.spiral-07{
-            background-image: url('<%= asset_path("cavepainting/spiral_07.png") %>');
-          }
-          &.spiral-08{
-            background-image: url('<%= asset_path("cavepainting/spiral_08.png") %>');
-          }
-          &.spiral-09{
-            background-image: url('<%= asset_path("cavepainting/spiral_09.png") %>');
-          }
-          &.spiral-10{
-            background-image: url('<%= asset_path("cavepainting/spiral_10.png") %>');
-          }
-          &.spiral-11{
-            background-image: url('<%= asset_path("cavepainting/spiral_11.png") %>');
-          }
-          &.spiral-12{
-            background-image: url('<%= asset_path("cavepainting/spiral_12.png") %>');
-          }
-          &.spiral-13{
-            background-image: url('<%= asset_path("cavepainting/spiral_13.png") %>');
-          }
-          &.spiral-14{
-            background-image: url('<%= asset_path("cavepainting/spiral_14.png") %>');
-          }
-          &.spiral-15{
-            background-image: url('<%= asset_path("cavepainting/spiral_15.png") %>');
-          }
-          &.spiral-16{
-            background-image: url('<%= asset_path("cavepainting/spiral_16.png") %>');
-          }
+        position: absolute;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-color: transparent;
+        z-index: 258;
+        left: 237px;
+        top: 80px;
+        height: 600px;
+        width: 830px;
+        &.spiral-01{
+          background-image: url('<%= asset_path("cavepainting/spiral_01.png") %>');
+        }
+        &.spiral-02{
+          background-image: url('<%= asset_path("cavepainting/spiral_02.png") %>');
+        }
+        &.spiral-03{
+          background-image: url('<%= asset_path("cavepainting/spiral_03.png") %>');
+        }
+        &.spiral-04{
+          background-image: url('<%= asset_path("cavepainting/spiral_04.png") %>');
+        }
+        &.spiral-05{
+          background-image: url('<%= asset_path("cavepainting/spiral_05.png") %>');
+        }
+        &.spiral-06{
+          background-image: url('<%= asset_path("cavepainting/spiral_06.png") %>');
+        }
+        &.spiral-07{
+          background-image: url('<%= asset_path("cavepainting/spiral_07.png") %>');
+        }
+        &.spiral-08{
+          background-image: url('<%= asset_path("cavepainting/spiral_08.png") %>');
+        }
+        &.spiral-09{
+          background-image: url('<%= asset_path("cavepainting/spiral_09.png") %>');
+        }
+        &.spiral-10{
+          background-image: url('<%= asset_path("cavepainting/spiral_10.png") %>');
+        }
+        &.spiral-11{
+          background-image: url('<%= asset_path("cavepainting/spiral_11.png") %>');
+        }
+        &.spiral-12{
+          background-image: url('<%= asset_path("cavepainting/spiral_12.png") %>');
+        }
+        &.spiral-13{
+          background-image: url('<%= asset_path("cavepainting/spiral_13.png") %>');
+        }
+        &.spiral-14{
+          background-image: url('<%= asset_path("cavepainting/spiral_14.png") %>');
+        }
+        &.spiral-15{
+          background-image: url('<%= asset_path("cavepainting/spiral_15.png") %>');
+        }
+        &.spiral-16{
+          background-image: url('<%= asset_path("cavepainting/spiral_16.png") %>');
+        }
       }
 
       .cave-painting-carving-colored{
-          position: fixed;
-          max-width: 100%;
-          max-height: 100%;
+          position: absolute;
           z-index: 259;
           background-position: center;
           background-repeat: no-repeat;
           background-size: 100% auto;
           background-color: transparent;
-          width: 12%;
-          height: 13%;
-          
+          width: 156px;
+          height: 140px;
           &.cave-painting-carving-colored-01{
-              left:49%;
-              top:37%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_01.png") %>');
+            left: 556px;
+            top: 198px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_01.png") %>');
           }
           &.cave-painting-carving-colored-02{
-              left:44%;
-              top:49%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_02.png") %>');
+            left: 487px;
+            top: 285px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_02.png") %>');
           }
           &.cave-painting-carving-colored-03{
-              left:56%;
-              top:47%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_03.png") %>');
+            left: 630px;
+            top: 274px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_03.png") %>');
           }
           &.cave-painting-carving-colored-04{
-              left:58%;
-              top:26%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_04.png") %>');
+            left: 652px;
+            top: 118px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_04.png") %>');
           }
           &.cave-painting-carving-colored-05{
-              left:40%;
-              top:27%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_05.png") %>');
+            left: 446px;
+            top: 128px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_05.png") %>');
           }
           &.cave-painting-carving-colored-06{
-              left:35%;
-              top:59%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_06.png") %>');
+            left: 386px;
+            top: 368px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_06.png") %>');
           }
           &.cave-painting-carving-colored-07{
-              left:50%;
-              top:59%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_07.png") %>');
+            left: 556px;
+            top: 366px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_07.png") %>');
           }
           &.cave-painting-carving-colored-08{
-              left:66%;
-              top:59%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_08.png") %>');
+            left: 740px;
+            top: 366px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_08.png") %>');
           }
           &.cave-painting-carving-colored-09{
-              left:68%;
-              top:40%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_09.png") %>');
+            left: 766px;
+            top: 220px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_09.png") %>');
           }
           &.cave-painting-carving-colored-10{
-              left:67%;
-              top:19%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_10.png") %>');
+            left: 750px;
+            top: 56px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_10.png") %>');
           }
           &.cave-painting-carving-colored-11{
-              left:51%;
-              top:16%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_11.png") %>');
+            left: 572px;
+            top: 37px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_11.png") %>');
           }
           &.cave-painting-carving-colored-12{
-              left:29%;
-              top:34%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_12.png") %>');
+            left: 324px;
+            top: 180px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_12.png") %>');
           }
           &.cave-painting-carving-colored-13{
-              left:24%;
-              top:52%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_13.png") %>');
+            left: 260px;
+            top: 311px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_13.png") %>');
           }
           &.cave-painting-carving-colored-14{
-              left:18%;
-              top:70%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_14.png") %>');
+            left: 191px;
+            top: 452px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_14.png") %>');
           }
           &.cave-painting-carving-colored-15{
-              left:32%;
-              top:76%;
-              background-image: url('<%= asset_path("cavepainting/carving_colored_15.png") %>');
+            left: 346px;
+            top: 498px;
+            background-image: url('<%= asset_path("cavepainting/carving_colored_15.png") %>');
           }
       }
     }
@@ -1990,7 +1974,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 /*=== Cave Painting Dialog Button ===*/
 
-.cave_painting_button{
+.cave_painting_button {
   background-image: url('<%= asset_path("cavepainting/cavepainting_button.png") %>');
   background-position: center;
   background-repeat: no-repeat;

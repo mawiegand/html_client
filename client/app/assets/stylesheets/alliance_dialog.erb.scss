@@ -301,6 +301,13 @@
   width: 180px;
 }
 
+.alliance-opponent-surrender-row {
+  width: 588px;
+  float: left;
+  clear: both;
+  font-size: 0.7em;
+}
+
 .alliance-ultimatum-new-inputfield {
   width: 175px;
   height: 26px;
@@ -313,6 +320,7 @@
 
 .alliance-diplomacy-name {
   cursor: pointer;
+  pointer-events: all;
   font-size: 0.9em;
   color: #5b5b5b;
   width: 200px;

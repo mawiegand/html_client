@@ -22,7 +22,7 @@ Client::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
   
-  config.action_controller.asset_host = "https://gs08.wack-a-doo.com/client"
+  config.action_controller.asset_host = "https://gs09.wack-a-doo.com/client"
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH

@@ -1504,6 +1504,9 @@ AWE.I18n.de_DE = function(module) {
       logout: "Logout",
       header: "Menü",
       reload: "Aktualisieren",
+      constructionQueue: "Bauschleife",
+      constructionQueuePositionsAvailableBegin: "In der Bauschleife ist noch Platz für",
+      constructionQueuePositionsAvailableEnd: "Aufträge",      
     },
 
     dialogs:{
@@ -1539,6 +1542,7 @@ AWE.I18n.de_DE = function(module) {
           occupation: "Besetzung",
           end: "Endet",
           giveUp: "Aufgeben",
+          opponentSurrender: "Gegner {0} kann in {1} aufgeben.",
         },
       },
       move:{

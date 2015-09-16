@@ -451,7 +451,7 @@ AWE.UI = (function(module) {
       _infantryInfoView.setText(Math.floor(_army.unitcategory_infantry_strength).toString());
       _artilleryInfoView.setText(Math.floor(_army.unitcategory_artillery_strength).toString());
       _cavalryInfoView.setText(Math.floor(_army.unitcategory_cavalry_strength).toString());
-      if(_army.details !== null && _army.details.unit_little_chief !== null)
+      if(_army.details !== null && _army.details !== "undefined" && _army.details.unit_little_chief !== null)
       {
         _littleChiefInfoView.setText(Math.floor(_army.details.unit_little_chief).toString());
       }

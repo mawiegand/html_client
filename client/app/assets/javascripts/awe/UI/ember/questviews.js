@@ -317,6 +317,10 @@ AWE.UI.Ember = (function(module) {
     },
 
     
+    showEpicQuestDialog: function() {
+      this.get('parentView').showEpicQuestDialog(this.get('questState'));
+    },
+    
     subquestStates: function(){
       var indices = this.getPath('questState.quest.subquests');
       var array = new Array();
@@ -429,10 +433,11 @@ AWE.UI.Ember = (function(module) {
     },
     
     closeDialogRequested: function() {
-      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
+      WACKADOO.closeAllModalDialogs();
+      /*if (!AWE.GS.TutorialStateManager.tutorialEnabled()) {
         this.destroy();                
         //WACKADOO.closeAllModalDialogs();
-      }
+      }*/
     },
 
     redeemButtonPressed: function() {
@@ -704,35 +709,24 @@ AWE.UI.Ember = (function(module) {
   module.CavePainting = Ember.View.extend({
     templateName: 'quest-cave-painting-view',
     questBinding: 'questState.quest',
-    cave_painting_url:'/client/assets/cavepainting/',
-    spiral_url:"/client/assets/cavepainting/spiral_01.png",
-    carving_colored_objs:[],
-    version : 0,
+    progress : 0,
     // these should be 16. Each quest refers to a colored_carving and they are ordered in the
     // way the colored images should be shown ( got these from Daniel ).
-    quest_ids: [0,3,6,7,9,12,20,24,27,31,34],
+    questIds: [0,2,5,6,7,9,12,20,24,27,31,34,37,41,48],
 
+    varFalse: false,
 
-
-    init:function()
-    {
-
-      this._super();
-      this.unlock_painting();
-    },
-
-    close_cave_painting:function(){
+    close:function(){
       this.destroy();
     },
 
-    get_version_number:function(level){
+    getVersionNumber:function(level){
 
       // concatenate 0 so the number 8 for e.g becomes 08. Since our spiral images
       // are named like this.
 
-
-    // level+1 because we're passing the index of loop in this function which starts from 0.
-    // there is no image with the following index 00 hence we +1 to make it 01.
+      // level+1 because we're passing the index of loop in this function which starts from 0.
+      // there is no image with the following index 00 hence we +1 to make it 01.
       level = level+1;
 
       if(level<10)
@@ -744,57 +738,48 @@ AWE.UI.Ember = (function(module) {
       return version;
     },
 
-
-
-    get_spiral_version:function(level){
-      return "spiral_"+this.get_version_number(level-1)+".png";
+    getSpiralVersion:function(level){
+      return "spiral_"+this.getVersionNumber(level-1)+".png";
     },
 
-    get_carving_colored_version:function(level){
-      return this.get_version_number(level);
+    getCarvingColoredVersion:function(level){
+      return this.getVersionNumber(level);
     },
 
-    unlock_painting:function(){
+    unlockedPaintings:function(){
 
-       questids = this.get('quest_ids');
+      var questIds = this.get('questIds');
 
       // this is used to find out the number of completed quests out of the given
       // quests. Based on this variable count we load the spiral image.
-       total_quests_completed = 0;
+      var total_quests_completed = 0;
 
-       this.set('carving_colored_objs',new Array());
+      var coloredItems = [];
 
-       for(i=0 ; i<questids.length ; i++)
-       {
-          // if it's not null, the quest has an entry and it is completed
-          if(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(questids[i])!==null)
-          {
-             carving_colored_pic_url = this.get('cave_painting_url')+'carving_colored_'+this.get_carving_colored_version(i)+'.png';
-             carving_colored_pic_class = 'cave-painting-carving-colored-'+this.get_carving_colored_version(i);
-
-             current_carvings = this.get('carving_colored_objs');
-             current_carvings.push({ url : carving_colored_pic_url , css_class : carving_colored_pic_class});
-
-             this.set('carving_colored_objs',current_carvings);
-             total_quests_completed++;
-          }
-          else
-          {
-            break;
-          }
-       }
-
-
-       this.set('spiral_url',this.get('cave_painting_url')+this.get_spiral_version(total_quests_completed));
-
-
-    },
-
-
+      for(i=0 ; i<questIds.length ; i++)
+      {
+        var quest = AWE.GS.TutorialStateManager.tutorialState.questStateWithQuestId(questIds[i]);
+        // if it's not null, the quest has an entry and it is completed
+        if(quest !== null && quest.closed_at !== null)
+        {
+          var carvingColoredPicClass = 'cave-painting-carving-colored-'+this.getCarvingColoredVersion(i);
+          coloredItems.push({
+            cssClass:carvingColoredPicClass,
+            questState: AWE.GS.TutorialStateManager.tutorialState.questStateWithQuestId(questIds[i])
+          });
+          total_quests_completed++;
+        }
+        else
+        {
+          break;
+        }
+      }
+      return coloredItems;
+    }.property('questIds', 'AWE.GS.TutorialStateManager.tutorialState'),
 
     spiral:function(){
-       return "spiral-" + this.get('version');
-    }.property('version'),
+       return "spiral-" + this.get('progress');
+    }.property('progress'),
 
 
 

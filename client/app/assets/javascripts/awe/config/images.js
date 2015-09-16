@@ -231,6 +231,11 @@ AWE.Config = (function(module) {
     "hud/top/arrow/right"   : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_arrow_right.png',
     "hud/top/center"        : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_center.png',
     "hud/top/info"          : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_info.png',
+    
+    "hud/mapmode/icon_strategic_all/inactive" : AWE.Config.RAILS_ASSET_PATH + 'hud/map_mountains_button/strategic_all_inactive.png',
+    "hud/mapmode/icon_normal/inactive" : AWE.Config.RAILS_ASSET_PATH + 'hud/map_mountains_button/normal_all_inactive.png',
+    "hud/mapmode/icon_normal_only/inactive" : AWE.Config.RAILS_ASSET_PATH + 'hud/map_mountains_button/normal_only_inactive.png',
+    "hud/mapmode/icon_strategic_only/inactive" : AWE.Config.RAILS_ASSET_PATH + 'hud/map_mountains_button/strategic_only_inactive.png',
 
 /* === AVATAR SECTION === */
     "avatar/female/chains/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_amazone_chain_0.png',

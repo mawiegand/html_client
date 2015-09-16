@@ -155,7 +155,7 @@
             {{/each}}
           </div>
             {{#if tutorialState.isSelectedQuestEpic}}
-          <div class="quest-detail scrolling" {{action "showEpicQuestDialog"}}>            
+          <div class="quest-detail scrolling">            
               {{view AWE.UI.Ember.QuestListItemViewDetailEpic questStateBinding="tutorialState.selected_quest_state" class="quest-content" questBinding="tutorialState.selected_quest_state.quest"}}
             {{else}}
           <div class="quest-detail scrolling">            
@@ -185,9 +185,6 @@
   
   <div class="center">
     <div class="cave_painting_button" {{action open_cave_painting}}></div>
-    <div class="advisor chef sketched"></div>
-    <div class="advisor warrior sketched"></div>
-    <div class="advisor girl sketched"></div>
   </div>
    
   <div class="item">
@@ -233,21 +230,32 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-epic">
-  <div class="quest-dialog-advisor-task">
+  <div class="quest-dialog-advisor-task" {{action "showEpicQuestDialog"}}>
     {{local quest.task}}
   </div>
-  <div {{bindAttr class="advisor"}}></div> 
-  
+  <div {{bindAttr class="advisor"}} {{action "showEpicQuestDialog"}}></div> 
+
   {{#if subquestStates}}
-    <div class="quest-subquests">
+    <div class="quest-subquests" {{action "showEpicQuestDialog"}}>
       {{#each subquestStates}}
         {{view AWE.UI.Ember.QuestListItemViewDetailEpicSub questStateBinding="this" class="quest-list-item"}}
       {{/each}}
     </div>
   {{/if}}
   
+  {{#if finished}}
+   <div class="redeemButton" {{action "redeemButtonPressed" }}>
+     {{#if redeeming}}
+       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+     {{else}}
+        <span>{{t tutorial.redeemNow}}</span>
+     {{/if}}
+   </div>
+  {{/if}}
+
+  <br>
   {{#if quest.rewards}}
-    <div class="quest-dialog-reward">
+    <div class="quest-dialog-reward" {{action "showEpicQuestDialog"}}>
       <ul class="quest-dialog-rewards-items">      
         {{#if quest.rewards.resource_rewards}}
           {{#each quest.rewards.resource_rewards}}
@@ -287,15 +295,9 @@
     </div>
   {{/if}}
 
-  {{#if finished}}
-   <div class="redeemButton" {{action "redeemButtonPressed" }}>
-     {{#if redeeming}}
-       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-     {{else}}
-        <span>{{t tutorial.redeemNow}}</span>
-     {{/if}}
-   </div>
-  {{/if}}
+  <br>
+
+  
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-item-view-detail-quest">
@@ -366,8 +368,6 @@
   
   <br>
   <br>
-  
-  
   
   {{#if finished}}
    <div class="redeemButton" {{action "redeemButtonPressed" }}>
@@ -678,23 +678,20 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-cave-painting-view">
-      
+  <div class="cave-painting-container" {{action close}}>
+    <div class="center-helper">
+      <div class="cave-painting-background" {{action close}}>
+        <div class="cave-painting-carvings"></div>
+        {{#if varFalse}}
+          <div {{bindAttr class="spiral :cave-painting-spiral"}}></div>
+        {{/if}}
+        
 
-      <div class="cave-painting-container">
-          <div class="cave-painting-background" >
-            <div class="cave-painting-carvings " ></div>
-            <div class="cave-painting-close-button" {{action close_cave_painting}} ></div>
-
-            {{#if spiral_url}}
-              <div {{bindAttr class="spiral :cave-painting-spiral"}}  ></div>
-            {{/if}}
-            
-
-
-            {{#each item in carving_colored_objs}}
-              <div {{bindAttr class="item.css_class :cave-painting-carving-colored"}} ></div>
-            {{/each}}
-          </div>
-
+        {{#each unlockedPaintings}}
+          <div {{bindAttr class="this.cssClass :cave-painting-carving-colored"}}></div>
+        {{/each}}
       </div>
+    </div>
+
+  </div>
 </script>
