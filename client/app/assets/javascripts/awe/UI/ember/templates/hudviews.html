@@ -84,7 +84,9 @@
       <div class="title"><h5>{{local epicQuest.questName}}</h5></div>
       <div class="description">{{local epicQuest.quest.task}}</div>
       <div class="title"><h5>{{local epicSubQuest.questName}} 
+      {{#if epicSubQuest.tutorialstate.tutorial_completed}}
         ... {{epicSubQuest.actual}} / {{epicSubQuest.threshold}}
+      {{/if}}
       </h5></div>
       <div class="description">{{local epicSubQuest.quest.task}}</div>
     </div>

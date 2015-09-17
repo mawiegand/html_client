@@ -608,8 +608,7 @@ AWE.Controller = (function(module) {
     };
 
     that.initQuestDialog = function(){
-
-      WACKADOO.createQuestDialog();
+      console.log('log');
     },
     
     that.recruitButtonClicked = function() {

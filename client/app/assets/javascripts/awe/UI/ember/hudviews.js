@@ -411,7 +411,6 @@ module.TopRightHUDView = Ember.View.extend({
   
   init:function(){
     this._super();
-    actual = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(18).actual;    
 //    this.initQuestDialog();
   },
 
@@ -427,27 +426,27 @@ module.TopRightHUDView = Ember.View.extend({
     //   clearInterval(timer);
     // }
 
-    timer = setInterval(function(){
+    // timer = setInterval(function(){
 
-      console.log(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(18).actual);
-    },1000);
+    //   console.log(AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(19).threshold);
+    // },1000);
 
 
-    var bestEpic;
+    var bestEpic = null;
     var bestSub = null;
 
-    var questss = this.getPath('tutorialState.openQuestStates');
+    var quests = this.getPath('tutorialState.openQuestStates');
 
     // if there are no openQuests
-    if(questss.length == 0)
+    if(quests.length == 0)
       return;
 
 
-    if(!questss[0].getPath('tutorialstate.tutorial_completed'))
+    if(!quests[0].getPath('tutorialstate.tutorial_completed'))
     {
-      if(questss[0].get('questIsEpic'))
+      if(quests[0].get('questIsEpic'))
       {
-        bestEpic = questss[0];
+        bestEpic = quests[0];
       }
     }
     else
@@ -455,24 +454,27 @@ module.TopRightHUDView = Ember.View.extend({
       // -1 so that we add atleast one into the array. There might be a situation in which all the actuals are 0.
       var actual = -1;
 
-      for(var i=0;i<questss.length;i++)
+      for(var i=0;i<quests.length;i++)
       {
-        if(questss[i].get('questIsEpic'))
+        if(quests[i].get('questIsEpic'))
         {
-          if(questss[i].getPath('quest.subquests')!==undefined && questss[i].getPath('quest.subquests')!==null)
+          if(quests[i].actual>actual && quests[i].getPath('quest.subquests')!==undefined && quests[i].getPath('quest.subquests')!==null)
           {
-            var subquestss = questss[i].getPath('quest.subquests');
+            var subquests = quests[i].getPath('quest.subquests');
 
 
-            for(var j=0;j<subquestss.length;j++)
+            for(var j=0;j<subquests.length;j++)
             {
-              var subquests = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(subquestss[j]);
+              var subquest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(subquests[j]);
 
-              if(subquests.actual>actual && subquests.threshold!=subquests.actual)
+              if(subquest.questName === undefined)
+                return;
+
+              if(subquest.actual>actual && subquest.threshold!==subquest.actual && subquest.status < AWE.GS.QUEST_STATUS_FINISHED)
               {
-                actual = subquests.actual;
-                bestEpic = questss[i];
-                bestSub = subquests;
+                actual = subquest.actual;
+                bestEpic = quests[i];
+                bestSub = subquest;
               }
             }
           }
@@ -483,7 +485,10 @@ module.TopRightHUDView = Ember.View.extend({
 
     return bestEpic;
 
-  }.property('AWE.GS.TutorialStateManager.tutorialState.lastAggregateUpdate'),
+  }.property('AWE.GS.TutorialStateManager.tutorialState.lastAggregateUpdate','tutorialState.openQuestStates.@each.threshold'),
+//  }.property('AWE.GS.TutorialStateManager.tutorialState.updated_at'),
+//  }.property('WACKADOO.actualUpdate'),
+
 
   epicSubQuest: function(){
     return this.get('bestEpicSubQuest');
