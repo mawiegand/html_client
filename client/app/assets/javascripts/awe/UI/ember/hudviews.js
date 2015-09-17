@@ -467,11 +467,11 @@ module.TopRightHUDView = Ember.View.extend({
             {
               var subquest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(subquests[j]);
 
-              if(subquest.questName === undefined)
-                return;
 
-              if(subquest.actual>actual && subquest.threshold!==subquest.actual && subquest.status < AWE.GS.QUEST_STATUS_FINISHED)
+              // check for rewards will tell us if the subquest is complete or not. True means it's complete.
+              if(subquest.actual>actual && !subquest.checkForRewards())
               {
+
                 actual = subquest.actual;
                 bestEpic = quests[i];
                 bestSub = subquest;
@@ -485,9 +485,7 @@ module.TopRightHUDView = Ember.View.extend({
 
     return bestEpic;
 
-  }.property('AWE.GS.TutorialStateManager.tutorialState.lastAggregateUpdate','tutorialState.openQuestStates.@each.threshold'),
-//  }.property('AWE.GS.TutorialStateManager.tutorialState.updated_at'),
-//  }.property('WACKADOO.actualUpdate'),
+  }.property('AWE.GS.TutorialStateManager.tutorialState.lastAggregateUpdate','tutorialState.openQuestStates.@each.threshold','tutorialState.openQuestStates.@each.actual'),
 
 
   epicSubQuest: function(){
