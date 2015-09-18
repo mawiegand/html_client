@@ -119,7 +119,7 @@
     <table>
         {{view AWE.UI.Ember.AllianceMember tagName="tr" characterBinding="alliance.leader" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
     </table>
-    <h3>{{t dialogs.alliance.allianceMembers.members}}</h3>
+    <h3>{{t dialogs.alliance.allianceMembers.members}} {{alliance.membersCount}}/{{alliance.membersMax}}</h3>
     <table>
         {{#each alliance.members}}
             {{view AWE.UI.Ember.AllianceMember noLeaderBinding="view.noLeader" tagName="tr" characterBinding="this" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
