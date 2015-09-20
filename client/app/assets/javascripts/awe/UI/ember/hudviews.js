@@ -31,6 +31,8 @@ module.LeftHUDView = Ember.View.extend({
     this.startTimer();
   },
 
+
+
   setHUDMode: function(currentMode) {
     this.set('mode', currentMode);
   },
@@ -215,6 +217,7 @@ module.LeftHUDView = Ember.View.extend({
       mode = 1;
 
     this.set('map_mode',mode);
+
 
   },
 
