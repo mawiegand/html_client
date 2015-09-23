@@ -441,9 +441,9 @@
   </div>
   <div class="army-info-state-cell">
     <div class="text-cell-left">{{t army.details.homeSettlement}}:</div><div {{bindAttr class=":text-cell-right isClickable"}} {{action "homeSettlementClicked"}}>{{homeSettlement.name}}</div>
-    <div class="text-cell-left">{{t army.details.experience}}:</div><div class="text-cell-right">{{army.exp}}</div>
-    <div class="text-cell-left">{{t army.details.rank}}:</div><div class="text-cell-right">{{army.rankToDisplay}}</div>
-    <div class="text-cell-left">{{t army.details.actionPoints}}:</div><div class="text-cell-right">
+    <div class="text-cell-left experience"></div><div class="text-cell-right">{{army.exp}}</div>
+    <div class="text-cell-left army-level"></div><div class="text-cell-right">{{army.rankToDisplay}}</div>
+    <div class="text-cell-left action-points"></div><div class="text-cell-right">
       {{army.ap_present}}/{{army.ap_max}}
       {{#if canRegenAp}}
         <span class="ap-regen-info"> ({{t dialogs.armyInfo.next}}: {{nextAPTimeString}})</span>

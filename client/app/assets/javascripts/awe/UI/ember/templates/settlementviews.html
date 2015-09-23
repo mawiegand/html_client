@@ -24,29 +24,29 @@
     <div class="row row1">
       <div class="cell cell-50">
         <div class="row1_1">
-          <div class="cell title">{{t settlement.defenseBonus}}:</div>
+          <div class="cell title defense-bonus"></div>
           <div class="cell value">{{formatPercentage settlement.present_defense_bonus}}</div>
         </div>
         <div class="row1_2">
-          <div class="cell title">{{t settlement.condition}}:</div>
+          <div class="cell title condition"></div>
           <div class="cell value">{{formatPercentage settlement.condition}}</div>
         </div>
         <div class="row1_3">
-          <div class="cell title">{{t settlement.info.buildingSpeed}}:</div>
+          <div class="cell title building-speed"></div>
           <div class="cell value">{{formatNumber buildingSpeed maxPlaces="0"}}%</div>
         </div>
       </div>
       <div class="cell cell-50">
         <div class="row1_4">
-          <div class="cell title">{{t settlement.population}}:</div>
+          <div class="cell title population"></div>
           <div class="cell value">{{settlement.score}}</div>
         </div>
         <div class="row1_5">
-          <div class="cell title">{{t building.commandPoints}}:</div>
+          <div class="cell title command-points"></div>
           <div class="cell value">{{settlement.commandPointsUsed}}/{{settlement.command_points}}</div>
         </div>
         <div class="row1_6">
-          <div class="cell title">{{t settlement.info.availableBuildingSlots}}: </div>
+          <div class="cell title building-slots"></div>
           <div class="cell value">{{settlement.usedBuildingSlots}}/{{settlement.building_slots_total}}</div>
         </div>
       </div>
