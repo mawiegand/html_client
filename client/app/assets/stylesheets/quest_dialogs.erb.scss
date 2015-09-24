@@ -19,19 +19,19 @@
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
 .advisor.girl-quest-start {
-  background: url('<%= asset_path("advisors/quest-dialog/quest-dialog-girl.png") %>');
+  background: url('<%= asset_path("advisors/quest-dialog/epic_quest_girl.png") %>');
 }
 .advisor.warrior {
   background: url('<%= asset_path("advisors/head_warrior_colored_small.png") %>');
 }
 .advisor.warrior-quest-start {
-  background: url('<%= asset_path("advisors/quest-dialog/quest-dialog-warrior.png") %>');
+  background: url('<%= asset_path("advisors/quest-dialog/epic_quest_warrior.png") %>');
 }
 .advisor.warrior.tiny {
   background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
 }
 .advisor.chef, .advisor.chef-quest-start {
-  background: url('<%= asset_path("advisors/quest-dialog/quest-dialog-chef.png") %>');
+  background: url('<%= asset_path("advisors/quest-dialog/epic_quest_chief.png") %>');
 }
 .advisor.chef.tiny {
   background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
@@ -85,8 +85,6 @@
   
   .background-advisor{
     position: absolute;
-    background-image: url('<%= asset_path("dialogs/backgrounds/background_building_selection_active.png") %>');
-    background-size: 100%;
     width: 160px;
     height: 140px;
     right: 80px;
@@ -109,7 +107,7 @@
     top: 5%;
     left: 8%;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
   
   .content {
@@ -133,180 +131,182 @@
 
     .sub-background {
       .sub-image {
+        background-position: center;
+        background-repeat: no-repeat;
         background-size: 100%;
         width: 100px;
-        height: 100px;
+        height: 130px;
         margin: 0 auto;
         &.quest_build_chiefcottagelvl4 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl4_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl4_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl4.png") %>');
           }
         }
         &.quest_build_quarry {
-          background-image: url('<%= asset_path("quests/grey/quest_build_quarry_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_quarry_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_quarry.png") %>');
           }
         }
         &.quest_build_logger {
-          background-image: url('<%= asset_path("quests/grey/quest_build_logger_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_logger_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_logger.png") %>');
           }
         }
         &.quest_build_quarry_lvl3 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_quarry_lvl3_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_quarry_lvl3_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_quarry_lvl3.png") %>');
           }
         }
         &.quest_build_logger_lvl3 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_logger_lvl3_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_logger_lvl3_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_logger_lvl3.png") %>');
           }
         }
         &.quest_gatherer_lvl3 {
-          background-image: url('<%= asset_path("quests/grey/quest_gatherer_lvl3_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_gatherer_lvl3_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_gatherer_lvl3.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl5 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl5_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl5_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl5.png") %>');
           }
         }
         &.quest_build_campfire {
-          background-image: url('<%= asset_path("quests/grey/quest_build_campfire_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_campfire_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_campfire.png") %>');
           }
         }
         &.quest_alliance {
-          background-image: url('<%= asset_path("quests/grey/quest_alliance_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_alliance_hall_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_alliance.png") %>');
           }
         }
         &.quest_build_storage {
-          background-image: url('<%= asset_path("quests/grey/quest_build_storage_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_storage_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_storage.png") %>');
           }
         }
         &.quest_first_trade {
-          background-image: url('<%= asset_path("quests/grey/quest_first_trade_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_first_trade_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_first_trade.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl6 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl6_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl6_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl6.png") %>');
           }
         }
         &.quest_finish_upgrade {
-          background-image: url('<%= asset_path("quests/grey/quest_finish_upgrade_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_finish_upgrade_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_finish_upgrade.png") %>');
           }
         }
         &.quest_build_cottage {
-          background-image: url('<%= asset_path("quests/grey/quest_build_cottage_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_cottage_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_cottage.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl7 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl7_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl7_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl7.png") %>');
           }
         }
         &.quest_build_training_cave {
-          background-image: url('<%= asset_path("quests/grey/quest_build_training_cave_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_training_cave_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_training_cave.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl8 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl8_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl8_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl8.png") %>');
           }
         }
         &.quest_build_furrier {
-          background-image: url('<%= asset_path("quests/grey/quest_build_furrier_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_furrier_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_furrier.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl9 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl9_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl9_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl9.png") %>');
           }
         }
         &.quest_build_firing_range {
-          background-image: url('<%= asset_path("quests/grey/quest_build_firing_range_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_firing_range_copper_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_firing_range.png") %>');
           }
         }
         &.quest_recruit_thrower {
-          background-image: url('<%= asset_path("quests/grey/quest_recruit_thrower_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_recruit_thrower_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_recruit_thrower.png") %>');
           }
         }
         &.quest_build_chiefcottagelvl10 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_chiefcottagelvl10_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_chiefcottagelvl10_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_chiefcottagelvl10.png") %>');
           }
         }
         &.quest_build_copper_smelter {
-          background-image: url('<%= asset_path("quests/grey/quest_build_copper_smelter_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_copper_smelter_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_copper_smelter.png") %>');
           }
         }
         &.quest_build_copper_smelter_lvl5 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_copper_smelter_lvl5_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_copper_smelter_lvl5_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_copper_smelter_lvl5.png") %>');
           }
         }
         &.quest_build_stid {
-          background-image: url('<%= asset_path("quests/grey/quest_build_stid_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_stud_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_stid.png") %>');
           }
         }
         &.quest_light_cavalry {
-          background-image: url('<%= asset_path("quests/grey/quest_build_stid_grey.png") %>');
+          background-image: url('<%= asset_path("buildings/silhouettes_gray/building_stud_big_silhouette.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_stid.png") %>');
           }
         }
         &.quest_build_campfirelvl10 {
-          background-image: url('<%= asset_path("quests/grey/quest_build_campfirelvl10_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_build_campfirelvl10_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_build_campfirelvl10.png") %>');
           }
         }
         &.quest_little_chief {
-          background-image: url('<%= asset_path("quests/grey/quest_little_chief_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_little_chief_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_little_chief.png") %>');
           }
         }
         &.quest_outpost {
-          background-image: url('<%= asset_path("quests/grey/quest_outpost_grey.png") %>');
+          background-image: url('<%= asset_path("quests/grey/silhouettes/quest_outpost_grey.png") %>');
           &.finished {
             background-image: url('<%= asset_path("quests/quest_outpost.png") %>');
           }
@@ -331,6 +331,7 @@
       color: #643a13;
       text-align: center;
       width: 255px;
+      line-height:1em;
     }
     
     
@@ -338,19 +339,28 @@
     .finished{
       color: rgb(0, 217,0);
     }
-    
+    div div .sub-background{
+      background-repeat: no-repeat;
+      background-size:contain;
+      background-position:center;
+    }
+
     .two_layer {
       .first {
         width: 260px;
         height: 200px;
         float: left;
         margin-left: 100px;
+
+        .sub-background {
+          background-image: url('<%= asset_path("dialogs/quest-dialog/quest_paper_l_left.png")%>');
+        }
       }
       
       .arrow_0{
         position: absolute;
-        left: 380px;
-        top: 380px;
+        left: 360px;
+        top: 370px;
       }
       
       .second {
@@ -358,6 +368,9 @@
         height: 200px;
         float: right;
         margin-right: 100px;
+        .sub-background {
+          background-image: url('<%= asset_path("dialogs/quest-dialog/quest_paper_l_right.png") %>');
+        }
       }
     }
     
@@ -368,7 +381,7 @@
         font-size: 18px;
         color: #643a13;
         text-align: center;
-        height: 60px;
+        height: 70px;
         width: 220px;
       }
       
@@ -376,36 +389,45 @@
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 325px;
+        top: 320px;
         left: 30px;
+        .sub-background {
+          background-image: url('<%= asset_path("dialogs/quest-dialog/quest_paper_m_0.png")%>');
+        }
       }
       
       .arrow_0{
         position: absolute;
         left: 250px;
-        top: 380px;
+        top: 420px;
       }
       
       .second {
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 325px;
+        top: 320px;
         right: 270px;
+        .sub-background {
+          background-image: url('<%= asset_path("dialogs/quest-dialog/quest_paper_m_1.png")%>');
+        }
       }
       
       .arrow_1{
         position: absolute;
         right: 245px;
-        top: 380px;
+        top: 420px;
       }
       
       .third {
         position: absolute;
         width: 260px;
         height: 200px;
-        top: 325px;
-        right: 30px;        
+        top: 320px;
+        right: 30px;  
+        .sub-background {
+          background-image: url('<%= asset_path("dialogs/quest-dialog/quest_paper_m_0.png")%>');
+        }      
       }
     }
     
@@ -1588,7 +1610,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 }
 
 .quest-dialog-rewards-items {
-
+  margin: 1em 0 0.5em;
 }
 
 .quest-reward-item {
@@ -1607,7 +1629,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   color: #563E22;
   font-size: 18px;
   position: relative;
-  top: -8px;
   text-align: right;
   z-index: 200;
   overflow: hidden;
