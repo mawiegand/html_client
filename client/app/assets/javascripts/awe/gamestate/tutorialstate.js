@@ -1850,7 +1850,9 @@ AWE.GS = (function(module) {
       });      
       
       dialog.closeDialogRequested = function() {
-
+        if (AWE.GS.TutorialStateManager.tutorialActive()) {
+          this.redeemButtonPressed();
+        }
         that.currentDialog = null;
         this.destroy();
         var self = this;
