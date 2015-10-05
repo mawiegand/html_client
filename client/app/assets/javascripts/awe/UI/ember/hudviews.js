@@ -19,6 +19,7 @@ module.LeftHUDView = Ember.View.extend({
   settlement: null,
   timer: null,
   timeUntillNextAssignment: null,
+  finishedAssignmentsCount: null,
 
 
   // this tells the mode of the map i.e 1,2,3 or 4 and based on this
@@ -75,18 +76,24 @@ module.LeftHUDView = Ember.View.extend({
     }
     return false;
   }.property('settlement.enumerableSlots.@each.building.@each.level'),
-  
-  finishedAssignmentsCount: function() {
-    return false; // TODO: REPAIR BINDING, jb
-    var count = 0;
-    var assignments = this.getPath('character.hashableStandardAssignments.collection');      
-    if(assignments !== null) {
-      for(var i = 0; i < assignments.length; i++) {
-        if(assignments[i].get('finished')) count++;
+
+  updateAssignmentsCount: function() {
+    if(!this.timeUntillNextAssignment) {
+      var count = 0;
+      var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
+        if(assignments !== null) {
+        for(var i = 0; i < assignments.length; i++) {
+          if(assignments[i].get('finished')) count++;
+        }
       }
+      if (AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableSpecialAssignments')){
+        if (AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableSpecialAssignments').collection[0] && AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableSpecialAssignments').collection[0].finished == true){
+          count++;
+        }
+      }
+      this.set('finishedAssignmentsCount', count > 0 ? count : false);
     }
-    return count > 0 ? count : false;
-  }.property('character.hashableStandardAssignments.@each.changedAt').cacheable(),
+  },
 
   getNextAssignmentToFinish: function() {
     var assignments = AWE.GS.CharacterManager.getCurrentCharacter().getPath('hashableStandardAssignments').collection;
@@ -118,6 +125,7 @@ module.LeftHUDView = Ember.View.extend({
   },
 
   calcTimeRemaining: function() {
+    this.updateAssignmentsCount();
     if(this.getNextAssignmentToFinish() != null)
     {
       var now = new Date();
@@ -349,6 +357,21 @@ module.RightHUDView = Ember.View.extend({
       this.set('timer', null);
     }
   },    
+
+  getNewAndNotFinishedQuests: function() {
+    var numberOfFinishedQuests = this.get('getFinishedQuest');
+    if (numberOfFinishedQuests === undefined) {numberOfFinishedQuests = 0;}
+    var numberOfQuests = this.get('getNewQuest');
+    if (numberOfQuests === undefined) {numberOfQuests = 0;}
+    if (numberOfQuests + numberOfFinishedQuests<1) return false;
+    return numberOfQuests + numberOfFinishedQuests;
+  }.property('getFinishedQuest','getNewQuest').cacheable(),
+
+  getFinishedQuest: function() {
+    var numberOfQuests = this.getPath('tutorialState.finishedQuestStateCount');
+    if (numberOfQuests === undefined) return false;
+    return numberOfQuests > 0 ? numberOfQuests : false;
+  }.property('tutorialState.finishedQuestStateCount').cacheable(),
 
   getNewQuest: function(){
     var numberOfQuests = this.getPath('tutorialState.newQuestStatesCount');

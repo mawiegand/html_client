@@ -182,6 +182,11 @@ AWE.UI.Ember = (function(module) {
     },
   
     showQuestInfoPressed: function() {
+      var questState = this.getPath('questState');
+      if (questState.status==AWE.GS.QUEST_STATUS_NEW) {
+        AWE.GS.TutorialStateManager.setQuestDisplayed(questState);
+      }
+      var questState = this.getPath('questState');
       this.get('parentView').showQuestInfoPressed(this.getPath('questState'));
     },
 

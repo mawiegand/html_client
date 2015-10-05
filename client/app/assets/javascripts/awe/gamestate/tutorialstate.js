@@ -87,7 +87,9 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') === module.QUEST_STATUS_NEW && questState.get('quest') /*&& !questState.getPath('quest.hide_start_dialog')*/) {
           // log('---> recalc newQuestStates: quest', questState.getId(), questState.get('status'), questState.get('updated_at'), questState.get('created_at'));
+          if(questState.get('questIsEpic') == true || questState.get('questIsOptional') == true){
             newQuestStates.push(questState);
+          }
         }
       });
       return newQuestStates;
@@ -126,6 +128,22 @@ AWE.GS = (function(module) {
       });
       return notClosedQuestStates;
     }.property('quests.@each').cacheable(),
+
+    finishedQuestStates: function() {
+	  var questStates = this.getPath('quests.content');
+      var finishedQuestStates = [];
+      AWE.Ext.applyFunction(questStates, function(questState) {
+        if (questState && questState.get('status') == module.QUEST_STATUS_FINISHED && questState.get('quest') && questState.getPath('quest.rewards')) {
+          if(questState.get('questIsEpic') == true || questState.get('questIsOptional') == true)
+            finishedQuestStates.push(questState);
+        }
+      });
+      return finishedQuestStates;
+    }.property('quests.@each.status').cacheable(),
+
+    finishedQuestStateCount: function() {
+      return this.get('finishedQuestStates').length;
+    }.property('quests.@each.status').cacheable(),
     
     notClosedQuestStateCount: function() {
       return this.get('notClosedQuestStates').length;
