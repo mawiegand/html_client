@@ -358,14 +358,23 @@ module.RightHUDView = Ember.View.extend({
     }
   },    
 
+  //adds all quests that have rewards to be redeemed, all not yet seen quests and all not yet seen cave paintings (ls)
   getNewAndNotFinishedQuests: function() {
     var numberOfFinishedQuests = this.get('getFinishedQuest');
     if (numberOfFinishedQuests === undefined) {numberOfFinishedQuests = 0;}
     var numberOfQuests = this.get('getNewQuest');
     if (numberOfQuests === undefined) {numberOfQuests = 0;}
-    if (numberOfQuests + numberOfFinishedQuests<1) return false;
-    return numberOfQuests + numberOfFinishedQuests;
-  }.property('getFinishedQuest','getNewQuest').cacheable(),
+    var numberOfCavePaintings = this.get('getNumberOfNewCavePaintings');
+    if (numberOfCavePaintings === undefined) {numberOfCavePaintings=0};
+    if (numberOfQuests + numberOfFinishedQuests + numberOfCavePaintings<1) return false;
+    return numberOfQuests + numberOfFinishedQuests + numberOfCavePaintings;
+  }.property('getFinishedQuest','getNewQuest','getNumberOfNewCavePaintings').cacheable(),
+
+  getNumberOfNewCavePaintings: function() {
+    var numberOfNewCavePaintings = this.getPath('tutorialState.newCavePaintingsCount');
+    if (numberOfNewCavePaintings === undefined) return false;
+    return numberOfNewCavePaintings > 0 ? numberOfNewCavePaintings : false;
+  }.property('tutorialState.newCavePaintingsCount').cacheable(),
 
   getFinishedQuest: function() {
     var numberOfQuests = this.getPath('tutorialState.finishedQuestStateCount');

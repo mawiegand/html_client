@@ -590,12 +590,13 @@ canvas{
 }
 .count-indicator-background-position{
   top: 10px;
-  left: 40px;
+  right: -20px;
   position: relative;
   text-align: center;
   line-height: 30px;
   font-family: $main-font;
   color: white;
+  margin-left:auto;
 }
 /* == NEW DOM RIGHT HUD END== */
 

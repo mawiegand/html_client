@@ -225,13 +225,20 @@ AWE.UI.Ember = (function(module) {
   
   module.QuestListItemViewDetailOverview = Ember.View.extend({
     templateName: 'quest-list-item-view-detail-overview',
-    questState: null,    
+    questState: null,
     
 
     open_cave_painting:function(){
-       var dialog = AWE.UI.Ember.CavePainting.create();
-       WACKADOO.presentModalDialog(dialog);
+      var dialog = AWE.UI.Ember.CavePainting.create();
+      AWE.GS.TutorialStateManager.getTutorialState().setCavePaintingsSeen();
+      WACKADOO.presentModalDialog(dialog);
     },
+
+    getNewCavePaintings: function() {
+      var numberOfQuests = AWE.GS.TutorialStateManager.getTutorialState().getPath('newCavePaintingsCount');
+      if (numberOfQuests === undefined) return false;
+      return numberOfQuests > 0 ? numberOfQuests : false;
+    }.property('AWE.GS.TutorialStateManager.tutorialState.newCavePaintingsCount'),
 
     character: function() {
       var ret = AWE.GS.CharacterManager.getCurrentCharacter();
@@ -739,7 +746,7 @@ AWE.UI.Ember = (function(module) {
 
       // level+1 because we're passing the index of loop in this function which starts from 0.
       // there is no image with the following index 00 hence we +1 to make it 01.
-      level = level+1;
+      level++;
 
       if(level<10)
         version = "0"+level;
