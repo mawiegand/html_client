@@ -2876,10 +2876,16 @@ h1.slot-tooltip {
   background: url('<%= asset_path("splashscreen/crack_sw.jpg") %>');
 } 
 
+.loadingprogress-wrapper{
+  width:547px;
+  margin-left:auto;
+}
+
 .loaddialog-progress {
-  width: 0%; height: 100%;
-  background: url('<%= asset_path("splashscreen/crack_color.jpg") %>');
+  width: 0%; height: 159px;
+  background: url('<%= asset_path("splashscreen/crack_color.png") %>');
   overflow:hidden;
+  margin:23px 0;
 }
 
 .loaddialog-image {
