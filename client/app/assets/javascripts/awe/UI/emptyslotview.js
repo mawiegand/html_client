@@ -48,9 +48,12 @@ AWE.UI = (function(module) {
       slotGraphics.beginFill(AWE.Config.MAP_LOCATION_SPOT_COLOR);
       slotGraphics.drawEllipse(10, 5, AWE.Config.MAPPING_FORTRESS_SIZE - 20, AWE.Config.MAPPING_FORTRESS_SIZE / 2 - 10);
 
-/*    slotGraphics.endFill();   
-      slotGraphics.beginStroke('rgb(0, 0, 0)');
-      slotGraphics.drawRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);*/
+      slotGraphics.endFill();   
+      slotGraphics.beginFill('rgba(255,255,255,0.01)');
+      if (AWE.Config.MAP_DEBUG_FRAMES){
+      slotGraphics.beginStroke('rgb(1,1,1)');
+      }
+      slotGraphics.drawEllipse(5-AWE.Config.MAPPING_FORTRESS_SIZE*0.325, (10-AWE.Config.MAPPING_FORTRESS_SIZE)/4, AWE.Config.MAPPING_FORTRESS_SIZE*1.5, AWE.Config.MAPPING_FORTRESS_SIZE);
       
       slotShapeView = AWE.UI.createShapeView();
       slotShapeView.initWithControllerAndGraphics(that, slotGraphics, frame);
