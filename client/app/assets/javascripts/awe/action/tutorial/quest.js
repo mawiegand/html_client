@@ -234,6 +234,49 @@ AWE.Action.Tutorial = (function(module) {
     return that;
   };
 
+  module.createCavePaintingDisplayedAction = function(questStateId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    
+    var that;
+    
+  
+    // protected attributes and methods ////////////////////////////////////
+  
+    my = my || {};
+    my.questStateId = questStateId;
+    
+    // public attributes and methods ///////////////////////////////////////
+    
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      var requestBody = {
+        action_tutorial_mark_cave_painting_displayed_action: {
+          quest_id: my.questStateId,
+        }
+      };
+      return requestBody;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/mark_cave_painting_displayed_actions';
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+  
+    that.questStateId = function() {
+      return my.questStateId;
+    }
+  
+    return that;
+  };
+
   
   return module;
   
