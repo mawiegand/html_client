@@ -37,7 +37,7 @@ AWE.UI = (function(module) {
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
-      var imageId = 0; //_node.region().imageId();
+      var imageId = _node.region().imageId();
       var newFortressImageName;
       var flagFrame;
 
