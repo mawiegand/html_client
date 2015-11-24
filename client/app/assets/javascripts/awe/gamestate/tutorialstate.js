@@ -99,12 +99,12 @@ AWE.GS = (function(module) {
       var CavePaintings = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         var quest = questState.get('quest');
-        if(quest.enable_cave_painting && !questState.get('displayed_cave_painting_at')){
+        if(quest.enable_cave_painting && !questState.get('displayed_cave_painting_at') && questState.get('status') > module.QUEST_STATUS_FINISHED){
           CavePaintings.push(questState);
         }
       });
       return CavePaintings;
-    }.property('quests.@each.displayed_cave_painting_at').cacheable(),
+    }.property('quests.@each.displayed_cave_painting_at','quests.@each.status').cacheable(),
 
     newCavePaintingsCount: function() {
       return this.get('newCavePaintings').length;
