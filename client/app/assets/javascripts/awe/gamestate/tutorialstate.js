@@ -53,8 +53,6 @@ AWE.GS = (function(module) {
     tutorial: null,
     rules: null,
     selected_quest_state: null,
-    seenCavePaintings: null,
-    newCavePaintings: null,
     
     init: function(spec) {
       this._super(spec);      
@@ -81,54 +79,36 @@ AWE.GS = (function(module) {
     
     // TODO --> nach nr sortieren
 
-    getSeenCavePaintings: function() {
-      if(!this.get('seenCavePaintings')) {
-        return [];
+    setCavePaintingsSeen: function() {      
+      newpaintings = this.get('newCavePaintings');
+      for(var i=0; i<newpaintings.length; i++){
+        questState = newpaintings[i];
+        var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.get('quest_id'));
+        cavePaintingDisplayedAction.send(function(status) {
+         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+           that.updateTutorialState(function() {
+             questState.set('displayed_cave_painting_at',  questState.get('displayed_cave_painting_at') || new Date());
+           });
+         }
+        });
       }
-      return this.seenCavePaintings;
-    }.property('newCavePaintings').cacheable(),
-
-    getNewCavePaintings: function() {
-      return this.get('newCavePaintings');
-    }.property('newCavePaintings').cacheable(),
-
-    setCavePaintingsSeen: function() {
-      this.set('seenCavePaintings',this.get('getSeenCavePaintings').concat(this.get('getNewCavePaintings'))); //adds the now seen cave paintings to the seen array
-      this.set('newCavePaintings', []); //and clears the new array
     },
 
-    getNewCavePaintings: function() {
+    newCavePaintings: function() {
       var questStates = this.getPath('quests.content');
-      var CavePaintings;
-      if(!this.newCavePaintings){
-        CavePaintings = [];
-      } else {
-        CavePaintings = this.get('newCavePaintings');
-      }      
-      var questIds =  [0,2,5,6,7,9,12,20,24,27,31,34,37,41,48]; //these quests unlock paintings (see the module.CavePainting)
-      var seenCavePaintings = this.get('getSeenCavePaintings');
+      var CavePaintings = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') > module.QUEST_STATUS_FINISHED ) {
-          if(questIds.contains(questState.get('quest_id')) && !seenCavePaintings.contains(questState.get('quest_id')) && !CavePaintings.contains(questState.get('quest_id'))){
-            CavePaintings.push(questState.get('quest_id'));//pushes ids in the new array if they are quests that unlock paintings, their paintings are not seen already and they are not already in the array
-          }
+        var quest = questState.get('quest');
+        if(quest.enable_cave_painting && !questState.get('displayed_cave_painting_at')){
+          CavePaintings.push(questState);
         }
       });
-      this.set('newCavePaintings',CavePaintings);
       return CavePaintings;
-    }.property('quests.@each.status','seenCavePaintings').cacheable(),
+    }.property('quests.@each.displayed_cave_painting_at').cacheable(),
 
     newCavePaintingsCount: function() {
-      if (this.get('getSeenCavePaintings').length == 0){
-        if (this.get('getNewCavePaintings').length <= 1){
-          this.set('seenCavePaintings',[]);
-        }else{ //set all seen at the begining
-          this.set('seenCavePaintings', this.get('getNewCavePaintings'));
-          this.set('newCavePaintings',[]);
-        }
-      }
-      return this.get('getNewCavePaintings').length;
-    }.property('quests.@each.status','getNewCavePaintings').cacheable(),
+      return this.get('newCavePaintings').length;
+    }.property('quests.@each.displayed_cave_painting_at').cacheable(),
         
     // new, not displayed quests
     newQuestStates: function() {
