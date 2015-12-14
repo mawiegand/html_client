@@ -83,7 +83,7 @@ AWE.GS = (function(module) {
       newpaintings = this.get('newCavePaintings');
       for(var i=0; i<newpaintings.length; i++){
         questState = newpaintings[i];
-        var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.get('quest_id'));
+        var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.getId());
         cavePaintingDisplayedAction.send(function(status) {
          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
            that.updateTutorialState(function() {
