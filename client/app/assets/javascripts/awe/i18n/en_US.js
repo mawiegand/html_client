@@ -506,12 +506,18 @@ AWE.I18n.en_US = function(module) {
 
       diplomacyInfo: {
         heading: "Diplomacysystem:",
-        content: "An alliance makes an ultimatum towards another. " +
-                 "After the ultimatum has ended the alliances are at war. " +
-                 "While the war is ongoing alliances may conquer each others fortresses. " +
-                 "After war has raged for a while it may be ended by one side surrendering. " +
-                 "When a side has surrendered both alliances enter into the occupation phase. " +
-                 "During this phase no ultimatum maybe declared between the two alliances.",
+        contentWar: "An alliance makes an ultimatum towards another. " +
+                    "After the ultimatum has ended the alliances are at war. " +
+                    "While the war is ongoing alliances may conquer each others fortresses. " +
+                    "After war has raged for a while it may be ended by one side surrendering. " +
+                    "When a side has surrendered both alliances enter into the occupation phase. " +
+                    "During this phase no ultimatum maybe declared between the two alliances.",
+        contentAlliance: "An alliance approaches another alliance for an alliance. " +
+                         "The other alliance can accept the alliance. " +
+                         "During the alliance is no takeover of settlements of the other alliance possible. " +
+                         "Both alliances are allowed to cancel the alliance anytime. " +
+                         "After canceling the alliance, the conclusion phase is started. " +
+                         "With the end of conclusion the takeover protection ends.",
       },
 
       progress:{
@@ -1535,12 +1541,18 @@ AWE.I18n.en_US = function(module) {
         allianceDiplomacy: {
           placeHolder: "Insert Tag",
           issueUltimatum: "Issue ultimatum",
+          issueAlliance: "Request alliance",
           ultimatum: "Ultimatum",
           war: "War",
           capitulation: "Capitulation",
           occupation: "Occupation",
+          allianceRequest: "Alliance Request",
+          alliance: "Alliance",
+          allianceConclusion: "Alliance conclusion",
           end: "End",
           giveUp: "Give up",
+          acceptAllianceRequest: "Accept",
+          cancelAlliance: "Cancel",
           opponentSurrender: "Opponent {0} may surrender in {1}.",
         },
       },

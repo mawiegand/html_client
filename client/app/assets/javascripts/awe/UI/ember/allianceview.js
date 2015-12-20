@@ -594,7 +594,28 @@ AWE.UI.Ember = (function(module) {
       return false;
     }.property('ultimatumTimeString', 'ultimatum.diplomacy_status'),
 
+    canAcceptAllianceRequest: function() {
+      if (this.getPath('ultimatum.diplomacy_status') === 5)
+      {
+        var initiator = this.getPath('ultimatum.initiator');
+        return initiator !== undefined && initiator !== null && !initiator;
+      }
+      return false;
+    }.property('ultimatum.diplomacy_status', 'ultimatum.initiator'),
+
+    canCancelAlliance: function() {
+      return this.getPath('ultimatum.diplomacy_status') === 6
+    }.property('ultimatum.diplomacy_status'),
+
     giveUp: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    acceptAllianceRequest: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    cancelAlliance: function() {
       this.nextDiplomacyRelation();
     },
 
@@ -770,6 +791,48 @@ AWE.UI.Ember = (function(module) {
       });
       return occupationRelations;
     }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAllianceRequest: function() {
+      var self = this;
+      var allianceRequestRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 5) {
+          allianceRequestRelations.push(item);
+        }
+      });
+      return allianceRequestRelations;
+    }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAlliance: function() {
+      var self = this;
+      var allianceRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 6) {
+          allianceRelations.push(item);
+        }
+      });
+      return allianceRelations;
+    }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAllianceConclusion: function() {
+      var self = this;
+      var allianceConclusionRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 7) {
+          allianceConclusionRelations.push(item);
+        }
+      });
+      return allianceConclusionRelations;
+      }.property('alliance.diplomacySourceRelations'),
 
   });
   
