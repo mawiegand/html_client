@@ -635,7 +635,7 @@ AWE.UI.Ember = (function(module) {
     nextDiplomacyRelation: function() {
       var self = this;
       var targetAllianceTag = this.get('targetAllianceTag');
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceTag, false);
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceTag, false, self.getPath('ultimatum.id'));
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -703,7 +703,7 @@ AWE.UI.Ember = (function(module) {
 
     createDiplomacyRelation: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('targetAlliance'), true);
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('targetAlliance'), true, null);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode === AWE.Net.OK) {
         }
