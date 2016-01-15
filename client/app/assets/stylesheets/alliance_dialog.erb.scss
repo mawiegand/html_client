@@ -365,7 +365,9 @@
   filter: alpha(opacity=70);
 }
 
-.alliance-war .alliance-ultimatum-button {
+.alliance-war .alliance-ultimatum-button,
+.alliance-alliance-request .alliance-ultimatum-button,
+.alliance-alliance .alliance-ultimatum-button {
   margin-top: -8px;
 }
 
