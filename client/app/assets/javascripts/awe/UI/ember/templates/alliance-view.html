@@ -166,49 +166,47 @@
         </div>
       {{/if}}
       {{#if relationsAtWar}}
-          <div class="alliance-war">
-            <div class="alliance-diplomacy-title">
+        <div class="alliance-war">
+          <div class="alliance-diplomacy-title">
+            <div class="alliance-diplomacy-first">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.war}}:</h3>
+            </div>
+            <div class="alliance-diplomacy-second">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+            </div>
+          </div>
+          {{#each relationsAtWar}}
+            {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader" war="true"}}
+          {{/each}}
+        </div>
+      {{/if}}
+      {{#if relationsAtCapitulation}}
+        <div class="alliance-capitulation">
+          <div class="alliance-diplomacy-title">
               <div class="alliance-diplomacy-first">
-                <h3>{{t dialogs.alliance.allianceDiplomacy.war}}:</h3>
+                <h3>{{t dialogs.alliance.allianceDiplomacy.capitulation}}:</h3>
               </div>
               <div class="alliance-diplomacy-second">
                 <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
               </div>
-            </div>
-            {{#each relationsAtWar}}
-              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader" war="true"}}
+            {{#each relationsAtCapitulation}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader"}}
             {{/each}}
-          </div>
-      {{/if}}
-      {{#if relationsAtCapitulation}}
-          <div class="alliance-capitulation">
-            <div class="alliance-diplomacy-title">
-                <div class="alliance-diplomacy-first">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.capitulation}}:</h3>
-                </div>
-                <div class="alliance-diplomacy-second">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
-                </div>
-              {{#each relationsAtCapitulation}}
-                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader"}}
-              {{/each}}
-            </div>
           </div>
         </div>
       {{/if}}
       {{#if relationsAtOccupation}}
-          <div class="alliance-occupation">
-            <div class="alliance-diplomacy-title">
-                <div class="alliance-diplomacy-first">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.occupation}}:</h3>
-                </div>
-                <div class="alliance-diplomacy-second">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
-                </div>
-              {{#each relationsAtOccupation}}
-                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader"}}
-              {{/each}}
+        <div class="alliance-occupation">
+          <div class="alliance-diplomacy-title">
+            <div class="alliance-diplomacy-first">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.occupation}}:</h3>
             </div>
+            <div class="alliance-diplomacy-second">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+            </div>
+            {{#each relationsAtOccupation}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance" isAllianceLeaderBinding="view.isAllianceLeader"}}
+            {{/each}}
           </div>
         </div>
       {{/if}}
