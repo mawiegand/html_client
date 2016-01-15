@@ -272,7 +272,12 @@
   text-align: center;
 }
 
-.alliance-ultimatum, .alliance-war, .alliance-capitulation {
+.alliance-ultimatum,
+.alliance-war,
+.alliance-capitulation,
+.alliance-alliance-request,
+.alliance-alliance,
+.alliance-alliance-conclusion {
   display: block;
   float: left;
   
