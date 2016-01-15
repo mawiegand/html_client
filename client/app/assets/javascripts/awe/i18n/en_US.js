@@ -1551,6 +1551,7 @@ AWE.I18n.en_US = function(module) {
           allianceConclusion: "Alliance conclusion",
           end: "End",
           giveUp: "Give up",
+          cancelAllianceRequest: "Cancel",
           acceptAllianceRequest: "Accept",
           cancelAlliance: "Cancel",
           opponentSurrender: "Opponent {0} may surrender in {1}.",

@@ -594,6 +594,15 @@ AWE.UI.Ember = (function(module) {
       return false;
     }.property('ultimatumTimeString', 'ultimatum.diplomacy_status'),
 
+    canCancelAllianceRequest: function() {
+      if (this.getPath('ultimatum.diplomacy_status') === 5)
+      {
+        var initiator = this.getPath('ultimatum.initiator');
+        return initiator !== undefined && initiator !== null && initiator;
+      }
+      return false;
+    }.property('ultimatum.diplomacy_status', 'ultimatum.initiator'),
+
     canAcceptAllianceRequest: function() {
       if (this.getPath('ultimatum.diplomacy_status') === 5)
       {
@@ -608,6 +617,10 @@ AWE.UI.Ember = (function(module) {
     }.property('ultimatum.diplomacy_status'),
 
     giveUp: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    cancelAllianceRequest: function() {
       this.nextDiplomacyRelation();
     },
 

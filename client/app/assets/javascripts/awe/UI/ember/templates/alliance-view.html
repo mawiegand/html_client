@@ -274,6 +274,11 @@
         {{t dialogs.alliance.allianceDiplomacy.giveUp}}
       </div>
     {{/if}}
+    {{#if canCancelAllianceRequest}}
+      <div class="alliance-ultimatum-button" {{action "cancelAllianceRequest"}}>
+        {{t dialogs.alliance.allianceDiplomacy.cancelAllianceRequest}}
+      </div>
+    {{/if}}
     {{#if canAcceptAllianceRequest}}
       <div class="alliance-ultimatum-button" {{action "acceptAllianceRequest"}}>
         {{t dialogs.alliance.allianceDiplomacy.acceptAllianceRequest}}

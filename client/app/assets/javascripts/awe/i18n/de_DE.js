@@ -1573,6 +1573,7 @@ AWE.I18n.de_DE = function(module) {
           allianceConclusion: "Bündnis Ausklang",
           end: "Endet",
           giveUp: "Aufgeben",
+          cancelAllianceRequest: "Abbrechen",
           acceptAllianceRequest: "Annehmen",
           cancelAlliance: "Beenden",
           opponentSurrender: "Gegner {0} kann in {1} aufgeben.",
