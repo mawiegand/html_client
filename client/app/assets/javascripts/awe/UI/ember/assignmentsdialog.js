@@ -99,6 +99,12 @@ AWE.UI.Ember = (function(module) {
     timeRemaining: null,
 
     currentCharacterBinding: 'AWE.GS.game.currentCharacter',
+
+    isInTutorial: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return !tutorialState.tutorial_finished;
+    }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
     isUIMarker: function(){
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT) ;
@@ -296,6 +302,10 @@ AWE.UI.Ember = (function(module) {
     redeemRewards: function() {
       WACKADOO.presentScreenController.standardAssignmentFinishPressed(this.get('assignment'));
     },
+
+    startAssignment: function() {
+      WACKADOO.presentScreenController.standardAssignmentStartPressed(this.getPath('assignment.assignmentType'));
+    }
 
   });
 

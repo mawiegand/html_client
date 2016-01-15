@@ -22,19 +22,27 @@
   <div class="assigment-item-wrapper" {{action "openDialog"}}>
     <div {{bindAttr class="assignmentType :assignment_icon isActive"}}></div>
   </div>
-  {{#if isFinished}}
-    <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
-      {{t settlement.assignment.collect}}
+  {{#if isActiveProgress}}
+    <div class="progress">
+      <div class="progress-bar" {{bindAttr style="barWidth"}}></div>
+      <div class="progress-text">{{percent}}%</div>
     </div>
-  {{else}}
-    {{#if isActiveProgress}}
-      <div class="progress">
-        <div class="progress-bar" {{bindAttr style="barWidth"}}></div>
-        <div class="progress-text">{{percent}}%</div>
-      </div>
-      {{#unless isHalved}}
+    {{#unless isHalved}}
       <div class="speedup-toad" {{action speedUp}}>2</div>
-      {{/unless}}
+    {{/unless}}
+  {{else}}
+    {{#if isFinished}}
+      <div class="redeem-button button-green-short" {{action "redeemRewards"}}>
+        {{t settlement.assignment.collect}}
+      </div>
+    {{else}}
+      {{#if isActive}}
+        {{#unless isInTutorial}}
+          <div class="redeem-button button-green-short" {{action "startAssignment"}}>
+            Start
+          </div>
+        {{/unless}}
+      {{/if}}
     {{/if}}
   {{/if}}
 </div>
