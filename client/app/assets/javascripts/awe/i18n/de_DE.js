@@ -1588,7 +1588,7 @@ AWE.I18n.de_DE = function(module) {
         heading: "Gebäude ausbauen",
         upgrade: "Ausbauen",
         level: "Stufe",
-        unlocking: "Freischalten",
+        unlocking: "Schaltet frei",
       },
       convert:{
         heading: "Gebäude umwandeln",
