@@ -785,9 +785,19 @@ AWE.Application = (function(module) {
               if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
                 //controller.centerSettlement(settlement);
                 debugger
-                var locationID = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
-                var location = AWE.Map.Manager.getLocation(locationID);//this returns undefined
-                controller.centerLocation(location);
+                var locationId = settlement.get('location_id');
+                var location = AWE.Map.Manager.getLocation(locationId);
+
+                if (location != null) {
+                  controller.centerLocation(location);
+                }
+                else {
+                  var region = settlement.get('region');
+                  AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                    location = AWE.Map.Manager.getLocation(locationId);
+                    controller.centerLocation(location);
+                  });
+                }
               }
               controller.setSelectedSettlement(settlement);
             }
