@@ -814,7 +814,7 @@ AWE.I18n.de_DE = function(module) {
           empty: {
             heading: 'Freier Bauplatz',
             large: "Großer Bauplatz",
-            small: "Kleiner Bauplatz",
+            small: "Bauplatz", /* currently there is no distinction between small and large lots */
             categoriesStart: 'Hier können ',
             categoriesEnd:   ' gebaut werden.',
             maxLevel: 'Maximale Stufe',
@@ -1381,8 +1381,8 @@ AWE.I18n.de_DE = function(module) {
       units: "Einheiten",
 
       largeBuilding: 'Benötigt großen Bauplatz',
-      smallBuilding: 'Benötigt kleinen oder großen Bauplatz',
-      specialBuilding: 'Benötigt kleinen Bauplatz',
+      smallBuilding: 'Benötigt einen Bauplatz', /* currently there is no distinction between small and large lots */
+      specialBuilding: 'Benötigt einen Bauplatz', /* currently there is no distinction between small and large lots */
       fortressBuilding: 'Nur in Festungen',
     
       resource: {
