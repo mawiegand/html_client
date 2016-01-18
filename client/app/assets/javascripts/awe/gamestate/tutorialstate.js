@@ -1349,8 +1349,10 @@ AWE.GS = (function(module) {
           // log('---> kill_test', quest.reward_tests.kill_test);
 
           if (!self.checkKills(quest.reward_tests.kill_test)) {
-            // log('---> kill_test failed');
-            return false;
+            if(!(quest.tutorial && self.checkBattle(null))) { /* HACK for hiding tutorial arrow while fighting */
+              // log('---> kill_test failed');
+              return false;
+            }
           }
           // log('---> kill_test ok');
         }
