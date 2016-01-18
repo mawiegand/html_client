@@ -79,20 +79,7 @@ AWE.GS = (function(module) {
     
     // TODO --> nach nr sortieren
 
-    setCavePaintingsSeen: function() {      
-      newpaintings = this.get('newCavePaintings');
-      for(var i=0; i<newpaintings.length; i++){
-        questState = newpaintings[i];
-        var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.getId());
-        cavePaintingDisplayedAction.send(function(status) {
-         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-           that.updateTutorialState(function() {
-             questState.set('displayed_cave_painting_at',  questState.get('displayed_cave_painting_at') || new Date());
-           });
-         }
-        });
-      }
-    },
+
 
     newCavePaintings: function() {
       var questStates = this.getPath('quests.content');
@@ -161,7 +148,7 @@ AWE.GS = (function(module) {
     }.property('quests.@each').cacheable(),
 
     finishedQuestStates: function() {
-	  var questStates = this.getPath('quests.content');
+    var questStates = this.getPath('quests.content');
       var finishedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') == module.QUEST_STATUS_FINISHED && questState.get('quest') && questState.getPath('quest.rewards')) {
@@ -1998,6 +1985,22 @@ AWE.GS = (function(module) {
         this.setQuestRewardDisplayed(questState);
       }
     }*/
+
+    that.setCavePaintingsSeen = function() {      
+      var newpaintings = AWE.GS.TutorialStateManager.getTutorialState().get('newCavePaintings');
+      for(var i=0; i<newpaintings.length; i++){
+        debugger
+        questState = newpaintings[i];
+        var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.getId());
+        cavePaintingDisplayedAction.send(function(status) {
+         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+           that.updateTutorialState(function() {
+             questState.set('displayed_cave_painting_at',  questState.get('displayed_cave_painting_at') || new Date());
+           });
+         }
+        });
+      }
+    },
     
     that.setQuestRewardDisplayed = function(questState) {
       var questRewardDisplayedAction = AWE.Action.Tutorial.createQuestRewardDisplayedAction(questState.getId());
