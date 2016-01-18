@@ -1989,7 +1989,6 @@ AWE.GS = (function(module) {
     that.setCavePaintingsSeen = function() {      
       var newpaintings = AWE.GS.TutorialStateManager.getTutorialState().get('newCavePaintings');
       for(var i=0; i<newpaintings.length; i++){
-        debugger
         questState = newpaintings[i];
         var cavePaintingDisplayedAction = AWE.Action.Tutorial.createCavePaintingDisplayedAction(questState.getId());
         cavePaintingDisplayedAction.send(function(status) {

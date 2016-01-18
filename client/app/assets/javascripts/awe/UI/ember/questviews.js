@@ -230,7 +230,7 @@ AWE.UI.Ember = (function(module) {
 
     open_cave_painting:function(){
       var dialog = AWE.UI.Ember.CavePainting.create();
-      AWE.GS.TutorialStateManager.getTutorialState().setCavePaintingsSeen();
+      AWE.GS.TutorialStateManager.setCavePaintingsSeen();
       WACKADOO.presentModalDialog(dialog);
     },
 
