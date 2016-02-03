@@ -523,10 +523,10 @@ AWE.I18n.de_DE = function(module) {
                     "Nachdem ein Krieg beendet ist herrscht eine vorübergende Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
         contentAlliance: "Eine Allianz bittet eine andere Allianz um ein Bündnis. " +
                          "Die andere Allianz kann das Bündnis annehmen oder die Anfrage auslaufen lassen. " +
-                         "Während des Bündnisses können die Allianzen sich gegenseitig keine Festungen und Siedlungen abnehmen. " +
+                         "Während des Bündnisses können sich die Allianzen gegenseitig keine Festungen und Siedlungen abnehmen. " +
                          "Beide Allianzen können das Bündnis jederzeit wieder beenden. " +
-                         "Nach Beendigung des Bündnisses startet die Auskling Phase. " +
-                         "Erst nach der Auskling Phase endet der Übernahme Schutz.",
+                         "Nach Beendigung des Bündnisses startet die Auskling-Phase. " +
+                         "Erst nach der Auskling-Phase endet der Übernahme Schutz.",
       },
       
       progress: {

@@ -512,12 +512,12 @@ AWE.I18n.en_US = function(module) {
                     "After war has raged for a while it may be ended by one side surrendering. " +
                     "When a side has surrendered both alliances enter into the occupation phase. " +
                     "During this phase no ultimatum maybe declared between the two alliances.",
-        contentAlliance: "An alliance approaches another alliance for an alliance. " +
-                         "The other alliance can accept the alliance. " +
-                         "During the alliance is no takeover of settlements of the other alliance possible. " +
-                         "Both alliances are allowed to cancel the alliance anytime. " +
-                         "After canceling the alliance, the conclusion phase is started. " +
-                         "With the end of conclusion the takeover protection ends.",
+        contentAlliance: "An alliance can ask another alliance to make a pact. " +
+                         "The other alliance may accept the pact. " +
+                         "During the pact, no takeover of settlements of the other alliance is possible. " +
+                         "Both alliances are allowed to cancel the pact anytime. " +
+                         "After canceling the pact, the conclusion phase starts. " +
+                         "With the end of conclusion the takeover protection ends as well.",
       },
 
       progress:{
@@ -1541,15 +1541,15 @@ AWE.I18n.en_US = function(module) {
         allianceDiplomacy: {
           placeHolder: "Insert Tag",
           issueUltimatum: "Issue ultimatum",
-          issueAlliance: "Request alliance",
+          issueAlliance: "Request Pact",
           ultimatum: "Ultimatum",
           war: "War",
           capitulation: "Capitulation",
           occupation: "Occupation",
-          allianceRequest: "Alliance Request",
-          alliance: "Alliance",
+          allianceRequest: "Request Pact",
+          alliance: "Pact",
           allianceConclusion: "Alliance conclusion",
-          end: "End",
+          end: "Ends",
           giveUp: "Give up",
           cancelAllianceRequest: "Cancel",
           acceptAllianceRequest: "Accept",
