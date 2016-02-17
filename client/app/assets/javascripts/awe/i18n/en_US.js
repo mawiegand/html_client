@@ -787,7 +787,7 @@ AWE.I18n.en_US = function(module) {
           upgradePossible:'This building could be upgraded:',
           empty:{
             heading:'Empty lot',
-            small: 'Small lot',
+            small: 'lot', /* currently there is no distinction between small and large lots */
             large: 'Large lot',
             categoriesStart:'You can build ',
             categoriesEnd:' here.',
@@ -1355,9 +1355,9 @@ AWE.I18n.en_US = function(module) {
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
 
-      smallBuilding: 'Requires small or large building slot',
+      smallBuilding: 'Requires a building slot', /* currently there is no distinction between small and large lots */
       largeBuilding: 'Requires large building slot',
-      specialBuilding: 'Requires small building slot',
+      specialBuilding: 'Requires a building slot', /* currently there is no distinction between small and large lots */
       fortressBuilding: 'Only in fortresses',
 
       resources:"Resources",
