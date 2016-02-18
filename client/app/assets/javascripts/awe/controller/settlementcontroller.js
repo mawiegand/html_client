@@ -932,10 +932,12 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Assignment.createRedeemSpecialAssignmentRewardAction(assignment.getId());
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          AWE.GS.SpecialAssignmentManager.updateSpecialAssignment(assignment.getId(), null, function() {
+          AWE.GS.SpecialAssignmentManager.updateSpecialAssignmentOfCurrentCharacter(null, function() {
             if (callback) {
               callback();
             }
+            AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            });
           });
         }
         else {

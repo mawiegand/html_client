@@ -325,6 +325,11 @@ AWE.UI.Ember = (function(module) {
 
     controller: null,
 
+    updating: false,
+    starting: false,
+    halving: false,
+    redeeming: false,
+
     init: function() {
       this._super();
       this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
@@ -334,6 +339,7 @@ AWE.UI.Ember = (function(module) {
 
     updateSpecialAssignment: function() {
       var self = this;
+      this.set('updating', true);
       AWE.GS.SpecialAssignmentManager.updateSpecialAssignmentOfCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
         if (status === AWE.Net.NOT_FOUND) {
           self.set('specialAssignment', null);
@@ -341,31 +347,13 @@ AWE.UI.Ember = (function(module) {
         else {
           self.set('specialAssignment', result);
         }
+        self.set('updating', false);
       });
-    }.observes('currentCharacter.specialAssignment', 'specialAssignment.changed_at'),
-
-    getNewSpecialAssignment: function() {
-      var self = this;
-
-      var t = this.get('timeRemaining');
-      if (t !== undefined && t !== null && t <= 0) {
-        AWE.GS.SpecialAssignmentManager.updateSpecialAssignmentOfCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
-          if (status === AWE.Net.NOT_FOUND) {
-            self.set('specialAssignment', null);
-          }
-          else {
-            self.set('specialAssignment', result);
-          }
-        });
-      }
-    }.observes('timeRemaining'),
+    }.observes('currentCharacter.specialAssignment', 'specialAssignment', 'redeeming'),
 
     assignmentType: function() {
-      return AWE.GS.RulesManager.getRules().getSpecialAssignmentType(AWE.GS.CharacterManager.getCurrentCharacter().getPath('specialAssignment.type_id'));
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentType(this.getPath('specialAssignment.type_id'));
     }.property('specialAssignment'),
-
-    starting: false,
-    halving: false,
 
     isActive: function() {
       return this.get('specialAssignment') && this.getPath('specialAssignment.ended_at') != null;
@@ -549,7 +537,12 @@ AWE.UI.Ember = (function(module) {
     }.property('specialAssignment').cacheable(),
 
     redeemRewards: function() {
-      WACKADOO.presentScreenController.specialAssignmentFinishPressed(this.get('specialAssignment'));
+      var self = this;
+      this.set('redeeming', true);
+      this.get('controller').specialAssignmentFinishPressed(this.get('specialAssignment'), function() {
+        self.set('redeeming', false);
+      });
+      return false;
     },
   });
 
