@@ -36,8 +36,8 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
 
-  module.AssignmentNewInfoView = Ember.View.extend({
-    templateName: 'assignments-dialog-view-new',
+  module.AssignmentInfoView = Ember.View.extend({
+    templateName: 'assignments-dialog-view',
 
     assignmentType: null,
 
@@ -320,8 +320,8 @@ AWE.UI.Ember = (function(module) {
 
   //special assignments tab
   module.SpecialAssignmentsTab = Ember.View.extend({
-    templateName: 'assignments-view-special-tab-new',
-    classNames: ['assignments-view-special-tab-new', "assignments-dialog-info"],
+    templateName: 'assignments-view-special-tab',
+    classNames: ['assignments-view-special-tab', "assignments-dialog-info"],
 
     controller: null,
 

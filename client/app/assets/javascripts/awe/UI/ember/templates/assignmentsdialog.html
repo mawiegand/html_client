@@ -49,11 +49,11 @@
     <h1 class="popup-header-center" >{{t settlement.assignment.assignments}}</h1>
   </div>
   <div class="modal-dialog-body modal-dialog-assignments-info scrolling">
-    {{view AWE.UI.Ember.AssignmentNewInfoView assignmentTypeBinding="assignmentType" controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AssignmentInfoView assignmentTypeBinding="assignmentType" controllerBinding="controller"}}
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="assignments-dialog-view-new">
+<script type="text/x-handlebars" data-template-name="assignments-dialog-view">
   {{#if isUIMarker}}
       {{view AWE.UI.Ember.UIMarker direction=2 top=230 left=400}}
   {{/if}}
@@ -148,7 +148,7 @@
 
 
 <!-- Special assignment-->
-<script type="text/x-handlebars" data-template-name="assignments-view-special-tab-new">
+<script type="text/x-handlebars" data-template-name="assignments-view-special-tab">
 {{#if specialAssignment}}
     <div class="modal-dialog-body modal-dialog-special-assignments-tab-body scrolling">
       <div style="padding-left: 20px;position: relative;top: 14px">{{local assignmentType.name}}</div>
