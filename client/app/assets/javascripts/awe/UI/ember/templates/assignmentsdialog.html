@@ -149,8 +149,8 @@
 
 <!-- Special assignment-->
 <script type="text/x-handlebars" data-template-name="assignments-view-special-tab">
-{{#if specialAssignment}}
-    <div class="modal-dialog-body modal-dialog-special-assignments-tab-body scrolling">
+  <div class="modal-dialog-body modal-dialog-special-assignments-tab-body scrolling">
+    {{#if specialAssignment}}
       <div style="padding-left: 20px;position: relative;top: 14px">{{local assignmentType.name}}</div>
       <div class="description-cell description-text">{{local assignmentType.description}}</div>
       <div class="info-cell">   
@@ -231,10 +231,12 @@
             {{/if}}
         </div>
       </div>
-    </div>
-{{else}}
-  <p>{{t settlement.assignment.noneSpecialAvailable}}</p>
-{{/if}}
+    {{else}}
+      <div class="info-cell"
+        <p>{{t settlement.assignment.noneSpecialAvailable}}</p>
+      </div>
+    {{/if}}
+  </div>
 </script>
 
 <!--Assignments info dialog -->
