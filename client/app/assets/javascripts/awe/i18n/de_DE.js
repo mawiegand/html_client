@@ -583,7 +583,7 @@ AWE.I18n.de_DE = function(module) {
       confirmLeave: {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
-        message2: " Achtung! Beim Verlassen kannst du erst in {0} Stunden einer anderen Allianz beitreten.",
+        message2: " Achtung! Beim Verlassen kannst du erst in {0} Tagen einer anderen Allianz beitreten.",
       },
       confirmReport: {
         heading: "Melden bestätigen",

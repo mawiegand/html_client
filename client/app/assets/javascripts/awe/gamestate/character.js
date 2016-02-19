@@ -340,24 +340,21 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
 
-    hoursUntilAllianceRejoinAllowed: function(){
-      var is_at_war = this.getPath("alliance.is_at_war");
-
+    daysUntilAllianceRejoinAllowed: function(){
       var created_at      = Date.parseISODate(this.get("created_at")).getTime();
       var twenty_days_ago = AWE.GS.TimeManager.localToServerTime(Date.today().setTimeToNow().addDays(-20)).getTime();
+      var round_age = AWE.GS.game.roundInfo.get('age');
+      var blocking_time =  Math.min(round_age, 14);
 
-      if(created_at > twenty_days_ago) 
+      if(created_at > twenty_days_ago)
       {
         return 0;
       }
-      else if(created_at <= twenty_days_ago && !is_at_war) {
-        return 12;
+      else
+      {
+        return blocking_time;
       }
-      else if(created_at <= twenty_days_ago && is_at_war) {
-        return 24;
-      }
-
-    }.property('created_at', 'alliance.is_at_war').cacheable(),
+    }.property('created_at').cacheable(),
 
     canJoinAlliance: function(){
       var dateString = this.get('cannot_join_alliance_until');
@@ -371,9 +368,9 @@ AWE.GS = (function(module) {
     }.property('cannot_join_alliance_until').cacheable(),
 
     dateUntilAllianceRejoinAllowed: function(){
-      var hours = this.get("hoursUntilAllianceRejoinAllowed") || 0;
-      return new Date().addHours(hours);
-    }.property('hoursUntilAllianceRejoinAllowed'),
+      var days = this.get("daysUntilAllianceRejoinAllowed") || 0;
+      return new Date().addDays(days);
+    }.property('daysUntilAllianceRejoinAllowed'),
 
     specialAssignment: function() {
       var latestDate = AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds();

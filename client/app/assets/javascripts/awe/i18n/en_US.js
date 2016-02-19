@@ -574,7 +574,7 @@ AWE.I18n.en_US = function(module) {
       confirmLeave:{
         heading:"Leave Alliance",
         message:"Are you sure about leaving your alliance?",
-        message2: " Attention! If you leave now you cannot join another alliance for the next {0} hours.",
+        message2: " Attention! If you leave now you cannot join another alliance for the next {0} days.",
 
       },
       confirmReport: {
