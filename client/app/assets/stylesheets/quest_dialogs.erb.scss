@@ -844,7 +844,7 @@
       }
       
       .empty {
-        width: 40px;
+        width: 12px;
       }
       .right{
         //margin-left: 15%;
@@ -854,6 +854,15 @@
         text-overflow: ellipsis;
       }
     }
+
+    .rank {
+      display: inline-block;      
+      width: 36px; height: 36px;      
+      background:url("<%= asset_path 'dialogs/specials/rank.png' %>") no-repeat center center;
+      background-size: 100% 100%;
+    }
+
+
     .xp-icon {
       display: inline-block;
       width: 36px; height: 36px;
@@ -899,7 +908,7 @@
     .victories{
       display: inline-block;      
       width: 36px; height: 36px;      
-      background:url("<%= asset_path 'dialogs/specials/army_identifier.png' %>") no-repeat center center;
+      background:url("<%= asset_path 'dialogs/specials/victory.png' %>") no-repeat center center;
       background-size: 100% 100%;
     }
   }

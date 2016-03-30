@@ -127,6 +127,19 @@ width: auto;
   float: left;
   padding-bottom: 30px;
 }
+
+.experience {
+  background:url("<%= asset_path 'dialogs/specials/item_xp.png' %>")no-repeat 80% center;
+}
+
+.army-level {
+  background:url("<%= asset_path 'dialogs/specials/icon_army_level.png' %>")no-repeat 80% center;
+}
+
+.action-points {
+  background:url("<%= asset_path 'dialogs/specials/icon_action_points.png' %>")no-repeat 80% center;
+}
+
 .text-cell-left{
   position: relative;
   display: inline-block;
@@ -134,6 +147,7 @@ width: auto;
   width: 46%;
   text-align: right;
   padding-right: 55px;
+  height:35px;
 }
 
 .text-cell-right{

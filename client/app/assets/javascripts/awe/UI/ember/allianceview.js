@@ -594,14 +594,48 @@ AWE.UI.Ember = (function(module) {
       return false;
     }.property('ultimatumTimeString', 'ultimatum.diplomacy_status'),
 
+    canCancelAllianceRequest: function() {
+      if (this.getPath('ultimatum.diplomacy_status') === 5)
+      {
+        var initiator = this.getPath('ultimatum.initiator');
+        return initiator !== undefined && initiator !== null && initiator;
+      }
+      return false;
+    }.property('ultimatum.diplomacy_status', 'ultimatum.initiator'),
+
+    canAcceptAllianceRequest: function() {
+      if (this.getPath('ultimatum.diplomacy_status') === 5)
+      {
+        var initiator = this.getPath('ultimatum.initiator');
+        return initiator !== undefined && initiator !== null && !initiator;
+      }
+      return false;
+    }.property('ultimatum.diplomacy_status', 'ultimatum.initiator'),
+
+    canCancelAlliance: function() {
+      return this.getPath('ultimatum.diplomacy_status') === 6
+    }.property('ultimatum.diplomacy_status'),
+
     giveUp: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    cancelAllianceRequest: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    acceptAllianceRequest: function() {
+      this.nextDiplomacyRelation();
+    },
+
+    cancelAlliance: function() {
       this.nextDiplomacyRelation();
     },
 
     nextDiplomacyRelation: function() {
       var self = this;
       var targetAllianceTag = this.get('targetAllianceTag');
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceTag, false);
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceTag, false, self.getPath('ultimatum.id'));
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -669,7 +703,7 @@ AWE.UI.Ember = (function(module) {
 
     createDiplomacyRelation: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('targetAlliance'), true);
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('targetAlliance'), true, null);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode === AWE.Net.OK) {
         }
@@ -770,6 +804,48 @@ AWE.UI.Ember = (function(module) {
       });
       return occupationRelations;
     }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAllianceRequest: function() {
+      var self = this;
+      var allianceRequestRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 5) {
+          allianceRequestRelations.push(item);
+        }
+      });
+      return allianceRequestRelations;
+    }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAlliance: function() {
+      var self = this;
+      var allianceRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 6) {
+          allianceRelations.push(item);
+        }
+      });
+      return allianceRelations;
+    }.property('alliance.diplomacySourceRelations'),
+
+    relationsAtAllianceConclusion: function() {
+      var self = this;
+      var allianceConclusionRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('diplomacy_status') === 7) {
+          allianceConclusionRelations.push(item);
+        }
+      });
+      return allianceConclusionRelations;
+      }.property('alliance.diplomacySourceRelations'),
 
   });
   

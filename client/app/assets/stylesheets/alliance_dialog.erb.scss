@@ -272,7 +272,12 @@
   text-align: center;
 }
 
-.alliance-ultimatum, .alliance-war, .alliance-capitulation {
+.alliance-ultimatum,
+.alliance-war,
+.alliance-capitulation,
+.alliance-alliance-request,
+.alliance-alliance,
+.alliance-alliance-conclusion {
   display: block;
   float: left;
   
@@ -360,7 +365,9 @@
   filter: alpha(opacity=70);
 }
 
-.alliance-war .alliance-ultimatum-button {
+.alliance-war .alliance-ultimatum-button,
+.alliance-alliance-request .alliance-ultimatum-button,
+.alliance-alliance .alliance-ultimatum-button {
   margin-top: -8px;
 }
 

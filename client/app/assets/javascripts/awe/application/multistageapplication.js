@@ -783,7 +783,20 @@ AWE.Application = (function(module) {
             if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController' && !preventZoomingToLastSelection === true) {
               var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
               if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
-                controller.centerSettlement(settlement);
+                //controller.centerSettlement(settlement); /* old behaviour for centering settlement */
+                var locationId = settlement.get('location_id');
+                var location = AWE.Map.Manager.getLocation(locationId);
+
+                if (location != null) {
+                  controller.centerLocation(location);
+                }
+                else {
+                  var region = settlement.get('region');
+                  AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                    location = AWE.Map.Manager.getLocation(locationId);
+                    controller.centerLocation(location);
+                  });
+                }
               }
               controller.setSelectedSettlement(settlement);
             }

@@ -269,8 +269,8 @@ AWE.Map = (function(module) {
         if (_slot === 1) {
           //slot 1 top
           basePositon = {
-            x: frame.origin.x + frame.size.width/2,
-            y: frame.origin.y
+            x: frame.origin.x + frame.size.width/2.05,
+            y: frame.origin.y + frame.size.width/100
           };
           offDir = {x: -1.6, y: -6};
           streetEndPosition = {
@@ -283,7 +283,7 @@ AWE.Map = (function(module) {
           //slot 2 top
           basePositon = {
             x: frame.origin.x + frame.size.width/2,
-            y: frame.origin.y
+            y: frame.origin.y + frame.size.width/100
           };
           offDir = {x: 1.6, y: 0};
           streetEndPosition = {
@@ -295,8 +295,8 @@ AWE.Map = (function(module) {
         else if (_slot === 3) {
           //slot 3 right
           basePositon = {
-            x: frame.origin.x + frame.size.width,
-            y: frame.origin.y + frame.size.height/2
+            x: frame.origin.x + frame.size.width*1.02,
+            y: frame.origin.y + frame.size.height/1.95
           };
           offDir = {x: 0, y: -1.2};
           streetEndPosition = {
@@ -308,8 +308,8 @@ AWE.Map = (function(module) {
         else if (_slot === 4) {
           //slot 4 right
           basePositon = {
-            x: frame.origin.x + frame.size.width,
-            y: frame.origin.y + frame.size.height/2
+            x: frame.origin.x + frame.size.width*1.02,
+            y: frame.origin.y + frame.size.height/1.9
           };
           offDir = {x: 0, y: 1.2};
           streetEndPosition = {
@@ -322,7 +322,7 @@ AWE.Map = (function(module) {
           //slot 5 bottom
           basePositon = {
             x: frame.origin.x + frame.size.width/2,
-            y: frame.origin.y + frame.size.height - 2500
+            y: frame.origin.y + frame.size.height/0.95
           };
           offDir = {x: 1.6, y: 0};
           streetEndPosition = {
@@ -335,7 +335,7 @@ AWE.Map = (function(module) {
           //slot 6 bottom
           basePositon = {
             x: frame.origin.x + frame.size.width/2,
-            y: frame.origin.y + frame.size.height
+            y: frame.origin.y + frame.size.height/0.95
           };
           offDir = {x: -1.6, y: 0};
           streetEndPosition = {
@@ -348,7 +348,7 @@ AWE.Map = (function(module) {
           //slot 7 left
           basePositon = {
             x: frame.origin.x,
-            y: frame.origin.y + frame.size.height/2
+            y: frame.origin.y + frame.size.height/2.05
           };
           offDir = {x: 0, y: 1.6};
           streetEndPosition = {
@@ -361,7 +361,7 @@ AWE.Map = (function(module) {
           //slot 8 left
           basePositon = {
             x: frame.origin.x,
-            y: frame.origin.y + frame.size.height/2
+            y: frame.origin.y + frame.size.height/2.05
           };
           offDir = {x: 0, y: -1};
           streetEndPosition = {

@@ -516,11 +516,17 @@ AWE.I18n.de_DE = function(module) {
 
       diplomacyInfo: {
         heading: "Diplomatie System:",
-        content: "Eine Allianz stellt einer anderen ein Ultimatum. " +
-                 "Nach Ablauf des Ultimatums beginnt der Krieg zwischen beiden Allianzen. " +
-                 "Während des Kriegs können Allianzen anderen Allianzen Festungen abnehmen. " +
-                 "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem sich eine der beiden Seiten ergibt. " +
-                 "Nachdem ein Krieg beendet ist herrscht eine vorübergende Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
+        contentWar: "Eine Allianz stellt einer anderen ein Ultimatum. " +
+                    "Nach Ablauf des Ultimatums beginnt der Krieg zwischen beiden Allianzen. " +
+                    "Während des Kriegs können Allianzen anderen Allianzen Festungen abnehmen. " +
+                    "Nach einer gewissen Kriegsdauer kann der Krieg beendet werden, in dem sich eine der beiden Seiten ergibt. " +
+                    "Nachdem ein Krieg beendet ist herrscht eine vorübergende Besatzungsphase in der kein Krieg zwischen den Allianzen erklärt werden kann.",
+        contentAlliance: "Eine Allianz bittet eine andere Allianz um ein Bündnis. " +
+                         "Die andere Allianz kann das Bündnis annehmen oder die Anfrage auslaufen lassen. " +
+                         "Während des Bündnisses können sich die Allianzen gegenseitig keine Festungen und Siedlungen abnehmen. " +
+                         "Beide Allianzen können das Bündnis jederzeit wieder beenden. " +
+                         "Nach Beendigung des Bündnisses startet die Auskling-Phase. " +
+                         "Erst nach der Auskling-Phase endet der Übernahme Schutz.",
       },
       
       progress: {
@@ -577,7 +583,7 @@ AWE.I18n.de_DE = function(module) {
       confirmLeave: {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
-        message2: " Achtung! Beim Verlassen kannst du erst in {0} Stunden einer anderen Allianz beitreten.",
+        message2: " Achtung! Beim Verlassen kannst du erst in {0} Tagen einer anderen Allianz beitreten.",
       },
       confirmReport: {
         heading: "Melden bestätigen",
@@ -808,7 +814,7 @@ AWE.I18n.de_DE = function(module) {
           empty: {
             heading: 'Freier Bauplatz',
             large: "Großer Bauplatz",
-            small: "Kleiner Bauplatz",
+            small: "Bauplatz", /* currently there is no distinction between small and large lots */
             categoriesStart: 'Hier können ',
             categoriesEnd:   ' gebaut werden.',
             maxLevel: 'Maximale Stufe',
@@ -1375,8 +1381,8 @@ AWE.I18n.de_DE = function(module) {
       units: "Einheiten",
 
       largeBuilding: 'Benötigt großen Bauplatz',
-      smallBuilding: 'Benötigt kleinen oder großen Bauplatz',
-      specialBuilding: 'Benötigt kleinen Bauplatz',
+      smallBuilding: 'Benötigt einen Bauplatz', /* currently there is no distinction between small and large lots */
+      specialBuilding: 'Benötigt einen Bauplatz', /* currently there is no distinction between small and large lots */
       fortressBuilding: 'Nur in Festungen',
     
       resource: {
@@ -1557,12 +1563,19 @@ AWE.I18n.de_DE = function(module) {
         allianceDiplomacy: {
           placeHolder: "Kürzel eingeben",
           issueUltimatum: "Ultimatum stellen",
+          issueAlliance: "Bündnis anfragen",
           ultimatum: "Ultimatum",
           war: "Krieg",
           capitulation: "Kapitulation",
           occupation: "Besetzung",
+          allianceRequest: "Bündnis Anfrage",
+          alliance: "Bündnis",
+          allianceConclusion: "Bündnis Ausklang",
           end: "Endet",
           giveUp: "Aufgeben",
+          cancelAllianceRequest: "Abbrechen",
+          acceptAllianceRequest: "Annehmen",
+          cancelAlliance: "Beenden",
           opponentSurrender: "Gegner {0} kann in {1} aufgeben.",
         },
       },
