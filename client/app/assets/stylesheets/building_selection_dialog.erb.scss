@@ -11,6 +11,32 @@
   width: 100%;
 }
 
+.building-name {  
+  position: relative;
+  top:-40px;
+  font-size: 0.5em;
+  height:23px;
+  text-align: center;
+  display:inline;
+}
+
+.is-construction-possible .building-name p{
+  background: url("/client/assets/dialogs/buttons/button_green_xxl.png") 100% 0%/100% 2em;  
+}
+
+.is-construction-possible.building-background:hover > .building-name p{
+  background-image: url("/client/assets/dialogs/buttons/button_green_xxl.png")
+}
+
+.building-name p{
+  background: url("/client/assets/dialogs/buttons/button_gray_xxl.png") 100% 0%/100% 2em;
+  color:white;
+  margin: 0;
+  padding: 2px 0 0 0;
+  text-align: center;
+  line-height: 1.8em;
+}
+
 .building-selection-resource-cell
 {
   width: 64px;
@@ -18,9 +44,8 @@
   display: inline-block;
   position: relative;
   float: left;
-  bottom: 38px;
-  left: 20px;
-  top: -26px
+  top: -37px;
+  left: 16px;
 }
 
 .building-selection-resource-cell .count-text
@@ -36,7 +61,7 @@
 .building-option-details.same.building-option-details-new-view
 {
   width: 27%;
-  height: 150px;
+  height: 175px;
   position: relative;
   float: left;
   display: inline-block;
@@ -47,7 +72,7 @@
 .building-option-details.building-option-details-new-view
 {
   width: 27%;
-  height: 150px;
+  height: 170px;
   position: relative;
   float: left;
   display: inline-block;
@@ -57,20 +82,21 @@
 
 .building-background
 {
-  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_disabled.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_disabled.png' %>") no-repeat center center/100% 100%;
   width: 164px;
-  height: 148px;
+  height: 180px;
   cursor: pointer;
+  margin-top:-10px;
 }
 
 .is-construction-possible.building-background
 {
-  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center/100% 100%;
 }
 
 .is-construction-possible.building-background:hover
 {
-  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center/100% 100%;
 }
 
 .building-background:active
@@ -83,13 +109,14 @@
 {
   position: relative;
   top: -22px;
+  z-index:0;
 }
 
 .building-info-button
 {
   position: relative;
   left: 145px;
-  top: 33px;
+  top: 20px;
   color: white;
   text-align: center;
   z-index: +5;

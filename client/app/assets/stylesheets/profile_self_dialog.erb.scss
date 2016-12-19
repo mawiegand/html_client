@@ -119,6 +119,10 @@
   vertical-align: middle;
 }
 
+.profile-info-self-dialog-pane .guy {
+  margin: 0 25px 0 15px;
+}
+
 .profile-info-self-dialog-pane .thumb-up,
 .profile-info-self-dialog-pane .thumb-down {
   margin: 0 20px 0 20px;
@@ -127,21 +131,21 @@
 .profile-info-self-dialog-pane .clubs-icon {
   width: 48px;
   /*height: 40px;*/
-  background:url("<%= asset_path 'dialogs/specials/army_identifier.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/specials/victory.png' %>") no-repeat right center;
   display: inline-block;
 }
 
 .profile-info-self-dialog-pane .guy-icon {
   width: 48px;
   /*height: 56px;*/
-  background:url("<%= asset_path 'dialogs/specials/people_identifier.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/items/normal/item_population.png' %>") no-repeat right center;
   display: inline-block;
 }
 
 .profile-info-self-dialog-pane .thing-icon {
   width: 64px;
   /*height: 56px;*/
-  background:url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>") no-repeat right center;
   display: inline-block;
 }
 

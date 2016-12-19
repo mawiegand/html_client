@@ -50,7 +50,12 @@ AWE.GS = (function(module) {
       return members.filter(function(member) {
         return member != null;
       }).get('length');
-    }.property('members').cacheable(),    
+    }.property('members').cacheable(), 
+
+    membersMax: function() {
+      var rules = AWE.GS.RulesManager.getRules();
+      return (rules ? rules.get('alliance_max_members') : null)+this.get('size_bonus');
+    }.property('size_bonus').cacheable(),
     
     members: function() {
       return this.getPath('hashableMembers.collection');

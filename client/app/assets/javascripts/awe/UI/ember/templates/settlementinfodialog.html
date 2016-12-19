@@ -13,19 +13,19 @@
     </div>
     <div class="row row2">
       <div class="row">
-        <div class="cell cell-50 titles population-title">{{t settlement.population}}:</div>
+        <div class="cell cell-50 title population"></div>
         <div class="cell cell-50 values population-value">{{settlement.score}}</div>
       </div>
       <div class="row">
-        <div class="cell cell-50 titles population-title">{{t settlement.defenseBonus}}:</div>
+        <div class="cell cell-50 title defense-bonus"></div>
         <div class="cell cell-50 values population-value">{{formatPercentage settlement.present_defense_bonus}}</div>
       </div>
       <div class="row">
-        <div class="cell cell-50 titles population-title">{{t settlement.condition}}:</div>
+        <div class="cell cell-50 title condition"></div>
         <div class="cell cell-50 values population-value">{{formatPercentage settlement.condition}}</div>
       </div>
       <div class="row">
-        <div class="cell cell-50 titles population-title">{{t settlement.info.tax}}:</div>
+        <div class="cell cell-50 titles right population-title">{{t settlement.info.tax}}:</div>
         <div class="cell cell-50 values population-value">{{formatNumber settlement.taxPercentage}}%</div>
       </div>
       {{#if settlement.typeIsConquerable}}

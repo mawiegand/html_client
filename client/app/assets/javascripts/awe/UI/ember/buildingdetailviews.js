@@ -546,10 +546,10 @@ module.SelectBuildingNewView = Ember.View.extend({
     leaveAlliance: function() {
       var self = this;
       var message = AWE.I18n.lookupTranslation('alliance.confirmLeave.message');
-      var hours = this.getPath("character.hoursUntilAllianceRejoinAllowed");      
-      if(hours !== 0){
+      var days = this.getPath("character.daysUntilAllianceRejoinAllowed");
+      if(days !== 0){
         var string = AWE.I18n.lookupTranslation('alliance.confirmLeave.message2');
-        message += string.format(hours);
+        message += string.format(days);
       }
 
       var dialog = AWE.UI.Ember.InfoDialog.create({

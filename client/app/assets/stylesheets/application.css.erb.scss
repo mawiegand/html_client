@@ -590,12 +590,13 @@ canvas{
 }
 .count-indicator-background-position{
   top: 10px;
-  left: 40px;
+  right: -20px;
   position: relative;
   text-align: center;
   line-height: 30px;
   font-family: $main-font;
   color: white;
+  margin-left:auto;
 }
 /* == NEW DOM RIGHT HUD END== */
 
@@ -1233,21 +1234,21 @@ canvas{
 
 .populationIcon{
   display: inline-block;
-  background-image: url("<%= asset_path 'ui/populationIcon.png' %>");
+  background-image: url("<%= asset_path 'dialogs/specials/people_identifier.png' %>");
   width: 44px;
   height: 52px;
   vertical-align: middle;
 }
 .fortressIcon{
   display: inline-block;
-  background-image: url("<%= asset_path 'ui/fortressIcon.png' %>");
+  background-image: url("<%= asset_path 'dialogs/specials/fortress_identifier.png' %>");
   width: 60px;
   height: 56px;
   vertical-align: middle;
 }
 .battleIcon{
   display: inline-block;
-  background-image: url("<%= asset_path 'ui/battleIcon.png' %>");
+  background-image: url("<%= asset_path 'dialogs/specials/victory.png' %>");
   width: 44px;
   height: 44px;
   vertical-align: middle;
@@ -2876,10 +2877,16 @@ h1.slot-tooltip {
   background: url('<%= asset_path("splashscreen/crack_sw.jpg") %>');
 } 
 
+.loadingprogress-wrapper{
+  width:547px;
+  margin-left:auto;
+}
+
 .loaddialog-progress {
-  width: 0%; height: 100%;
-  background: url('<%= asset_path("splashscreen/crack_color.jpg") %>');
+  width: 0%; height: 159px;
+  background: url('<%= asset_path("splashscreen/crack_color.png") %>');
   overflow:hidden;
+  margin:23px 0;
 }
 
 .loaddialog-image {
@@ -3082,13 +3089,11 @@ h1.slot-tooltip {
   margin: 55px 0 0 0;
 }
 
-.settlement-info-dialog-pane .titles {
-  text-align: right;
-  padding: 0 20px 0 0;
-}
 
 .settlement-info-dialog-pane .values {
+  color: rgb(154,148,138);
   text-align: left;
+  font-size: 1.3em;
   padding: 0 0 0 20px;
 }
 
@@ -3097,17 +3102,29 @@ h1.slot-tooltip {
 .settlement-info-dialog-pane .condition-title,
 .settlement-info-dialog-pane .takeover-title,
 .settlement-info-dialog-pane .destory-title {
+  text-align:right;
   color: rgb(112,92,48);
   font-size: 1.3em;
+  padding:0 25px 0 0
 }
 
-.settlement-info-dialog-pane .population-value,
-.settlement-info-dialog-pane .defense-boni-value,
-.settlement-info-dialog-pane .condition-value,
+
 .settlement-info-dialog-pane .takeover-value,
 .settlement-info-dialog-pane .destory-value {
   color: rgb(154,148,138);
   font-size: 1.3em;
+}
+
+.settlement-info-dialog-pane .population {
+  background:url("<%= asset_path 'dialogs/items/normal/item_population.png' %>")no-repeat 90% center;
+}
+
+.settlement-info-dialog-pane .defense-bonus {
+  background:url("<%= asset_path 'dialogs/items/normal/item_defense.png' %>")no-repeat 90% center;
+}
+
+.settlement-info-dialog-pane .condition {
+  background:url("<%= asset_path 'dialogs/items/normal/item_condition.png' %>")no-repeat 90% center;
 }
 
 .settlement-info-box-dialog-pane .button-left {
@@ -3172,11 +3189,11 @@ h1.slot-tooltip {
 
 .settlement-info-box-dialog-pane .title {
     color: rgb(112,92,48);
-    text-align: right;
+    text-align: center;
     width: 235px;
 }
 .settlement-info-box-dialog-pane .value {
-  color: rgb(154,148,138);
+    color: rgb(154,148,138);
     text-align: left;
     padding-left: 5px;
 }
@@ -3184,7 +3201,7 @@ h1.slot-tooltip {
 .settlement-info-box-dialog-pane .row1_1 .title,
 .settlement-info-box-dialog-pane .row1_2 .title,
 .settlement-info-box-dialog-pane .row1_3 .title {
-    width: 230px;
+    width: 190px;
 }
 .settlement-info-box-dialog-pane .row1_1 .value,
 .settlement-info-box-dialog-pane .row1_2 .value,
@@ -3195,7 +3212,7 @@ h1.slot-tooltip {
 .settlement-info-box-dialog-pane .row1_4 .title,
 .settlement-info-box-dialog-pane .row1_5 .title,
 .settlement-info-box-dialog-pane .row1_6 .title {
-    width: 220px;
+    width: 100px;
 }
 .settlement-info-box-dialog-pane .row1_4 .value,
 .settlement-info-box-dialog-pane .row1_5 .value,
@@ -3214,6 +3231,25 @@ h1.slot-tooltip {
   display: inline-block;
 }
 
+.settlement-info-box-dialog-pane .defense-bonus {
+  background:url("<%= asset_path 'dialogs/items/normal/item_defense.png' %>")no-repeat 90% center;
+}
+.settlement-info-box-dialog-pane .population {
+  background:url("<%= asset_path 'dialogs/items/normal/item_population.png' %>")no-repeat 80% center;
+}
+.settlement-info-box-dialog-pane .condition {
+  background:url("<%= asset_path 'dialogs/items/normal/item_condition.png' %>")no-repeat 90% center;
+}
+.settlement-info-box-dialog-pane .command-points {
+  background:url("<%= asset_path 'dialogs/items/normal/item_command_points.png' %>")no-repeat 80% center;
+}
+.settlement-info-box-dialog-pane .building-speed {
+  background:url("<%= asset_path 'dialogs/items/normal/item_speedup_building.png' %>")no-repeat 90% center;
+}
+.settlement-info-box-dialog-pane .building-slots {
+  background:url("<%= asset_path 'dialogs/items/normal/item_building_slots.png' %>")no-repeat 80% center;
+}
+
 .settlement-info-box-dialog-pane .row2 .infantry {
   background:url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>")no-repeat center center;
 }
@@ -3228,6 +3264,10 @@ h1.slot-tooltip {
 
 .settlement-info-box-dialog-pane .recruitment-speed-info {
   text-align: center;
+}
+
+.cell.recruitment-speed-info div {
+    margin: 0 0 0 10px;
 }
 
 span.bonus {

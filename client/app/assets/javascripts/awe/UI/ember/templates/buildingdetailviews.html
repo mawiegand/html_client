@@ -82,6 +82,9 @@
       <div {{action "optionClicked" target="parentView"}} {{bindAttr class="isConstructionPossible :building-background"}}>
         <div {{bindAttr class="building.buildingType.symbolic_id :building-image :building-position :building-selection-image"}}>  
         </div>
+        <div class = "building-name" >
+          <p>{{local building.name}}</p>
+        </div>
         {{#each building.costsOfNextLevel}}
           <div class="building-selection-resource-cell">
             <div {{bindAttr class="resourceType.symbolic_id :item :xs"}}>

@@ -1,5 +1,5 @@
 ---
-pid: /var/run/client.pid
+pid: /var/run/html_client/client.pid
 timeout: 30
 wait: 30
 log: log/thin/client.log
@@ -11,4 +11,4 @@ max_persistent_conns: 512
 servers: 3
 daemonize: true
 chdir: /var/www/html_client/current
-socket: /var/run/client.sock
+socket: /var/run/html_client/client.sock

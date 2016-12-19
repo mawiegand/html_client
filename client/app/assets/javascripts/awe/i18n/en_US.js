@@ -506,12 +506,18 @@ AWE.I18n.en_US = function(module) {
 
       diplomacyInfo: {
         heading: "Diplomacysystem:",
-        content: "An alliance makes an ultimatum towards another. " +
-                 "After the ultimatum has ended the alliances are at war. " +
-                 "While the war is ongoing alliances may conquer each others fortresses. " +
-                 "After war has raged for a while it may be ended by one side surrendering. " +
-                 "When a side has surrendered both alliances enter into the occupation phase. " +
-                 "During this phase no ultimatum maybe declared between the two alliances.",
+        contentWar: "An alliance makes an ultimatum towards another. " +
+                    "After the ultimatum has ended the alliances are at war. " +
+                    "While the war is ongoing alliances may conquer each others fortresses. " +
+                    "After war has raged for a while it may be ended by one side surrendering. " +
+                    "When a side has surrendered both alliances enter into the occupation phase. " +
+                    "During this phase no ultimatum maybe declared between the two alliances.",
+        contentAlliance: "An alliance can ask another alliance to make a pact. " +
+                         "The other alliance may accept the pact. " +
+                         "During the pact, no takeover of settlements of the other alliance is possible. " +
+                         "Both alliances are allowed to cancel the pact anytime. " +
+                         "After canceling the pact, the conclusion phase starts. " +
+                         "With the end of conclusion the takeover protection ends as well.",
       },
 
       progress:{
@@ -568,7 +574,7 @@ AWE.I18n.en_US = function(module) {
       confirmLeave:{
         heading:"Leave Alliance",
         message:"Are you sure about leaving your alliance?",
-        message2: " Attention! If you leave now you cannot join another alliance for the next {0} hours.",
+        message2: " Attention! If you leave now you cannot join another alliance for the next {0} days.",
 
       },
       confirmReport: {
@@ -781,7 +787,7 @@ AWE.I18n.en_US = function(module) {
           upgradePossible:'This building could be upgraded:',
           empty:{
             heading:'Empty lot',
-            small: 'Small lot',
+            small: 'lot', /* currently there is no distinction between small and large lots */
             large: 'Large lot',
             categoriesStart:'You can build ',
             categoriesEnd:' here.',
@@ -1349,9 +1355,9 @@ AWE.I18n.en_US = function(module) {
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
 
-      smallBuilding: 'Requires small or large building slot',
+      smallBuilding: 'Requires a building slot', /* currently there is no distinction between small and large lots */
       largeBuilding: 'Requires large building slot',
-      specialBuilding: 'Requires small building slot',
+      specialBuilding: 'Requires a building slot', /* currently there is no distinction between small and large lots */
       fortressBuilding: 'Only in fortresses',
 
       resources:"Resources",
@@ -1535,12 +1541,19 @@ AWE.I18n.en_US = function(module) {
         allianceDiplomacy: {
           placeHolder: "Insert Tag",
           issueUltimatum: "Issue ultimatum",
+          issueAlliance: "Request Pact",
           ultimatum: "Ultimatum",
           war: "War",
           capitulation: "Capitulation",
           occupation: "Occupation",
-          end: "End",
+          allianceRequest: "Request Pact",
+          alliance: "Pact",
+          allianceConclusion: "Alliance conclusion",
+          end: "Ends",
           giveUp: "Give up",
+          cancelAllianceRequest: "Cancel",
+          acceptAllianceRequest: "Accept",
+          cancelAlliance: "Cancel",
           opponentSurrender: "Opponent {0} may surrender in {1}.",
         },
       },

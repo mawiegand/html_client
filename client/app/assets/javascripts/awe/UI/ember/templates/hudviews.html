@@ -46,8 +46,8 @@
 <script type="text/x-handlebars" data-template-name="right-hud-view">
   <div class="right-hud scale-down" id="right-dom-hud">
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
-  	  {{#if getNewQuest}}
-  		<div class="count-indicator-background count-indicator-background-position">{{getNewQuest}}</div>
+  	  {{#if getNewAndNotFinishedQuests}}
+  		<div class="count-indicator-background count-indicator-background-position">{{getNewAndNotFinishedQuests}}</div>
   	  {{/if}}
   	</div>
     
