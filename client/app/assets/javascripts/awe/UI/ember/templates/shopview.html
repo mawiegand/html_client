@@ -11,11 +11,11 @@
             <p>{{t shop.unreachable}}</p>
           {{else}}
             <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}
-              {{#if AWE.Facebook.isRunningInCanvas}}
-              <span class="simple-button float-right platinum" {{action "buyFbCreditOfferPressed"}}>{{ t shop.buyCredits }} </span>
-              {{else}}
-              <span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span>
-              {{/if}}
+              <!--{{#if AWE.Facebook.isRunningInCanvas}}-->
+              <!--<span class="simple-button float-right platinum" {{action "buyFbCreditOfferPressed"}}>{{ t shop.buyCredits }} </span>-->
+              <!--{{else}}-->
+              <!--<span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span>-->
+              <!--{{/if}}-->
             </p>
             
             {{#if resourceOffers}}
