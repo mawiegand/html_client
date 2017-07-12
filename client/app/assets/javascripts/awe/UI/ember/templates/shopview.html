@@ -21,15 +21,15 @@
             {{#if resourceOffers}}
               <h3>{{ t shop.resourceOffers }}</h3>
 
-              {{#if AWE.Facebook.isRunningInCanvas}}
-              <div class="platinum-button" {{action "buyFbCreditOfferPressed"}}>
-                <p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>
-              </div>
-              {{else}}
-              <div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>
-                <p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>
-              </div>
-              {{/if}}
+              <!--{{#if AWE.Facebook.isRunningInCanvas}}-->
+              <!--<div class="platinum-button" {{action "buyFbCreditOfferPressed"}}>-->
+                <!--<p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>-->
+              <!--</div>-->
+              <!--{{else}}-->
+              <!--<div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>-->
+                <!--<p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>-->
+              <!--</div>-->
+              <!--{{/if}}-->
 
               {{#each resourceOffers}}
                 {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
